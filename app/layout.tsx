@@ -6,6 +6,7 @@ import ClientWrapper from "@/components/ClientWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://laythayache.com"),
   title: "Layth Ayache | AI Engineer | Computer Vision & NLP",
   description: "AI Engineer specializing in Computer Vision, NLP, and end-to-end ML pipelines. Building products with real-world impact.",
   keywords: ["AI Engineer", "Machine Learning", "Computer Vision", "NLP", "ML Engineer", "Data Analyst"],
