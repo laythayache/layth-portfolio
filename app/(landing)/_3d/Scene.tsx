@@ -237,8 +237,8 @@ export default function Scene({ phase, hoveredPillarId, selectedPillarId, ruptur
           getDiveProgress={getDiveProgress}
           getHoldProgress={getHoldProgress}
         />
+        <PerformanceMonitor />
       </Canvas>
-      <PerformanceMonitor />
     </>
   );
 }
