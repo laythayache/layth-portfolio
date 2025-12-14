@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { setReducedMotion } from "./landingPrefs";
+import { PILLARS, getPillarNaming } from "./_3d/pillars";
 
 const PILLAR_COLORS: Record<string, string> = {
   perception: "#35FFB8",
@@ -10,16 +11,6 @@ const PILLAR_COLORS: Record<string, string> = {
   coordination: "#2DA8FF",
   failure: "#FF2D2D",
 };
-
-const PILLAR_LABELS: Record<string, string> = {
-  perception: "PERCEPTION",
-  execution: "EXECUTION",
-  representation: "REPRESENTATION",
-  coordination: "COORDINATION",
-  failure: "FAILURE",
-};
-
-const PILLARS = ["perception", "execution", "representation", "coordination", "failure"] as const;
 
 export default function ReducedMotionLanding() {
   // If this component is rendered, reduced motion is active
@@ -42,14 +33,14 @@ export default function ReducedMotionLanding() {
 
         {/* Pillars Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {PILLARS.map((pillarId) => {
-            const color = PILLAR_COLORS[pillarId];
-            const label = PILLAR_LABELS[pillarId];
+          {PILLARS.map((pillar) => {
+            const color = PILLAR_COLORS[pillar.id];
+            const naming = getPillarNaming(pillar.id);
 
             return (
               <Link
-                key={pillarId}
-                href={`/system/${pillarId}`}
+                key={pillar.id}
+                href={`/system/${pillar.id}`}
                 className="block border-2 border-white p-6 hover:border-opacity-60 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
               >
                 <div className="flex items-center gap-3 mb-2">
@@ -57,7 +48,28 @@ export default function ReducedMotionLanding() {
                     className="w-3 h-3 rounded-full"
                     style={{ backgroundColor: color }}
                   />
-                  <h2 className="text-lg uppercase font-bold">{label}</h2>
+                  <div className="flex flex-col">
+                    {/* Primary Name */}
+                    <h2
+                      className="text-lg uppercase font-mono tracking-widest"
+                      style={{
+                        color: color,
+                        fontWeight: 500,
+                        letterSpacing: "0.15em",
+                      }}
+                    >
+                      {naming.primaryName}
+                    </h2>
+                    {/* Subtitle */}
+                    <div
+                      className="text-xs uppercase font-mono text-gray-400"
+                      style={{
+                        letterSpacing: "0.2em",
+                      }}
+                    >
+                      {naming.subtitle}
+                    </div>
+                  </div>
                 </div>
                 <div className="text-xs text-gray-400 mt-2">View subsystem →</div>
               </Link>
