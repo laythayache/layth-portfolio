@@ -278,7 +278,11 @@ export default function PillarArrivalClient({
             className="text-xs text-gray-500"
             style={{ letterSpacing: "0.1em" }}
           >
-            OPERATIONAL
+            {pillarId === "perception" ? "CALIBRATED" :
+             pillarId === "execution" ? "ARMED" :
+             pillarId === "representation" ? "COHERENT" :
+             pillarId === "coordination" ? "SYNCED" :
+             "ACCEPTED"}
           </div>
         </div>
       )}

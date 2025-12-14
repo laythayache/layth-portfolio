@@ -51,7 +51,7 @@ export default function ReducedMotionLanding() {
                   <div className="flex flex-col">
                     {/* Primary Name */}
                     <h2
-                      className="text-lg uppercase font-mono tracking-widest"
+                      className="text-lg uppercase font-mono tracking-widest mb-0.5"
                       style={{
                         color: color,
                         fontWeight: 500,
@@ -62,12 +62,21 @@ export default function ReducedMotionLanding() {
                     </h2>
                     {/* Subtitle */}
                     <div
-                      className="text-xs uppercase font-mono text-gray-400"
+                      className="text-xs uppercase font-mono text-gray-400 mb-1"
                       style={{
-                        letterSpacing: "0.2em",
+                        letterSpacing: "0.25em",
                       }}
                     >
                       {naming.subtitle}
+                    </div>
+                    {/* Classification */}
+                    <div
+                      className="text-[10px] uppercase font-mono text-gray-600"
+                      style={{
+                        letterSpacing: "0.3em",
+                      }}
+                    >
+                      CLASS: SYSTEM PILLAR
                     </div>
                   </div>
                 </div>

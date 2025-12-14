@@ -4,6 +4,7 @@ import { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { ShaderMaterial, PlaneGeometry, Color } from "three";
 import * as THREE from "three";
+import { getQualityProfile, applyQualityToRuptureUniforms } from "./quality";
 
 // Tuning constants
 const EDGE_SHARPNESS = 8.0;
@@ -60,6 +61,9 @@ const fragmentShader = `
   uniform vec2 uCenter;
   uniform vec3 uTint;
   uniform float uAspect;
+  uniform float uGrainAmount;
+  uniform float uChromaAmount;
+  uniform float uVignetteAmount;
   
   varying vec2 vUv;
   
@@ -113,18 +117,18 @@ const fragmentShader = `
     // Radial distortion effect (visual only, no texture sampling)
     float distort = dist * 0.15 * uProgress;
     
-    // Chromatic split (simulate with offset noise)
-    float chromaOffset = dist * 0.02 * uProgress;
+    // Chromatic split (simulate with offset noise) - uses quality multiplier
+    float chromaOffset = dist * uChromaAmount * uProgress;
     float rNoise = noise(uv + vec2(chromaOffset, 0.0) + uTime);
     float gNoise = noise(uv + uTime);
     float bNoise = noise(uv - vec2(chromaOffset, 0.0) + uTime);
     vec3 chromaColor = vec3(rNoise, gNoise, bNoise) * 0.1;
     
-    // Vignette
-    float vignette = 1.0 - smoothstep(0.2, 1.0, dist) * 1.2 * uProgress;
+    // Vignette - uses quality multiplier
+    float vignette = 1.0 - smoothstep(0.2, 1.0, dist) * uVignetteAmount * uProgress;
     
-    // Grain
-    float grain = (noise(uv * 200.0 + uTime) - 0.5) * 0.08 * uProgress;
+    // Grain - uses quality multiplier
+    float grain = (noise(uv * 200.0 + uTime) - 0.5) * uGrainAmount * uProgress;
     
     // Base tear color (tinted)
     vec3 baseColor = uTint * tearMask;
@@ -159,24 +163,57 @@ export default function RuptureOverlay({ active, progress, centerNdc, tint }: Ru
     return [color.r, color.g, color.b];
   }, [tint]);
 
-  const uniforms = useMemo(
+  const qualityProfile = getQualityProfile();
+  
+  const baseUniforms = useMemo(
     () => ({
-      uProgress: { value: 0 },
-      uTime: { value: 0 },
-      uCenter: { value: [center01.x, center01.y] },
-      uTint: { value: tintColor },
-      uAspect: { value: size.width / size.height },
+      uProgress: 0,
+      uTime: 0,
+      uCenter: [center01.x, center01.y] as [number, number],
+      uTint: tintColor,
+      uAspect: size.width / size.height,
     }),
     [center01, tintColor, size]
+  );
+
+  const qualityUniforms = useMemo(
+    () => applyQualityToRuptureUniforms(qualityProfile, baseUniforms),
+    [qualityProfile, baseUniforms]
+  );
+
+  const uniforms = useMemo(
+    () => ({
+      uProgress: { value: qualityUniforms.uProgress },
+      uTime: { value: qualityUniforms.uTime },
+      uCenter: { value: qualityUniforms.uCenter },
+      uTint: { value: qualityUniforms.uTint },
+      uAspect: { value: qualityUniforms.uAspect },
+      uGrainAmount: { value: qualityUniforms.uGrainAmount },
+      uChromaAmount: { value: qualityUniforms.uChromaAmount },
+      uVignetteAmount: { value: qualityUniforms.uVignetteAmount },
+    }),
+    [qualityUniforms]
   );
 
   useFrame((state, delta) => {
     if (!materialRef.current) return;
     timeRef.current += delta;
     
-    materialRef.current.uniforms.uProgress.value = progress;
-    materialRef.current.uniforms.uTime.value = timeRef.current;
-    materialRef.current.uniforms.uAspect.value = size.width / size.height;
+    const qualityProfile = getQualityProfile();
+    const qualityUniforms = applyQualityToRuptureUniforms(qualityProfile, {
+      uProgress: progress,
+      uTime: timeRef.current,
+      uCenter: [center01.x, center01.y] as [number, number],
+      uTint: tintColor,
+      uAspect: size.width / size.height,
+    });
+    
+    materialRef.current.uniforms.uProgress.value = qualityUniforms.uProgress;
+    materialRef.current.uniforms.uTime.value = qualityUniforms.uTime;
+    materialRef.current.uniforms.uAspect.value = qualityUniforms.uAspect;
+    materialRef.current.uniforms.uGrainAmount.value = qualityUniforms.uGrainAmount;
+    materialRef.current.uniforms.uChromaAmount.value = qualityUniforms.uChromaAmount;
+    materialRef.current.uniforms.uVignetteAmount.value = qualityUniforms.uVignetteAmount;
   });
 
   if (!active || progress <= 0) return null;

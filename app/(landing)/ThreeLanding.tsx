@@ -7,6 +7,7 @@ import { PILLARS, PillarDefinition } from "./_3d/pillars";
 import { useDescentState, DescentPhase } from "./_3d/useDescentState";
 
 function LabelWithJitter({ pillar, phase }: { pillar: PillarDefinition; phase: DescentPhase }) {
+  const showClassification = phase === "idle" || phase === "hover";
   const [jitter, setJitter] = useState(0);
   const jitterTimeRef = useRef(0);
 
@@ -65,12 +66,25 @@ function LabelWithJitter({ pillar, phase }: { pillar: PillarDefinition; phase: D
         >
           {pillar.subtitle}
         </div>
+        {/* Classification line (only during idle/hover) */}
+        {showClassification && (
+          <div
+            className="font-mono text-[10px] uppercase tracking-[0.3em] mb-1"
+            style={{
+              color: "#666666",
+              letterSpacing: "0.3em",
+            }}
+          >
+            CLASS: SYSTEM PILLAR
+          </div>
+        )}
         {/* Axiom line */}
         <div
           className="font-mono text-xs"
           style={{
             letterSpacing: "0.1em",
             color: isSubdued ? "#555555" : "#999999",
+            marginTop: showClassification ? "0" : "0.25rem",
           }}
         >
           {pillar.description}
@@ -109,9 +123,19 @@ export default function ThreeLanding() {
   const descentState = useDescentState();
   const { phase, hoveredId, selectedId, setHovered, commitTo, ruptureCenter } = descentState;
   const hasNavigatedRef = useRef(false);
+  
+  // Keyboard focus state
+  const [focusedId, setFocusedId] = useState<string | null>(null);
+  const focusedIndexRef = useRef<number>(-1);
+  
+  // Touch double-tap guard
+  const lastTouchedIdRef = useRef<string | null>(null);
+  const lastTouchTsRef = useRef<number>(0);
+  const TOUCH_COMMIT_WINDOW = 2000; // 2 seconds
 
   const hoveredPillar = hoveredId ? PILLARS.find((p) => p.id === hoveredId) : null;
   const selectedPillar = selectedId ? PILLARS.find((p) => p.id === selectedId) : null;
+  const focusedPillar = focusedId ? PILLARS.find((p) => p.id === focusedId) : null;
 
   // Navigation trigger at progress >= 0.85
   useEffect(() => {
@@ -149,10 +173,93 @@ export default function ThreeLanding() {
     }
   }, [phase]);
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Esc: return to idle (only if idle or hover)
+      if (e.key === "Escape" && (phase === "idle" || phase === "hover")) {
+        setHovered(null);
+        setFocusedId(null);
+        focusedIndexRef.current = -1;
+        return;
+      }
+
+      // Tab: cycle through pillars
+      if (e.key === "Tab" && (phase === "idle" || phase === "hover")) {
+        e.preventDefault();
+        const currentIndex = focusedIndexRef.current;
+        const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % PILLARS.length;
+        focusedIndexRef.current = nextIndex;
+        const nextPillar = PILLARS[nextIndex];
+        setFocusedId(nextPillar.id);
+        // Trigger hover with 250ms delay (match hover discipline)
+        setTimeout(() => {
+          setHovered(nextPillar.id as any);
+        }, 250);
+        return;
+      }
+
+      // Enter: commit to focused pillar
+      if (e.key === "Enter" && focusedId && (phase === "idle" || phase === "hover")) {
+        e.preventDefault();
+        const pillar = PILLARS.find((p) => p.id === focusedId);
+        if (pillar) {
+          commitTo(focusedId as any, { x: 0, y: 0 }); // Center NDC for keyboard
+        }
+        return;
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [phase, focusedId, setHovered, commitTo]);
+
+  // Screen reader live region
+  const [announcement, setAnnouncement] = useState<string>("");
+  
+  useEffect(() => {
+    if (hoveredId || focusedId) {
+      const pillar = PILLARS.find((p) => p.id === (hoveredId || focusedId));
+      if (pillar) {
+        setAnnouncement(`${pillar.primaryName}, ${pillar.subtitle}. ${pillar.description}`);
+      }
+    } else if (phase === "commit") {
+      setAnnouncement("Locked. Descending.");
+    } else if (phase === "dive") {
+      setAnnouncement("Transiting.");
+    } else {
+      setAnnouncement("");
+    }
+  }, [hoveredId, focusedId, phase]);
+
   const handlePillarClick = (id: string, center: { x: number; y: number } | null) => {
     // Only allow commit when idle or hover, and only if not already selected
     if ((phase === "idle" || phase === "hover") && selectedId !== id) {
       commitTo(id as any, center);
+    }
+  };
+
+  // Touch double-tap handler
+  const handlePillarTouch = (id: string, center: { x: number; y: number } | null) => {
+    if (phase === "dive" || phase === "hold" || phase === "commit") {
+      return; // Ignore during descent
+    }
+
+    const now = Date.now();
+    const isSamePillar = lastTouchedIdRef.current === id;
+    const withinWindow = now - lastTouchTsRef.current < TOUCH_COMMIT_WINDOW;
+
+    if (isSamePillar && withinWindow) {
+      // Second tap = commit
+      commitTo(id as any, center);
+      lastTouchedIdRef.current = null;
+      lastTouchTsRef.current = 0;
+    } else {
+      // First tap = hover/focus
+      lastTouchedIdRef.current = id;
+      lastTouchTsRef.current = now;
+      setHovered(id as any);
+      setFocusedId(id);
     }
   };
 
@@ -173,10 +280,30 @@ export default function ThreeLanding() {
         </div>
       </div>
 
+      {/* Screen reader live region */}
+      <div
+        aria-live="polite"
+        aria-atomic="true"
+        className="sr-only"
+        style={{
+          position: "absolute",
+          width: "1px",
+          height: "1px",
+          padding: 0,
+          margin: "-1px",
+          overflow: "hidden",
+          clip: "rect(0, 0, 0, 0)",
+          whiteSpace: "nowrap",
+          borderWidth: 0,
+        }}
+      >
+        {announcement}
+      </div>
+
       {/* Hover/Selection Label - Center Top */}
-      {(hoveredPillar || selectedPillar) && (
+      {(hoveredPillar || selectedPillar || focusedPillar) && (
         <LabelWithJitter
-          pillar={selectedPillar || hoveredPillar!}
+          pillar={selectedPillar || hoveredPillar || focusedPillar!}
           phase={phase}
         />
       )}
@@ -191,11 +318,12 @@ export default function ThreeLanding() {
       >
         <Scene
           phase={phase}
-          hoveredPillarId={hoveredId}
+          hoveredPillarId={hoveredId || focusedId}
           selectedPillarId={selectedId}
           ruptureCenter={ruptureCenter}
           onPillarHover={handlePillarHover}
           onPillarClick={handlePillarClick}
+          onPillarTouch={handlePillarTouch}
           getDiveProgress={descentState.getDiveProgress}
           getHoldProgress={descentState.getHoldProgress}
         />

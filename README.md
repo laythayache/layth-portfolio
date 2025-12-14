@@ -211,6 +211,115 @@ layth-portfolio/
 - Minimal JavaScript bundle
 - CSS purging with Tailwind
 
+## Tuning Guide
+
+### Camera Timings
+
+Located in `/app/(landing)/_3d/useDescentState.ts`:
+
+- **COMMIT_DURATION**: `200ms` - Transition from hover to dive start
+- **DIVE_DURATION**: `1200ms` - Camera movement toward orb
+- **HOLD_FOV_SETTLE**: `300ms` - FOV adjustment after dive completes
+
+Camera FOV range:
+- **Idle/Hover**: `40` degrees
+- **Dive**: Ramps from `40` → `70` degrees
+- **Hold**: Settles from `70` → `50` degrees
+
+### Rupture Constants
+
+Located in `/app/(landing)/_3d/RuptureOverlay.tsx`:
+
+- **EDGE_SHARPNESS**: `8.0` - Jagged tear edge intensity
+- **DISTORT_STRENGTH**: `0.15` - Radial distortion amount
+- **GRAIN_AMOUNT**: `0.08` - Base grain intensity (multiplied by quality profile)
+- **CHROMA_AMOUNT**: `0.02` - Chromatic aberration intensity (multiplied by quality profile)
+- **VIGNETTE_AMOUNT**: `1.2` - Vignette darkness (multiplied by quality profile)
+
+Rupture progress mapping:
+- Starts at `70%` of dive progress
+- Maps to `0..1` over final `30%` of dive
+- Decays quickly during hold phase
+
+### Quality Profiles
+
+Located in `/app/(landing)/_3d/quality.ts`:
+
+**"full" profile:**
+- Canvas DPR: Up to `2.0` (device pixel ratio)
+- Antialiasing: Enabled
+- Rupture effects: Full intensity (grain: 0.08, chroma: 0.02, vignette: 1.2)
+
+**"safe" profile:**
+- Canvas DPR: Clamped to `1.0`
+- Antialiasing: Disabled
+- Rupture effects: Reduced to `30%` intensity (grain: 0.024, chroma: 0.006, vignette: 0.36)
+
+Quality detection triggers "safe" mode if ANY of:
+- `prefers-reduced-motion: reduce` media query matches
+- Device memory < 4GB (if available)
+- Hardware concurrency < 4 cores
+
+Quality profile is determined once per session and cached.
+
+## Test Checklist
+
+### Reduced Motion Gate
+
+- [ ] Visit `/` with `prefers-reduced-motion: reduce` enabled → Shows DOM-only fallback
+- [ ] Toggle "Reduced Motion" button → Writes to localStorage and reloads
+- [ ] After reload with reduced motion OFF → Shows 3D landing
+- [ ] Reduced motion cards show dual-name (PrimaryName + Subtitle + Classification)
+
+### Keyboard Navigation
+
+- [ ] Tab cycles through pillars in order: Perception → Execution → Representation → Coordination → Failure
+- [ ] Enter commits to focused pillar (triggers commit → dive → navigation)
+- [ ] Esc returns to idle (only when phase is idle or hover)
+- [ ] Focused pillar shows label with 250ms delay (matches hover discipline)
+- [ ] Screen reader announces: "PrimaryName, Subtitle. Axiom" on hover/focus
+
+### Touch Double-Tap Commit
+
+- [ ] First tap on orb → Shows label, camera leans (hover behavior)
+- [ ] Second tap on same orb within 2 seconds → Commits and triggers dive
+- [ ] Tap different orb → Resets first-tap target
+- [ ] Tap after 2+ seconds → Treated as new first tap
+- [ ] No accidental commits during scroll (canvas is fullscreen, but guard prevents commits)
+
+### Static Export Build
+
+- [ ] Run `npm run build` → Completes without errors
+- [ ] Check `out/` directory → Contains all static files
+- [ ] Verify routes: `/`, `/system/perception`, `/system/execution`, `/system/representation`, `/system/coordination`, `/system/failure`
+- [ ] All routes are pre-generated (no runtime data fetching)
+
+### 3D Landing Behavior
+
+- [ ] Mouse hover on orb → Label appears, camera leans after 250ms
+- [ ] Click orb → Commit → Dive → Rupture overlay at 70% progress → Navigation at 85% progress
+- [ ] During dive/hold → Other orbs disabled, selected orb remains dominant
+- [ ] Rupture overlay appears and covers screen during navigation transition
+- [ ] SessionStorage `rr_arrival` written before navigation
+
+### Arrival System
+
+- [ ] Navigation from `/` → Destination page reads `rr_arrival` from sessionStorage
+- [ ] Arrival animation plays (pillar-specific style: scan/impact/reassembly/handshake/sink)
+- [ ] Content fades in after 30% of arrival progress
+- [ ] HUD text transitions at 60% progress
+- [ ] Persistent HUD shows: PrimaryName, Subtitle, Axiom, Status word
+- [ ] Status words: CALIBRATED (Perception), ARMED (Execution), COHERENT (Representation), SYNCED (Coordination), ACCEPTED (Failure)
+- [ ] Direct visit (no sessionStorage) → Content shows immediately, no arrival animation
+
+### Visual Authority
+
+- [ ] Label overlay shows: PrimaryName (colored, larger) + Subtitle (gray, smaller) + Classification (idle/hover only) + Axiom
+- [ ] Classification line: "CLASS: SYSTEM PILLAR" (only visible during idle/hover)
+- [ ] During commit/dive/hold: Classification removed, spacing compressed, contrast increased
+- [ ] Typography consistent across: landing overlay, reduced motion cards, arrival HUD
+- [ ] All labels use monospace font, uppercase, strict letter spacing
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.

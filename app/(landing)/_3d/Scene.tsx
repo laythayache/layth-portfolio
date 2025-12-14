@@ -10,6 +10,7 @@ import CameraRig from "./CameraRig";
 import RuptureOverlay from "./RuptureOverlay";
 
 import { DescentPhase } from "./useDescentState";
+import { getQualityProfile, getCanvasDpr } from "./quality";
 
 interface SceneContentProps {
   phase: DescentPhase;
@@ -18,6 +19,7 @@ interface SceneContentProps {
   ruptureCenter: { x: number; y: number } | null;
   onPillarHover: (id: string | null) => void;
   onPillarClick: (id: string, center: { x: number; y: number } | null) => void;
+  onPillarTouch?: (id: string, center: { x: number; y: number } | null) => void;
   getDiveProgress: () => number;
   getHoldProgress: () => number;
 }
@@ -47,7 +49,7 @@ function FailureGravitySystem({ onGravityActive }: { onGravityActive: (active: b
   return null;
 }
 
-function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter, onPillarHover, onPillarClick, getDiveProgress, getHoldProgress }: SceneContentProps) {
+function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter, onPillarHover, onPillarClick, onPillarTouch, getDiveProgress, getHoldProgress }: SceneContentProps) {
   const { camera, gl } = useThree();
   const [failureGravityActive, setFailureGravityActive] = useState(false);
 
@@ -116,7 +118,12 @@ function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter,
             onClick={(event: any) => {
               if (!isDisabled) {
                 const center = event?.ndc ? { x: event.ndc.x, y: event.ndc.y } : null;
-                onPillarClick(pillar.id, center);
+                // Check if this is a touch event
+                if (event.nativeEvent?.pointerType === "touch" && onPillarTouch) {
+                  onPillarTouch(pillar.id, center);
+                } else {
+                  onPillarClick(pillar.id, center);
+                }
               }
             }}
           />
@@ -154,15 +161,20 @@ interface SceneProps {
   ruptureCenter: { x: number; y: number } | null;
   onPillarHover: (id: string | null) => void;
   onPillarClick: (id: string, center: { x: number; y: number } | null) => void;
+  onPillarTouch?: (id: string, center: { x: number; y: number } | null) => void;
   getDiveProgress: () => number;
   getHoldProgress: () => number;
 }
 
-export default function Scene({ phase, hoveredPillarId, selectedPillarId, ruptureCenter, onPillarHover, onPillarClick, getDiveProgress, getHoldProgress }: SceneProps) {
+export default function Scene({ phase, hoveredPillarId, selectedPillarId, ruptureCenter, onPillarHover, onPillarClick, onPillarTouch, getDiveProgress, getHoldProgress }: SceneProps) {
+  const qualityProfile = getQualityProfile();
+  const canvasDpr = getCanvasDpr(qualityProfile);
+
   return (
     <Canvas
       camera={{ position: [0, 0, 8], fov: 40 }}
-      gl={{ antialias: true, alpha: false }}
+      gl={{ antialias: qualityProfile === "full", alpha: false }}
+      dpr={canvasDpr}
       style={{ background: "#000000" }}
     >
       <SceneContent
@@ -172,6 +184,7 @@ export default function Scene({ phase, hoveredPillarId, selectedPillarId, ruptur
         ruptureCenter={ruptureCenter}
         onPillarHover={onPillarHover}
         onPillarClick={onPillarClick}
+        onPillarTouch={onPillarTouch}
         getDiveProgress={getDiveProgress}
         getHoldProgress={getHoldProgress}
       />
