@@ -4,7 +4,7 @@ import { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { ShaderMaterial, PlaneGeometry, Color } from "three";
 import * as THREE from "three";
-import { getQualityProfile, applyQualityToRuptureUniforms } from "./quality";
+import { getQualityProfile, QualityProfile } from "./quality";
 
 // Tuning constants
 const EDGE_SHARPNESS = 8.0;
@@ -18,6 +18,8 @@ interface RuptureOverlayProps {
   progress: number; // 0..1
   centerNdc: { x: number; y: number };
   tint: string; // hex color
+  isPageVisible?: boolean;
+  reducedMotion?: boolean;
 }
 
 // Hash-based value noise (inline, no textures)
@@ -85,7 +87,8 @@ const fragmentShader = `
     float value = 0.0;
     float amplitude = 0.5;
     float frequency = 1.0;
-    for (int i = 0; i < 5; i++) {
+    // Reduced to 3 octaves for performance (was 5)
+    for (int i = 0; i < 3; i++) {
       value += amplitude * noise(p * frequency);
       frequency *= 2.0;
       amplitude *= 0.5;
@@ -127,8 +130,8 @@ const fragmentShader = `
     // Vignette - uses quality multiplier
     float vignette = 1.0 - smoothstep(0.2, 1.0, dist) * uVignetteAmount * uProgress;
     
-    // Grain - uses quality multiplier
-    float grain = (noise(uv * 200.0 + uTime) - 0.5) * uGrainAmount * uProgress;
+    // Grain - reduced frequency for performance (was 200.0, now 100.0)
+    float grain = (noise(uv * 100.0 + uTime) - 0.5) * uGrainAmount * uProgress;
     
     // Base tear color (tinted)
     vec3 baseColor = uTint * tearMask;
@@ -145,7 +148,7 @@ const fragmentShader = `
   }
 `;
 
-export default function RuptureOverlay({ active, progress, centerNdc, tint }: RuptureOverlayProps) {
+export default function RuptureOverlay({ active, progress, centerNdc, tint, isPageVisible = true, reducedMotion = false }: RuptureOverlayProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const materialRef = useRef<ShaderMaterial>(null);
   const { viewport, size } = useThree();
@@ -164,59 +167,64 @@ export default function RuptureOverlay({ active, progress, centerNdc, tint }: Ru
   }, [tint]);
 
   const qualityProfile = getQualityProfile();
+  const qualityMultiplier = qualityProfile === "safe" ? 0.3 : 1.0;
   
-  const baseUniforms = useMemo(
-    () => ({
-      uProgress: 0,
-      uTime: 0,
-      uCenter: [center01.x, center01.y] as [number, number],
-      uTint: tintColor,
-      uAspect: size.width / size.height,
-    }),
-    [center01, tintColor, size]
-  );
-
-  const qualityUniforms = useMemo(
-    () => applyQualityToRuptureUniforms(qualityProfile, baseUniforms),
-    [qualityProfile, baseUniforms]
-  );
-
   const uniforms = useMemo(
     () => ({
-      uProgress: { value: qualityUniforms.uProgress },
-      uTime: { value: qualityUniforms.uTime },
-      uCenter: { value: qualityUniforms.uCenter },
-      uTint: { value: qualityUniforms.uTint },
-      uAspect: { value: qualityUniforms.uAspect },
-      uGrainAmount: { value: qualityUniforms.uGrainAmount },
-      uChromaAmount: { value: qualityUniforms.uChromaAmount },
-      uVignetteAmount: { value: qualityUniforms.uVignetteAmount },
+      uProgress: { value: 0 },
+      uTime: { value: 0 },
+      uCenter: { value: [center01.x, center01.y] as [number, number] },
+      uTint: { value: tintColor },
+      uAspect: { value: size.width / size.height },
+      uGrainAmount: { value: 0.08 * qualityMultiplier },
+      uChromaAmount: { value: 0.02 * qualityMultiplier },
+      uVignetteAmount: { value: 1.2 * qualityMultiplier },
     }),
-    [qualityUniforms]
+    [center01, tintColor, size, qualityMultiplier]
   );
 
+  // Cache quality profile and multipliers (only recalculate when quality changes)
+  const qualityProfileRef = useRef<QualityProfile | null>(null);
+  const qualityMultiplierRef = useRef(1.0);
+  const centerArrayRef = useRef<[number, number]>([0.5, 0.5]);
+  
   useFrame((state, delta) => {
     if (!materialRef.current) return;
+    
+    // Pause when tab is hidden
+    if (!isPageVisible) return;
+    
+    // Disable rupture effect if reduced motion is active
+    if (reducedMotion) {
+      materialRef.current.uniforms.uProgress.value = 0;
+      return;
+    }
+    
     timeRef.current += delta;
     
-    const qualityProfile = getQualityProfile();
-    const qualityUniforms = applyQualityToRuptureUniforms(qualityProfile, {
-      uProgress: progress,
-      uTime: timeRef.current,
-      uCenter: [center01.x, center01.y] as [number, number],
-      uTint: tintColor,
-      uAspect: size.width / size.height,
-    });
+    // Only recalculate quality if it changed
+    const currentQuality = getQualityProfile();
+    if (qualityProfileRef.current !== currentQuality) {
+      qualityProfileRef.current = currentQuality;
+      qualityMultiplierRef.current = currentQuality === "safe" ? 0.3 : 1.0;
+    }
     
-    materialRef.current.uniforms.uProgress.value = qualityUniforms.uProgress;
-    materialRef.current.uniforms.uTime.value = qualityUniforms.uTime;
-    materialRef.current.uniforms.uAspect.value = qualityUniforms.uAspect;
-    materialRef.current.uniforms.uGrainAmount.value = qualityUniforms.uGrainAmount;
-    materialRef.current.uniforms.uChromaAmount.value = qualityUniforms.uChromaAmount;
-    materialRef.current.uniforms.uVignetteAmount.value = qualityUniforms.uVignetteAmount;
+    // Reuse center array (no allocation)
+    centerArrayRef.current[0] = center01.x;
+    centerArrayRef.current[1] = center01.y;
+    
+    // Update uniforms directly (no object creation)
+    materialRef.current.uniforms.uProgress.value = progress;
+    materialRef.current.uniforms.uTime.value = timeRef.current;
+    materialRef.current.uniforms.uCenter.value = centerArrayRef.current;
+    materialRef.current.uniforms.uAspect.value = size.width / size.height;
+    materialRef.current.uniforms.uGrainAmount.value = 0.08 * qualityMultiplierRef.current;
+    materialRef.current.uniforms.uChromaAmount.value = 0.02 * qualityMultiplierRef.current;
+    materialRef.current.uniforms.uVignetteAmount.value = 1.2 * qualityMultiplierRef.current;
   });
 
-  if (!active || progress <= 0) return null;
+  // Don't render if inactive, no progress, or reduced motion
+  if (!active || progress <= 0 || reducedMotion) return null;
 
   // Position plane close to camera to cover viewport
   // Using viewport to calculate proper size

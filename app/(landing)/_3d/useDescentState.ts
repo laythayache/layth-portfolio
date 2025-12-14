@@ -34,11 +34,13 @@ export function useDescentState() {
   const holdStartTimeRef = useRef<number | null>(null);
 
   // Auto-advance from commit -> dive -> hold
+  // Guards: Only transition if still in correct phase (prevents race conditions)
   useEffect(() => {
     if (state.phase === "commit" && commitStartTimeRef.current !== null) {
       const timer = setTimeout(() => {
         setState((prev) => {
-          if (prev.phase === "commit") {
+          // Guard: Only transition if still in commit phase (prevents stale transitions)
+          if (prev.phase === "commit" && commitStartTimeRef.current !== null) {
             diveStartTimeRef.current = Date.now();
             return { ...prev, phase: "dive" };
           }
@@ -53,7 +55,8 @@ export function useDescentState() {
     if (state.phase === "dive" && diveStartTimeRef.current !== null) {
       const timer = setTimeout(() => {
         setState((prev) => {
-          if (prev.phase === "dive") {
+          // Guard: Only transition if still in dive phase (prevents stale transitions)
+          if (prev.phase === "dive" && diveStartTimeRef.current !== null) {
             holdStartTimeRef.current = Date.now();
             return { ...prev, phase: "hold" };
           }

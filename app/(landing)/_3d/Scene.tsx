@@ -1,8 +1,8 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useState, useRef } from "react";
-import { useThree, useFrame } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "three";
 import { Environment } from "@react-three/drei";
 import { PILLARS } from "./pillars";
@@ -11,7 +11,9 @@ import CameraRig from "./CameraRig";
 import RuptureOverlay from "./RuptureOverlay";
 
 import { DescentPhase } from "./useDescentState";
-import { getQualityProfile, getCanvasDpr } from "./quality";
+import { getQualityProfile, getCanvasDpr, updateDRS } from "./quality";
+import PerformanceMonitor from "./PerformanceMonitor";
+import { usePageVisibility } from "./usePageVisibility";
 
 interface SceneContentProps {
   phase: DescentPhase;
@@ -25,12 +27,15 @@ interface SceneContentProps {
   getHoldProgress: () => number;
 }
 
-function FailureGravitySystem({ onGravityActive }: { onGravityActive: (active: boolean) => void }) {
+function FailureGravitySystem({ onGravityActive, isPageVisible }: { onGravityActive: (active: boolean) => void; isPageVisible: boolean }) {
   const timeRef = useRef(0);
   const lastTriggerRef = useRef(0);
   const durationRef = useRef(0);
 
   useFrame((state, delta) => {
+    // Pause when tab is hidden
+    if (!isPageVisible) return;
+    
     timeRef.current += delta;
     lastTriggerRef.current += delta;
     durationRef.current -= delta;
@@ -53,6 +58,7 @@ function FailureGravitySystem({ onGravityActive }: { onGravityActive: (active: b
 function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter, onPillarHover, onPillarClick, onPillarTouch, getDiveProgress, getHoldProgress }: SceneContentProps) {
   const { camera, gl } = useThree();
   const [failureGravityActive, setFailureGravityActive] = useState(false);
+  const isPageVisible = usePageVisibility();
 
   const selectedPillar = selectedPillarId ? PILLARS.find((p) => p.id === selectedPillarId) : null;
 
@@ -86,7 +92,7 @@ function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter,
       <fog attach="fog" args={["#000000", 10, 20]} />
 
       {/* Failure gravity system */}
-      <FailureGravitySystem onGravityActive={setFailureGravityActive} />
+      <FailureGravitySystem onGravityActive={setFailureGravityActive} isPageVisible={isPageVisible} />
 
       {/* Camera rig */}
       <CameraRig
@@ -97,12 +103,16 @@ function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter,
         pillars={PILLARS.map((p) => ({ id: p.id, position: p.position }))}
         getDiveProgress={getDiveProgress}
         getHoldProgress={getHoldProgress}
+        isPageVisible={isPageVisible}
+        reducedMotion={getQualityProfile() === "safe"}
       />
 
       {/* Render all pillar orbs */}
       {PILLARS.map((pillar) => {
         const isDisabled = (phase === "commit" || phase === "dive" || phase === "hold") && pillar.id !== selectedPillarId;
         const isDominant = pillar.id === selectedPillarId && (phase === "commit" || phase === "dive" || phase === "hold");
+        const qualityProfile = getQualityProfile();
+        const reducedMotion = qualityProfile === "safe";
 
         return (
           <PillarOrb
@@ -115,6 +125,8 @@ function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter,
             disabled={isDisabled}
             dominant={isDominant}
             phase={phase}
+            isPageVisible={isPageVisible}
+            reducedMotion={reducedMotion}
             onPointerOver={() => !isDisabled && onPillarHover(pillar.id)}
             onPointerOut={() => !isDisabled && onPillarHover(null)}
             onClick={(event: any) => {
@@ -150,6 +162,8 @@ function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter,
           })()}
           centerNdc={ruptureCenter}
           tint={selectedPillar.primaryColor}
+          isPageVisible={isPageVisible}
+          reducedMotion={getQualityProfile() === "safe"}
         />
       )}
     </>
@@ -170,26 +184,61 @@ interface SceneProps {
 
 export default function Scene({ phase, hoveredPillarId, selectedPillarId, ruptureCenter, onPillarHover, onPillarClick, onPillarTouch, getDiveProgress, getHoldProgress }: SceneProps) {
   const qualityProfile = getQualityProfile();
-  const canvasDpr = getCanvasDpr(qualityProfile);
+  const baseDpr = getCanvasDpr(qualityProfile);
+  const [adaptiveDpr, setAdaptiveDpr] = useState(baseDpr);
+
+  // DRS update (throttled to every 1 second, reads from PerformanceMonitor via global)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
+    // Initialize global frame time history
+    if (!(window as any).__rr_frameTimeHistory) {
+      (window as any).__rr_frameTimeHistory = [];
+    }
+    
+    const interval = setInterval(() => {
+      const history = (window as any).__rr_frameTimeHistory;
+      if (history && history.length > 0) {
+        const avgFrameTime = history.reduce((a: number, b: number) => a + b, 0) / history.length;
+        const newDpr = updateDRS(avgFrameTime);
+        if (Math.abs(newDpr - adaptiveDpr) > 0.01) {
+          setAdaptiveDpr(newDpr);
+        }
+        // Clear history after processing
+        history.length = 0;
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      // Cleanup: Clear global frame time history on unmount
+      if ((window as any).__rr_frameTimeHistory) {
+        (window as any).__rr_frameTimeHistory = [];
+      }
+    };
+  }, [adaptiveDpr]);
 
   return (
-    <Canvas
-      camera={{ position: [0, 0, 8], fov: 40 }}
-      gl={{ antialias: qualityProfile === "full", alpha: false }}
-      dpr={canvasDpr}
-      style={{ background: "#000000" }}
-    >
-      <SceneContent
-        phase={phase}
-        hoveredPillarId={hoveredPillarId}
-        selectedPillarId={selectedPillarId}
-        ruptureCenter={ruptureCenter}
-        onPillarHover={onPillarHover}
-        onPillarClick={onPillarClick}
-        onPillarTouch={onPillarTouch}
-        getDiveProgress={getDiveProgress}
-        getHoldProgress={getHoldProgress}
-      />
-    </Canvas>
+    <>
+      <Canvas
+        camera={{ position: [0, 0, 8], fov: 40 }}
+        gl={{ antialias: qualityProfile === "full", alpha: false }}
+        dpr={adaptiveDpr}
+        style={{ background: "#000000" }}
+      >
+        <SceneContent
+          phase={phase}
+          hoveredPillarId={hoveredPillarId}
+          selectedPillarId={selectedPillarId}
+          ruptureCenter={ruptureCenter}
+          onPillarHover={onPillarHover}
+          onPillarClick={onPillarClick}
+          onPillarTouch={onPillarTouch}
+          getDiveProgress={getDiveProgress}
+          getHoldProgress={getHoldProgress}
+        />
+      </Canvas>
+      <PerformanceMonitor />
+    </>
   );
 }

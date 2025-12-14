@@ -15,18 +15,23 @@ interface PillarOrbProps {
   disabled?: boolean;
   dominant?: boolean;
   phase?: string;
+  isPageVisible?: boolean;
+  reducedMotion?: boolean;
   onPointerOver?: () => void;
   onPointerOut?: () => void;
   onClick?: (event: any) => void;
 }
 
 // Base premium orb (all orbs start identical)
-function BasePremiumOrb({ pillar, opacity, scale }: { pillar: PillarDefinition; opacity: number; scale: number }) {
+function BasePremiumOrb({ pillar, opacity, scale, isPageVisible = true }: { pillar: PillarDefinition; opacity: number; scale: number; isPageVisible?: boolean }) {
   const baseMaterialRef = useRef<THREE.MeshPhysicalMaterial>(null);
   const rimMeshRef = useRef<Mesh>(null);
   const baseColorRef = useRef(new Color(pillar.primaryColor));
 
   useFrame(() => {
+    // Pause when tab is hidden
+    if (!isPageVisible) return;
+    
     if (baseMaterialRef.current) {
       baseMaterialRef.current.opacity = opacity;
     }
@@ -75,7 +80,7 @@ function BasePremiumOrb({ pillar, opacity, scale }: { pillar: PillarDefinition; 
   );
 }
 
-function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number }) {
+function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale, isPageVisible = true, reducedMotion = false }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number; isPageVisible?: boolean; reducedMotion?: boolean }) {
   const meshRef = useRef<Mesh>(null);
   const materialRef = useRef<THREE.MeshPhysicalMaterial>(null);
   const rimMeshRef = useRef<Mesh>(null);
@@ -83,6 +88,13 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
   const pulseTimeRef = useRef(0);
   const hoverDelayRef = useRef(0);
   const baseColorRef = useRef(new Color(pillar.primaryColor));
+  
+  // Reusable Vector3 and Color objects (eliminate allocations)
+  const failurePosRef = useRef(new Vector3(0, 0, -3));
+  const currentPosRef = useRef(new Vector3());
+  const desaturatedColorRef = useRef(new Color());
+  const grayColor1Ref = useRef(new Color(0x333333));
+  const grayColor2Ref = useRef(new Color(0x666666));
 
   useEffect(() => {
     if (isHovered) {
@@ -93,9 +105,15 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
   useFrame((state, delta) => {
     if (!meshRef.current || !materialRef.current) return;
     
+    // Pause when tab is hidden
+    if (!isPageVisible) return;
+    
+    // Reduce motion when reduced motion is active
+    const effectiveDelta = reducedMotion ? delta * 0.3 : delta;
+    
     // Hover delay
     if (isHovered) {
-      hoverDelayRef.current += delta;
+      hoverDelayRef.current += effectiveDelta;
     } else {
       hoverDelayRef.current = 0;
     }
@@ -106,34 +124,29 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
     const motionMultiplier = disabled ? 0.3 : (anyHovered && !isHovered ? 0.5 : 1.0);
     const driftMultiplier = failureGravityActive && pillar.id !== "failure" ? 0.7 : 1.0;
 
-    timeRef.current += delta * pillar.personality.driftSpeed * motionMultiplier * driftMultiplier;
+    timeRef.current += effectiveDelta * pillar.personality.driftSpeed * motionMultiplier * driftMultiplier;
 
     // Drift motion (reduced amplitude)
     const driftX = Math.sin(timeRef.current * 0.7) * pillar.personality.driftAmp * 0.08;
     const driftY = Math.cos(timeRef.current * 0.5) * pillar.personality.driftAmp * 0.08;
     const driftZ = Math.sin(timeRef.current * 0.3) * pillar.personality.driftAmp * 0.08;
 
-    // Failure gravity bias
+    // Failure gravity bias (reuse Vector3 objects)
     if (failureGravityActive && pillar.id !== "failure") {
-      const failurePos = new Vector3(0, 0, -3);
-      const currentPos = new Vector3(driftX, driftY, driftZ);
-      const bias = currentPos.lerp(failurePos, 0.1);
-      meshRef.current.position.x = bias.x;
-      meshRef.current.position.y = bias.y;
-      meshRef.current.position.z = bias.z;
+      currentPosRef.current.set(driftX, driftY, driftZ);
+      currentPosRef.current.lerp(failurePosRef.current, 0.1);
+      meshRef.current.position.copy(currentPosRef.current);
     } else {
-      meshRef.current.position.x = driftX;
-      meshRef.current.position.y = driftY;
-      meshRef.current.position.z = driftZ;
+      meshRef.current.position.set(driftX, driftY, driftZ);
     }
 
     // Rotation (slower when other hovered)
-    meshRef.current.rotation.x += delta * pillar.personality.rotationSpeed * 0.3 * motionMultiplier;
-    meshRef.current.rotation.y += delta * pillar.personality.rotationSpeed * 0.5 * motionMultiplier;
+    meshRef.current.rotation.x += effectiveDelta * pillar.personality.rotationSpeed * 0.3 * motionMultiplier;
+    meshRef.current.rotation.y += effectiveDelta * pillar.personality.rotationSpeed * 0.5 * motionMultiplier;
 
     // Hover effects: contrast/emissive intensity, slow pulse (no scale)
     if (isHovered && canReact) {
-      pulseTimeRef.current += delta * 0.8; // Slow pulse
+      pulseTimeRef.current += effectiveDelta * 0.8; // Slow pulse
       const pulse = 1.0 + Math.sin(pulseTimeRef.current) * 0.15;
       materialRef.current.emissiveIntensity = 0.25 * pillar.personality.hoverGlow * pulse;
       materialRef.current.roughness = 0.2; // More contrast
@@ -143,21 +156,21 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
       materialRef.current.roughness = 0.25;
     }
 
-    // Desaturate when other orb is hovered or when disabled
+    // Desaturate when other orb is hovered or when disabled (reuse Color object)
     if (disabled) {
-      const desaturated = baseColorRef.current.clone().lerp(new Color(0x333333), 0.6);
-      materialRef.current.color = desaturated;
+      desaturatedColorRef.current.copy(baseColorRef.current).lerp(grayColor1Ref.current, 0.6);
+      materialRef.current.color = desaturatedColorRef.current;
       materialRef.current.emissiveIntensity = 0.05; // Much reduced emissive
     } else if (anyHovered && !isHovered) {
-      const desaturated = baseColorRef.current.clone().lerp(new Color(0x666666), 0.4);
-      materialRef.current.color = desaturated;
+      desaturatedColorRef.current.copy(baseColorRef.current).lerp(grayColor2Ref.current, 0.4);
+      materialRef.current.color = desaturatedColorRef.current;
     } else {
       materialRef.current.color = baseColorRef.current;
     }
 
     // Dominant orb: keep pulse, increase contrast slightly
     if (dominant && !isHovered) {
-      pulseTimeRef.current += delta * 0.6; // Slower pulse
+      pulseTimeRef.current += effectiveDelta * 0.6; // Slower pulse
       const pulse = 1.0 + Math.sin(pulseTimeRef.current) * 0.1;
       materialRef.current.emissiveIntensity = 0.15 * pulse;
       materialRef.current.roughness = 0.25; // Slightly more contrast
@@ -218,13 +231,20 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
   );
 }
 
-function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number }) {
+function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale, isPageVisible = true, reducedMotion = false }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number; isPageVisible?: boolean; reducedMotion?: boolean }) {
   const groupRef = useRef<Group>(null);
   const timeRef = useRef(0);
   const pulseTimeRef = useRef(0);
   const hoverDelayRef = useRef(0);
   const shardCount = 12;
   const baseColorRef = useRef(new Color(pillar.primaryColor));
+  
+  // Reusable Vector3 and Color objects
+  const failurePosRef = useRef(new Vector3(0, 0, -3));
+  const currentPosRef = useRef(new Vector3());
+  const desaturatedColorRef = useRef(new Color());
+  const grayColor1Ref = useRef(new Color(0x333333));
+  const grayColor2Ref = useRef(new Color(0x666666));
 
   useEffect(() => {
     if (isHovered) {
@@ -235,8 +255,14 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
   useFrame((state, delta) => {
     if (!groupRef.current) return;
     
+    // Pause when tab is hidden
+    if (!isPageVisible) return;
+    
+    // Reduce motion when reduced motion is active
+    const effectiveDelta = reducedMotion ? delta * 0.3 : delta;
+    
     if (isHovered) {
-      hoverDelayRef.current += delta;
+      hoverDelayRef.current += effectiveDelta;
     } else {
       hoverDelayRef.current = 0;
     }
@@ -245,7 +271,7 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
 
     const motionMultiplier = disabled ? 0.3 : (anyHovered && !isHovered ? 0.5 : 1.0);
     const driftMultiplier = failureGravityActive && pillar.id !== "failure" ? 0.7 : 1.0;
-    timeRef.current += delta * pillar.personality.driftSpeed * motionMultiplier * driftMultiplier;
+    timeRef.current += effectiveDelta * pillar.personality.driftSpeed * motionMultiplier * driftMultiplier;
 
     const driftX = Math.sin(timeRef.current * 0.7) * pillar.personality.driftAmp * 0.08;
     const driftY = Math.cos(timeRef.current * 0.5) * pillar.personality.driftAmp * 0.08;
@@ -264,11 +290,11 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
       groupRef.current.position.z = driftZ;
     }
 
-    groupRef.current.rotation.x += delta * pillar.personality.rotationSpeed * 0.2 * motionMultiplier;
-    groupRef.current.rotation.y += delta * pillar.personality.rotationSpeed * 0.4 * motionMultiplier;
+    groupRef.current.rotation.x += effectiveDelta * pillar.personality.rotationSpeed * 0.2 * motionMultiplier;
+    groupRef.current.rotation.y += effectiveDelta * pillar.personality.rotationSpeed * 0.4 * motionMultiplier;
 
     if (isHovered && canReact) {
-      pulseTimeRef.current += delta * 0.8;
+      pulseTimeRef.current += effectiveDelta * 0.8;
     } else {
       pulseTimeRef.current = 0;
     }
@@ -292,10 +318,11 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
         const y = Math.sin(angle) * Math.sin(elevation) * radius;
         const z = Math.cos(elevation) * radius;
 
+        // Reuse Color object (no allocations)
         const color = disabled
-          ? baseColorRef.current.clone().lerp(new Color(0x333333), 0.6)
+          ? desaturatedColorRef.current.copy(baseColorRef.current).lerp(grayColor1Ref.current, 0.6)
           : (anyHovered && !isHovered 
-            ? baseColorRef.current.clone().lerp(new Color(0x666666), 0.4)
+            ? desaturatedColorRef.current.copy(baseColorRef.current).lerp(grayColor2Ref.current, 0.4)
             : baseColorRef.current);
 
         return (
@@ -322,7 +349,7 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
   );
 }
 
-function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number }) {
+function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale, isPageVisible = true, reducedMotion = false }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number; isPageVisible?: boolean; reducedMotion?: boolean }) {
   const groupRef = useRef<Group>(null);
   const coreRef = useRef<Mesh>(null);
   const satellitesRef = useRef<Group>(null);
@@ -332,6 +359,13 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
   const baseColorRef = useRef(new Color(pillar.primaryColor));
   const pulseTimeRef = useRef(0);
   const hoverDelayRef = useRef(0);
+  
+  // Reusable Vector3 and Color objects
+  const failurePosRef = useRef(new Vector3(0, 0, -3));
+  const currentPosRef = useRef(new Vector3());
+  const desaturatedColorRef = useRef(new Color());
+  const grayColor1Ref = useRef(new Color(0x333333));
+  const grayColor2Ref = useRef(new Color(0x666666));
 
   useEffect(() => {
     if (isHovered) {
@@ -342,8 +376,14 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
   useFrame((state, delta) => {
     if (!groupRef.current || !coreRef.current || !satellitesRef.current) return;
     
+    // Pause when tab is hidden
+    if (!isPageVisible) return;
+    
+    // Reduce motion when reduced motion is active
+    const effectiveDelta = reducedMotion ? delta * 0.3 : delta;
+    
     if (isHovered) {
-      hoverDelayRef.current += delta;
+      hoverDelayRef.current += effectiveDelta;
     } else {
       hoverDelayRef.current = 0;
     }
@@ -352,33 +392,28 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
 
     const motionMultiplier = disabled ? 0.3 : (anyHovered && !isHovered ? 0.5 : 1.0);
     const driftMultiplier = failureGravityActive && pillar.id !== "failure" ? 0.7 : 1.0;
-    timeRef.current += delta * pillar.personality.driftSpeed * motionMultiplier * driftMultiplier;
+    timeRef.current += effectiveDelta * pillar.personality.driftSpeed * motionMultiplier * driftMultiplier;
 
     const driftX = Math.sin(timeRef.current * 0.7) * pillar.personality.driftAmp * 0.08;
     const driftY = Math.cos(timeRef.current * 0.5) * pillar.personality.driftAmp * 0.08;
     const driftZ = Math.sin(timeRef.current * 0.3) * pillar.personality.driftAmp * 0.08;
 
     if (failureGravityActive && pillar.id !== "failure") {
-      const failurePos = new Vector3(0, 0, -3);
-      const currentPos = new Vector3(driftX, driftY, driftZ);
-      const bias = currentPos.lerp(failurePos, 0.1);
-      groupRef.current.position.x = bias.x;
-      groupRef.current.position.y = bias.y;
-      groupRef.current.position.z = bias.z;
+      currentPosRef.current.set(driftX, driftY, driftZ);
+      currentPosRef.current.lerp(failurePosRef.current, 0.1);
+      groupRef.current.position.copy(currentPosRef.current);
     } else {
-      groupRef.current.position.x = driftX;
-      groupRef.current.position.y = driftY;
-      groupRef.current.position.z = driftZ;
+      groupRef.current.position.set(driftX, driftY, driftZ);
     }
 
-    groupRef.current.rotation.y += delta * pillar.personality.rotationSpeed * 0.3 * motionMultiplier;
-    coreRef.current.rotation.x += delta * pillar.personality.rotationSpeed * 0.2 * motionMultiplier;
-    coreRef.current.rotation.y += delta * pillar.personality.rotationSpeed * 0.4 * motionMultiplier;
+    groupRef.current.rotation.y += effectiveDelta * pillar.personality.rotationSpeed * 0.3 * motionMultiplier;
+    coreRef.current.rotation.x += effectiveDelta * pillar.personality.rotationSpeed * 0.2 * motionMultiplier;
+    coreRef.current.rotation.y += effectiveDelta * pillar.personality.rotationSpeed * 0.4 * motionMultiplier;
     
-    satellitesRef.current.rotation.y += delta * pillar.personality.rotationSpeed * 0.5 * motionMultiplier;
+    satellitesRef.current.rotation.y += effectiveDelta * pillar.personality.rotationSpeed * 0.5 * motionMultiplier;
 
     if (isHovered && canReact) {
-      pulseTimeRef.current += delta * 0.8;
+      pulseTimeRef.current += effectiveDelta * 0.8;
     } else {
       pulseTimeRef.current = 0;
     }
@@ -399,8 +434,8 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
         <sphereGeometry args={[0.5, 64, 64]} />
         <meshPhysicalMaterial
           color={disabled
-            ? baseColorRef.current.clone().lerp(new Color(0x333333), 0.6)
-            : (anyHovered && !isHovered ? baseColorRef.current.clone().lerp(new Color(0x666666), 0.4) : pillar.primaryColor)}
+            ? desaturatedColorRef.current.copy(baseColorRef.current).lerp(grayColor1Ref.current, 0.6)
+            : (anyHovered && !isHovered ? desaturatedColorRef.current.copy(baseColorRef.current).lerp(grayColor2Ref.current, 0.4) : pillar.primaryColor)}
           emissive={pillar.primaryColor}
           emissiveIntensity={disabled ? 0.05 : (0.15 * glowIntensity)}
           roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.2 : 0.25}
@@ -452,7 +487,7 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
   );
 }
 
-function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number }) {
+function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale, isPageVisible = true, reducedMotion = false }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number; isPageVisible?: boolean; reducedMotion?: boolean }) {
   const groupRef = useRef<Group>(null);
   const coreRef = useRef<Mesh>(null);
   const shellRef = useRef<Mesh>(null);
@@ -469,8 +504,14 @@ function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGrav
   useFrame((state, delta) => {
     if (!groupRef.current || !coreRef.current || !shellRef.current) return;
     
+    // Pause when tab is hidden
+    if (!isPageVisible) return;
+    
+    // Reduce motion when reduced motion is active
+    const effectiveDelta = reducedMotion ? delta * 0.3 : delta;
+    
     if (isHovered) {
-      hoverDelayRef.current += delta;
+      hoverDelayRef.current += effectiveDelta;
     } else {
       hoverDelayRef.current = 0;
     }
@@ -478,7 +519,7 @@ function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGrav
     const canReact = hoverDelayRef.current >= hoverDelay;
 
     const motionMultiplier = disabled ? 0.3 : (anyHovered && !isHovered ? 0.5 : 1.0);
-    timeRef.current += delta * pillar.personality.driftSpeed * motionMultiplier;
+    timeRef.current += effectiveDelta * pillar.personality.driftSpeed * motionMultiplier;
 
     const driftX = Math.sin(timeRef.current * 0.7) * pillar.personality.driftAmp * 0.08;
     const driftY = Math.cos(timeRef.current * 0.5) * pillar.personality.driftAmp * 0.08;
@@ -488,13 +529,13 @@ function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGrav
     groupRef.current.position.y = driftY;
     groupRef.current.position.z = driftZ;
 
-    coreRef.current.rotation.x += delta * pillar.personality.rotationSpeed * 0.2 * motionMultiplier;
-    coreRef.current.rotation.y += delta * pillar.personality.rotationSpeed * 0.3 * motionMultiplier;
-    shellRef.current.rotation.x -= delta * pillar.personality.rotationSpeed * 0.15 * motionMultiplier;
-    shellRef.current.rotation.y -= delta * pillar.personality.rotationSpeed * 0.25 * motionMultiplier;
+    coreRef.current.rotation.x += effectiveDelta * pillar.personality.rotationSpeed * 0.2 * motionMultiplier;
+    coreRef.current.rotation.y += effectiveDelta * pillar.personality.rotationSpeed * 0.3 * motionMultiplier;
+    shellRef.current.rotation.x -= effectiveDelta * pillar.personality.rotationSpeed * 0.15 * motionMultiplier;
+    shellRef.current.rotation.y -= effectiveDelta * pillar.personality.rotationSpeed * 0.25 * motionMultiplier;
 
     if (isHovered && canReact) {
-      pulseTimeRef.current += delta * 0.8;
+      pulseTimeRef.current += effectiveDelta * 0.8;
     } else {
       pulseTimeRef.current = 0;
     }
@@ -555,6 +596,8 @@ export default function PillarOrb({
   disabled = false,
   dominant = false,
   phase,
+  isPageVisible = true,
+  reducedMotion = false,
   onPointerOver,
   onPointerOut,
   onClick,
@@ -562,16 +605,17 @@ export default function PillarOrb({
   const groupRef = useRef<Group>(null);
   
   // Crossfade state: base orb fades out, personality fades in on hover/commit
+  // Use refs only (no React state) to avoid re-renders in animation loop
   const baseOpacityRef = useRef(1);
   const personalityOpacityRef = useRef(0);
   const fractureScaleRef = useRef(1.0);
   const fractureTimeRef = useRef(0);
-  const [baseOpacity, setBaseOpacity] = useState(1);
-  const [personalityOpacity, setPersonalityOpacity] = useState(0);
-  const [fractureScale, setFractureScale] = useState(1.0);
   const shouldReveal = isHovered || dominant;
 
   useFrame((state, delta) => {
+    // Pause when tab is hidden (checked in child orbs, but guard here too)
+    if (typeof document !== "undefined" && document.hidden) return;
+    
     fractureTimeRef.current += delta;
     
     // Crossfade animation
@@ -594,29 +638,18 @@ export default function PillarOrb({
       fractureScaleRef.current = 1.0;
       fractureTimeRef.current = 0;
     }
-    
-    // Update state only when values change significantly (reduce re-renders)
-    if (Math.abs(baseOpacityRef.current - baseOpacity) > 0.01) {
-      setBaseOpacity(baseOpacityRef.current);
-    }
-    if (Math.abs(personalityOpacityRef.current - personalityOpacity) > 0.01) {
-      setPersonalityOpacity(personalityOpacityRef.current);
-    }
-    if (Math.abs(fractureScaleRef.current - fractureScale) > 0.01) {
-      setFractureScale(fractureScaleRef.current);
-    }
   });
 
   const renderOrb = () => {
     switch (pillar.type) {
       case "core":
-        return <CoreOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacity} personalityOpacity={personalityOpacity} fractureScale={fractureScale} />;
+        return <CoreOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacityRef.current} personalityOpacity={personalityOpacityRef.current} fractureScale={fractureScaleRef.current} isPageVisible={isPageVisible} reducedMotion={reducedMotion} />;
       case "shards":
-        return <ShardsOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacity} personalityOpacity={personalityOpacity} fractureScale={fractureScale} />;
+        return <ShardsOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacityRef.current} personalityOpacity={personalityOpacityRef.current} fractureScale={fractureScaleRef.current} isPageVisible={isPageVisible} reducedMotion={reducedMotion} />;
       case "swarm":
-        return <SwarmOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacity} personalityOpacity={personalityOpacity} fractureScale={fractureScale} />;
+        return <SwarmOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacityRef.current} personalityOpacity={personalityOpacityRef.current} fractureScale={fractureScaleRef.current} isPageVisible={isPageVisible} reducedMotion={reducedMotion} />;
       case "singularity":
-        return <SingularityOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacity} personalityOpacity={personalityOpacity} fractureScale={fractureScale} />;
+        return <SingularityOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacityRef.current} personalityOpacity={personalityOpacityRef.current} fractureScale={fractureScaleRef.current} isPageVisible={isPageVisible} reducedMotion={reducedMotion} />;
     }
   };
 
@@ -651,12 +684,12 @@ export default function PillarOrb({
       onClick={disabled ? undefined : handleClick}
     >
       {/* Base premium orb (fades out on hover/commit) */}
-      {baseOpacity > 0 && (
-        <BasePremiumOrb pillar={pillar} opacity={baseOpacity} scale={fractureScale} />
+      {baseOpacityRef.current > 0 && (
+        <BasePremiumOrb pillar={pillar} opacity={baseOpacityRef.current} scale={fractureScaleRef.current} isPageVisible={isPageVisible} />
       )}
       
       {/* Personality orb (fades in on hover/commit) */}
-      {personalityOpacity > 0 && (
+      {personalityOpacityRef.current > 0 && (
         <group>
           {renderOrb()}
         </group>

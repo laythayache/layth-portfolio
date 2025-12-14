@@ -118,3 +118,102 @@ export function resetQualityCache(): void {
   qualityProfileCache = null;
   detectionComplete = false;
 }
+
+/**
+ * Dynamic Resolution Scaling (DRS)
+ * Adapts DPR based on runtime frame time performance.
+ */
+interface DRSState {
+  currentDpr: number;
+  frameTimeHistory: number[];
+  lastAdjustmentTime: number;
+  consecutiveGoodFrames: number;
+  consecutiveBadFrames: number;
+}
+
+let drsState: DRSState | null = null;
+
+const DRS_FRAME_HISTORY_SIZE = 60; // 1 second at 60fps
+const DRS_TARGET_FRAME_TIME = 16.67; // 60fps
+const DRS_BAD_THRESHOLD = 20; // ms (50fps)
+const DRS_GOOD_THRESHOLD = 14; // ms (71fps)
+const DRS_ADJUSTMENT_COOLDOWN = 1000; // ms (wait 1s between adjustments)
+const DRS_CONSECUTIVE_FRAMES_REQUIRED = 30; // frames
+
+/**
+ * Updates DRS state with current frame time and returns adaptive DPR.
+ * Call this from useFrame or similar animation loop.
+ */
+export function updateDRS(frameTime: number): number {
+  if (typeof window === "undefined") {
+    return 1.0;
+  }
+
+  if (!drsState) {
+    const baseProfile = getQualityProfile();
+    const baseDpr = getCanvasDpr(baseProfile);
+    drsState = {
+      currentDpr: baseDpr,
+      frameTimeHistory: [],
+      lastAdjustmentTime: performance.now(),
+      consecutiveGoodFrames: 0,
+      consecutiveBadFrames: 0,
+    };
+  }
+
+  const now = performance.now();
+  const state = drsState;
+
+  // Add frame time to history
+  state.frameTimeHistory.push(frameTime);
+  if (state.frameTimeHistory.length > DRS_FRAME_HISTORY_SIZE) {
+    state.frameTimeHistory.shift();
+  }
+
+  // Calculate average frame time
+  const avgFrameTime =
+    state.frameTimeHistory.reduce((a, b) => a + b, 0) / state.frameTimeHistory.length;
+
+  // Check if we should adjust (only if history is full and cooldown passed)
+  if (
+    state.frameTimeHistory.length === DRS_FRAME_HISTORY_SIZE &&
+    now - state.lastAdjustmentTime > DRS_ADJUSTMENT_COOLDOWN
+  ) {
+    if (avgFrameTime > DRS_BAD_THRESHOLD) {
+      state.consecutiveBadFrames++;
+      state.consecutiveGoodFrames = 0;
+
+      // Lower DPR if consistently bad
+      if (state.consecutiveBadFrames >= DRS_CONSECUTIVE_FRAMES_REQUIRED) {
+        state.currentDpr = Math.max(1.0, state.currentDpr - 0.25);
+        state.lastAdjustmentTime = now;
+        state.consecutiveBadFrames = 0;
+      }
+    } else if (avgFrameTime < DRS_GOOD_THRESHOLD) {
+      state.consecutiveGoodFrames++;
+      state.consecutiveBadFrames = 0;
+
+      // Raise DPR if consistently good (but cap at base profile max)
+      if (state.consecutiveGoodFrames >= DRS_CONSECUTIVE_FRAMES_REQUIRED) {
+        const baseProfile = getQualityProfile();
+        const maxDpr = baseProfile === "safe" ? 1.0 : Math.min(window.devicePixelRatio || 1, 2.0);
+        state.currentDpr = Math.min(maxDpr, state.currentDpr + 0.25);
+        state.lastAdjustmentTime = now;
+        state.consecutiveGoodFrames = 0;
+      }
+    } else {
+      // Reset counters if in acceptable range
+      state.consecutiveGoodFrames = 0;
+      state.consecutiveBadFrames = 0;
+    }
+  }
+
+  return state.currentDpr;
+}
+
+/**
+ * Resets DRS state (for testing only).
+ */
+export function resetDRS(): void {
+  drsState = null;
+}

@@ -164,6 +164,11 @@ export default function ThreeLanding() {
         router.push(`/system/${selectedId}`);
       }
     }
+    
+    // Cleanup: cancel navigation if component unmounts or route changes
+    return () => {
+      hasNavigatedRef.current = false;
+    };
   }, [phase, selectedId, descentState, router, ruptureCenter]);
 
   // Reset navigation flag when phase changes away from dive
@@ -175,7 +180,14 @@ export default function ThreeLanding() {
 
   // Keyboard navigation
   useEffect(() => {
+    const hoverTimersRef = new Set<NodeJS.Timeout>();
+
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Guard: Ignore keyboard input during descent
+      if (phase === "dive" || phase === "hold" || phase === "commit") {
+        return;
+      }
+
       // Esc: return to idle (only if idle or hover)
       if (e.key === "Escape" && (phase === "idle" || phase === "hover")) {
         setHovered(null);
@@ -193,9 +205,14 @@ export default function ThreeLanding() {
         const nextPillar = PILLARS[nextIndex];
         setFocusedId(nextPillar.id);
         // Trigger hover with 250ms delay (match hover discipline)
-        setTimeout(() => {
-          setHovered(nextPillar.id as any);
+        const hoverTimer = setTimeout(() => {
+          hoverTimersRef.delete(hoverTimer);
+          // Guard: Only set hover if still in idle/hover phase
+          if (phase === "idle" || phase === "hover") {
+            setHovered(nextPillar.id as any);
+          }
         }, 250);
+        hoverTimersRef.add(hoverTimer);
         return;
       }
 
@@ -211,7 +228,13 @@ export default function ThreeLanding() {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      // Cleanup: Clear all hover timers and reset focus state
+      hoverTimersRef.forEach((timer) => clearTimeout(timer));
+      hoverTimersRef.clear();
+      focusedIndexRef.current = -1;
+    };
   }, [phase, focusedId, setHovered, commitTo]);
 
   // Screen reader live region
@@ -241,8 +264,17 @@ export default function ThreeLanding() {
 
   // Touch double-tap handler
   const handlePillarTouch = (id: string, center: { x: number; y: number } | null) => {
+    // Guard: Ignore during descent (prevents accidental commits)
     if (phase === "dive" || phase === "hold" || phase === "commit") {
-      return; // Ignore during descent
+      // Reset touch state if user tries to interact during descent
+      lastTouchedIdRef.current = null;
+      lastTouchTsRef.current = 0;
+      return;
+    }
+
+    // Guard: Only allow commit when idle or hover
+    if (phase !== "idle" && phase !== "hover") {
+      return;
     }
 
     const now = Date.now();
@@ -250,7 +282,7 @@ export default function ThreeLanding() {
     const withinWindow = now - lastTouchTsRef.current < TOUCH_COMMIT_WINDOW;
 
     if (isSamePillar && withinWindow) {
-      // Second tap = commit
+      // Second tap = commit (only if same pillar and within window)
       commitTo(id as any, center);
       lastTouchedIdRef.current = null;
       lastTouchTsRef.current = 0;
@@ -262,6 +294,14 @@ export default function ThreeLanding() {
       setFocusedId(id);
     }
   };
+  
+  // Cleanup: Reset touch state on unmount or route change
+  useEffect(() => {
+    return () => {
+      lastTouchedIdRef.current = null;
+      lastTouchTsRef.current = 0;
+    };
+  }, []);
 
   const handlePillarHover = (id: string | null) => {
     // During dive or hold, ignore hover updates

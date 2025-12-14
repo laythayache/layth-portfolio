@@ -14,6 +14,8 @@ interface CameraRigProps {
   pillars: Array<{ id: PillarId; position: [number, number, number] }>;
   getDiveProgress: () => number;
   getHoldProgress: () => number;
+  isPageVisible?: boolean;
+  reducedMotion?: boolean;
 }
 
 export default function CameraRig({
@@ -24,6 +26,8 @@ export default function CameraRig({
   pillars,
   getDiveProgress,
   getHoldProgress,
+  isPageVisible = true,
+  reducedMotion = false,
 }: CameraRigProps) {
   const { camera } = useThree();
   const idleTimeRef = useRef(0);
@@ -31,9 +35,33 @@ export default function CameraRig({
   const lastHoveredId = useRef<PillarId | null>(null);
   const initialCameraPosRef = useRef<Vector3 | null>(null);
   const initialCameraFovRef = useRef<number | null>(null);
+  
+  // Reusable Vector3 objects (eliminate allocations)
+  const targetPositionRef = useRef(new Vector3(0, 0, 8));
+  const targetLookAtRef = useRef(new Vector3(0, 0, 0));
+  const pillarPosRef = useRef(new Vector3());
+  const camToPillarRef = useRef(new Vector3());
+  const directionRef = useRef(new Vector3());
+  const diveTargetPosRef = useRef(new Vector3());
+  const currentLookAtRef = useRef(new Vector3());
+  const smoothLookAtRef = useRef(new Vector3());
+  const centerRef = useRef(new Vector3(0, 0, 8));
+  
+  // Seeded PRNG for shake (replace Math.random)
+  const shakeSeedRef = useRef(12345);
+  const prng = () => {
+    shakeSeedRef.current = (shakeSeedRef.current * 9301 + 49297) % 233280;
+    return shakeSeedRef.current / 233280;
+  };
 
   useFrame((state, delta) => {
     if (!(camera instanceof PerspectiveCamera)) return;
+    
+    // Pause when tab is hidden
+    if (!isPageVisible) return;
+    
+    // Reduce motion when reduced motion is active
+    const motionDelta = reducedMotion ? delta * 0.3 : delta;
 
     // Store initial camera state when dive starts
     if (phase === "dive" && initialCameraPosRef.current === null) {
@@ -44,60 +72,64 @@ export default function CameraRig({
       initialCameraPosRef.current = null;
       initialCameraFovRef.current = null;
     }
+    
+    // Use motionDelta for time-based calculations
+    const effectiveDelta = reducedMotion ? motionDelta : delta;
 
-    let targetPosition = new Vector3(0, 0, 8);
-    let targetLookAt = new Vector3(0, 0, 0);
+    // Reuse Vector3 objects (no allocations)
+    const targetPosition = targetPositionRef.current;
+    const targetLookAt = targetLookAtRef.current;
     let targetFov = 40;
 
     if (phase === "commit" && selectedPillarPosition) {
       // Begin aligning camera target to selected pillar
-      const pillarPos = new Vector3(...selectedPillarPosition);
+      const pillarPos = pillarPosRef.current.set(...selectedPillarPosition);
       const leanAmount = 0.2;
-      targetPosition = new Vector3(
+      targetPosition.set(
         pillarPos.x * leanAmount,
         pillarPos.y * leanAmount,
         8 - pillarPos.z * 0.15
       );
-      targetLookAt = pillarPos.multiplyScalar(0.4);
+      targetLookAt.copy(pillarPos).multiplyScalar(0.4);
       targetFov = 40; // No FOV change yet
     } else if (phase === "dive" && selectedPillarPosition && initialCameraPosRef.current && initialCameraFovRef.current !== null) {
       // DIVE: animate camera position and FOV
       const progress = getDiveProgress();
-      const pillarPos = new Vector3(...selectedPillarPosition);
+      const pillarPos = pillarPosRef.current.set(...selectedPillarPosition);
       
       // Calculate pre-portal position (slightly in front of orb)
-      const camToPillar = pillarPos.clone().sub(initialCameraPosRef.current);
+      const camToPillar = camToPillarRef.current.copy(pillarPos).sub(initialCameraPosRef.current);
       const distance = camToPillar.length();
-      const direction = camToPillar.normalize();
+      const direction = directionRef.current.copy(camToPillar).normalize();
       const prePortalDistance = 2.2; // Stop distance
-      const diveTargetPos = pillarPos.clone().sub(direction.multiplyScalar(prePortalDistance));
+      const diveTargetPos = diveTargetPosRef.current.copy(pillarPos).sub(direction.multiplyScalar(prePortalDistance));
       
       // Accelerating lerp (ease-in-out)
       const easedProgress = progress < 0.5
         ? 2 * progress * progress
         : 1 - Math.pow(-2 * progress + 2, 2) / 2;
       
-      targetPosition = initialCameraPosRef.current.clone().lerp(diveTargetPos, easedProgress);
-      targetLookAt = pillarPos;
+      targetPosition.copy(initialCameraPosRef.current).lerp(diveTargetPos, easedProgress);
+      targetLookAt.copy(pillarPos);
       
       // FOV ramp from 40 -> 70
       targetFov = 40 + (70 - 40) * easedProgress;
       
-      // Micro-shake in last 25% of duration
+      // Micro-shake in last 25% of duration (using seeded PRNG)
       if (progress > 0.75) {
         const shakeAmount = (progress - 0.75) * 0.1; // Very subtle
-        targetPosition.x += (Math.random() - 0.5) * shakeAmount;
-        targetPosition.y += (Math.random() - 0.5) * shakeAmount;
-        targetPosition.z += (Math.random() - 0.5) * shakeAmount;
+        targetPosition.x += (prng() - 0.5) * shakeAmount;
+        targetPosition.y += (prng() - 0.5) * shakeAmount;
+        targetPosition.z += (prng() - 0.5) * shakeAmount;
       }
     } else if (phase === "hold" && selectedPillarPosition) {
       // HOLD: FOV returns to 50, keep lookAt locked
-      const pillarPos = new Vector3(...selectedPillarPosition);
-      const camToPillar = pillarPos.clone().sub(camera.position);
-      const direction = camToPillar.normalize();
+      const pillarPos = pillarPosRef.current.set(...selectedPillarPosition);
+      const camToPillar = camToPillarRef.current.copy(pillarPos).sub(camera.position);
+      const direction = directionRef.current.copy(camToPillar).normalize();
       const prePortalDistance = 2.2;
-      targetPosition = pillarPos.clone().sub(direction.multiplyScalar(prePortalDistance));
-      targetLookAt = pillarPos;
+      targetPosition.copy(pillarPos).sub(direction.multiplyScalar(prePortalDistance));
+      targetLookAt.copy(pillarPos);
       
       // FOV settle to 50
       const holdProgress = getHoldProgress();
@@ -111,28 +143,28 @@ export default function CameraRig({
         hoverDelayRef.current = 0;
         lastHoveredId.current = hoveredPillarId;
       }
-      hoverDelayRef.current += delta;
+      hoverDelayRef.current += effectiveDelta;
       const hoverDelay = 0.25; // 250ms
       const canReact = hoverDelayRef.current >= hoverDelay;
 
       if (canReact) {
         const pillar = pillars.find((p) => p.id === hoveredPillarId);
         if (pillar) {
-          const pillarPos = new Vector3(...pillar.position);
+          const pillarPos = pillarPosRef.current.set(...pillar.position);
           const leanAmount = 0.2;
-          targetPosition = new Vector3(
+          targetPosition.set(
             pillarPos.x * leanAmount,
             pillarPos.y * leanAmount,
             8 - pillarPos.z * 0.15
           );
-          targetLookAt = pillarPos.multiplyScalar(0.4);
+          targetLookAt.copy(pillarPos).multiplyScalar(0.4);
         }
       }
     } else {
-      // Idle drift (reduced by 30%)
-      idleTimeRef.current += delta;
+      // Idle drift (reduced by 30%, further reduced if reducedMotion)
+      idleTimeRef.current += effectiveDelta;
       const driftRadius = 0.35;
-      targetPosition = new Vector3(
+      targetPosition.set(
         Math.sin(idleTimeRef.current * 0.14) * driftRadius,
         Math.cos(idleTimeRef.current * 0.11) * driftRadius,
         8
@@ -141,11 +173,11 @@ export default function CameraRig({
 
     // Auto-recentering: if camera deviates too far, slowly correct (only in idle)
     if (phase === "idle" || phase === "hover") {
-      const centerDistance = camera.position.distanceTo(new Vector3(0, 0, 8));
+      const centerDistance = camera.position.distanceTo(centerRef.current);
       const maxDeviation = 1.5;
       if (centerDistance > maxDeviation && !hoveredPillarId) {
         const correctionFactor = (centerDistance - maxDeviation) / maxDeviation;
-        targetPosition.lerp(new Vector3(0, 0, 8), correctionFactor * 0.02);
+        targetPosition.lerp(centerRef.current, correctionFactor * 0.02);
       }
     }
 
@@ -158,12 +190,11 @@ export default function CameraRig({
     camera.updateProjectionMatrix();
     
     // Look at target with smooth interpolation
-    const currentLookAt = new Vector3();
-    camera.getWorldDirection(currentLookAt);
-    currentLookAt.multiplyScalar(10).add(camera.position);
-    const smoothLookAt = new Vector3().lerpVectors(currentLookAt, targetLookAt, damping);
+    camera.getWorldDirection(currentLookAtRef.current);
+    currentLookAtRef.current.multiplyScalar(10).add(camera.position);
+    smoothLookAtRef.current.lerpVectors(currentLookAtRef.current, targetLookAt, damping);
     
-    camera.lookAt(smoothLookAt);
+    camera.lookAt(smoothLookAtRef.current);
   });
 
   return null;
