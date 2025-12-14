@@ -20,9 +20,65 @@ interface PillarOrbProps {
   onClick?: (event: any) => void;
 }
 
-function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean }) {
+// Base premium orb (all orbs start identical)
+function BasePremiumOrb({ pillar, opacity, scale }: { pillar: PillarDefinition; opacity: number; scale: number }) {
+  const baseMaterialRef = useRef<THREE.MeshPhysicalMaterial>(null);
+  const rimMeshRef = useRef<Mesh>(null);
+  const baseColorRef = useRef(new Color(pillar.primaryColor));
+
+  useFrame(() => {
+    if (baseMaterialRef.current) {
+      baseMaterialRef.current.opacity = opacity;
+    }
+    if (rimMeshRef.current) {
+      rimMeshRef.current.scale.setScalar(scale * 1.04);
+      const rimMaterial = rimMeshRef.current.material as THREE.MeshBasicMaterial;
+      if (rimMaterial) {
+        rimMaterial.opacity = opacity * 0.12;
+      }
+    }
+  });
+
+  return (
+    <group>
+      {/* Base premium orb */}
+      <mesh scale={scale}>
+        <sphereGeometry args={[0.8, 64, 64]} />
+        <meshPhysicalMaterial
+          ref={baseMaterialRef}
+          color={baseColorRef.current}
+          emissive={baseColorRef.current}
+          emissiveIntensity={0.15}
+          roughness={0.25}
+          metalness={0.25}
+          clearcoat={1}
+          clearcoatRoughness={0.08}
+          transmission={0.35}
+          thickness={0.6}
+          ior={1.45}
+          iridescence={0.6}
+          iridescenceIOR={1.3}
+          iridescenceThicknessRange={[100, 600] as any}
+          transparent
+        />
+      </mesh>
+      {/* Screen-space rim glow */}
+      <mesh ref={rimMeshRef} scale={scale * 1.04}>
+        <sphereGeometry args={[0.8, 64, 64]} />
+        <meshBasicMaterial
+          color={baseColorRef.current}
+          transparent
+          opacity={opacity * 0.12}
+        />
+      </mesh>
+    </group>
+  );
+}
+
+function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number }) {
   const meshRef = useRef<Mesh>(null);
   const materialRef = useRef<THREE.MeshPhysicalMaterial>(null);
+  const rimMeshRef = useRef<Mesh>(null);
   const timeRef = useRef(0);
   const pulseTimeRef = useRef(0);
   const hoverDelayRef = useRef(0);
@@ -79,12 +135,12 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
     if (isHovered && canReact) {
       pulseTimeRef.current += delta * 0.8; // Slow pulse
       const pulse = 1.0 + Math.sin(pulseTimeRef.current) * 0.15;
-      materialRef.current.emissiveIntensity = 0.2 * pillar.personality.hoverGlow * pulse;
+      materialRef.current.emissiveIntensity = 0.25 * pillar.personality.hoverGlow * pulse;
       materialRef.current.roughness = 0.2; // More contrast
     } else {
       pulseTimeRef.current = 0;
-      materialRef.current.emissiveIntensity = 0.2;
-      materialRef.current.roughness = 0.3;
+      materialRef.current.emissiveIntensity = 0.15;
+      materialRef.current.roughness = 0.25;
     }
 
     // Desaturate when other orb is hovered or when disabled
@@ -103,35 +159,66 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
     if (dominant && !isHovered) {
       pulseTimeRef.current += delta * 0.6; // Slower pulse
       const pulse = 1.0 + Math.sin(pulseTimeRef.current) * 0.1;
-      materialRef.current.emissiveIntensity = 0.2 * pulse;
+      materialRef.current.emissiveIntensity = 0.15 * pulse;
       materialRef.current.roughness = 0.25; // Slightly more contrast
     }
 
     // Failure gravity: scale compression
     if (failureGravityActive && pillar.id === "failure") {
       const compression = 0.95;
-      meshRef.current.scale.setScalar(compression);
+      meshRef.current.scale.setScalar(compression * fractureScale);
     } else {
-      meshRef.current.scale.setScalar(1.0);
+      meshRef.current.scale.setScalar(fractureScale);
+    }
+
+    // Update rim glow
+    if (rimMeshRef.current) {
+      rimMeshRef.current.scale.setScalar(fractureScale * 1.04);
+      const rimMaterial = rimMeshRef.current.material as THREE.MeshBasicMaterial;
+      if (rimMaterial) {
+        rimMaterial.opacity = personalityOpacity * 0.12;
+      }
     }
   });
 
   return (
-    <mesh ref={meshRef}>
-      <sphereGeometry args={[0.8, 32, 32]} />
-      <meshPhysicalMaterial
-        ref={materialRef}
-        color={pillar.primaryColor}
-        emissive={pillar.primaryColor}
-        emissiveIntensity={0.2}
-        metalness={0.6}
-        roughness={0.3}
-      />
-    </mesh>
+    <group>
+      {/* Personality orb */}
+      <mesh ref={meshRef}>
+        <sphereGeometry args={[0.8, 64, 64]} />
+        <meshPhysicalMaterial
+          ref={materialRef}
+          color={baseColorRef.current}
+          emissive={baseColorRef.current}
+          emissiveIntensity={isHovered && hoverDelayRef.current >= 0.25 ? 0.25 * pillar.personality.hoverGlow : 0.15}
+          roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.2 : 0.25}
+          metalness={0.25}
+          clearcoat={1}
+          clearcoatRoughness={0.08}
+          transmission={0.35}
+          thickness={0.6}
+          ior={1.45}
+          iridescence={0.6}
+          iridescenceIOR={1.3}
+          iridescenceThicknessRange={[100, 600] as any}
+          transparent
+          opacity={personalityOpacity}
+        />
+      </mesh>
+      {/* Screen-space rim glow */}
+      <mesh ref={rimMeshRef} scale={fractureScale * 1.04}>
+        <sphereGeometry args={[0.8, 64, 64]} />
+        <meshBasicMaterial
+          color={baseColorRef.current}
+          transparent
+          opacity={personalityOpacity * 0.12}
+        />
+      </mesh>
+    </group>
   );
 }
 
-function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean }) {
+function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number }) {
   const groupRef = useRef<Group>(null);
   const timeRef = useRef(0);
   const pulseTimeRef = useRef(0);
@@ -191,6 +278,11 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
   const radius = 0.8; // Fixed, no scale change
   const glowIntensity = isHovered && hoverDelayRef.current >= 0.25 ? pillar.personality.hoverGlow * (1.0 + Math.sin(pulseTimeRef.current) * 0.15) : 1.0;
 
+  // Apply fracture scale to group
+  if (groupRef.current) {
+    groupRef.current.scale.setScalar(fractureScale);
+  }
+
   return (
     <group ref={groupRef}>
       {Array.from({ length: shardCount }).map((_, i) => {
@@ -215,6 +307,13 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
               emissiveIntensity={disabled ? 0.05 : (0.3 * glowIntensity)}
               metalness={0.4}
               roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.3 : (dominant ? 0.4 : 0.5)}
+              clearcoat={1}
+              clearcoatRoughness={0.1}
+              transmission={0.2}
+              thickness={0.4}
+              ior={1.45}
+              transparent
+              opacity={personalityOpacity}
             />
           </mesh>
         );
@@ -223,7 +322,7 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
   );
 }
 
-function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean }) {
+function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number }) {
   const groupRef = useRef<Group>(null);
   const coreRef = useRef<Mesh>(null);
   const satellitesRef = useRef<Group>(null);
@@ -288,19 +387,34 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
   const glowIntensity = isHovered && hoverDelayRef.current >= 0.25 ? pillar.personality.hoverGlow * (1.0 + Math.sin(pulseTimeRef.current) * 0.15) : 1.0;
   const orbitRadius = 0.9; // Fixed, no scale change
 
+  // Apply fracture scale to group
+  if (groupRef.current) {
+    groupRef.current.scale.setScalar(fractureScale);
+  }
+
   return (
     <group ref={groupRef}>
       {/* Core */}
       <mesh ref={coreRef}>
-        <sphereGeometry args={[0.5, 32, 32]} />
+        <sphereGeometry args={[0.5, 64, 64]} />
         <meshPhysicalMaterial
           color={disabled
             ? baseColorRef.current.clone().lerp(new Color(0x333333), 0.6)
             : (anyHovered && !isHovered ? baseColorRef.current.clone().lerp(new Color(0x666666), 0.4) : pillar.primaryColor)}
           emissive={pillar.primaryColor}
           emissiveIntensity={disabled ? 0.05 : (0.15 * glowIntensity)}
-          metalness={0.5}
-          roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.3 : (dominant ? 0.35 : 0.4)}
+          roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.2 : 0.25}
+          metalness={0.25}
+          clearcoat={1}
+          clearcoatRoughness={0.08}
+          transmission={0.35}
+          thickness={0.6}
+          ior={1.45}
+          iridescence={0.6}
+          iridescenceIOR={1.3}
+          iridescenceThicknessRange={[100, 600] as any}
+          transparent
+          opacity={personalityOpacity}
         />
       </mesh>
 
@@ -320,8 +434,15 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
                 color={pillar.accentColor}
                 emissive={pillar.accentColor}
                 emissiveIntensity={0.2 * glowIntensity}
-                metalness={0.3}
-                roughness={0.6}
+                metalness={0.25}
+                roughness={0.3}
+                clearcoat={1}
+                clearcoatRoughness={0.1}
+                transmission={0.2}
+                thickness={0.4}
+                ior={1.45}
+                transparent
+                opacity={personalityOpacity}
               />
             </mesh>
           );
@@ -331,7 +452,7 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
   );
 }
 
-function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean }) {
+function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActive, disabled, dominant, baseOpacity, personalityOpacity, fractureScale }: { pillar: PillarDefinition; isHovered: boolean; isSelected: boolean; anyHovered: boolean; failureGravityActive: boolean; disabled?: boolean; dominant?: boolean; baseOpacity: number; personalityOpacity: number; fractureScale: number }) {
   const groupRef = useRef<Group>(null);
   const coreRef = useRef<Mesh>(null);
   const shellRef = useRef<Mesh>(null);
@@ -380,37 +501,45 @@ function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGrav
 
     // Failure gravity: scale compression
     const compression = failureGravityActive ? 0.95 : 1.0;
-    groupRef.current.scale.setScalar(compression);
+    groupRef.current.scale.setScalar(compression * fractureScale);
   });
 
   const glowIntensity = isHovered && hoverDelayRef.current >= 0.25 ? pillar.personality.hoverGlow * (1.0 + Math.sin(pulseTimeRef.current) * 0.15) : 1.0;
-  const scale = 1.0; // Fixed, no scale change
 
   return (
     <group ref={groupRef}>
       {/* Dark core */}
-      <mesh ref={coreRef} scale={scale}>
-        <sphereGeometry args={[0.7, 32, 32]} />
+      <mesh ref={coreRef} scale={fractureScale}>
+        <sphereGeometry args={[0.7, 64, 64]} />
         <meshPhysicalMaterial
           color="#1a0000"
           emissive={pillar.primaryColor}
           emissiveIntensity={disabled ? 0.02 : (0.1 * glowIntensity)}
           metalness={0.8}
           roughness={dominant ? 0.15 : 0.2}
+          clearcoat={1}
+          clearcoatRoughness={0.05}
+          transparent
+          opacity={personalityOpacity}
         />
       </mesh>
 
       {/* Transparent shell for lensing effect */}
-      <mesh ref={shellRef} scale={scale * 1.3}>
-        <sphereGeometry args={[0.7, 32, 32]} />
+      <mesh ref={shellRef} scale={fractureScale * 1.3}>
+        <sphereGeometry args={[0.7, 64, 64]} />
         <meshPhysicalMaterial
           color={pillar.accentColor}
           transparent
-          opacity={disabled ? 0.05 : 0.15}
+          opacity={(disabled ? 0.05 : 0.15) * personalityOpacity}
           emissive={pillar.accentColor}
           emissiveIntensity={disabled ? 0.01 : (0.05 * glowIntensity)}
           metalness={0.6}
           roughness={0.4}
+          clearcoat={1}
+          clearcoatRoughness={0.1}
+          transmission={0.1}
+          thickness={0.3}
+          ior={1.45}
         />
       </mesh>
     </group>
@@ -431,17 +560,63 @@ export default function PillarOrb({
   onClick,
 }: PillarOrbProps) {
   const groupRef = useRef<Group>(null);
+  
+  // Crossfade state: base orb fades out, personality fades in on hover/commit
+  const baseOpacityRef = useRef(1);
+  const personalityOpacityRef = useRef(0);
+  const fractureScaleRef = useRef(1.0);
+  const fractureTimeRef = useRef(0);
+  const [baseOpacity, setBaseOpacity] = useState(1);
+  const [personalityOpacity, setPersonalityOpacity] = useState(0);
+  const [fractureScale, setFractureScale] = useState(1.0);
+  const shouldReveal = isHovered || dominant;
+
+  useFrame((state, delta) => {
+    fractureTimeRef.current += delta;
+    
+    // Crossfade animation
+    if (shouldReveal) {
+      // Base fades out, personality fades in
+      baseOpacityRef.current = Math.max(0, baseOpacityRef.current - delta * 3); // Fast fade
+      personalityOpacityRef.current = Math.min(1, personalityOpacityRef.current + delta * 3);
+      
+      // Fracture impulse: brief scale pulse + rotation impulse
+      if (personalityOpacityRef.current < 0.5) {
+        const impulse = Math.sin(fractureTimeRef.current * 8) * 0.05;
+        fractureScaleRef.current = 1.0 + impulse;
+      } else {
+        fractureScaleRef.current = 1.0;
+      }
+    } else {
+      // Return to base state
+      baseOpacityRef.current = Math.min(1, baseOpacityRef.current + delta * 2);
+      personalityOpacityRef.current = Math.max(0, personalityOpacityRef.current - delta * 2);
+      fractureScaleRef.current = 1.0;
+      fractureTimeRef.current = 0;
+    }
+    
+    // Update state only when values change significantly (reduce re-renders)
+    if (Math.abs(baseOpacityRef.current - baseOpacity) > 0.01) {
+      setBaseOpacity(baseOpacityRef.current);
+    }
+    if (Math.abs(personalityOpacityRef.current - personalityOpacity) > 0.01) {
+      setPersonalityOpacity(personalityOpacityRef.current);
+    }
+    if (Math.abs(fractureScaleRef.current - fractureScale) > 0.01) {
+      setFractureScale(fractureScaleRef.current);
+    }
+  });
 
   const renderOrb = () => {
     switch (pillar.type) {
       case "core":
-        return <CoreOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} />;
+        return <CoreOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacity} personalityOpacity={personalityOpacity} fractureScale={fractureScale} />;
       case "shards":
-        return <ShardsOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} />;
+        return <ShardsOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacity} personalityOpacity={personalityOpacity} fractureScale={fractureScale} />;
       case "swarm":
-        return <SwarmOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} />;
+        return <SwarmOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacity} personalityOpacity={personalityOpacity} fractureScale={fractureScale} />;
       case "singularity":
-        return <SingularityOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} />;
+        return <SingularityOrb pillar={pillar} isHovered={isHovered} isSelected={isSelected} anyHovered={anyHovered} failureGravityActive={failureGravityActive} disabled={disabled} dominant={dominant} baseOpacity={baseOpacity} personalityOpacity={personalityOpacity} fractureScale={fractureScale} />;
     }
   };
 
@@ -475,7 +650,17 @@ export default function PillarOrb({
       onPointerOut={disabled ? undefined : onPointerOut}
       onClick={disabled ? undefined : handleClick}
     >
-      {renderOrb()}
+      {/* Base premium orb (fades out on hover/commit) */}
+      {baseOpacity > 0 && (
+        <BasePremiumOrb pillar={pillar} opacity={baseOpacity} scale={fractureScale} />
+      )}
+      
+      {/* Personality orb (fades in on hover/commit) */}
+      {personalityOpacity > 0 && (
+        <group>
+          {renderOrb()}
+        </group>
+      )}
     </group>
   );
 }

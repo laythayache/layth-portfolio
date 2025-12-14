@@ -4,6 +4,7 @@ import { Canvas } from "@react-three/fiber";
 import { useEffect, useState, useRef } from "react";
 import { useThree, useFrame } from "@react-three/fiber";
 import { PerspectiveCamera } from "three";
+import { Environment } from "@react-three/drei";
 import { PILLARS } from "./pillars";
 import PillarOrb from "./PillarOrb";
 import CameraRig from "./CameraRig";
@@ -70,15 +71,16 @@ function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter,
 
   return (
     <>
+      {/* HDRI Environment */}
+      <Environment preset="warehouse" />
+
+      {/* Premium lighting: key + rim + fill */}
+      <directionalLight position={[6, 4, 8]} intensity={1.2} />
+      <directionalLight position={[-6, -2, 6]} intensity={0.6} />
+      <pointLight position={[0, 0, 4]} intensity={0.7} />
+      
       {/* Ambient light for base illumination */}
-      <ambientLight intensity={0.2} />
-      
-      {/* Subtle point light */}
-      <pointLight position={[0, 0, 5]} intensity={0.3} />
-      
-      {/* Additional lights for better orb visibility */}
-      <pointLight position={[-5, 5, 5]} intensity={0.2} />
-      <pointLight position={[5, -5, 5]} intensity={0.2} />
+      <ambientLight intensity={0.15} />
 
       {/* Mild fog for depth */}
       <fog attach="fog" args={["#000000", 10, 20]} />
