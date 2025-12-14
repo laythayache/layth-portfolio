@@ -137,11 +137,11 @@ export default function ThreeLanding() {
   const selectedPillar = selectedId ? PILLARS.find((p) => p.id === selectedId) : null;
   const focusedPillar = focusedId ? PILLARS.find((p) => p.id === focusedId) : null;
 
-  // Navigation trigger at progress >= 0.85
+  // Navigation trigger at progress >= 0.78 (earlier for snappy feel)
   useEffect(() => {
     if (phase === "dive" && selectedId && !hasNavigatedRef.current) {
       const progress = descentState.getDiveProgress();
-      if (progress >= 0.85) {
+      if (progress >= 0.78) {
         hasNavigatedRef.current = true;
         
         // Write arrival metadata to sessionStorage

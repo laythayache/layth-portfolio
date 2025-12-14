@@ -17,9 +17,9 @@ interface DescentState {
   ruptureCenter: RuptureCenter | null;
 }
 
-const COMMIT_DURATION = 200; // 200ms
-const DIVE_DURATION = 1200; // 1200ms
-const HOLD_FOV_SETTLE = 300; // 300ms
+const COMMIT_DURATION = 140; // 140ms (snappy lock)
+const DIVE_DURATION = 780; // 780ms (decisive pull)
+const HOLD_FOV_SETTLE = 160; // 160ms (quick settle)
 
 export function useDescentState() {
   const [state, setState] = useState<DescentState>({

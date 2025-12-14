@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Mesh, Group, Vector3, Color } from "three";
+import { Mesh, Group, Vector3, Color, ShaderMaterial } from "three";
 import { PillarDefinition } from "./pillars";
 import * as THREE from "three";
 
@@ -22,58 +22,132 @@ interface PillarOrbProps {
   onClick?: (event: any) => void;
 }
 
+// Fresnel rim shader for portal boundary
+const rimVertexShader = `
+  varying vec3 vNormal;
+  varying vec3 vViewPosition;
+  
+  void main() {
+    vNormal = normalize(normalMatrix * normal);
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    vViewPosition = -mvPosition.xyz;
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`;
+
+const rimFragmentShader = `
+  uniform vec3 uColor;
+  uniform float uIntensity;
+  uniform float uTime;
+  
+  varying vec3 vNormal;
+  varying vec3 vViewPosition;
+  
+  // Cheap hash-based noise (1-2 ops)
+  float hash(vec2 p) {
+    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+  }
+  
+  float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    float a = hash(i);
+    float b = hash(i + vec2(1.0, 0.0));
+    float c = hash(i + vec2(0.0, 1.0));
+    float d = hash(i + vec2(1.0, 1.0));
+    vec2 u = f * f * (3.0 - 2.0 * f);
+    return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+  }
+  
+  void main() {
+    vec3 normal = normalize(vNormal);
+    vec3 viewDir = normalize(vViewPosition);
+    
+    // Fresnel effect (rim at grazing angles)
+    float fresnel = pow(1.0 - dot(normal, viewDir), 2.0);
+    
+    // Subtle animated field (low frequency, stable)
+    vec2 fieldUV = normal.xy * 0.3 + uTime * 0.1;
+    float field = noise(fieldUV) * 0.15;
+    
+    // Rim is dominant, interior is darker
+    float rimStrength = fresnel * uIntensity;
+    float interiorStrength = 0.2 + field;
+    
+    vec3 finalColor = uColor * (rimStrength + interiorStrength);
+    float alpha = rimStrength * 0.9 + interiorStrength * 0.3;
+    
+    gl_FragColor = vec4(finalColor, alpha);
+  }
+`;
+
 // Base premium orb (all orbs start identical)
-function BasePremiumOrb({ pillar, opacity, scale, isPageVisible = true }: { pillar: PillarDefinition; opacity: number; scale: number; isPageVisible?: boolean }) {
+function BasePremiumOrb({ pillar, opacity, scale, isPageVisible = true, reducedMotion = false }: { pillar: PillarDefinition; opacity: number; scale: number; isPageVisible?: boolean; reducedMotion?: boolean }) {
   const baseMaterialRef = useRef<THREE.MeshPhysicalMaterial>(null);
   const rimMeshRef = useRef<Mesh>(null);
+  const rimMaterialRef = useRef<ShaderMaterial>(null);
   const baseColorRef = useRef(new Color(pillar.primaryColor));
+  const fieldTimeRef = useRef(0);
+  
+  // Parse color once (no allocations in useFrame)
+  const parsedColorRef = useRef(new Color(pillar.primaryColor));
+  
+  // Rim shader uniforms (reuse refs, no allocations)
+  const rimUniformsRef = useRef({
+    uColor: { value: new Vector3(parsedColorRef.current.r, parsedColorRef.current.g, parsedColorRef.current.b) },
+    uIntensity: { value: 1.0 },
+    uTime: { value: 0 },
+  });
 
-  useFrame(() => {
+  useFrame((state, delta) => {
     // Pause when tab is hidden
     if (!isPageVisible) return;
+    
+    const effectiveDelta = reducedMotion ? delta * 0.3 : delta;
+    fieldTimeRef.current += effectiveDelta;
     
     if (baseMaterialRef.current) {
       baseMaterialRef.current.opacity = opacity;
     }
     if (rimMeshRef.current) {
-      rimMeshRef.current.scale.setScalar(scale * 1.04);
-      const rimMaterial = rimMeshRef.current.material as THREE.MeshBasicMaterial;
-      if (rimMaterial) {
-        rimMaterial.opacity = opacity * 0.12;
-      }
+      rimMeshRef.current.scale.setScalar(scale * 1.02); // Slightly tighter rim
+    }
+    if (rimMaterialRef.current) {
+      rimMaterialRef.current.uniforms.uIntensity.value = opacity * 1.2; // Rim is dominant
+      rimMaterialRef.current.uniforms.uTime.value = fieldTimeRef.current;
     }
   });
 
   return (
     <group>
-      {/* Base premium orb */}
+      {/* Base orb - reduced gloss, portal-like */}
       <mesh scale={scale}>
         <sphereGeometry args={[0.8, 64, 64]} />
         <meshPhysicalMaterial
           ref={baseMaterialRef}
           color={baseColorRef.current}
           emissive={baseColorRef.current}
-          emissiveIntensity={0.15}
-          roughness={0.25}
-          metalness={0.25}
-          clearcoat={1}
-          clearcoatRoughness={0.08}
-          transmission={0.35}
-          thickness={0.6}
+          emissiveIntensity={0.12}
+          roughness={0.45}
+          metalness={0.2}
+          clearcoat={0.5}
+          clearcoatRoughness={0.2}
+          transmission={0.12}
+          thickness={0.5}
           ior={1.45}
-          iridescence={0.6}
-          iridescenceIOR={1.3}
-          iridescenceThicknessRange={[100, 600] as any}
           transparent
         />
       </mesh>
-      {/* Screen-space rim glow */}
-      <mesh ref={rimMeshRef} scale={scale * 1.04}>
+      {/* Fresnel rim shader - portal boundary */}
+      <mesh ref={rimMeshRef} scale={scale * 1.02}>
         <sphereGeometry args={[0.8, 64, 64]} />
-        <meshBasicMaterial
-          color={baseColorRef.current}
+        <shaderMaterial
+          ref={rimMaterialRef}
+          vertexShader={rimVertexShader}
+          fragmentShader={rimFragmentShader}
+          uniforms={rimUniformsRef.current}
           transparent
-          opacity={opacity * 0.12}
+          side={THREE.DoubleSide}
         />
       </mesh>
     </group>
@@ -84,9 +158,11 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
   const meshRef = useRef<Mesh>(null);
   const materialRef = useRef<THREE.MeshPhysicalMaterial>(null);
   const rimMeshRef = useRef<Mesh>(null);
+  const rimMaterialRef = useRef<ShaderMaterial>(null);
   const timeRef = useRef(0);
   const pulseTimeRef = useRef(0);
   const hoverDelayRef = useRef(0);
+  const fieldTimeRef = useRef(0);
   const baseColorRef = useRef(new Color(pillar.primaryColor));
   
   // Reusable Vector3 and Color objects (eliminate allocations)
@@ -95,6 +171,16 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
   const desaturatedColorRef = useRef(new Color());
   const grayColor1Ref = useRef(new Color(0x333333));
   const grayColor2Ref = useRef(new Color(0x666666));
+  
+  // Parse color once (no allocations in useFrame)
+  const parsedColorRef = useRef(new Color(pillar.primaryColor));
+  
+  // Rim shader uniforms (reuse refs, no allocations)
+  const rimUniformsRef = useRef({
+    uColor: { value: new Vector3(parsedColorRef.current.r, parsedColorRef.current.g, parsedColorRef.current.b) },
+    uIntensity: { value: 1.0 },
+    uTime: { value: 0 },
+  });
 
   useEffect(() => {
     if (isHovered) {
@@ -125,6 +211,7 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
     const driftMultiplier = failureGravityActive && pillar.id !== "failure" ? 0.7 : 1.0;
 
     timeRef.current += effectiveDelta * pillar.personality.driftSpeed * motionMultiplier * driftMultiplier;
+    fieldTimeRef.current += effectiveDelta * 0.1; // Slow field animation
 
     // Drift motion (reduced amplitude)
     const driftX = Math.sin(timeRef.current * 0.7) * pillar.personality.driftAmp * 0.08;
@@ -184,47 +271,47 @@ function CoreOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityActi
       meshRef.current.scale.setScalar(fractureScale);
     }
 
-    // Update rim glow
-    if (rimMeshRef.current) {
-      rimMeshRef.current.scale.setScalar(fractureScale * 1.04);
-      const rimMaterial = rimMeshRef.current.material as THREE.MeshBasicMaterial;
-      if (rimMaterial) {
-        rimMaterial.opacity = personalityOpacity * 0.12;
-      }
+    // Update rim shader
+    if (rimMeshRef.current && rimMaterialRef.current) {
+      rimMeshRef.current.scale.setScalar(fractureScale * 1.02);
+      // Rim intensity increases on hover/commit
+      const rimIntensity = (isHovered && canReact) || dominant ? personalityOpacity * 1.5 : personalityOpacity * 1.2;
+      rimMaterialRef.current.uniforms.uIntensity.value = rimIntensity;
+      rimMaterialRef.current.uniforms.uTime.value = fieldTimeRef.current;
     }
   });
 
   return (
     <group>
-      {/* Personality orb */}
+      {/* Personality orb - portal-like material */}
       <mesh ref={meshRef}>
         <sphereGeometry args={[0.8, 64, 64]} />
         <meshPhysicalMaterial
           ref={materialRef}
           color={baseColorRef.current}
           emissive={baseColorRef.current}
-          emissiveIntensity={isHovered && hoverDelayRef.current >= 0.25 ? 0.25 * pillar.personality.hoverGlow : 0.15}
-          roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.2 : 0.25}
-          metalness={0.25}
-          clearcoat={1}
-          clearcoatRoughness={0.08}
-          transmission={0.35}
-          thickness={0.6}
+          emissiveIntensity={isHovered && hoverDelayRef.current >= 0.25 ? 0.25 * pillar.personality.hoverGlow : 0.12}
+          roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.35 : 0.45}
+          metalness={0.2}
+          clearcoat={0.5}
+          clearcoatRoughness={0.2}
+          transmission={0.12}
+          thickness={0.5}
           ior={1.45}
-          iridescence={0.6}
-          iridescenceIOR={1.3}
-          iridescenceThicknessRange={[100, 600] as any}
           transparent
           opacity={personalityOpacity}
         />
       </mesh>
-      {/* Screen-space rim glow */}
-      <mesh ref={rimMeshRef} scale={fractureScale * 1.04}>
+      {/* Fresnel rim shader - portal boundary */}
+      <mesh ref={rimMeshRef} scale={fractureScale * 1.02}>
         <sphereGeometry args={[0.8, 64, 64]} />
-        <meshBasicMaterial
-          color={baseColorRef.current}
+        <shaderMaterial
+          ref={rimMaterialRef}
+          vertexShader={rimVertexShader}
+          fragmentShader={rimFragmentShader}
+          uniforms={rimUniformsRef.current}
           transparent
-          opacity={personalityOpacity * 0.12}
+          side={THREE.DoubleSide}
         />
       </mesh>
     </group>
@@ -332,12 +419,12 @@ function ShardsOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAc
               color={color}
               emissive={pillar.accentColor}
               emissiveIntensity={disabled ? 0.05 : (0.3 * glowIntensity)}
-              metalness={0.4}
-              roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.3 : (dominant ? 0.4 : 0.5)}
-              clearcoat={1}
-              clearcoatRoughness={0.1}
-              transmission={0.2}
-              thickness={0.4}
+              metalness={0.3}
+              roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.4 : (dominant ? 0.45 : 0.5)}
+              clearcoat={0.5}
+              clearcoatRoughness={0.2}
+              transmission={0.12}
+              thickness={0.5}
               ior={1.45}
               transparent
               opacity={personalityOpacity}
@@ -437,17 +524,14 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
             ? desaturatedColorRef.current.copy(baseColorRef.current).lerp(grayColor1Ref.current, 0.6)
             : (anyHovered && !isHovered ? desaturatedColorRef.current.copy(baseColorRef.current).lerp(grayColor2Ref.current, 0.4) : pillar.primaryColor)}
           emissive={pillar.primaryColor}
-          emissiveIntensity={disabled ? 0.05 : (0.15 * glowIntensity)}
-          roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.2 : 0.25}
-          metalness={0.25}
-          clearcoat={1}
-          clearcoatRoughness={0.08}
-          transmission={0.35}
-          thickness={0.6}
+          emissiveIntensity={disabled ? 0.05 : (0.12 * glowIntensity)}
+          roughness={isHovered && hoverDelayRef.current >= 0.25 ? 0.35 : 0.45}
+          metalness={0.2}
+          clearcoat={0.5}
+          clearcoatRoughness={0.2}
+          transmission={0.12}
+          thickness={0.5}
           ior={1.45}
-          iridescence={0.6}
-          iridescenceIOR={1.3}
-          iridescenceThicknessRange={[100, 600] as any}
           transparent
           opacity={personalityOpacity}
         />
@@ -469,12 +553,12 @@ function SwarmOrb({ pillar, isHovered, isSelected, anyHovered, failureGravityAct
                 color={pillar.accentColor}
                 emissive={pillar.accentColor}
                 emissiveIntensity={0.2 * glowIntensity}
-                metalness={0.25}
-                roughness={0.3}
-                clearcoat={1}
-                clearcoatRoughness={0.1}
-                transmission={0.2}
-                thickness={0.4}
+                metalness={0.2}
+                roughness={0.45}
+                clearcoat={0.5}
+                clearcoatRoughness={0.2}
+                transmission={0.12}
+                thickness={0.5}
                 ior={1.45}
                 transparent
                 opacity={personalityOpacity}
@@ -556,10 +640,10 @@ function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGrav
           color="#1a0000"
           emissive={pillar.primaryColor}
           emissiveIntensity={disabled ? 0.02 : (0.1 * glowIntensity)}
-          metalness={0.8}
-          roughness={dominant ? 0.15 : 0.2}
-          clearcoat={1}
-          clearcoatRoughness={0.05}
+          metalness={0.6}
+          roughness={dominant ? 0.35 : 0.4}
+          clearcoat={0.4}
+          clearcoatRoughness={0.2}
           transparent
           opacity={personalityOpacity}
         />
@@ -575,9 +659,9 @@ function SingularityOrb({ pillar, isHovered, isSelected, anyHovered, failureGrav
           emissive={pillar.accentColor}
           emissiveIntensity={disabled ? 0.01 : (0.05 * glowIntensity)}
           metalness={0.6}
-          roughness={0.4}
-          clearcoat={1}
-          clearcoatRoughness={0.1}
+          roughness={0.45}
+          clearcoat={0.5}
+          clearcoatRoughness={0.2}
           transmission={0.1}
           thickness={0.3}
           ior={1.45}
@@ -685,7 +769,7 @@ export default function PillarOrb({
     >
       {/* Base premium orb (fades out on hover/commit) */}
       {baseOpacityRef.current > 0 && (
-        <BasePremiumOrb pillar={pillar} opacity={baseOpacityRef.current} scale={fractureScaleRef.current} isPageVisible={isPageVisible} />
+        <BasePremiumOrb pillar={pillar} opacity={baseOpacityRef.current} scale={fractureScaleRef.current} isPageVisible={isPageVisible} reducedMotion={reducedMotion} />
       )}
       
       {/* Personality orb (fades in on hover/commit) */}

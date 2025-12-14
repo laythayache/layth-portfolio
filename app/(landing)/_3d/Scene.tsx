@@ -151,8 +151,15 @@ function SceneContent({ phase, hoveredPillarId, selectedPillarId, ruptureCenter,
           progress={(() => {
             if (phase === "dive") {
               const diveProgress = getDiveProgress();
-              // Rupture starts at 0.70, maps to 0..1
-              return Math.max(0, Math.min(1, (diveProgress - 0.70) / 0.30));
+              // Rupture starts at 0.58, peaks at 0.80 (snappy tear/snap)
+              const ruptureStart = 0.58;
+              const rupturePeak = 0.80;
+              if (diveProgress < ruptureStart) return 0;
+              if (diveProgress >= rupturePeak) return 1;
+              // Map from ruptureStart..rupturePeak to 0..1 with easeOutQuad for snappy feel
+              const t = (diveProgress - ruptureStart) / (rupturePeak - ruptureStart);
+              const easedT = 1 - (1 - t) * (1 - t); // easeOutQuad
+              return easedT;
             }
             if (phase === "hold") {
               // Decay quickly in hold
