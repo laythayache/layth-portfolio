@@ -1,0 +1,110 @@
+{
+  "id": "perception",
+  "label": "Perception",
+  "status": "operational",
+  "substructure": [
+    {
+      "id": "sensory-input",
+      "label": "Sensory Input Processing",
+      "status": "operational",
+      "evidence": [
+        {
+          "id": "perception-1",
+          "type": "research",
+          "claim": "Multimodal signal processing enables integration of visual, textual, and structured data streams with measurable accuracy improvements",
+          "constraints": [
+            "Computational complexity scales with input dimensionality",
+            "Temporal synchronization required across modalities",
+            "Memory bandwidth limits real-time processing"
+          ],
+          "tradeoffs": [
+            "Accuracy vs latency: higher accuracy requires deeper models, increasing inference time",
+            "Modality coverage vs specialization: broader coverage reduces per-modality optimization"
+          ],
+          "failureLink": null,
+          "artifacts": [
+            {
+              "type": "code",
+              "url": "https://github.com/laythayache/multimodal-processing",
+              "label": "Implementation"
+            },
+            {
+              "type": "paper",
+              "url": "#",
+              "label": "Methodology"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pattern-recognition",
+      "label": "Pattern Recognition",
+      "status": "operational",
+      "evidence": [
+        {
+          "id": "perception-2",
+          "type": "project",
+          "claim": "Fashion trend detection system processes large-scale visual data to identify and predict trend evolution with production-grade reliability",
+          "constraints": [
+            "Dataset quality and labeling consistency",
+            "Model generalization across fashion categories",
+            "Inference speed for real-time applications"
+          ],
+          "tradeoffs": [
+            "Model complexity vs deployment cost: deeper models improve accuracy but require more resources",
+            "Update frequency vs stability: frequent updates capture trends but may introduce noise"
+          ],
+          "failureLink": null,
+          "artifacts": [
+            {
+              "type": "code",
+              "url": "https://github.com/laythayache/fashion-trend-detection",
+              "label": "Repository"
+            },
+            {
+              "type": "demo",
+              "url": "#",
+              "label": "Live Demo"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "context-extraction",
+      "label": "Context Extraction",
+      "status": "operational",
+      "evidence": [
+        {
+          "id": "perception-3",
+          "type": "research",
+          "claim": "Arabic NLP context analysis extracts meaningful contextual information from under-resourced dialects with limited training data",
+          "constraints": [
+            "Scarcity of labeled Arabic dialect data",
+            "Dialectal variation across regions",
+            "Code-switching between Arabic and other languages"
+          ],
+          "tradeoffs": [
+            "Coverage vs depth: supporting more dialects reduces per-dialect specialization",
+            "Transfer learning vs fine-tuning: pre-trained models help but may not capture dialect-specific nuances"
+          ],
+          "failureLink": null,
+          "artifacts": [
+            {
+              "type": "code",
+              "url": "https://github.com/laythayache/arabic-nlp",
+              "label": "Codebase"
+            },
+            {
+              "type": "documentation",
+              "url": "#",
+              "label": "Technical Notes"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "failures": []
+}

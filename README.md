@@ -2,6 +2,14 @@
 
 A modern, production-ready portfolio website built with Next.js, TypeScript, and Tailwind CSS. Optimized for fast loading, SEO, and accessibility.
 
+---
+
+**Reality Resilience — Baseline Locked.**
+Descent Interface will be layered on top.
+Existing system pages are immutable.
+
+---
+
 ## Features
 
 - 🚀 **Static Site Generation** - Fast, SEO-friendly static export

@@ -1,0 +1,21 @@
+{
+  "id": "coordination",
+  "label": "Coordination",
+  "status": "operational",
+  "substructure": [
+    {
+      "id": "synchronization",
+      "label": "System Synchronization",
+      "status": "operational",
+      "evidence": []
+    },
+    {
+      "id": "resource-allocation",
+      "label": "Resource Allocation",
+      "status": "operational",
+      "evidence": []
+    }
+  ],
+  "failures": []
+}
+

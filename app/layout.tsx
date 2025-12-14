@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import ClientWrapper from "@/components/ClientWrapper";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://laythayache.com"),
-  title: "Layth Ayache | AI Engineer | Computer Vision & NLP",
-  description: "AI Engineer specializing in Computer Vision, NLP, and end-to-end ML pipelines. Building products with real-world impact.",
+  title: "Reality Resilience | System Operational",
+  description: "A living systems diagram exposing its internals gradually.",
   keywords: ["AI Engineer", "Machine Learning", "Computer Vision", "NLP", "ML Engineer", "Data Analyst"],
   authors: [{ name: "Layth Ayache" }],
   openGraph: {
@@ -80,8 +76,8 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className}>
-        <ClientWrapper>{children}</ClientWrapper>
+      <body className="bg-black text-white font-mono">
+        {children}
       </body>
     </html>
   );

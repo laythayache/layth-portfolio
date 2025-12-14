@@ -1,0 +1,12 @@
+{
+  "global": [
+    {
+      "id": "failure-1",
+      "severity": "minor",
+      "description": "Incomplete evidence population in non-dominant pillars",
+      "affected": ["representation", "coordination"],
+      "timestamp": "2024-12-14T00:00:00Z"
+    }
+  ]
+}
+

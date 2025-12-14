@@ -1,0 +1,8 @@
+{
+  "id": "failure",
+  "label": "Failure",
+  "status": "operational",
+  "substructure": [],
+  "failures": []
+}
+

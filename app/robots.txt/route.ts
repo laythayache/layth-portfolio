@@ -1,14 +1,14 @@
 export const dynamic = "force-static";
 
-import { MetadataRoute } from 'next'
+export function GET(): Response {
+  const content = `User-agent: *
+Allow: /
+Sitemap: https://laythayache.com/sitemap.xml`;
 
-export default function robots(): MetadataRoute.Robots {
-  return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
+  return new Response(content, {
+    headers: {
+      'Content-Type': 'text/plain',
     },
-    sitemap: 'https://laythayache.com/sitemap.xml',
-  }
+  });
 }
 
