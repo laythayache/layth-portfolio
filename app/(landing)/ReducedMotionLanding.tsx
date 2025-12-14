@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { setReducedMotion, getReducedMotion } from "./landingPrefs";
-import { useState, useEffect } from "react";
+import { setReducedMotion } from "./landingPrefs";
 
 const PILLAR_COLORS: Record<string, string> = {
   perception: "#35FFB8",
@@ -23,20 +22,13 @@ const PILLAR_LABELS: Record<string, string> = {
 const PILLARS = ["perception", "execution", "representation", "coordination", "failure"] as const;
 
 export default function ReducedMotionLanding() {
-  const [reducedMotionEnabled, setReducedMotionEnabled] = useState<boolean>(false);
-
-  useEffect(() => {
-    setReducedMotionEnabled(getReducedMotion());
-  }, []);
+  // If this component is rendered, reduced motion is active
+  const reducedMotionEnabled = true;
 
   const handleToggle = () => {
-    const newValue = !reducedMotionEnabled;
-    setReducedMotion(newValue);
-    setReducedMotionEnabled(newValue);
-    // Reload to switch back to full landing
-    if (!newValue) {
-      window.location.reload();
-    }
+    // Disable reduced motion and reload to show full landing
+    setReducedMotion(false);
+    window.location.reload();
   };
 
   return (

@@ -12,10 +12,8 @@ import { initializeSystem } from "../_data/system.init";
 import { getBuildDiagnostics } from "../_data/system.diagnostics";
 import { getActiveIncidents } from "../_data/incidents.selector";
 import { PillarType, SystemPillar, FailureAnnotation } from "../_data/system.schema";
-import { useReducedMotionGate } from "./useReducedMotionGate";
-import ReducedMotionLanding from "./ReducedMotionLanding";
 
-function FullLanding() {
+export default function LegacyLanding() {
   const systemState = useMemo(() => initializeSystem(), []);
   const diagnostics = useMemo(() => getBuildDiagnostics(), []);
   const [activePillar, setActivePillar] = useState<PillarType | null>(null);
@@ -121,25 +119,4 @@ function FullLanding() {
       </div>
     </div>
   );
-}
-
-export default function LandingEntry() {
-  const { reducedMotion, ready } = useReducedMotionGate();
-
-  // Show minimal loading state until gate is ready
-  if (!ready) {
-    return (
-      <div className="min-h-screen bg-black text-white font-mono flex items-center justify-center">
-        <div className="text-sm uppercase">INITIALIZING…</div>
-      </div>
-    );
-  }
-
-  // Show reduced motion landing if gate is active
-  if (reducedMotion) {
-    return <ReducedMotionLanding />;
-  }
-
-  // Default: render full landing exactly as before
-  return <FullLanding />;
 }
