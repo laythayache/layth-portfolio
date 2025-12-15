@@ -187,4 +187,25 @@
       transform: translateX(calc(50% + 100px));
     }
   }
+
+  /* Logo Mark Hover Rotation */
+  .logo-mark {
+    transform-origin: center center;
+    cursor: pointer;
+  }
+
+  @keyframes logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-mark {
+      animation: none !important;
+    }
+  }
 }
