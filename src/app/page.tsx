@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import LogoMark from "@/components/LogoMark";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
@@ -10,8 +10,14 @@ import Typewriter from "@/components/Typewriter";
 export default function HomePage() {
   const [revealPhase, setRevealPhase] = useState<"loader" | "typing" | "globalReveal" | "pageReveal">("loader");
   const [shouldStartTyping, setShouldStartTyping] = useState(false);
+  const heroLockupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Expose hero lockup ref globally for WelcomeLoader to access
+    if (heroLockupRef.current) {
+      (window as any).__heroLockupRef = heroLockupRef.current;
+    }
+
     // Check if loader has been seen before (route change)
     const hasSeenLoader = sessionStorage.getItem("hasSeenLoader");
     if (hasSeenLoader) {
@@ -38,7 +44,10 @@ export default function HomePage() {
     checkLoaderComplete();
     const interval = setInterval(checkLoaderComplete, 100);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      delete (window as any).__heroLockupRef;
+    };
   }, []);
 
   const handleTypingComplete = () => {
@@ -93,13 +102,18 @@ export default function HomePage() {
       {/* Hero */}
       <section className="min-h-screen flex flex-col items-center justify-center py-20 px-6">
         <div className="max-w-4xl mx-auto w-full text-center space-y-8">
-          <div className="flex justify-center mb-8" data-hero-emblem>
-            <LogoMark size={120} />
-          </div>
-          <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: "var(--text)" }} data-hero-name>
-              Layth Ayache
-            </h1>
+          {/* Hero Lockup Anchor - hidden until settle completes */}
+          <div 
+            ref={heroLockupRef}
+            className="hero-lockup-anchor"
+          >
+            <div className="flex justify-center mb-8" data-hero-emblem>
+              <LogoMark size={120} />
+            </div>
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: "var(--text)" }} data-hero-name>
+                Layth Ayache
+              </h1>
             <div 
               className="text-lg md:text-xl max-w-2xl mx-auto min-h-[1.5em]"
               style={{ color: "var(--text)" }}
@@ -114,6 +128,7 @@ export default function HomePage() {
                 <span style={{ opacity: 1 }}>grow to love and love to grow</span>
               ) : null}
             </div>
+          </div>
           </div>
           <div 
             className={`flex flex-wrap gap-4 justify-center reveal-ctas ${revealPhase === "globalReveal" || revealPhase === "pageReveal" ? "revealed" : ""}`}

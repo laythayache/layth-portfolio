@@ -113,7 +113,7 @@
     width: 100%;
     height: 100%;
     color: var(--accent);
-    animation: mark-spin-continuous 5.5s linear infinite;
+    animation: mark-spin-continuous 5.5s linear;
     transform-origin: center center;
   }
 
@@ -122,22 +122,23 @@
   }
 
   /* Continuous spin during choreography (5.5s = choreography duration) */
+  /* Spins at ~1 rotation per second for smooth continuous motion */
   @keyframes mark-spin-continuous {
     0% {
       transform: rotate(0deg);
     }
     100% {
-      transform: rotate(1980deg); /* 5.5 rotations (5.5s * 360deg) */
+      transform: rotate(1980deg); /* ~5.5 rotations over 5.5s */
     }
   }
 
-  /* Decelerate and stop during settle - completes final half rotation smoothly */
+  /* Decelerate and stop during settle - completes smoothly to a clean stop */
   @keyframes mark-spin-settle {
     0% {
       transform: rotate(1980deg); /* Continue from where continuous spin left off */
     }
     100% {
-      transform: rotate(2160deg); /* Complete one more full rotation and stop */
+      transform: rotate(2160deg); /* Complete one more rotation and stop cleanly */
     }
   }
 
@@ -408,6 +409,17 @@
   body:not(.loader-complete) .reveal-ctas,
   body:not(.loader-complete) .reveal-page-content {
     opacity: 0;
+  }
+
+  /* Hero Lockup Anchor - hidden until settle completes */
+  .hero-lockup-anchor {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-out;
+  }
+
+  body.loader-complete .hero-lockup-anchor {
+    pointer-events: auto;
   }
 
   @media (prefers-reduced-motion: reduce) {

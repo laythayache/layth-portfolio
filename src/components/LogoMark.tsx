@@ -37,6 +37,8 @@ export default function LogoMark({ className = "", size = 100 }: LogoMarkProps) 
 
       // Set timeout to refresh page after 3 seconds
       refreshTimeoutRef.current = setTimeout(() => {
+        // Clear sessionStorage to restart the loader
+        sessionStorage.removeItem("hasSeenLoader");
         window.location.reload();
       }, 3000);
     } else {

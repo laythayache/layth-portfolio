@@ -49,43 +49,75 @@ export default function WelcomeLoader({ onComplete }: WelcomeLoaderProps) {
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const container = containerRef.current;
-          const heroEmblem = document.querySelector('[data-hero-emblem]') as HTMLElement;
+          const heroLockup = (window as any).__heroLockupRef as HTMLElement | undefined;
           const markElement = container?.querySelector('.welcome-loader__mark') as HTMLElement;
 
-          if (container && heroEmblem) {
-            const heroEmblemRect = heroEmblem.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
+          if (container && heroLockup) {
+            // Measure source (loader lockup) and target (hero lockup) rectangles
+            const sourceRect = container.getBoundingClientRect();
+            const targetRect = heroLockup.getBoundingClientRect();
 
-            // Calculate target position (center of hero emblem)
-            const targetX = heroEmblemRect.left + heroEmblemRect.width / 2 - containerRect.width / 2;
-            const targetY = heroEmblemRect.top + heroEmblemRect.height / 2 - containerRect.height / 2;
+            // Calculate translation delta
+            const dx = targetRect.left - sourceRect.left;
+            const dy = targetRect.top - sourceRect.top;
 
-            // Calculate scale (hero emblem is 120px, loader emblem is 200px)
-            const scale = 120 / 200;
+            // Calculate scale factors
+            const scaleX = targetRect.width / sourceRect.width;
+            const scaleY = targetRect.height / sourceRect.height;
+            // Use uniform scale (min to ensure it fits)
+            const scale = Math.min(scaleX, scaleY);
 
-            // Get current rotation from computed style to continue from where it stopped
+            // Lock dimensions to prevent reflow during settle
+            // Set explicit pixel dimensions from measured source rect
+            // Use fixed positioning to prevent layout shifts
+            const containerParent = container.parentElement;
+            if (containerParent) {
+              containerParent.style.position = "fixed";
+              containerParent.style.top = "0";
+              containerParent.style.left = "0";
+              containerParent.style.width = "100%";
+              containerParent.style.height = "100%";
+            }
+            
+            container.style.position = "fixed";
+            container.style.width = `${sourceRect.width}px`;
+            container.style.height = `${sourceRect.height}px`;
+            container.style.left = `${sourceRect.left}px`;
+            container.style.top = `${sourceRect.top}px`;
+            container.style.margin = "0";
+            container.style.transformOrigin = "center center";
+
+            // Add settling class to trigger deceleration animation
             if (markElement) {
-              const computedStyle = window.getComputedStyle(markElement);
-              const matrix = computedStyle.transform;
-              if (matrix && matrix !== 'none') {
-                const values = matrix.split('(')[1].split(')')[0].split(',');
-                const a = parseFloat(values[0]);
-                const b = parseFloat(values[1]);
-                const angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
-              }
-              // Add settling class to trigger deceleration animation
               markElement.classList.add('settling');
             }
 
-            // Apply transform
-            container.style.transition = "transform 1.2s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s ease-out 0.6s";
-            container.style.transform = `translate(${targetX}px, ${targetY}px) scale(${scale})`;
+            // Set transform-origin to center for proper scaling
+            container.style.transformOrigin = "center center";
+            
+            // Apply transform - translate then scale
+            // CSS transforms are applied right-to-left, so to translate then scale visually,
+            // we write: scale(...) translate(...)
+            // Adjust translation by scale factor for precise alignment
+            const adjustedDx = dx / scale;
+            const adjustedDy = dy / scale;
+            
+            container.style.transition = "transform 1.1s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s ease-out 0.5s";
+            container.style.transform = `scale(${scale}) translate(${adjustedDx}px, ${adjustedDy}px)`;
 
             // Hide text during settle (it will be replaced by hero name)
             const textElements = container.querySelectorAll('.welcome-loader__text');
             textElements.forEach((el) => {
               (el as HTMLElement).style.opacity = '0';
             });
+
+            // Crossfade handoff: fade hero lockup in during last 300ms of settle
+            setTimeout(() => {
+              if (heroLockup) {
+                heroLockup.style.transition = "opacity 0.3s ease-out";
+                heroLockup.style.opacity = "1";
+              }
+            }, 800); // Start fade-in at 800ms (300ms before settle completes)
 
             // After settle animation, fade out overlay and mark complete
             setTimeout(() => {
@@ -97,10 +129,27 @@ export default function WelcomeLoader({ onComplete }: WelcomeLoaderProps) {
               }
               setTimeout(() => {
                 setShouldUnmount(true);
+                // Clean up fixed positioning
+                if (container) {
+                  container.style.position = "";
+                  container.style.width = "";
+                  container.style.height = "";
+                  container.style.left = "";
+                  container.style.top = "";
+                  container.style.margin = "";
+                }
+                const containerParent = container?.parentElement;
+                if (containerParent) {
+                  containerParent.style.position = "";
+                  containerParent.style.top = "";
+                  containerParent.style.left = "";
+                  containerParent.style.width = "";
+                  containerParent.style.height = "";
+                }
               }, 300);
-            }, 1800);
+            }, 1100);
           } else {
-            // Fallback if hero not found
+            // Fallback if hero not found - just fade out
             setTimeout(() => {
               setPhase("complete");
               if (onComplete && !hasCalledComplete.current) {
@@ -115,7 +164,7 @@ export default function WelcomeLoader({ onComplete }: WelcomeLoaderProps) {
         });
       });
     }
-  }, [phase]);
+  }, [phase, onComplete]);
 
   if (shouldUnmount) {
     return null;
@@ -123,10 +172,14 @@ export default function WelcomeLoader({ onComplete }: WelcomeLoaderProps) {
 
   return (
     <div
-      className={`welcome-loader ${phase === "complete" ? "fade-out" : ""}`}
+      className={`welcome-loader ${phase === "settling" ? "settling" : ""} ${phase === "complete" ? "fade-out" : ""}`}
       aria-label="Loading"
       role="status"
       aria-live="polite"
+      style={{
+        opacity: phase === "settling" ? 1 : phase === "complete" ? 0 : 1,
+        transition: phase === "settling" ? "opacity 0.6s ease-out 0.5s" : phase === "complete" ? "opacity 0.3s ease-out" : "none"
+      }}
     >
       <div ref={containerRef} className="welcome-loader__container">
         {/* Text container (behind the mark) */}
