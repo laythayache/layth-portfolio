@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Layth Ayache mark">
+  <!-- Set color here, or replace with "currentColor" to control via CSS -->
+  <g fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="butt">
+    <!-- Arc 1: ~40� to ~208� -->
+    <path d="M 72.98 69.28 A 30 30 0 0 1 23.52 34.61" />
+    <!-- Arc 2: ~219� to ~29� -->
+    <path d="M 26.72 31.12 A 30 30 0 0 1 76.23 64.54" />
+  </g>
+</svg>
