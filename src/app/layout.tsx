@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import WelcomeLoader from "@/components/WelcomeLoader";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -10,8 +11,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Systems Failure Analysis | AI, Security, Digital Infrastructure",
-  description: "I study why systems fail under pressure. AI, security, and digital infrastructure — focused on government, healthcare, and public services in constrained environments.",
+  title: "Layth Ayache | AI, Security, Digital Infrastructure",
+  description: "Engineering systems that fail gracefully under pressure. Focused on AI, security, and digital infrastructure for government, healthcare, and public services.",
   metadataBase: new URL("https://laythayache.com"),
   icons: {
     icon: "/logo/emblem.svg",
@@ -21,9 +22,28 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} scroll-smooth`}>
-      <body className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased font-sans">
+    <html lang="en" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
+      <body className="min-h-screen antialiased font-sans" style={{ backgroundColor: "var(--bg)", color: "var(--text)" }}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme');
+                  if (theme === 'night') {
+                    document.documentElement.setAttribute('data-theme', 'night');
+                  } else {
+                    document.documentElement.removeAttribute('data-theme');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         <WelcomeLoader />
+        <div className="fixed top-6 right-6 z-50">
+          <ThemeToggle />
+        </div>
         <main>{children}</main>
       </body>
     </html>

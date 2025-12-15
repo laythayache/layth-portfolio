@@ -19,25 +19,25 @@ const projects = [
 export default function ProjectsPage() {
   return (
     <section className="space-y-6">
-      <h1 className="text-2xl font-semibold">Projects</h1>
-      <p className="text-zinc-700 max-w-2xl">
+      <h1 className="text-2xl font-semibold" style={{ color: "var(--text)" }}>Projects</h1>
+      <p className="max-w-2xl" style={{ color: "var(--text)", opacity: 0.7 }}>
         Minimal list for now. Each project will become a short case study with goal, approach, stack, and results.
       </p>
 
       <div className="space-y-4">
         {projects.map((p) => (
-          <div key={p.title} className="rounded-lg border p-5">
+          <div key={p.title} className="rounded-lg border p-5" style={{ borderColor: "var(--text)" }}>
             <div className="flex items-center justify-between gap-4">
-              <div className="font-medium">{p.title}</div>
+              <div className="font-medium" style={{ color: "var(--text)" }}>{p.title}</div>
               {p.link ? (
-                <a className="text-sm underline" href={p.link} target="_blank" rel="noreferrer">
+                <a className="text-sm underline" href={p.link} target="_blank" rel="noopener noreferrer" style={{ color: "var(--text)", textDecorationColor: "var(--accent)" }}>
                   Link
                 </a>
               ) : (
-                <span className="text-sm text-zinc-500">Link soon</span>
+                <span className="text-sm" style={{ color: "var(--text)", opacity: 0.5 }}>Link soon</span>
               )}
             </div>
-            <p className="mt-2 text-sm text-zinc-700">{p.desc}</p>
+            <p className="mt-2 text-sm" style={{ color: "var(--text)", opacity: 0.7 }}>{p.desc}</p>
           </div>
         ))}
       </div>

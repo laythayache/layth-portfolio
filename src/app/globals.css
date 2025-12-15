@@ -4,240 +4,187 @@
 
 @layer base {
   :root {
-    --bg-primary: #0E0F11;
-    --bg-secondary: #111315;
-    --text-primary: #EDEDED;
-    --text-secondary: #9AA0A6;
-    --accent: #7A846E;
+    --bg: #ede7dd;
+    --text: #2b2e34;
+    --accent: #6b7280;
   }
-  
+
+  [data-theme="night"] {
+    --bg: #2b2e34;
+    --text: #ede7dd;
+    --accent: #6b7280;
+  }
+
   body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
+    background: var(--bg);
+    color: var(--text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 200ms ease, color 200ms ease;
   }
 }
 
 @layer utilities {
-  .pulse-indicator {
+  /* Welcome Loader Styles */
+  .welcome-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    background-color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: auto;
+    opacity: 1;
+    transition: opacity 300ms ease-out;
+  }
+
+  .welcome-loader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .welcome-loader__container {
     position: relative;
+    width: 500px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  
-  .pulse-indicator::before {
-    content: '';
+
+  .welcome-loader__text-wrapper {
     position: absolute;
-    left: -0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0.375rem;
-    height: 0.375rem;
-    border-radius: 9999px;
-    background-color: var(--accent);
-    opacity: 0.6;
-    animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
   }
-  
-  @keyframes pulse-subtle {
-    0%, 100% {
-      opacity: 0.6;
-    }
-    50% {
-      opacity: 0.3;
-    }
+
+  .welcome-loader__text {
+    position: absolute;
+    font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--text);
+    white-space: nowrap;
+    opacity: 0;
+    animation: text-reveal 950ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 450ms forwards;
   }
-  
-  .animate-spin-slow {
-    animation: spin-slow 8s linear infinite;
+
+  .welcome-loader__text--left {
+    left: 50%;
+    transform: translateX(-50%);
+    animation-name: text-reveal-left;
   }
-  
-  @keyframes spin-slow {
-    from {
+
+  .welcome-loader__text--right {
+    right: 50%;
+    transform: translateX(50%);
+    animation-name: text-reveal-right;
+  }
+
+  .welcome-loader__mark-wrapper {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg);
+    border-radius: 50%;
+  }
+
+  .welcome-loader__mark {
+    width: 100%;
+    height: 100%;
+    color: var(--accent);
+    animation: mark-spin-decelerate 1000ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    transform-origin: center center;
+  }
+
+  @keyframes mark-spin-decelerate {
+    0% {
       transform: rotate(0deg);
     }
-    to {
+    100% {
       transform: rotate(360deg);
     }
   }
-  
+
+  @keyframes text-reveal-left {
+    0% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(calc(-50% - 140px));
+    }
+  }
+
+  @keyframes text-reveal-right {
+    0% {
+      opacity: 0;
+      transform: translateX(50%);
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(calc(50% + 140px));
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .pulse-indicator::before {
-      animation: none;
-      opacity: 0.6;
+    .welcome-loader__mark {
+      animation: mark-fade-in 600ms ease-out forwards;
     }
-    
-    .animate-spin-slow {
-      animation: none;
+
+    .welcome-loader__text {
+      animation: text-fade-in-static 600ms ease-out 300ms forwards;
     }
-  }
-}
 
-/* Welcome Loader Styles */
-.welcome-loader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  background-color: var(--bg-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-  opacity: 1;
-  transition: opacity 300ms ease-out;
-}
-
-.welcome-loader.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.welcome-loader__container {
-  position: relative;
-  width: 500px;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Text wrapper - positioned behind the mark */
-.welcome-loader__text-wrapper {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1;
-}
-
-.welcome-loader__text {
-  position: absolute;
-  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  white-space: nowrap;
-  opacity: 0;
-  animation: text-reveal 950ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 450ms forwards;
-}
-
-.welcome-loader__text--left {
-  left: 50%;
-  transform: translateX(-50%);
-  animation-name: text-reveal-left;
-}
-
-.welcome-loader__text--right {
-  right: 50%;
-  transform: translateX(50%);
-  animation-name: text-reveal-right;
-}
-
-/* Mark wrapper - positioned in front, acts as mask/occluder */
-.welcome-loader__mark-wrapper {
-  position: absolute;
-  width: 200px;
-  height: 200px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* Background matches page to occlude text behind */
-  background-color: var(--bg-primary);
-  border-radius: 50%;
-}
-
-.welcome-loader__mark {
-  width: 100%;
-  height: 100%;
-  color: var(--accent);
-  animation: mark-spin-decelerate 1000ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-  transform-origin: center center;
-}
-
-/* Mark spin animation: fast start, smooth deceleration, stops perfectly */
-@keyframes mark-spin-decelerate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Text reveal animations - text starts at center (behind mark) and slides out */
-@keyframes text-reveal-left {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%);
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(calc(-50% - 140px));
-  }
-}
-
-@keyframes text-reveal-right {
-  0% {
-    opacity: 0;
-    transform: translateX(50%);
-  }
-  20% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(calc(50% + 140px));
-  }
-}
-
-/* Reduced motion: no spinning, just fade in mark + show text */
-@media (prefers-reduced-motion: reduce) {
-  .welcome-loader__mark {
-    animation: mark-fade-in 600ms ease-out forwards;
-  }
-  
-  .welcome-loader__text {
-    animation: text-fade-in-static 600ms ease-out 300ms forwards;
-  }
-  
-  @keyframes mark-fade-in {
-    0% {
-      opacity: 0;
-      transform: scale(0.8);
+    @keyframes mark-fade-in {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
-    100% {
-      opacity: 1;
-      transform: scale(1);
+
+    @keyframes text-fade-in-static {
+      0% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .welcome-loader__text--left {
+      animation-name: text-fade-in-static;
+      transform: translateX(calc(-50% - 100px));
+    }
+
+    .welcome-loader__text--right {
+      animation-name: text-fade-in-static;
+      transform: translateX(calc(50% + 100px));
     }
   }
-  
-  @keyframes text-fade-in-static {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-  
-  .welcome-loader__text--left {
-    animation-name: text-fade-in-static;
-    transform: translateX(calc(-50% - 100px));
-  }
-  
-  .welcome-loader__text--right {
-    animation-name: text-fade-in-static;
-    transform: translateX(calc(50% + 100px));
-  }
 }
-

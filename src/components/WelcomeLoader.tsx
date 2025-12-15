@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import LogoMark from "./LogoMark";
 
 export default function WelcomeLoader() {
   const [isReady, setIsReady] = useState(false);
@@ -66,18 +67,7 @@ export default function WelcomeLoader() {
 
         {/* Mark (in front, acts as mask/occluder) */}
         <div className="welcome-loader__mark-wrapper">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 100 100"
-            role="img"
-            aria-label="Layth Ayache mark"
-            className="welcome-loader__mark"
-          >
-            <g fill="none" stroke="currentColor" strokeWidth="16" strokeLinecap="butt">
-              <path d="M 72.98 69.28 A 30 30 0 0 1 23.52 34.61" />
-              <path d="M 26.72 31.12 A 30 30 0 0 1 76.23 64.54" />
-            </g>
-          </svg>
+          <LogoMark className="welcome-loader__mark" size={200} />
         </div>
       </div>
     </div>
