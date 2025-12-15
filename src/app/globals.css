@@ -208,4 +208,23 @@
       animation: none !important;
     }
   }
+
+  /* Theme Toggle Styles */
+  .theme-toggle {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border: 1px solid;
+    border-radius: 0.25rem;
+    transition: opacity 200ms ease;
+    cursor: pointer;
+  }
+
+  .theme-toggle:hover {
+    opacity: 0.8;
+  }
+
+  .theme-toggle:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
 }

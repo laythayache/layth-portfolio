@@ -34,9 +34,9 @@ export default function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="px-4 py-2 text-sm border rounded transition-colors"
+        className="theme-toggle"
         style={{
-          borderColor: "var(--border)",
+          borderColor: "var(--text)",
           color: "var(--text)",
         }}
         aria-label="Toggle theme"
@@ -49,12 +49,11 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="px-4 py-2 text-sm border rounded transition-colors hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2"
+      className="theme-toggle"
       style={{
-        borderColor: "var(--border)",
+        borderColor: "var(--text)",
         color: "var(--text)",
         backgroundColor: "var(--bg)",
-        focusRingColor: "var(--accent)",
       }}
       aria-label={`Switch to ${theme === "day" ? "night" : "day"} mode`}
     >

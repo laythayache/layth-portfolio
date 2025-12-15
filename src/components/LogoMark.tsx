@@ -12,6 +12,7 @@ export default function LogoMark({ className = "", size = 100 }: LogoMarkProps) 
   const [isHovering, setIsHovering] = useState(false);
   const hoverStartTime = useRef<number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (isHovering) {
@@ -33,9 +34,18 @@ export default function LogoMark({ className = "", size = 100 }: LogoMarkProps) 
       
       hoverStartTime.current = Date.now();
       updateSpeed();
+
+      // Set timeout to refresh page after 3 seconds
+      refreshTimeoutRef.current = setTimeout(() => {
+        window.location.reload();
+      }, 3000);
     } else {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (refreshTimeoutRef.current) {
+        clearTimeout(refreshTimeoutRef.current);
+        refreshTimeoutRef.current = null;
       }
       setRotationSpeed(0);
       hoverStartTime.current = null;
@@ -44,6 +54,9 @@ export default function LogoMark({ className = "", size = 100 }: LogoMarkProps) 
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (refreshTimeoutRef.current) {
+        clearTimeout(refreshTimeoutRef.current);
       }
     };
   }, [isHovering]);
