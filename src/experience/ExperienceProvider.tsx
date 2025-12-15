@@ -2,7 +2,17 @@
 
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 
-type ExperiencePhase = "boot" | "loader" | "typing" | "reveal" | "ready";
+export type ExperiencePhase =
+  | "BOOT"
+  | "CHOREO_1_OUT"
+  | "CHOREO_1_IN"
+  | "CHOREO_2_OUT_SWAP"
+  | "CHOREO_2_IN"
+  | "CHOREO_3_OUT"
+  | "SETTLE"
+  | "TYPE"
+  | "REVEAL"
+  | "READY";
 
 interface ExperienceContextType {
   phase: ExperiencePhase;
@@ -14,14 +24,12 @@ interface ExperienceContextType {
 const ExperienceContext = createContext<ExperienceContextType | undefined>(undefined);
 
 export function ExperienceProvider({ children }: { children: ReactNode }) {
-  const [phase, setPhase] = useState<ExperiencePhase>("boot");
+  const [phase, setPhase] = useState<ExperiencePhase>("BOOT");
   const [replayToken, setReplayToken] = useState(0);
 
   const startReplay = useCallback(() => {
-    // Clear session storage to force loader replay
-    sessionStorage.removeItem("hasSeenLoader");
-    // Reset phase to boot/loader
-    setPhase("loader");
+    // Reset phase to BOOT
+    setPhase("BOOT");
     // Increment replay token to trigger re-renders
     setReplayToken((prev) => prev + 1);
   }, []);

@@ -19,8 +19,10 @@ export default function ThemeToggle() {
     const root = document.documentElement;
     if (newTheme === "night") {
       root.setAttribute("data-theme", "night");
+      localStorage.setItem("theme", "night");
     } else {
       root.removeAttribute("data-theme");
+      localStorage.setItem("theme", "day");
     }
   };
 

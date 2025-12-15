@@ -7,12 +7,28 @@
     --bg: #ede7dd;
     --text: #2b2e34;
     --accent: #6b7280;
+    /* Emblem sizes */
+    --mark-loader: clamp(52px, 14vw, 110px);
+    --mark-hero: clamp(44px, 10vw, 96px);
+    --mark-header: clamp(26px, 6vw, 40px);
+    /* Typography */
+    --name-size: clamp(28px, 6.5vw, 56px);
+    --motto-size: clamp(14px, 2.6vw, 18px);
+    /* Travel distance for name choreography */
+    --travel-x: clamp(80px, 15vw, 180px);
   }
 
   [data-theme="night"] {
     --bg: #2b2e34;
     --text: #ede7dd;
     --accent: #6b7280;
+    /* Same sizes in night mode */
+    --mark-loader: clamp(52px, 14vw, 110px);
+    --mark-hero: clamp(44px, 10vw, 96px);
+    --mark-header: clamp(26px, 6vw, 40px);
+    --name-size: clamp(28px, 6.5vw, 56px);
+    --motto-size: clamp(14px, 2.6vw, 18px);
+    --travel-x: clamp(80px, 15vw, 180px);
   }
 
   body {
@@ -24,82 +40,16 @@
   }
 }
 
-/* Focus ring styles using tokens */
 @layer utilities {
-  .focus-ring-token {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-
-  .focus-ring-token:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-  }
-}
-
-@layer utilities {
-  /* Welcome Loader Styles */
-  .welcome-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
-    background-color: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    pointer-events: auto;
-    opacity: 1;
-    transition: opacity 300ms ease-out;
-  }
-
-  .welcome-loader.fade-out {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .welcome-loader.settling .welcome-loader__container {
-    will-change: transform;
-  }
-
-  .welcome-loader__container {
-    position: relative;
-    width: min(600px, 90vw);
-    height: 250px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    will-change: transform;
-  }
-
-  /* Loader-specific lockup text animations */
-  .welcome-loader .lockup__text {
-    animation: name-choreography 5.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  }
-
-  .welcome-loader .lockup__text--layth {
-    animation-name: layth-choreography;
-  }
-
-  .welcome-loader .lockup__text--ayache {
-    animation-name: ayache-choreography;
-  }
-
-  .welcome-loader .lockup__mark-wrapper {
-    width: 200px;
-    height: 200px;
-  }
-
-  .welcome-loader__mark {
-    width: 100%;
-    height: 100%;
+  /* Logo Mark - always perfectly circular */
+  .logo-mark {
+    aspect-ratio: 1 / 1;
+    display: block;
     color: var(--accent);
     transform-origin: center center;
   }
 
-  /* Explicit loader-controlled spin classes */
+  /* Spin animations */
   .isSpinning {
     animation: spin 450ms linear infinite;
   }
@@ -126,19 +76,64 @@
     }
   }
 
-  /* Shared Lockup Component Styles */
-  .lockup__text-wrapper {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+  /* Lockup Component */
+  .lockup {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    z-index: 1;
-    overflow: hidden;
+    gap: clamp(10px, 2.2vw, 18px);
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto;
+    width: 100%;
   }
 
-  .lockup__text {
+  .lockup__measure-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(8px, 1.5vw, 12px);
+    width: 100%;
+  }
+  
+  /* Loader mode - measure group contains emblem + names */
+  .lockup--loader .lockup__measure-group {
+    min-height: var(--mark-loader);
+  }
+  
+  /* Hero mode - measure group contains emblem + name */
+  .lockup--hero .lockup__measure-group {
+    min-height: var(--mark-hero);
+  }
+
+  .lockup__mark-wrapper {
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    position: relative;
+    background-color: var(--bg);
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 2;
+  }
+  
+  /* Occluder mask for names - ensures names slide from behind emblem */
+  .lockup--loader .lockup__mark-wrapper {
+    position: relative;
+    z-index: 2;
+    /* Ensure emblem occludes names */
+    background-color: var(--bg);
+  }
+
+  .lockup__mark-wrapper .logo-mark {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Loader mode names - positioned behind emblem, slide out */
+  .lockup--loader .lockup__name {
     position: absolute;
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     font-weight: 700;
@@ -147,249 +142,184 @@
     text-transform: uppercase;
     color: var(--text);
     white-space: nowrap;
+    z-index: 1;
     opacity: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
   }
 
-  .lockup__text--layth {
+  .lockup--loader .lockup__name--left {
     left: 50%;
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
   }
 
-  .lockup__text--ayache {
+  .lockup--loader .lockup__name--right {
     right: 50%;
-    transform: translateX(50%);
+    transform: translate(50%, -50%);
   }
 
-  .lockup__mark-wrapper {
-    position: absolute;
-    z-index: 2;
+  /* Choreography animations - names slide out from behind emblem */
+  .lockup--loader[data-phase="CHOREO_1_OUT"] .lockup__name--left {
+    opacity: 1;
+    animation: name-slide-out-left 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .lockup--loader[data-phase="CHOREO_1_OUT"] .lockup__name--right {
+    opacity: 1;
+    animation: name-slide-out-right 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .lockup--loader[data-phase="CHOREO_1_IN"] .lockup__name--left,
+  .lockup--loader[data-phase="CHOREO_1_IN"] .lockup__name--right {
+    animation: name-fade-out 0.9s ease-out forwards;
+  }
+
+  .lockup--loader[data-phase="CHOREO_2_OUT_SWAP"] .lockup__name--left {
+    opacity: 1;
+    animation: name-slide-out-right 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .lockup--loader[data-phase="CHOREO_2_OUT_SWAP"] .lockup__name--right {
+    opacity: 1;
+    animation: name-slide-out-left 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .lockup--loader[data-phase="CHOREO_2_IN"] .lockup__name--left,
+  .lockup--loader[data-phase="CHOREO_2_IN"] .lockup__name--right {
+    animation: name-fade-out 0.9s ease-out forwards;
+  }
+
+  .lockup--loader[data-phase="CHOREO_3_OUT"] .lockup__name--left {
+    opacity: 1;
+    animation: name-slide-out-left 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  .lockup--loader[data-phase="CHOREO_3_OUT"] .lockup__name--right {
+    opacity: 1;
+    animation: name-slide-out-right 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+  
+  /* Emblem spins continuously during all choreography phases and settle */
+  /* Applied via data-phase attribute and isSpinning class */
+  .lockup--loader[data-phase="BOOT"] .logo-mark,
+  .lockup--loader[data-phase="CHOREO_1_OUT"] .logo-mark,
+  .lockup--loader[data-phase="CHOREO_1_IN"] .logo-mark,
+  .lockup--loader[data-phase="CHOREO_2_OUT_SWAP"] .logo-mark,
+  .lockup--loader[data-phase="CHOREO_2_IN"] .logo-mark,
+  .lockup--loader[data-phase="CHOREO_3_OUT"] .logo-mark,
+  .lockup--loader[data-phase="SETTLE"] .logo-mark {
+    animation: spin 450ms linear infinite;
+  }
+  
+  /* Apply spinning class when present (fallback) */
+  .lockup--loader .logo-mark.isSpinning {
+    animation: spin 450ms linear infinite;
+  }
+  
+  .lockup--loader .logo-mark.stopSpin {
+    animation: spinDecel 900ms cubic-bezier(0.12, 0.9, 0.2, 1) forwards;
+  }
+
+  @keyframes name-slide-out-left {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%);
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: translate(calc(-50% - var(--travel-x)), -50%);
+    }
+  }
+
+  @keyframes name-slide-out-right {
+    0% {
+      opacity: 0;
+      transform: translate(50%, -50%);
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+      transform: translate(calc(50% + var(--travel-x)), -50%);
+    }
+  }
+
+  @keyframes name-fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* Hero mode name */
+  .lockup--hero .lockup__name--hero {
+    font-weight: 800;
+    font-size: var(--name-size);
+    line-height: 1.08;
+    margin: 0;
+    padding: 0;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    width: 100%;
+  }
+
+  .lockup__motto {
+    margin: 0;
+    font-size: var(--motto-size);
+    color: var(--text);
+    min-height: 1.5em;
+  }
+
+  .lockup__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: clamp(8px, 1.5vw, 12px);
+  }
+
+  /* Header */
+  .header-emblem {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--bg);
-    border-radius: 50%;
+  }
+
+  .header-emblem__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease-out;
+    width: var(--mark-header);
+    height: var(--mark-header);
     aspect-ratio: 1 / 1;
   }
 
-  .lockup__mark {
-    width: 100%;
-    height: 100%;
-    color: var(--accent);
-    transform-origin: center center;
-    aspect-ratio: 1 / 1;
-    display: block;
-  }
-
-  /* LAYTH choreography - 3 phases of reveal */
-  @keyframes layth-choreography {
-    /* Phase 1: Reveal left (1.4s - 2.1s) */
-    25.5% {
-      opacity: 0;
-      transform: translateX(-50%);
-    }
-    30% {
-      opacity: 1;
-    }
-    38.2% {
-      opacity: 1;
-      transform: translateX(calc(-50% - clamp(100px, 15vw, 180px)));
-    }
-    /* Phase 2: Return to center (2.5s - 2.9s) */
-    45.5% {
-      opacity: 1;
-      transform: translateX(calc(-50% - clamp(100px, 15vw, 180px)));
-    }
-    52.7% {
-      opacity: 0;
-      transform: translateX(-50%);
-    }
-    /* Phase 3: Reveal right (swapped) (3.0s - 3.7s) */
-    54.5% {
-      opacity: 0;
-      transform: translateX(-50%);
-    }
-    58.2% {
-      opacity: 1;
-    }
-    67.3% {
-      opacity: 1;
-      transform: translateX(calc(-50% + clamp(100px, 15vw, 180px)));
-    }
-    /* Phase 4: Return to center (4.1s - 4.5s) */
-    74.5% {
-      opacity: 1;
-      transform: translateX(calc(-50% + clamp(100px, 15vw, 180px)));
-    }
-    81.8% {
-      opacity: 0;
-      transform: translateX(-50%);
-    }
-    /* Phase 5: Final reveal left (4.6s - 5.5s) */
-    83.6% {
-      opacity: 0;
-      transform: translateX(-50%);
-    }
-    87.3% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(calc(-50% - clamp(100px, 15vw, 180px)));
-    }
-  }
-
-  /* AYACHE choreography - 3 phases of reveal */
-  @keyframes ayache-choreography {
-    /* Phase 1: Reveal right (1.4s - 2.1s) */
-    25.5% {
-      opacity: 0;
-      transform: translateX(50%);
-    }
-    30% {
-      opacity: 1;
-    }
-    38.2% {
-      opacity: 1;
-      transform: translateX(calc(50% + clamp(100px, 15vw, 180px)));
-    }
-    /* Phase 2: Return to center (2.5s - 2.9s) */
-    45.5% {
-      opacity: 1;
-      transform: translateX(calc(50% + clamp(100px, 15vw, 180px)));
-    }
-    52.7% {
-      opacity: 0;
-      transform: translateX(50%);
-    }
-    /* Phase 3: Reveal left (swapped) (3.0s - 3.7s) */
-    54.5% {
-      opacity: 0;
-      transform: translateX(50%);
-    }
-    58.2% {
-      opacity: 1;
-    }
-    67.3% {
-      opacity: 1;
-      transform: translateX(calc(50% - clamp(100px, 15vw, 180px)));
-    }
-    /* Phase 4: Return to center (4.1s - 4.5s) */
-    74.5% {
-      opacity: 1;
-      transform: translateX(calc(50% - clamp(100px, 15vw, 180px)));
-    }
-    81.8% {
-      opacity: 0;
-      transform: translateX(50%);
-    }
-    /* Phase 5: Final reveal right (4.6s - 5.5s) */
-    83.6% {
-      opacity: 0;
-      transform: translateX(50%);
-    }
-    87.3% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(calc(50% + clamp(100px, 15vw, 180px)));
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .welcome-loader .lockup__mark {
-      animation: mark-fade-in 600ms ease-out forwards;
-    }
-
-    .welcome-loader .lockup__mark.stopSpin {
-      animation: mark-fade-in 600ms ease-out forwards;
-    }
-
-    .welcome-loader .lockup__text {
-      animation: text-fade-in-static 600ms ease-out 300ms forwards;
-    }
-
-    .welcome-loader__container {
-      animation: none !important;
-      transform: none !important;
-    }
-
-    @keyframes mark-fade-in {
-      0% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    @keyframes text-fade-in-static {
-      0% {
-        opacity: 0;
-      }
-      100% {
-        opacity: 1;
-      }
-    }
-
-    .welcome-loader .lockup__text--layth {
-      animation-name: text-fade-in-static;
-      transform: translateX(calc(-50% - clamp(80px, 12vw, 140px)));
-    }
-
-    .welcome-loader .lockup__text--ayache {
-      animation-name: text-fade-in-static;
-      transform: translateX(calc(50% + clamp(80px, 12vw, 140px)));
-    }
-  }
-
-  /* Logo Mark Hover Rotation */
-  .logo-mark {
-    transform-origin: center center;
-    cursor: pointer;
-    aspect-ratio: 1 / 1;
-    display: block;
-  }
-
-  @keyframes logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .logo-mark {
-      animation: none !important;
-    }
-  }
-
-  /* Theme Toggle Styles */
-  .theme-toggle {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    border: 1px solid;
-    border-radius: 0.25rem;
-    transition: opacity 200ms ease;
-    cursor: pointer;
-  }
-
-  .theme-toggle:hover {
+  .header-emblem__button:hover {
     opacity: 0.8;
   }
 
-  .theme-toggle:focus-visible {
+  .header-emblem__button:focus-visible {
     outline: 2px solid var(--accent);
-    outline-offset: 3px;
+    outline-offset: 4px;
+    border-radius: 4px;
   }
 
-  /* Typewriter Styles */
+  /* Typewriter */
   .typewriter-text {
     display: inline-block;
+    color: var(--text);
   }
 
   .typewriter-caret {
@@ -408,92 +338,73 @@
     }
   }
 
-  /* Reveal Animations */
-  .reveal-global {
+  /* Reveal animations */
+  .reveal-header,
+  .reveal-global,
+  .reveal-ctas,
+  .reveal-content {
     opacity: 0;
     transform: translateY(-10px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
     pointer-events: none;
   }
 
-  .reveal-global.revealed {
+  .reveal-header.revealed,
+  .reveal-global.revealed,
+  .reveal-ctas.revealed,
+  .reveal-content.revealed {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
   }
 
-  .reveal-ctas {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+  /* Theme Toggle */
+  .theme-toggle {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border: 1px solid;
+    border-color: var(--text);
+    color: var(--text);
+    background-color: var(--bg);
+    border-radius: 0.25rem;
+    transition: opacity 200ms ease;
+    cursor: pointer;
   }
 
-  .reveal-ctas.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .reveal-page-content {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-  }
-
-  .reveal-page-content.revealed {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Hide content during loader */
-  body:not(.loader-complete) .reveal-global,
-  body:not(.loader-complete) .reveal-ctas,
-  body:not(.loader-complete) .reveal-page-content {
-    opacity: 0;
-  }
-
-  /* Hero Lockup Anchor - hidden until settle completes */
-  .hero-lockup-anchor {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease-out;
-  }
-
-  body.loader-complete .hero-lockup-anchor {
-    pointer-events: auto;
-  }
-
-  /* Header Emblem */
-  .header-emblem {
-    position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .header-emblem__button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.2s ease-out;
-  }
-
-  .header-emblem__button:hover {
+  .theme-toggle:hover {
     opacity: 0.8;
   }
 
-  .header-emblem__button:focus-visible {
+  .theme-toggle:focus-visible {
     outline: 2px solid var(--accent);
-    outline-offset: 4px;
-    border-radius: 4px;
+    outline-offset: 3px;
   }
 
+  /* Experience Overlay Container */
+  .experience-overlay__container {
+    position: relative;
+    width: min(600px, 90vw);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
+    .lockup--loader .lockup__name {
+      animation: none !important;
+      opacity: 0;
+    }
+
+    .isSpinning,
+    .stopSpin {
+      animation: none !important;
+    }
+
+    .reveal-header,
     .reveal-global,
     .reveal-ctas,
-    .reveal-page-content {
+    .reveal-content {
       transition: opacity 0.4s ease-out;
       transform: none;
     }

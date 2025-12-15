@@ -1,111 +1,33 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-
 interface LogoMarkProps {
   className?: string;
   size?: number;
 }
 
-export default function LogoMark({ className = "", size = 100 }: LogoMarkProps) {
-  const [rotationSpeed, setRotationSpeed] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
-  const hoverStartTime = useRef<number | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const svgRef = useRef<SVGSVGElement>(null);
-
-  // Check if this logo is in loader context (has isSpinning or stopSpin class)
-  const isLoaderContext = className.includes("isSpinning") || className.includes("stopSpin");
-
-  useEffect(() => {
-    // Only apply hover behavior if not in loader context
-    if (isLoaderContext) {
-      return;
-    }
-
-    if (isHovering) {
-      const updateSpeed = () => {
-        if (hoverStartTime.current) {
-          const hoverDuration = Date.now() - hoverStartTime.current;
-          // Accelerate from 2s to 0.3s over 3 seconds of hover
-          const maxDuration = 3000; // 3 seconds
-          const minSpeed = 2; // 2 seconds per rotation (slow)
-          const maxSpeed = 0.3; // 0.3 seconds per rotation (fast)
-          
-          const progress = Math.min(hoverDuration / maxDuration, 1);
-          const speed = minSpeed - (minSpeed - maxSpeed) * progress;
-          
-          setRotationSpeed(speed);
-          animationFrameRef.current = requestAnimationFrame(updateSpeed);
-        }
-      };
-      
-      hoverStartTime.current = Date.now();
-      updateSpeed();
-
-      // Set timeout to refresh page after 3 seconds
-      refreshTimeoutRef.current = setTimeout(() => {
-        // Clear sessionStorage to restart the loader
-        sessionStorage.removeItem("hasSeenLoader");
-        window.location.reload();
-      }, 3000);
-    } else {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      if (refreshTimeoutRef.current) {
-        clearTimeout(refreshTimeoutRef.current);
-        refreshTimeoutRef.current = null;
-      }
-      setRotationSpeed(0);
-      hoverStartTime.current = null;
-    }
-
-    return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
-      }
-      if (refreshTimeoutRef.current) {
-        clearTimeout(refreshTimeoutRef.current);
-      }
-    };
-  }, [isHovering, isLoaderContext]);
-
-  const handleMouseEnter = () => {
-    if (!isLoaderContext) {
-      setIsHovering(true);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    if (!isLoaderContext) {
-      setIsHovering(false);
-    }
-  };
-
+/**
+ * Canonical LogoMark component - always perfectly circular
+ * Size controlled by CSS variable when size={0}
+ */
+export default function LogoMark({ className = "", size }: LogoMarkProps) {
+  const svgSize = size && size > 0 ? size : undefined;
+  
   return (
     <svg
-      ref={svgRef}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="Layth Ayache mark"
       className={`logo-mark ${className}`}
-      width={size}
-      height={size}
+      width={svgSize}
+      height={svgSize}
       style={{ 
         color: "var(--accent)",
-        animation: !isLoaderContext && rotationSpeed > 0 ? `logo-spin ${rotationSpeed}s linear infinite` : undefined,
-        transformOrigin: "center center",
-        cursor: isLoaderContext ? "default" : "pointer",
-        transition: !isLoaderContext ? "animation 0.1s ease-out" : undefined,
         aspectRatio: "1 / 1",
-        display: "block"
+        display: "block",
+        ...(svgSize ? {} : { width: "100%", height: "100%" })
       }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <g fill="none" stroke="currentColor" strokeWidth="16" strokeLinecap="butt">
         <path d="M 72.98 69.28 A 30 30 0 0 1 23.52 34.61" />

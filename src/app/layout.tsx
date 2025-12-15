@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ExperienceProvider } from "@/contexts/ExperienceContext";
-import WelcomeLoaderWrapper from "@/components/WelcomeLoaderWrapper";
+import { ExperienceProvider } from "@/experience/ExperienceProvider";
+import ExperienceOverlay from "@/components/ExperienceOverlay";
 import ThemeToggle from "@/components/ThemeToggle";
 import Header from "@/components/Header";
-import ColorVerification from "@/components/ColorVerification";
+import DebugOverlay from "@/components/DebugOverlay";
+import SpecVerificationPanel from "@/components/SpecVerificationPanel";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,9 +45,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
         <ExperienceProvider>
-          <ColorVerification />
           <Header />
-          <WelcomeLoaderWrapper />
+          <ExperienceOverlay />
+          <DebugOverlay />
+          <SpecVerificationPanel />
           <div className="fixed top-6 right-6 z-50 reveal-global">
             <ThemeToggle />
           </div>

@@ -21,50 +21,27 @@ export default function Typewriter({
 
   useEffect(() => {
     if (displayedText.length < text.length) {
-      // Add natural variance to typing speed
-      const variance = Math.random() * 20 - 10; // -10 to +10ms
-      const delay = speed + variance;
-
       const timeout = setTimeout(() => {
         setDisplayedText(text.slice(0, displayedText.length + 1));
-      }, delay);
+      }, speed);
 
       return () => clearTimeout(timeout);
     } else if (!isComplete) {
       setIsComplete(true);
-      // Blink caret for 400ms then hide
-      setTimeout(() => {
-        setShowCaret(false);
-        if (onComplete) {
+      setShowCaret(false);
+      if (onComplete) {
+        // Small delay before calling onComplete
+        setTimeout(() => {
           onComplete();
-        }
-      }, 400);
+        }, 300);
+      }
     }
   }, [displayedText, text, speed, isComplete, onComplete]);
 
-  // Check for reduced motion
-  const prefersReducedMotion = typeof window !== "undefined" && 
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // If reduced motion, show text instantly
-  useEffect(() => {
-    if (prefersReducedMotion) {
-      setDisplayedText(text);
-      setIsComplete(true);
-      setShowCaret(false);
-      if (onComplete) {
-        setTimeout(() => onComplete(), 100);
-      }
-    }
-  }, [prefersReducedMotion, text, onComplete]);
-
   return (
     <span className={`typewriter-text ${className}`} style={{ color: "var(--text)" }}>
-      {prefersReducedMotion ? text : displayedText}
-      {showCaret && !prefersReducedMotion && (
-        <span className="typewriter-caret" aria-hidden="true">|</span>
-      )}
+      {displayedText}
+      {showCaret && <span className="typewriter-caret">|</span>}
     </span>
   );
 }
-

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useExperience } from "@/contexts/ExperienceContext";
+import { useExperience } from "@/experience/ExperienceProvider";
 import LogoMark from "./LogoMark";
 
 export default function Header() {
@@ -18,18 +18,18 @@ export default function Header() {
     }
     
     // Scroll to top immediately
-    window.scrollTo({ top: 0, behavior: "instant" as any });
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     
     // Start replay
     startReplay();
   };
 
-  // Only show header when phase is ready
-  const isVisible = phase === "ready";
+  // Only show header when phase is READY
+  const isVisible = phase === "READY";
 
   return (
     <header
-      className="header-emblem"
+      className="header-emblem reveal-header"
       style={{
         opacity: isVisible ? 1 : 0,
         pointerEvents: isVisible ? "auto" : "none",
@@ -48,7 +48,7 @@ export default function Header() {
           cursor: isVisible ? "pointer" : "default",
         }}
       >
-        <LogoMark size={40} />
+        <LogoMark size={0} />
       </button>
     </header>
   );
