@@ -7,6 +7,8 @@ import ThemeToggle from "@/components/ThemeToggle";
 import Header from "@/components/Header";
 import DebugOverlay from "@/components/DebugOverlay";
 import SpecVerificationPanel from "@/components/SpecVerificationPanel";
+import StructuredData from "@/components/StructuredData";
+import { defaultMetadata } from "./metadata";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,15 +16,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
-  title: "Layth Ayache | AI, Security, Digital Infrastructure",
-  description: "Engineering systems that fail gracefully under pressure. Focused on AI, security, and digital infrastructure for government, healthcare, and public services.",
-  metadataBase: new URL("https://laythayache.com"),
-  icons: {
-    icon: "/logo/emblem.svg",
-    apple: "/logo/emblem.svg",
-  },
-};
+export const metadata: Metadata = defaultMetadata;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -44,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
+        <StructuredData />
         <ExperienceProvider>
           <Header />
           <ExperienceOverlay />

@@ -7,6 +7,7 @@ import Typewriter from "@/components/Typewriter";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Tag from "@/components/ui/Tag";
+import EmblemBloom from "@/components/EmblemBloom";
 
 export default function HomePage() {
   const { phase, setPhase } = useExperience();
@@ -85,63 +86,66 @@ export default function HomePage() {
   ];
 
   const capabilities = [
-    "AI/ML",
-    "Computer Vision",
-    "NLP",
-    "Networking",
-    "Embedded Systems",
-    "Security",
-    "Deployment",
-    "System Architecture",
+    "AI/ML", "Computer Vision", "NLP", "Networking", "Embedded Systems",
+    "Security", "Deployment", "System Architecture",
   ];
 
-  // Hero lockup must exist in DOM from start (opacity 0) for FLIP measurement
-  const isHeroVisible = phase === "READY" || phase === "REVEAL" || phase === "TYPE";
+  const isReadyOrReveal = phase === "READY" || phase === "REVEAL";
+  const shouldStartTyping = phase === "TYPE";
 
   return (
     <>
+      {/* Emblem Bloom - only visible in READY phase */}
+      {phase === "READY" && <EmblemBloom />}
+      
       {/* Hero */}
       <section className="min-h-screen flex flex-col items-center justify-center py-20 px-6">
         <div className="w-full">
-          <Lockup
-            ref={heroLockupRef}
-            mode="hero"
-            showMotto={true}
-            showCtas={true}
-            nameLeft="Layth"
-            nameRight="Ayache"
-            markSizeVar="--mark-hero"
-            className={isHeroVisible ? "" : "hero-lockup-hidden"}
-            style={{
-              opacity: isHeroVisible ? 1 : 0,
-              pointerEvents: isHeroVisible ? "auto" : "none",
-            }}
-          >
-            {phase === "TYPE" ? (
-              <Typewriter
-                text="grow to love and love to grow"
-                onComplete={handleTypewriterComplete}
-                speed={45}
-              />
-            ) : phase === "READY" || phase === "REVEAL" ? (
-              "grow to love and love to grow"
-            ) : null}
-            <div className={`lockup__ctas reveal-ctas ${phase === "READY" || phase === "REVEAL" ? "revealed" : ""}`}>
-              <Button href="#work" variant="primary">
-                Projects
-              </Button>
-              <Button href="/resume.pdf" variant="secondary">
-                Resume
-              </Button>
-            </div>
-          </Lockup>
+          {/* Hero Lockup - rendered from initial render with opacity: 0, occupying final layout */}
+          <div ref={heroLockupRef}>
+            <Lockup
+              mode="hero"
+              showMotto={false}
+              showCtas={false}
+              markSizeVar="--mark-hero"
+              className="hero-lockup-anchor"
+              style={{
+                opacity: 0, // Initially hidden, revealed by overlay
+              }}
+            >
+              {/* Motto with typewriter */}
+              <p className="lockup__motto">
+                {shouldStartTyping ? (
+                  <Typewriter
+                    text="grow to love and love to grow"
+                    onComplete={handleTypewriterComplete}
+                    speed={45}
+                  />
+                ) : phase === "READY" || phase === "REVEAL" ? (
+                  "grow to love and love to grow"
+                ) : null}
+              </p>
+              
+              {/* CTAs */}
+              <div
+                className={`lockup__ctas flex flex-wrap gap-4 justify-center reveal-ctas ${isReadyOrReveal ? "revealed" : ""}`}
+              >
+                <Button href="#work" variant="primary">
+                  Projects
+                </Button>
+                <Button href="/resume.pdf" variant="secondary">
+                  Resume
+                </Button>
+              </div>
+            </Lockup>
+          </div>
         </div>
       </section>
 
       {/* Selected Work */}
-      <section 
-        id="work" 
-        className={`py-20 px-6 reveal-content ${phase === "READY" || phase === "REVEAL" ? "revealed" : ""}`}
+      <section
+        id="work"
+        className={`py-20 px-6 reveal-content ${isReadyOrReveal ? "revealed" : ""}`}
       >
         <div className="max-w-6xl mx-auto w-full">
           <h2 className="text-3xl font-bold mb-12" style={{ color: "var(--text)" }}>
@@ -162,8 +166,8 @@ export default function HomePage() {
       </section>
 
       {/* Capabilities */}
-      <section 
-        className={`py-20 px-6 reveal-content ${phase === "READY" || phase === "REVEAL" ? "revealed" : ""}`}
+      <section
+        className={`py-20 px-6 reveal-content ${isReadyOrReveal ? "revealed" : ""}`}
         style={{ backgroundColor: "var(--bg)" }}
       >
         <div className="max-w-6xl mx-auto w-full">
@@ -179,8 +183,8 @@ export default function HomePage() {
       </section>
 
       {/* About */}
-      <section 
-        className={`py-20 px-6 reveal-content ${phase === "READY" || phase === "REVEAL" ? "revealed" : ""}`}
+      <section
+        className={`py-20 px-6 reveal-content ${isReadyOrReveal ? "revealed" : ""}`}
       >
         <div className="max-w-3xl mx-auto w-full">
           <h2 className="text-3xl font-bold mb-8" style={{ color: "var(--text)" }}>
@@ -198,8 +202,8 @@ export default function HomePage() {
       </section>
 
       {/* Contact */}
-      <section 
-        className={`py-20 px-6 reveal-content ${phase === "READY" || phase === "REVEAL" ? "revealed" : ""}`}
+      <section
+        className={`py-20 px-6 reveal-content ${isReadyOrReveal ? "revealed" : ""}`}
         style={{ backgroundColor: "var(--bg)" }}
       >
         <div className="max-w-3xl mx-auto w-full text-center space-y-6">
@@ -211,7 +215,7 @@ export default function HomePage() {
               <a
                 href="mailto:layth@example.com"
                 className="hover:underline"
-                style={{ 
+                style={{
                   color: "var(--text)",
                   textDecorationColor: "var(--accent)",
                   textUnderlineOffset: "2px"
@@ -226,7 +230,7 @@ export default function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
-                style={{ 
+                style={{
                   color: "var(--text)",
                   textDecorationColor: "var(--accent)",
                   textUnderlineOffset: "2px"
@@ -239,7 +243,7 @@ export default function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:underline"
-                style={{ 
+                style={{
                   color: "var(--text)",
                   textDecorationColor: "var(--accent)",
                   textUnderlineOffset: "2px"
@@ -253,8 +257,8 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer 
-        className={`py-8 px-6 border-t text-center text-sm reveal-content ${phase === "READY" || phase === "REVEAL" ? "revealed" : ""}`}
+      <footer
+        className={`py-8 px-6 border-t text-center text-sm reveal-content ${isReadyOrReveal ? "revealed" : ""}`}
         style={{ borderColor: "var(--text)", color: "var(--text)", opacity: 0.5 }}
       >
         <p>© {new Date().getFullYear()} Layth Ayache</p>

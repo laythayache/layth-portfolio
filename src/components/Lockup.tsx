@@ -14,6 +14,7 @@ interface LockupProps {
   className?: string;
   style?: React.CSSProperties;
   children?: React.ReactNode; // For CTAs or custom motto
+  "data-phase"?: string; // For choreography phase tracking
 }
 
 /**
@@ -33,6 +34,7 @@ const Lockup = forwardRef<HTMLDivElement, LockupProps>(
       className = "",
       style,
       children,
+      "data-phase": dataPhase,
     },
     ref
   ) => {
@@ -53,7 +55,11 @@ const Lockup = forwardRef<HTMLDivElement, LockupProps>(
     };
     
     return (
-      <div className={`lockup lockup--${mode} ${className}`} style={style}>
+      <div 
+        className={`lockup lockup--${mode} ${className}`} 
+        style={style}
+        data-phase={dataPhase}
+      >
         <div ref={setMeasureRef} className="lockup__measure-group">
           {/* Emblem */}
           <div className="lockup__mark-wrapper" style={{ width: `var(${markSizeVar})`, height: `var(${markSizeVar})` }}>
