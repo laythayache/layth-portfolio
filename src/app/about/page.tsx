@@ -3,7 +3,7 @@ export default function AboutPage() {
     <section className="space-y-6">
       <h1 className="text-2xl font-semibold">About</h1>
       <p className="max-w-2xl text-zinc-700">
-        I'm Layth Ayache. I focus on applied machine learning, computer vision, and building end-to-end systems
+        I&apos;m Layth Ayache. I focus on applied machine learning, computer vision, and building end-to-end systems
         that are measurable and shippable.
       </p>
       <div className="rounded-lg border p-5">
