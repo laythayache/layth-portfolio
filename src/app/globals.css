@@ -1,3 +1,49 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #0E0F11;
+    --bg-secondary: #111315;
+    --text-primary: #EDEDED;
+    --text-secondary: #9AA0A6;
+    --accent: #7A846E;
+  }
+  
+  * {
+    @apply border-[var(--accent)]/20;
+  }
+  
+  body {
+    @apply bg-[var(--bg-primary)] text-[var(--text-primary)] antialiased;
+  }
+}
+
+@layer utilities {
+  .pulse-indicator {
+    @apply relative;
+  }
+  
+  .pulse-indicator::before {
+    content: '';
+    @apply absolute -left-2 top-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-[var(--accent)] opacity-60;
+    animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse-subtle {
+    0%, 100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-indicator::before {
+      animation: none;
+      opacity: 0.6;
+    }
+  }
+}
