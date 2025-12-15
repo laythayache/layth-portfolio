@@ -17,7 +17,7 @@ export default function Button({
   variant = "primary",
   className = "",
 }: ButtonProps) {
-  const baseStyles = "px-6 py-3 text-sm font-medium rounded transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+  const baseStyles = "px-6 py-3 text-sm font-medium rounded transition-colors focus:outline-none";
   
   const style =
     variant === "primary"
@@ -46,14 +46,40 @@ export default function Button({
           href={href}
           onClick={handleClick}
           className={`${baseStyles} ${variant === "primary" ? "" : "border"} ${className}`}
-          style={style}
+          style={{
+            ...style,
+            ...(variant === "primary" ? {} : { borderColor: "var(--text)" }),
+          }}
+          onFocus={(e) => {
+            e.currentTarget.style.outline = "2px solid var(--accent)";
+            e.currentTarget.style.outlineOffset = "3px";
+          }}
+          onBlur={(e) => {
+            e.currentTarget.style.outline = "";
+            e.currentTarget.style.outlineOffset = "";
+          }}
         >
           {children}
         </a>
       );
     }
     return (
-      <Link href={href} className={`${baseStyles} ${variant === "primary" ? "" : "border"} ${className}`} style={style}>
+      <Link 
+        href={href} 
+        className={`${baseStyles} ${variant === "primary" ? "" : "border"} ${className}`} 
+        style={{
+          ...style,
+          ...(variant === "primary" ? {} : { borderColor: "var(--text)" }),
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.outline = "2px solid var(--accent)";
+          e.currentTarget.style.outlineOffset = "3px";
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.outline = "";
+          e.currentTarget.style.outlineOffset = "";
+        }}
+      >
         {children}
       </Link>
     );
@@ -63,7 +89,18 @@ export default function Button({
     <button
       onClick={onClick}
       className={`${baseStyles} ${variant === "primary" ? "" : "border"} ${className}`}
-      style={style}
+      style={{
+        ...style,
+        ...(variant === "primary" ? {} : { borderColor: "var(--text)" }),
+      }}
+      onFocus={(e) => {
+        e.currentTarget.style.outline = "2px solid var(--accent)";
+        e.currentTarget.style.outlineOffset = "3px";
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.outline = "";
+        e.currentTarget.style.outlineOffset = "";
+      }}
     >
       {children}
     </button>

@@ -13,8 +13,17 @@ export default function LogoMark({ className = "", size = 100 }: LogoMarkProps) 
   const hoverStartTime = useRef<number | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const refreshTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  // Check if this logo is in loader context (has isSpinning or stopSpin class)
+  const isLoaderContext = className.includes("isSpinning") || className.includes("stopSpin");
 
   useEffect(() => {
+    // Only apply hover behavior if not in loader context
+    if (isLoaderContext) {
+      return;
+    }
+
     if (isHovering) {
       const updateSpeed = () => {
         if (hoverStartTime.current) {
@@ -61,20 +70,26 @@ export default function LogoMark({ className = "", size = 100 }: LogoMarkProps) 
         clearTimeout(refreshTimeoutRef.current);
       }
     };
-  }, [isHovering]);
+  }, [isHovering, isLoaderContext]);
 
   const handleMouseEnter = () => {
-    setIsHovering(true);
+    if (!isLoaderContext) {
+      setIsHovering(true);
+    }
   };
 
   const handleMouseLeave = () => {
-    setIsHovering(false);
+    if (!isLoaderContext) {
+      setIsHovering(false);
+    }
   };
 
   return (
     <svg
+      ref={svgRef}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid meet"
       role="img"
       aria-label="Layth Ayache mark"
       className={`logo-mark ${className}`}
@@ -82,10 +97,12 @@ export default function LogoMark({ className = "", size = 100 }: LogoMarkProps) 
       height={size}
       style={{ 
         color: "var(--accent)",
-        animation: rotationSpeed > 0 ? `logo-spin ${rotationSpeed}s linear infinite` : "none",
+        animation: !isLoaderContext && rotationSpeed > 0 ? `logo-spin ${rotationSpeed}s linear infinite` : undefined,
         transformOrigin: "center center",
-        cursor: "pointer",
-        transition: "animation 0.1s ease-out"
+        cursor: isLoaderContext ? "default" : "pointer",
+        transition: !isLoaderContext ? "animation 0.1s ease-out" : undefined,
+        aspectRatio: "1 / 1",
+        display: "block"
       }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import LogoMark from "@/components/LogoMark";
+import Lockup from "@/components/Lockup";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Tag from "@/components/ui/Tag";
 import Typewriter from "@/components/Typewriter";
+import { useExperience } from "@/contexts/ExperienceContext";
 
 export default function HomePage() {
-  const [revealPhase, setRevealPhase] = useState<"loader" | "typing" | "globalReveal" | "pageReveal">("loader");
+  const { phase, setPhase, replayToken } = useExperience();
   const [shouldStartTyping, setShouldStartTyping] = useState(false);
   const heroLockupRef = useRef<HTMLDivElement>(null);
 
@@ -18,51 +19,43 @@ export default function HomePage() {
       (window as any).__heroLockupRef = heroLockupRef.current;
     }
 
-    // Check if loader has been seen before (route change)
-    const hasSeenLoader = sessionStorage.getItem("hasSeenLoader");
-    if (hasSeenLoader) {
-      // Skip loader on subsequent navigations - show everything immediately
-      setRevealPhase("pageReveal");
-      // Trigger reveals immediately
-      setTimeout(() => {
-        document.querySelectorAll('.reveal-global').forEach(el => el.classList.add('revealed'));
-        document.querySelectorAll('.reveal-ctas').forEach(el => el.classList.add('revealed'));
-        document.querySelectorAll('.reveal-page-content').forEach(el => el.classList.add('revealed'));
-      }, 100);
-      return;
-    }
-
-    // Listen for loader completion
-    const checkLoaderComplete = () => {
-      if (document.body.classList.contains("loader-complete")) {
-        setRevealPhase("typing");
-        setShouldStartTyping(true);
-      }
-    };
-
-    // Check immediately and set up interval
-    checkLoaderComplete();
-    const interval = setInterval(checkLoaderComplete, 100);
-
     return () => {
-      clearInterval(interval);
       delete (window as any).__heroLockupRef;
     };
   }, []);
 
-  const handleTypingComplete = () => {
-    setRevealPhase("globalReveal");
-    // Reveal global elements (ThemeToggle)
-    setTimeout(() => {
+  // Handle phase transitions
+  useEffect(() => {
+    if (phase === "typing") {
+      setShouldStartTyping(true);
+    } else if (phase === "reveal") {
+      // Reveal global elements (ThemeToggle)
+      setTimeout(() => {
+        document.querySelectorAll('.reveal-global').forEach(el => el.classList.add('revealed'));
+      }, 50);
+      
+      // After global reveal, show CTAs and page content
+      setTimeout(() => {
+        setPhase("ready");
+        document.querySelectorAll('.reveal-ctas').forEach(el => el.classList.add('revealed'));
+        document.querySelectorAll('.reveal-page-content').forEach(el => el.classList.add('revealed'));
+      }, 600);
+    } else if (phase === "ready") {
+      // Ensure all reveals are shown
       document.querySelectorAll('.reveal-global').forEach(el => el.classList.add('revealed'));
-    }, 50);
-    
-    // After global reveal, show CTAs and page content
-    setTimeout(() => {
-      setRevealPhase("pageReveal");
       document.querySelectorAll('.reveal-ctas').forEach(el => el.classList.add('revealed'));
       document.querySelectorAll('.reveal-page-content').forEach(el => el.classList.add('revealed'));
-    }, 600);
+    } else if (phase === "loader" || phase === "boot") {
+      // Reset reveals during loader
+      setShouldStartTyping(false);
+      document.querySelectorAll('.reveal-global').forEach(el => el.classList.remove('revealed'));
+      document.querySelectorAll('.reveal-ctas').forEach(el => el.classList.remove('revealed'));
+      document.querySelectorAll('.reveal-page-content').forEach(el => el.classList.remove('revealed'));
+    }
+  }, [phase, setPhase, replayToken]);
+
+  const handleTypingComplete = () => {
+    setPhase("reveal");
   };
 
   const projects = [
@@ -102,18 +95,27 @@ export default function HomePage() {
       {/* Hero */}
       <section className="min-h-screen flex flex-col items-center justify-center py-20 px-6">
         <div className="max-w-4xl mx-auto w-full text-center space-y-8">
-          {/* Hero Lockup Anchor - hidden until settle completes */}
+          {/* Hero Lockup Anchor - rendered from initial render with opacity: 0, occupying final layout */}
           <div 
             ref={heroLockupRef}
-            className="hero-lockup-anchor"
+            className="hero-lockup-anchor welcome-loader__container"
+            style={{
+              opacity: 0,
+              position: "relative",
+              width: "min(600px, 90vw)",
+              height: "250px",
+              margin: "0 auto"
+            }}
           >
-            <div className="flex justify-center mb-8" data-hero-emblem>
-              <LogoMark size={120} />
-            </div>
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: "var(--text)" }} data-hero-name>
-                Layth Ayache
-              </h1>
+            <Lockup
+              emblemSize={200}
+              showText={true}
+            />
+          </div>
+          <div className="space-y-4 mt-8">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: "var(--text)" }} data-hero-name>
+              Layth Ayache
+            </h1>
             <div 
               className="text-lg md:text-xl max-w-2xl mx-auto min-h-[1.5em]"
               style={{ color: "var(--text)" }}
@@ -124,14 +126,13 @@ export default function HomePage() {
                   onComplete={handleTypingComplete}
                   className="block"
                 />
-              ) : revealPhase === "pageReveal" ? (
+              ) : phase === "ready" || phase === "reveal" ? (
                 <span style={{ opacity: 1 }}>grow to love and love to grow</span>
               ) : null}
             </div>
           </div>
-          </div>
           <div 
-            className={`flex flex-wrap gap-4 justify-center reveal-ctas ${revealPhase === "globalReveal" || revealPhase === "pageReveal" ? "revealed" : ""}`}
+            className={`flex flex-wrap gap-4 justify-center reveal-ctas ${phase === "ready" || phase === "reveal" ? "revealed" : ""}`}
           >
             <Button href="#work" variant="primary">
               Projects
@@ -146,7 +147,7 @@ export default function HomePage() {
       {/* Selected Work */}
       <section 
         id="work" 
-        className={`py-20 px-6 reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+        className={`py-20 px-6 reveal-page-content ${phase === "ready" || phase === "reveal" ? "revealed" : ""}`}
       >
         <div className="max-w-6xl mx-auto w-full">
           <h2 className="text-3xl font-bold mb-12" style={{ color: "var(--text)" }}>
@@ -168,7 +169,7 @@ export default function HomePage() {
 
       {/* Capabilities */}
       <section 
-        className={`py-20 px-6 reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+        className={`py-20 px-6 reveal-page-content ${phase === "ready" || phase === "reveal" ? "revealed" : ""}`}
         style={{ backgroundColor: "var(--bg)" }}
       >
         <div className="max-w-6xl mx-auto w-full">
@@ -185,7 +186,7 @@ export default function HomePage() {
 
       {/* About */}
       <section 
-        className={`py-20 px-6 reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+        className={`py-20 px-6 reveal-page-content ${phase === "ready" || phase === "reveal" ? "revealed" : ""}`}
       >
         <div className="max-w-3xl mx-auto w-full">
           <h2 className="text-3xl font-bold mb-8" style={{ color: "var(--text)" }}>
@@ -204,7 +205,7 @@ export default function HomePage() {
 
       {/* Contact */}
       <section 
-        className={`py-20 px-6 reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+        className={`py-20 px-6 reveal-page-content ${phase === "ready" || phase === "reveal" ? "revealed" : ""}`}
         style={{ backgroundColor: "var(--bg)" }}
       >
         <div className="max-w-3xl mx-auto w-full text-center space-y-6">
@@ -259,7 +260,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer 
-        className={`py-8 px-6 border-t text-center text-sm reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+        className={`py-8 px-6 border-t text-center text-sm reveal-page-content ${phase === "ready" || phase === "reveal" ? "revealed" : ""}`}
         style={{ borderColor: "var(--text)", color: "var(--text)", opacity: 0.5 }}
       >
         <p>© {new Date().getFullYear()} Layth Ayache</p>

@@ -1,19 +1,47 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import LogoMark from "./LogoMark";
+import Lockup from "./Lockup";
 
 interface WelcomeLoaderProps {
   onComplete?: () => void;
+  replayToken?: number;
 }
 
-export default function WelcomeLoader({ onComplete }: WelcomeLoaderProps) {
+export default function WelcomeLoader({ onComplete, replayToken = 0 }: WelcomeLoaderProps) {
   const [phase, setPhase] = useState<"loading" | "settling" | "complete">("loading");
   const [shouldUnmount, setShouldUnmount] = useState(false);
+  const [spinClass, setSpinClass] = useState<"isSpinning" | "stopSpin">("isSpinning");
   const containerRef = useRef<HTMLDivElement>(null);
+  const lockupRef = useRef<HTMLDivElement>(null);
   const hasCalledComplete = useRef(false);
+  const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
 
+  // Reset on replay
   useEffect(() => {
+    // Reset all state when replayToken changes
+    setPhase("loading");
+    setShouldUnmount(false);
+    setSpinClass("isSpinning");
+    hasCalledComplete.current = false;
+    
+    // Clear any existing timeouts
+    timeoutsRef.current.forEach(clearTimeout);
+    timeoutsRef.current = [];
+
+    // Reset container styles
+    if (containerRef.current) {
+      const container = containerRef.current;
+      container.style.position = "";
+      container.style.width = "";
+      container.style.height = "";
+      container.style.left = "";
+      container.style.top = "";
+      container.style.margin = "";
+      container.style.transform = "";
+      container.style.transformOrigin = "";
+    }
+
     // Check if fonts are ready and wait for next paint
     const checkReady = async () => {
       try {
@@ -31,138 +59,159 @@ export default function WelcomeLoader({ onComplete }: WelcomeLoaderProps) {
     const settleTimeout = setTimeout(() => {
       setPhase("settling");
     }, 5500);
+    timeoutsRef.current.push(settleTimeout);
 
     // Max timeout fallback (10s)
     const maxTimeout = setTimeout(() => {
       setPhase("settling");
     }, 10000);
+    timeoutsRef.current.push(maxTimeout);
 
     return () => {
-      clearTimeout(settleTimeout);
-      clearTimeout(maxTimeout);
+      timeoutsRef.current.forEach(clearTimeout);
+      timeoutsRef.current = [];
     };
-  }, []);
+  }, [replayToken]);
 
   useEffect(() => {
     if (phase === "settling") {
-      // Wait for next frame to ensure hero is rendered
-      requestAnimationFrame(() => {
+      // Keep spinning during settle transition
+      setSpinClass("isSpinning");
+      
+      // Wait for fonts and next frame to ensure hero is rendered
+      const measureAndAnimate = async () => {
+        await document.fonts.ready;
         requestAnimationFrame(() => {
-          const container = containerRef.current;
-          const heroLockup = (window as any).__heroLockupRef as HTMLElement | undefined;
-          const markElement = container?.querySelector('.welcome-loader__mark') as HTMLElement;
+          requestAnimationFrame(() => {
+            const container = containerRef.current;
+            const loaderLockup = lockupRef.current;
+            const heroLockup = (window as any).__heroLockupRef as HTMLElement | undefined;
 
-          if (container && heroLockup) {
-            // Measure source (loader lockup) and target (hero lockup) rectangles
-            const sourceRect = container.getBoundingClientRect();
-            const targetRect = heroLockup.getBoundingClientRect();
-
-            // Calculate translation delta
-            const dx = targetRect.left - sourceRect.left;
-            const dy = targetRect.top - sourceRect.top;
-
-            // Calculate scale factors
-            const scaleX = targetRect.width / sourceRect.width;
-            const scaleY = targetRect.height / sourceRect.height;
-            // Use uniform scale (min to ensure it fits)
-            const scale = Math.min(scaleX, scaleY);
-
-            // Lock dimensions to prevent reflow during settle
-            // Set explicit pixel dimensions from measured source rect
-            // Use fixed positioning to prevent layout shifts
-            const containerParent = container.parentElement;
-            if (containerParent) {
-              containerParent.style.position = "fixed";
-              containerParent.style.top = "0";
-              containerParent.style.left = "0";
-              containerParent.style.width = "100%";
-              containerParent.style.height = "100%";
-            }
-            
-            container.style.position = "fixed";
-            container.style.width = `${sourceRect.width}px`;
-            container.style.height = `${sourceRect.height}px`;
-            container.style.left = `${sourceRect.left}px`;
-            container.style.top = `${sourceRect.top}px`;
-            container.style.margin = "0";
-            container.style.transformOrigin = "center center";
-
-            // Add settling class to trigger deceleration animation
-            if (markElement) {
-              markElement.classList.add('settling');
+            if (!container || !loaderLockup) {
+              // Fallback if loader lockup not found
+              const errorTimeout = setTimeout(() => {
+                setPhase("complete");
+                setSpinClass("stopSpin");
+                if (onComplete && !hasCalledComplete.current) {
+                  hasCalledComplete.current = true;
+                  onComplete();
+                }
+                const errorUnmountTimeout = setTimeout(() => {
+                  setShouldUnmount(true);
+                }, 300);
+                timeoutsRef.current.push(errorUnmountTimeout);
+              }, 500);
+              timeoutsRef.current.push(errorTimeout);
+              return;
             }
 
-            // Set transform-origin to center for proper scaling
-            container.style.transformOrigin = "center center";
-            
-            // Apply transform - translate then scale
-            // CSS transforms are applied right-to-left, so to translate then scale visually,
-            // we write: scale(...) translate(...)
-            // Adjust translation by scale factor for precise alignment
-            const adjustedDx = dx / scale;
-            const adjustedDy = dy / scale;
-            
-            container.style.transition = "transform 1.1s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s ease-out 0.5s";
-            container.style.transform = `scale(${scale}) translate(${adjustedDx}px, ${adjustedDy}px)`;
+            if (heroLockup) {
+              // Measure source (loader container) and target (hero lockup) rectangles
+              const sourceRect = container.getBoundingClientRect();
+              const targetRect = heroLockup.getBoundingClientRect();
 
-            // Hide text during settle (it will be replaced by hero name)
-            const textElements = container.querySelectorAll('.welcome-loader__text');
-            textElements.forEach((el) => {
-              (el as HTMLElement).style.opacity = '0';
-            });
+              // Calculate translation delta
+              const dx = targetRect.left - sourceRect.left;
+              const dy = targetRect.top - sourceRect.top;
 
-            // Crossfade handoff: fade hero lockup in during last 300ms of settle
-            setTimeout(() => {
-              if (heroLockup) {
-                heroLockup.style.transition = "opacity 0.3s ease-out";
-                heroLockup.style.opacity = "1";
-              }
-            }, 800); // Start fade-in at 800ms (300ms before settle completes)
+              // Calculate uniform scale
+              const scaleX = targetRect.width / sourceRect.width;
+              const scaleY = targetRect.height / sourceRect.height;
+              const scale = Math.min(scaleX, scaleY);
 
-            // After settle animation, fade out overlay and mark complete
-            setTimeout(() => {
-              setPhase("complete");
-              // Call onComplete callback when loader fully finishes
-              if (onComplete && !hasCalledComplete.current) {
-                hasCalledComplete.current = true;
-                onComplete();
-              }
-              setTimeout(() => {
-                setShouldUnmount(true);
-                // Clean up fixed positioning
-                if (container) {
-                  container.style.position = "";
-                  container.style.width = "";
-                  container.style.height = "";
-                  container.style.left = "";
-                  container.style.top = "";
-                  container.style.margin = "";
+              // Freeze loader container dimensions and set fixed positioning
+              container.style.position = "fixed";
+              container.style.top = `${sourceRect.top}px`;
+              container.style.left = `${sourceRect.left}px`;
+              container.style.width = `${sourceRect.width}px`;
+              container.style.height = `${sourceRect.height}px`;
+              container.style.transformOrigin = "top left";
+              container.style.margin = "0";
+
+              // Hide text during settle (it will be replaced by hero name)
+              const textElements = loaderLockup.querySelectorAll('.lockup__text');
+              textElements.forEach((el) => {
+                (el as HTMLElement).style.opacity = '0';
+              });
+
+              // Apply transform - translate then scale
+              const adjustedDx = dx / scale;
+              const adjustedDy = dy / scale;
+              
+              container.style.transition = "transform 900ms cubic-bezier(0.12, 0.9, 0.2, 1), opacity 0.6s ease-out 0.65s";
+              container.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+
+              // Crossfade handoff: fade hero lockup in during last 250ms of settle
+              const crossfadeTimeout = setTimeout(() => {
+                if (heroLockup) {
+                  heroLockup.style.transition = "opacity 0.25s ease-out";
+                  heroLockup.style.opacity = "1";
                 }
-                const containerParent = container?.parentElement;
-                if (containerParent) {
-                  containerParent.style.position = "";
-                  containerParent.style.top = "";
-                  containerParent.style.left = "";
-                  containerParent.style.width = "";
-                  containerParent.style.height = "";
+              }, 650); // Start fade-in at 650ms (250ms before settle completes)
+              timeoutsRef.current.push(crossfadeTimeout);
+
+              // After settle animation completes, switch to stopSpin
+              const stopSpinTimeout = setTimeout(() => {
+                // Capture current rotation before switching animations
+                const markElement = loaderLockup.querySelector('.lockup__mark') as HTMLElement;
+                if (markElement) {
+                  const computedStyle = window.getComputedStyle(markElement);
+                  const matrix = computedStyle.transform || computedStyle.webkitTransform;
+                  if (matrix && matrix !== 'none') {
+                    const values = matrix.split('(')[1].split(')')[0].split(',');
+                    const a = parseFloat(values[0]);
+                    const b = parseFloat(values[1]);
+                    const angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+                    // Set the starting rotation for stopSpin
+                    markElement.style.setProperty('--spin-start', `${angle}deg`);
+                    markElement.style.setProperty('--spin-end', `${angle + 360}deg`);
+                  }
                 }
-              }, 300);
-            }, 1100);
-          } else {
-            // Fallback if hero not found - just fade out
-            setTimeout(() => {
-              setPhase("complete");
-              if (onComplete && !hasCalledComplete.current) {
-                hasCalledComplete.current = true;
-                onComplete();
-              }
+                setSpinClass("stopSpin");
+                
+                // Wait for stopSpin animation to complete, then fade out overlay
+                const completeTimeout = setTimeout(() => {
+                  setPhase("complete");
+                  if (onComplete && !hasCalledComplete.current) {
+                    hasCalledComplete.current = true;
+                    onComplete();
+                  }
+                  const unmountTimeout = setTimeout(() => {
+                    setShouldUnmount(true);
+                    // Clean up fixed positioning
+                    container.style.position = "";
+                    container.style.width = "";
+                    container.style.height = "";
+                    container.style.left = "";
+                    container.style.top = "";
+                    container.style.margin = "";
+                    container.style.transform = "";
+                    container.style.transformOrigin = "";
+                  }, 300);
+                  timeoutsRef.current.push(unmountTimeout);
+                }, 900); // Wait for stopSpin animation (900ms)
+                timeoutsRef.current.push(completeTimeout);
+              }, 900); // After settle completes (900ms)
+              timeoutsRef.current.push(stopSpinTimeout);
+            } else {
+              // Fallback if hero lockup not found - just fade out
+              setSpinClass("stopSpin");
               setTimeout(() => {
-                setShouldUnmount(true);
-              }, 300);
-            }, 500);
-          }
+                setPhase("complete");
+                if (onComplete && !hasCalledComplete.current) {
+                  hasCalledComplete.current = true;
+                  onComplete();
+                }
+                setTimeout(() => {
+                  setShouldUnmount(true);
+                }, 300);
+              }, 900);
+            }
+          });
         });
-      });
+      };
+
+      measureAndAnimate();
     }
   }, [phase, onComplete]);
 
@@ -178,24 +227,16 @@ export default function WelcomeLoader({ onComplete }: WelcomeLoaderProps) {
       aria-live="polite"
       style={{
         opacity: phase === "settling" ? 1 : phase === "complete" ? 0 : 1,
-        transition: phase === "settling" ? "opacity 0.6s ease-out 0.5s" : phase === "complete" ? "opacity 0.3s ease-out" : "none"
+        transition: phase === "settling" ? "opacity 0.6s ease-out 0.65s" : phase === "complete" ? "opacity 0.3s ease-out" : "none"
       }}
     >
       <div ref={containerRef} className="welcome-loader__container">
-        {/* Text container (behind the mark) */}
-        <div className="welcome-loader__text-wrapper">
-          <div className="welcome-loader__text welcome-loader__text--layth">
-            LAYTH
-          </div>
-          <div className="welcome-loader__text welcome-loader__text--ayache">
-            AYACHE
-          </div>
-        </div>
-
-        {/* Mark (in front, acts as mask/occluder) */}
-        <div className="welcome-loader__mark-wrapper">
-          <LogoMark className="welcome-loader__mark" size={200} />
-        </div>
+        <Lockup
+          ref={lockupRef}
+          emblemSize={200}
+          showText={true}
+          emblemClassName={spinClass}
+        />
       </div>
     </div>
   );

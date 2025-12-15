@@ -48,7 +48,18 @@ export default function Card({ title, outcome, tags, href = "#", className = "" 
   }
 
   return (
-    <Link href={href} className="block focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">
+    <Link 
+      href={href} 
+      className="block focus:outline-none rounded-lg"
+      onFocus={(e) => {
+        e.currentTarget.style.outline = "2px solid var(--accent)";
+        e.currentTarget.style.outlineOffset = "3px";
+      }}
+      onBlur={(e) => {
+        e.currentTarget.style.outline = "";
+        e.currentTarget.style.outlineOffset = "";
+      }}
+    >
       {content}
     </Link>
   );
