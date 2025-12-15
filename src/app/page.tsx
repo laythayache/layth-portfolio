@@ -1,14 +1,61 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import LogoMark from "@/components/LogoMark";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import Tag from "@/components/ui/Tag";
-
-export const metadata = {
-  title: "Layth Ayache | AI, Security, Digital Infrastructure",
-  description: "Engineering systems that fail gracefully under pressure. Focused on AI, security, and digital infrastructure for government, healthcare, and public services.",
-};
+import Typewriter from "@/components/Typewriter";
 
 export default function HomePage() {
+  const [revealPhase, setRevealPhase] = useState<"loader" | "typing" | "globalReveal" | "pageReveal">("loader");
+  const [shouldStartTyping, setShouldStartTyping] = useState(false);
+
+  useEffect(() => {
+    // Check if loader has been seen before (route change)
+    const hasSeenLoader = sessionStorage.getItem("hasSeenLoader");
+    if (hasSeenLoader) {
+      // Skip loader on subsequent navigations - show everything immediately
+      setRevealPhase("pageReveal");
+      // Trigger reveals immediately
+      setTimeout(() => {
+        document.querySelectorAll('.reveal-global').forEach(el => el.classList.add('revealed'));
+        document.querySelectorAll('.reveal-ctas').forEach(el => el.classList.add('revealed'));
+        document.querySelectorAll('.reveal-page-content').forEach(el => el.classList.add('revealed'));
+      }, 100);
+      return;
+    }
+
+    // Listen for loader completion
+    const checkLoaderComplete = () => {
+      if (document.body.classList.contains("loader-complete")) {
+        setRevealPhase("typing");
+        setShouldStartTyping(true);
+      }
+    };
+
+    // Check immediately and set up interval
+    checkLoaderComplete();
+    const interval = setInterval(checkLoaderComplete, 100);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleTypingComplete = () => {
+    setRevealPhase("globalReveal");
+    // Reveal global elements (ThemeToggle)
+    setTimeout(() => {
+      document.querySelectorAll('.reveal-global').forEach(el => el.classList.add('revealed'));
+    }, 50);
+    
+    // After global reveal, show CTAs and page content
+    setTimeout(() => {
+      setRevealPhase("pageReveal");
+      document.querySelectorAll('.reveal-ctas').forEach(el => el.classList.add('revealed'));
+      document.querySelectorAll('.reveal-page-content').forEach(el => el.classList.add('revealed'));
+    }, 600);
+  };
+
   const projects = [
     {
       title: "Healthcare Data Pipeline",
@@ -46,18 +93,31 @@ export default function HomePage() {
       {/* Hero */}
       <section className="min-h-screen flex flex-col items-center justify-center py-20 px-6">
         <div className="max-w-4xl mx-auto w-full text-center space-y-8">
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-8" data-hero-emblem>
             <LogoMark size={120} />
           </div>
           <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: "var(--text)" }}>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight" style={{ color: "var(--text)" }} data-hero-name>
               Layth Ayache
             </h1>
-            <p className="text-lg md:text-xl max-w-2xl mx-auto" style={{ color: "var(--text)", opacity: 0.7 }}>
-              Engineering systems that fail gracefully under pressure. Focused on AI, security, and digital infrastructure for government, healthcare, and public services.
-            </p>
+            <div 
+              className="text-lg md:text-xl max-w-2xl mx-auto min-h-[1.5em]"
+              style={{ color: "var(--text)" }}
+            >
+              {shouldStartTyping ? (
+                <Typewriter 
+                  text="grow to love and love to grow" 
+                  onComplete={handleTypingComplete}
+                  className="block"
+                />
+              ) : revealPhase === "pageReveal" ? (
+                <span style={{ opacity: 1 }}>grow to love and love to grow</span>
+              ) : null}
+            </div>
           </div>
-          <div className="flex flex-wrap gap-4 justify-center">
+          <div 
+            className={`flex flex-wrap gap-4 justify-center reveal-ctas ${revealPhase === "globalReveal" || revealPhase === "pageReveal" ? "revealed" : ""}`}
+          >
             <Button href="#work" variant="primary">
               Projects
             </Button>
@@ -69,7 +129,10 @@ export default function HomePage() {
       </section>
 
       {/* Selected Work */}
-      <section id="work" className="py-20 px-6">
+      <section 
+        id="work" 
+        className={`py-20 px-6 reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+      >
         <div className="max-w-6xl mx-auto w-full">
           <h2 className="text-3xl font-bold mb-12" style={{ color: "var(--text)" }}>
             Selected Work
@@ -89,7 +152,10 @@ export default function HomePage() {
       </section>
 
       {/* Capabilities */}
-      <section className="py-20 px-6" style={{ backgroundColor: "var(--bg)" }}>
+      <section 
+        className={`py-20 px-6 reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+        style={{ backgroundColor: "var(--bg)" }}
+      >
         <div className="max-w-6xl mx-auto w-full">
           <h2 className="text-3xl font-bold mb-12" style={{ color: "var(--text)" }}>
             Capabilities
@@ -103,7 +169,9 @@ export default function HomePage() {
       </section>
 
       {/* About */}
-      <section className="py-20 px-6">
+      <section 
+        className={`py-20 px-6 reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+      >
         <div className="max-w-3xl mx-auto w-full">
           <h2 className="text-3xl font-bold mb-8" style={{ color: "var(--text)" }}>
             About
@@ -120,7 +188,10 @@ export default function HomePage() {
       </section>
 
       {/* Contact */}
-      <section className="py-20 px-6" style={{ backgroundColor: "var(--bg)" }}>
+      <section 
+        className={`py-20 px-6 reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+        style={{ backgroundColor: "var(--bg)" }}
+      >
         <div className="max-w-3xl mx-auto w-full text-center space-y-6">
           <h2 className="text-3xl font-bold" style={{ color: "var(--text)" }}>
             Contact
@@ -172,7 +243,10 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-6 border-t text-center text-sm" style={{ borderColor: "var(--text)", color: "var(--text)", opacity: 0.5 }}>
+      <footer 
+        className={`py-8 px-6 border-t text-center text-sm reveal-page-content ${revealPhase === "pageReveal" ? "revealed" : ""}`}
+        style={{ borderColor: "var(--text)", color: "var(--text)", opacity: 0.5 }}
+      >
         <p>© {new Date().getFullYear()} Layth Ayache</p>
       </footer>
     </>

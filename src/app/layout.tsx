@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import WelcomeLoader from "@/components/WelcomeLoader";
+import WelcomeLoaderWrapper from "@/components/WelcomeLoaderWrapper";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const inter = Inter({
@@ -40,8 +40,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
-        <WelcomeLoader />
-        <div className="fixed top-6 right-6 z-50">
+        <WelcomeLoaderWrapper />
+        <div className="fixed top-6 right-6 z-50 reveal-global">
           <ThemeToggle />
         </div>
         <main>{children}</main>

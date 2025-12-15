@@ -47,13 +47,18 @@
     pointer-events: none;
   }
 
+  .welcome-loader.settling .welcome-loader__container {
+    will-change: transform;
+  }
+
   .welcome-loader__container {
     position: relative;
-    width: 500px;
-    height: 200px;
+    width: min(600px, 90vw);
+    height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
+    will-change: transform;
   }
 
   .welcome-loader__text-wrapper {
@@ -64,31 +69,32 @@
     align-items: center;
     justify-content: center;
     z-index: 1;
+    overflow: hidden;
   }
 
   .welcome-loader__text {
     position: absolute;
     font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
     letter-spacing: -0.02em;
     text-transform: uppercase;
     color: var(--text);
     white-space: nowrap;
     opacity: 0;
-    animation: text-reveal 950ms cubic-bezier(0.25, 0.46, 0.45, 0.94) 450ms forwards;
+    animation: name-choreography 5.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   }
 
-  .welcome-loader__text--left {
+  .welcome-loader__text--layth {
     left: 50%;
     transform: translateX(-50%);
-    animation-name: text-reveal-left;
+    animation-name: layth-choreography;
   }
 
-  .welcome-loader__text--right {
+  .welcome-loader__text--ayache {
     right: 50%;
     transform: translateX(50%);
-    animation-name: text-reveal-right;
+    animation-name: ayache-choreography;
   }
 
   .welcome-loader__mark-wrapper {
@@ -107,44 +113,147 @@
     width: 100%;
     height: 100%;
     color: var(--accent);
-    animation: mark-spin-decelerate 1000ms cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    animation: mark-spin-continuous 5.5s linear infinite;
     transform-origin: center center;
   }
 
-  @keyframes mark-spin-decelerate {
+  .welcome-loader__mark.settling {
+    animation: mark-spin-settle 1.2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+  }
+
+  /* Continuous spin during choreography (5.5s = choreography duration) */
+  @keyframes mark-spin-continuous {
     0% {
       transform: rotate(0deg);
     }
     100% {
-      transform: rotate(360deg);
+      transform: rotate(1980deg); /* 5.5 rotations (5.5s * 360deg) */
     }
   }
 
-  @keyframes text-reveal-left {
+  /* Decelerate and stop during settle - completes final half rotation smoothly */
+  @keyframes mark-spin-settle {
     0% {
+      transform: rotate(1980deg); /* Continue from where continuous spin left off */
+    }
+    100% {
+      transform: rotate(2160deg); /* Complete one more full rotation and stop */
+    }
+  }
+
+  /* LAYTH choreography - 3 phases of reveal */
+  @keyframes layth-choreography {
+    /* Phase 1: Reveal left (1.4s - 2.1s) */
+    25.5% {
       opacity: 0;
       transform: translateX(-50%);
     }
-    20% {
+    30% {
+      opacity: 1;
+    }
+    38.2% {
+      opacity: 1;
+      transform: translateX(calc(-50% - clamp(100px, 15vw, 180px)));
+    }
+    /* Phase 2: Return to center (2.5s - 2.9s) */
+    45.5% {
+      opacity: 1;
+      transform: translateX(calc(-50% - clamp(100px, 15vw, 180px)));
+    }
+    52.7% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+    /* Phase 3: Reveal right (swapped) (3.0s - 3.7s) */
+    54.5% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+    58.2% {
+      opacity: 1;
+    }
+    67.3% {
+      opacity: 1;
+      transform: translateX(calc(-50% + clamp(100px, 15vw, 180px)));
+    }
+    /* Phase 4: Return to center (4.1s - 4.5s) */
+    74.5% {
+      opacity: 1;
+      transform: translateX(calc(-50% + clamp(100px, 15vw, 180px)));
+    }
+    81.8% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+    /* Phase 5: Final reveal left (4.6s - 5.5s) */
+    83.6% {
+      opacity: 0;
+      transform: translateX(-50%);
+    }
+    87.3% {
       opacity: 1;
     }
     100% {
       opacity: 1;
-      transform: translateX(calc(-50% - 140px));
+      transform: translateX(calc(-50% - clamp(100px, 15vw, 180px)));
     }
   }
 
-  @keyframes text-reveal-right {
-    0% {
+  /* AYACHE choreography - 3 phases of reveal */
+  @keyframes ayache-choreography {
+    /* Phase 1: Reveal right (1.4s - 2.1s) */
+    25.5% {
       opacity: 0;
       transform: translateX(50%);
     }
-    20% {
+    30% {
+      opacity: 1;
+    }
+    38.2% {
+      opacity: 1;
+      transform: translateX(calc(50% + clamp(100px, 15vw, 180px)));
+    }
+    /* Phase 2: Return to center (2.5s - 2.9s) */
+    45.5% {
+      opacity: 1;
+      transform: translateX(calc(50% + clamp(100px, 15vw, 180px)));
+    }
+    52.7% {
+      opacity: 0;
+      transform: translateX(50%);
+    }
+    /* Phase 3: Reveal left (swapped) (3.0s - 3.7s) */
+    54.5% {
+      opacity: 0;
+      transform: translateX(50%);
+    }
+    58.2% {
+      opacity: 1;
+    }
+    67.3% {
+      opacity: 1;
+      transform: translateX(calc(50% - clamp(100px, 15vw, 180px)));
+    }
+    /* Phase 4: Return to center (4.1s - 4.5s) */
+    74.5% {
+      opacity: 1;
+      transform: translateX(calc(50% - clamp(100px, 15vw, 180px)));
+    }
+    81.8% {
+      opacity: 0;
+      transform: translateX(50%);
+    }
+    /* Phase 5: Final reveal right (4.6s - 5.5s) */
+    83.6% {
+      opacity: 0;
+      transform: translateX(50%);
+    }
+    87.3% {
       opacity: 1;
     }
     100% {
       opacity: 1;
-      transform: translateX(calc(50% + 140px));
+      transform: translateX(calc(50% + clamp(100px, 15vw, 180px)));
     }
   }
 
@@ -153,8 +262,17 @@
       animation: mark-fade-in 600ms ease-out forwards;
     }
 
+    .welcome-loader__mark.settling {
+      animation: mark-fade-in 600ms ease-out forwards;
+    }
+
     .welcome-loader__text {
       animation: text-fade-in-static 600ms ease-out 300ms forwards;
+    }
+
+    .welcome-loader__container {
+      animation: none !important;
+      transform: none !important;
     }
 
     @keyframes mark-fade-in {
@@ -177,14 +295,14 @@
       }
     }
 
-    .welcome-loader__text--left {
+    .welcome-loader__text--layth {
       animation-name: text-fade-in-static;
-      transform: translateX(calc(-50% - 100px));
+      transform: translateX(calc(-50% - clamp(80px, 12vw, 140px)));
     }
 
-    .welcome-loader__text--right {
+    .welcome-loader__text--ayache {
       animation-name: text-fade-in-static;
-      transform: translateX(calc(50% + 100px));
+      transform: translateX(calc(50% + clamp(80px, 12vw, 140px)));
     }
   }
 
@@ -226,5 +344,78 @@
   .theme-toggle:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
+  }
+
+  /* Typewriter Styles */
+  .typewriter-text {
+    display: inline-block;
+  }
+
+  .typewriter-caret {
+    display: inline-block;
+    color: var(--accent);
+    animation: caret-blink 1s step-end infinite;
+    margin-left: 2px;
+  }
+
+  @keyframes caret-blink {
+    0%, 50% {
+      opacity: 1;
+    }
+    51%, 100% {
+      opacity: 0;
+    }
+  }
+
+  /* Reveal Animations */
+  .reveal-global {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    pointer-events: none;
+  }
+
+  .reveal-global.revealed {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .reveal-ctas {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.6s ease-out 0.2s, transform 0.6s ease-out 0.2s;
+  }
+
+  .reveal-ctas.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-page-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .reveal-page-content.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hide content during loader */
+  body:not(.loader-complete) .reveal-global,
+  body:not(.loader-complete) .reveal-ctas,
+  body:not(.loader-complete) .reveal-page-content {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-global,
+    .reveal-ctas,
+    .reveal-page-content {
+      transition: opacity 0.4s ease-out;
+      transform: none;
+    }
   }
 }
