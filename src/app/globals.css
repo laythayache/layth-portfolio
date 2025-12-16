@@ -49,13 +49,13 @@
     transform-origin: center center;
   }
 
-  /* Spin animations */
+  /* Spin animations - smooth and consistent */
   .isSpinning {
-    animation: spin 450ms linear infinite;
+    animation: spin 500ms linear infinite;
   }
 
   .stopSpin {
-    animation: spinDecel 900ms cubic-bezier(0.12, 0.9, 0.2, 1) forwards;
+    animation: spinDecel 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   @keyframes spin {
@@ -159,49 +159,48 @@
     transform: translate(50%, -50%);
   }
 
-  /* Choreography animations - names slide out from behind emblem */
+  /* Choreography animations - names slide out from behind emblem with smooth easing */
   .lockup--loader[data-phase="CHOREO_1_OUT"] .lockup__name--left {
     opacity: 1 !important;
-    animation: name-slide-out-left 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: name-slide-out-left 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   .lockup--loader[data-phase="CHOREO_1_OUT"] .lockup__name--right {
     opacity: 1 !important;
-    animation: name-slide-out-right 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: name-slide-out-right 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   .lockup--loader[data-phase="CHOREO_1_IN"] .lockup__name--left,
   .lockup--loader[data-phase="CHOREO_1_IN"] .lockup__name--right {
-    animation: name-fade-out 0.9s ease-out forwards;
+    animation: name-fade-out 0.4s ease-out forwards;
   }
 
   .lockup--loader[data-phase="CHOREO_2_OUT_SWAP"] .lockup__name--left {
     opacity: 1 !important;
-    animation: name-slide-out-right 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: name-slide-out-right 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   .lockup--loader[data-phase="CHOREO_2_OUT_SWAP"] .lockup__name--right {
     opacity: 1 !important;
-    animation: name-slide-out-left 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: name-slide-out-left 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   .lockup--loader[data-phase="CHOREO_2_IN"] .lockup__name--left,
   .lockup--loader[data-phase="CHOREO_2_IN"] .lockup__name--right {
-    animation: name-fade-out 0.9s ease-out forwards;
+    animation: name-fade-out 0.4s ease-out forwards;
   }
 
   .lockup--loader[data-phase="CHOREO_3_OUT"] .lockup__name--left {
     opacity: 1 !important;
-    animation: name-slide-out-left 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: name-slide-out-left 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
   .lockup--loader[data-phase="CHOREO_3_OUT"] .lockup__name--right {
     opacity: 1 !important;
-    animation: name-slide-out-right 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: name-slide-out-right 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
   
   /* Emblem spins continuously during all choreography phases and settle */
-  /* Applied via data-phase attribute and isSpinning class */
   .lockup--loader[data-phase="BOOT"] .logo-mark,
   .lockup--loader[data-phase="CHOREO_1_OUT"] .logo-mark,
   .lockup--loader[data-phase="CHOREO_1_IN"] .logo-mark,
@@ -209,16 +208,16 @@
   .lockup--loader[data-phase="CHOREO_2_IN"] .logo-mark,
   .lockup--loader[data-phase="CHOREO_3_OUT"] .logo-mark,
   .lockup--loader[data-phase="SETTLE"] .logo-mark {
-    animation: spin 450ms linear infinite;
+    animation: spin 500ms linear infinite;
   }
   
   /* Apply spinning class when present (fallback) */
   .lockup--loader .logo-mark.isSpinning {
-    animation: spin 450ms linear infinite;
+    animation: spin 500ms linear infinite;
   }
   
   .lockup--loader .logo-mark.stopSpin {
-    animation: spinDecel 900ms cubic-bezier(0.12, 0.9, 0.2, 1) forwards;
+    animation: spinDecel 800ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   @keyframes name-slide-out-left {
@@ -226,7 +225,7 @@
       opacity: 0;
       transform: translate(-50%, -50%);
     }
-    20% {
+    15% {
       opacity: 1;
     }
     100% {
@@ -240,12 +239,21 @@
       opacity: 0;
       transform: translate(50%, -50%);
     }
-    20% {
+    15% {
       opacity: 1;
     }
     100% {
       opacity: 1;
       transform: translate(calc(50% + var(--travel-x)), -50%);
+    }
+  }
+
+  @keyframes name-fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
     }
   }
 
@@ -338,14 +346,14 @@
     }
   }
 
-  /* Reveal animations */
+  /* Reveal animations - refined for smooth cascade */
   .reveal-header,
   .reveal-global,
   .reveal-ctas,
   .reveal-content {
     opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+    transform: translateY(-12px);
+    transition: opacity 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     pointer-events: none;
   }
 

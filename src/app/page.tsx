@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useExperience } from "@/experience/ExperienceProvider";
+import { TIMELINE } from "@/experience/constants";
 import Lockup from "@/components/Lockup";
 import Typewriter from "@/components/Typewriter";
 import Button from "@/components/ui/Button";
@@ -24,26 +25,34 @@ export default function HomePage() {
     };
   }, []);
 
-  // Handle phase transitions for reveals
+  // Handle phase transitions for reveals - smooth staggered cascade
   useEffect(() => {
     if (phase === "REVEAL") {
-      // Sequential reveal - using constants from TIMELINE
+      // Sequential reveal with refined timing for smoother cascade
       const headerTimeout = setTimeout(() => {
-        document.querySelectorAll('.reveal-header').forEach(el => el.classList.add('revealed'));
-      }, 200);
+        document.querySelectorAll('.reveal-header').forEach(el => {
+          el.classList.add('revealed');
+        });
+      }, TIMELINE.REVEAL_HEADER);
 
       const globalTimeout = setTimeout(() => {
-        document.querySelectorAll('.reveal-global').forEach(el => el.classList.add('revealed'));
-      }, 200 + 250); // 450ms total
+        document.querySelectorAll('.reveal-global').forEach(el => {
+          el.classList.add('revealed');
+        });
+      }, TIMELINE.REVEAL_HEADER + TIMELINE.REVEAL_GLOBAL);
 
       const ctasTimeout = setTimeout(() => {
-        document.querySelectorAll('.reveal-ctas').forEach(el => el.classList.add('revealed'));
-      }, 200 + 250 + 300); // 750ms total
+        document.querySelectorAll('.reveal-ctas').forEach(el => {
+          el.classList.add('revealed');
+        });
+      }, TIMELINE.REVEAL_HEADER + TIMELINE.REVEAL_GLOBAL + TIMELINE.REVEAL_CTAS);
 
       const contentTimeout = setTimeout(() => {
-        document.querySelectorAll('.reveal-content').forEach(el => el.classList.add('revealed'));
+        document.querySelectorAll('.reveal-content').forEach(el => {
+          el.classList.add('revealed');
+        });
         setPhase("READY");
-      }, 200 + 250 + 300 + 450); // 1200ms total
+      }, TIMELINE.REVEAL_HEADER + TIMELINE.REVEAL_GLOBAL + TIMELINE.REVEAL_CTAS + TIMELINE.REVEAL_CONTENT);
 
       return () => {
         clearTimeout(headerTimeout);

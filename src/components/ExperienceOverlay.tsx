@@ -99,116 +99,130 @@ export default function ExperienceOverlay() {
     }, TIMELINE.SETTLE + 300);
   };
 
-  // FLIP settle animation
+  // FLIP settle animation with improved accuracy
   const performFLIPSettle = async (): Promise<void> => {
     return new Promise((resolve) => {
-      // Wait for fonts and layout to be stable
+      // Use multiple RAF frames to ensure layout stability
       requestAnimationFrame(() => {
         requestAnimationFrame(async () => {
+          // Wait for all fonts and layout to stabilize
           await document.fonts.ready;
 
-          // Get measure group from loader lockup (via ref)
+          // Get measure groups
           const measureGroup = loaderMeasureGroupRef.current;
-          
-          // Get measure group from hero lockup
           const heroLockup = (window as any).__heroLockupRef as HTMLElement | undefined;
           const heroMeasureGroup = heroLockup?.querySelector('.lockup__measure-group') as HTMLElement | undefined;
           
           if (!measureGroup || !heroMeasureGroup) {
-            // Fallback: just fade out
+            // Fallback
             resolve();
             return;
           }
 
-          // Measure source (loader) and target (hero) rectangles
+          // Force layout recalculation
+          void measureGroup.offsetHeight;
+          void heroMeasureGroup.offsetHeight;
+
+          // Measure source (loader) and target (hero) rectangles with high precision
           const sourceRect = measureGroup.getBoundingClientRect();
           const targetRect = heroMeasureGroup.getBoundingClientRect();
 
-          // Calculate translation delta
+          // Calculate translation with sub-pixel precision
           const dx = targetRect.left - sourceRect.left;
           const dy = targetRect.top - sourceRect.top;
 
-          // Calculate uniform scale
+          // Calculate scale - use average for uniform scaling
           const scaleX = targetRect.width / sourceRect.width;
           const scaleY = targetRect.height / sourceRect.height;
-          const scale = Math.min(scaleX, scaleY);
+          // Use geometric mean for most natural scaling
+          const scale = Math.sqrt(scaleX * scaleY);
 
           // Expose settle info for debug overlay (dev only)
           if (process.env.NODE_ENV !== "production") {
             (window as any).__settleInfo = {
               sourceRect: {
-                x: sourceRect.x,
-                y: sourceRect.y,
-                width: sourceRect.width,
-                height: sourceRect.height,
+                x: sourceRect.x.toFixed(2),
+                y: sourceRect.y.toFixed(2),
+                width: sourceRect.width.toFixed(2),
+                height: sourceRect.height.toFixed(2),
               },
               targetRect: {
-                x: targetRect.x,
-                y: targetRect.y,
-                width: targetRect.width,
-                height: targetRect.height,
+                x: targetRect.x.toFixed(2),
+                y: targetRect.y.toFixed(2),
+                width: targetRect.width.toFixed(2),
+                height: targetRect.height.toFixed(2),
               },
-              dx,
-              dy,
-              scale,
+              dx: dx.toFixed(2),
+              dy: dy.toFixed(2),
+              scale: scale.toFixed(4),
             };
           }
 
-          // Freeze measure group dimensions
+          // Prepare measure group for fixed positioning
+          measureGroup.style.willChange = "transform";
           measureGroup.style.position = "fixed";
           measureGroup.style.top = `${sourceRect.top}px`;
           measureGroup.style.left = `${sourceRect.left}px`;
           measureGroup.style.width = `${sourceRect.width}px`;
           measureGroup.style.height = `${sourceRect.height}px`;
-          measureGroup.style.transformOrigin = "top left";
+          measureGroup.style.transformOrigin = "center center";
           measureGroup.style.margin = "0";
+          measureGroup.style.padding = "0";
 
           // Hide loader names during settle
           const loaderNames = measureGroup.querySelectorAll('.lockup__name');
           loaderNames.forEach((el) => {
+            (el as HTMLElement).style.transition = "opacity 200ms ease-out";
             (el as HTMLElement).style.opacity = "0";
           });
 
-          // Apply transform
-          measureGroup.style.transition = `transform ${TIMELINE.SETTLE}ms cubic-bezier(0.12, 0.9, 0.2, 1)`;
-          measureGroup.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
-
-          // Crossfade: fade hero in during last 250ms
-          const crossfadeDelay = TIMELINE.SETTLE - 250;
+          // Stop spinner slightly before animation ends for natural feel
           setTimeout(() => {
-            if (heroLockup) {
-              heroLockup.style.transition = "opacity 0.25s ease-out";
-              heroLockup.style.opacity = "1";
-            }
-          }, crossfadeDelay);
-
-          // Fade overlay background
-          if (overlayRef.current) {
-            overlayRef.current.style.transition = `opacity ${TIMELINE.SETTLE}ms ease-out`;
-            overlayRef.current.style.opacity = "0";
-          }
-
-          // Stop spinning at settle end
-          setTimeout(() => {
-            // Capture current rotation
             const markElement = measureGroup.querySelector('.logo-mark') as HTMLElement;
             if (markElement) {
               const computedStyle = window.getComputedStyle(markElement);
               const matrix = computedStyle.transform || computedStyle.webkitTransform;
+              
               if (matrix && matrix !== 'none') {
                 const values = matrix.split('(')[1].split(')')[0].split(',');
                 const a = parseFloat(values[0]);
                 const b = parseFloat(values[1]);
                 const angle = Math.round(Math.atan2(b, a) * (180 / Math.PI));
+                
                 markElement.style.setProperty('--spin-start', `${angle}deg`);
                 markElement.style.setProperty('--spin-end', `${angle + 360}deg`);
               }
+              
+              setSpinClass("stopSpin");
             }
-            setSpinClass("stopSpin");
-          }, TIMELINE.SETTLE - 100);
+          }, TIMELINE.SETTLE_SPIN_STOP);
 
-          // Resolve after settle completes
+          // Apply smooth transform with cubic-bezier easing
+          // Using a custom easing for natural deceleration
+          measureGroup.style.transition = `transform ${TIMELINE.SETTLE}ms cubic-bezier(0.16, 1, 0.3, 1)`;
+          measureGroup.style.transform = `translate(${dx}px, ${dy}px) scale(${scale})`;
+
+          // Crossfade: hero opacity transition during last portion
+          const crossfadeStart = TIMELINE.SETTLE - TIMELINE.SETTLE_CROSSFADE;
           setTimeout(() => {
+            if (heroLockup) {
+              heroLockup.style.transition = `opacity ${TIMELINE.SETTLE_CROSSFADE}ms ease-out`;
+              heroLockup.style.opacity = "1";
+            }
+          }, crossfadeStart);
+
+          // Fade overlay background smoothly
+          if (overlayRef.current) {
+            overlayRef.current.style.transition = `opacity ${TIMELINE.SETTLE}ms ease-out`;
+            overlayRef.current.style.opacity = "0";
+            overlayRef.current.style.pointerEvents = "none";
+          }
+
+          // Cleanup and resolve after settle completes
+          setTimeout(() => {
+            if (measureGroup.parentElement) {
+              measureGroup.style.willChange = "auto";
+            }
             resolve();
           }, TIMELINE.SETTLE);
         });
