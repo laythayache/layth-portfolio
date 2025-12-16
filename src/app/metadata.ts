@@ -60,10 +60,11 @@ export const defaultMetadata: Metadata = {
     description: siteDescription,
     images: [
       {
-        url: "/logo/emblem.png",
+        url: `${siteUrl}/logo/emblem.png`,
         width: 1200,
-        height: 1200,
+        height: 630,
         alt: "Layth Ayache - AI, ML, CV & NLP Engineer",
+        type: "image/png",
       },
     ],
   },
@@ -71,8 +72,8 @@ export const defaultMetadata: Metadata = {
     card: "summary_large_image",
     title: "Layth Ayache | AI, ML, Computer Vision & NLP Engineer",
     description: siteDescription,
-    creator: "@laythayache", // Update with actual Twitter handle if available
-    images: ["/logo/emblem.png"],
+    creator: "@laythayache",
+    images: [`${siteUrl}/logo/emblem.png`],
   },
   icons: {
     icon: [
@@ -89,5 +90,11 @@ export const defaultMetadata: Metadata = {
     canonical: siteUrl,
   },
   category: "technology",
+  verification: {
+    google: "", // Add your Google Search Console verification code
+  },
+  other: {
+    "google-site-verification": "", // Alternative Google verification method
+  },
 };
 

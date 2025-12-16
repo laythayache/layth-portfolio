@@ -1,3 +1,14 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Get in touch with Layth Ayache for AI, ML, Computer Vision, and NLP engineering opportunities and collaborations.",
+  openGraph: {
+    title: "Contact Layth Ayache | AI & ML Engineer",
+    description: "Reach out for AI/ML engineering opportunities, computer vision projects, and technical collaborations.",
+  },
+};
+
 export default function ContactPage() {
   return (
     <section className="space-y-6">

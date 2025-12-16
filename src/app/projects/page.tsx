@@ -1,3 +1,14 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description: "Explore Layth Ayache's portfolio of AI, ML, and Computer Vision projects including 3D landing systems, taxi platform MVP, and sign language translation research.",
+  openGraph: {
+    title: "Projects by Layth Ayache | AI & ML Portfolio",
+    description: "Portfolio of AI/ML projects: 3D systems, computer vision applications, NLP research, and full-stack platforms.",
+  },
+};
+
 const projects = [
   {
     title: "Reality Map (3D Landing System)",

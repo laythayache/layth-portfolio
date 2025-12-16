@@ -1,3 +1,14 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Resume",
+  description: "Layth Ayache's professional resume - AI, ML, Computer Vision, and NLP engineer with expertise in security, digital infrastructure, and resilient systems.",
+  openGraph: {
+    title: "Resume | Layth Ayache - AI & ML Engineer",
+    description: "Professional experience in AI, ML, Computer Vision, NLP, security engineering, and digital infrastructure.",
+  },
+};
+
 export default function ResumePage() {
   return (
     <section className="space-y-6">

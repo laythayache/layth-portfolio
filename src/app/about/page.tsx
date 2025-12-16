@@ -1,3 +1,14 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Learn about Layth Ayache, an AI, ML, and Computer Vision engineer focused on applied machine learning, computer vision systems, and NLP engineering with Arabic dialect interest.",
+  openGraph: {
+    title: "About Layth Ayache | AI & ML Engineer",
+    description: "Applied machine learning, computer vision, and NLP engineering. Building measurable and shippable end-to-end systems.",
+  },
+};
+
 export default function AboutPage() {
   return (
     <section className="space-y-6">
