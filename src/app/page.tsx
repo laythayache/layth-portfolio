@@ -1,9 +1,23 @@
+'use client'
+
+import { useRef, useState, useEffect } from 'react'
 import SpinningLogo from '@/components/SpinningLogo'
 import WordLoader from '@/components/ui/word-loader'
+import MagneticLetters from '@/components/MagneticLetters'
 import Link from 'next/link'
 // Home page uses global metadata from layout.tsx (no override needed)
 
 export default function Page() {
+  const logoRef = useRef<HTMLImageElement>(null)
+  const [logoElement, setLogoElement] = useState<HTMLImageElement | null>(null)
+  const paragraphText = "I'm a student building in public—documenting decisions, failures, and what changed my mind. Some work here is finished with demos; some is ongoing and open to critique. The long game is a serious community that learns and builds together."
+
+  useEffect(() => {
+    if (logoRef.current) {
+      setLogoElement(logoRef.current)
+    }
+  }, [])
+
   return (
     <main>
       {/* Hero Section - Full viewport */}
@@ -11,24 +25,54 @@ export default function Page() {
         <div className="max-w-4xl mx-auto w-full flex flex-col items-center">
           <div className="mb-6 flex justify-center">
             <SpinningLogo
+              ref={logoRef}
               src="/logo-mark.svg"
               alt="Logo"
               className="block h-64 w-auto md:h-80"
             />
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-semibold tracking-tight" style={{ color: '#2b2e34' }}>
-            Layth Ayache
-          </h1>
+          {logoElement ? (
+            <h1 className="text-5xl md:text-6xl font-semibold tracking-tight">
+              <MagneticLetters
+                text="Layth Ayache"
+                svgElement={logoElement}
+                radius={280}
+                baseRepelStrength={200}
+                maxPush={350}
+                returnLerp={0.14}
+                velocityRef={7}
+                glowMax={1}
+                className=""
+                style={{ color: '#2b2e34' }}
+              />
+            </h1>
+          ) : (
+            <h1 className="text-5xl md:text-6xl font-semibold tracking-tight" style={{ color: '#2b2e34' }}>
+              Layth Ayache
+            </h1>
+          )}
           <div className="mt-8 md:mt-10 flex justify-center" style={{ color: '#6b7280' }}>
             <WordLoader
               words={['building', 'breaking', 'failing', 'documenting', 'revising', 'understanding', 'learning', 'sharing', 'repeat']}
               textClassName="text-sm md:text-base"
             />
           </div>
-          <p className="text-sm md:text-base leading-relaxed max-w-2xl mx-auto mt-12 md:mt-16 opacity-60" style={{ color: '#6b7280' }}>
-            I'm a student building in public—documenting decisions, failures, and what changed my mind. Some work here is finished with demos; some is ongoing and open to critique. The long game is a serious community that learns and builds together.
-          </p>
+          <div className="text-sm md:text-base leading-relaxed max-w-2xl mx-auto mt-12 md:mt-16 opacity-60" style={{ color: '#6b7280' }}>
+            {logoElement && (
+              <MagneticLetters
+                text={paragraphText}
+                svgElement={logoElement}
+                radius={260}
+                baseRepelStrength={180}
+                maxPush={300}
+                returnLerp={0.14}
+                velocityRef={7}
+                glowMax={1}
+                className=""
+              />
+            )}
+          </div>
         </div>
         {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in">

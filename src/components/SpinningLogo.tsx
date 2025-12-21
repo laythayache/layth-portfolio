@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, forwardRef } from 'react'
 
 interface SpinningLogoProps {
   src: string
@@ -8,7 +8,8 @@ interface SpinningLogoProps {
   className?: string
 }
 
-export default function SpinningLogo({ src, alt, className }: SpinningLogoProps) {
+const SpinningLogo = forwardRef<HTMLImageElement, SpinningLogoProps>(
+  function SpinningLogo({ src, alt, className }, ref) {
   const [rotation, setRotation] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
   const hoverStartTime = useRef<number | null>(null)
@@ -33,15 +34,12 @@ export default function SpinningLogo({ src, alt, className }: SpinningLogoProps)
         const deltaTime = currentTime - lastFrameTime.current
         lastFrameTime.current = currentTime
 
-        // Speed increases from 60deg/s to 720deg/s over 9 seconds
-        const minSpeed = 60 // degrees per second
-        const maxSpeed = 720 // degrees per second
-        const accelerationTime = 9000 // 9 seconds to reach max speed
+        // Speed starts at 60 degrees/sec and increases by 360 degrees/sec each second
+        // Formula: degreesPerSecond = 60 + (360 * secondsElapsed)
+        const secondsElapsed = hoverDuration / 1000
+        const degreesPerSecond = 60 + (360 * secondsElapsed)
         
-        const progress = Math.min(hoverDuration / accelerationTime, 1)
-        const currentSpeed = minSpeed + (maxSpeed - minSpeed) * progress
-        
-        setRotation(prev => prev + (currentSpeed * deltaTime) / 1000)
+        setRotation(prev => prev + (degreesPerSecond * deltaTime) / 1000)
         
         animationFrameRef.current = requestAnimationFrame(animate)
       }
@@ -72,17 +70,21 @@ export default function SpinningLogo({ src, alt, className }: SpinningLogoProps)
     setIsHovering(false)
   }
 
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={className}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform: `rotate(${rotation}deg)`,
-        transition: isHovering ? 'none' : 'transform 0.3s ease-out',
-      }}
-    />
-  )
-}
+    return (
+      <img
+        ref={ref}
+        src={src}
+        alt={alt}
+        className={className}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          transform: `rotate(${rotation}deg)`,
+          transition: isHovering ? 'none' : 'transform 0.3s ease-out',
+        }}
+      />
+    )
+  }
+)
+
+export default SpinningLogo

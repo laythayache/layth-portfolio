@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import AboutContent from './AboutContent'
-import QuoteLoader from '@/components/ui/quote-loader'
+import AboutQuoteSection from './AboutQuoteSection'
 
 export const metadata: Metadata = {
   title: 'About · Building, breaking, documenting',
@@ -22,37 +22,27 @@ const personSchema = {
   ],
 }
 
-export default function AboutPage() {
-  const quoteItems = [
-    {
-      quote: 'We shape our tools, and thereafter our tools shape us.',
-      author: 'John M. Culkin',
-    },
-    {
-      quote: 'We are a process of recursive self-modification.',
-      author: 'Douglas Hofstadter',
-    },
-    {
-      quote: 'As you treat others, so shall you be treated.',
-      author: 'Imam Ali',
-    },
-  ]
+const quoteItems = [
+  {
+    quote: 'We shape our tools, and thereafter our tools shape us.',
+    author: 'John M. Culkin',
+  },
+  {
+    quote: 'We are a process of recursive self-modification.',
+    author: 'Douglas Hofstadter',
+  },
+  {
+    quote: 'As you treat others, so shall you be treated.',
+    author: 'Imam Ali bin Abi Taleb',
+  },
+]
 
+export default function AboutPage() {
   return (
     <>
       <main>
         {/* Quote Section - Above the fold */}
-        <section className="min-h-screen flex flex-col items-center justify-center px-4 relative">
-          <div className="max-w-4xl w-full">
-            <QuoteLoader items={quoteItems} />
-          </div>
-          {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in">
-            <p className="text-xs opacity-40" style={{ color: '#6b7280' }}>
-              Scroll ↓
-            </p>
-          </div>
-        </section>
+        <AboutQuoteSection items={quoteItems} />
 
         {/* Content Section - Below the fold */}
         <section className="mx-auto max-w-6xl px-4 pb-16 pt-8">

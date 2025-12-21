@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
+import MagneticLetters from '@/components/MagneticLetters'
 
 export interface QuoteItem {
   quote: string
@@ -13,6 +14,7 @@ interface QuoteLoaderProps {
   className?: string
   quoteClassName?: string
   authorClassName?: string
+  svgElement?: HTMLElement | null
 }
 
 const QuoteLoader: React.FC<QuoteLoaderProps> = ({
@@ -20,6 +22,7 @@ const QuoteLoader: React.FC<QuoteLoaderProps> = ({
   className,
   quoteClassName,
   authorClassName,
+  svgElement,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0)
   const [isVisible, setIsVisible] = useState(true)
@@ -86,7 +89,21 @@ const QuoteLoader: React.FC<QuoteLoaderProps> = ({
           )}
           style={{ color: '#2b2e34' }}
         >
-          "{currentItem.quote}"
+          {svgElement ? (
+            <MagneticLetters
+              text={`"${currentItem.quote}"`}
+              svgElement={svgElement}
+              radius={250}
+              baseRepelStrength={160}
+              maxPush={280}
+              returnLerp={0.12}
+              velocityRef={7}
+              glowMax={1}
+              className=""
+            />
+          ) : (
+            `"${currentItem.quote}"`
+          )}
         </blockquote>
         <p
           className={cn(

@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import SpinningLogo from '@/components/SpinningLogo'
-import SiteNav from '@/components/SiteNav'
+import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import Link from 'next/link'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://laythayache.com'),
@@ -55,26 +53,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
-        <header className="fixed top-0 left-0 right-0 z-50 bg-[#ede7dd] px-4 py-3 md:px-6 md:py-4">
-          <div className="flex items-center justify-between max-w-7xl mx-auto gap-4">
-            <Link href="/" className="flex items-center gap-0 flex-shrink-0">
-              <SpinningLogo
-                src="/logo-mark.svg"
-                alt="Logo"
-                className="block h-12 w-auto md:h-[6.09rem]"
-              />
-              <div className="flex flex-col leading-tight -ml-3 md:-ml-8">
-                <span className="text-lg font-semibold tracking-tight md:text-[1.4775rem]" style={{ color: '#2b2e34' }}>
-                  LAYTH
-                </span>
-                <span className="text-base font-semibold tracking-tight md:text-[1.23125rem]" style={{ color: '#2b2e34' }}>
-                  AYACHE
-                </span>
-              </div>
-            </Link>
-            <SiteNav />
-          </div>
-        </header>
+        <Header />
         {children}
         <Footer />
       </body>
