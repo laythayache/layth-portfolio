@@ -2,19 +2,19 @@ import type { Metadata } from 'next'
 import { getSectionByKey } from '@/lib/sections'
 
 export const metadata: Metadata = {
-  title: 'About | Layth Ayache',
-  description: 'Vision, mission, and approach to building software and learning in public.',
+  title: 'About Me',
+  description: 'The vision and mission of this platform: learning in public, documenting failure, and building a community over the long game.',
 }
 
 export default function AboutPage() {
   const section = getSectionByKey('about')
 
-  // Name is used in layout.tsx metadata, so it's safe to include
-  // TODO: Add url if site URL is confirmed/used elsewhere in repo
   const personSchema = {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: 'Layth Ayache',
+    url: 'https://laythayache.com',
+    description: 'A student building in public—documenting decisions, failures, and revisions through projects and ideas.',
     sameAs: [],
   }
 
@@ -22,7 +22,7 @@ export default function AboutPage() {
     <main className="min-h-screen pt-24 md:pt-32 px-4 md:px-6 pb-16">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4" style={{ color: '#2b2e34' }}>
-          {section?.title || 'About'}
+          About Me
         </h1>
         <p className="text-lg md:text-xl mb-12" style={{ color: '#6b7280' }}>
           {section?.intro}

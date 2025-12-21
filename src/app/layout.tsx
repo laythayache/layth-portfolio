@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import SpinningLogo from '@/components/SpinningLogo'
 import SiteNav from '@/components/SiteNav'
+import Footer from '@/components/Footer'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
@@ -12,8 +13,10 @@ export const metadata: Metadata = {
   },
   description: 'I\'m a student building in public—documenting decisions, failures, and what changed my mind. Projects include completed work, ongoing experiments, friends\' collaborations, and ideas shared for the long term.',
   icons: {
-    icon: '/favicon.svg',
-    shortcut: '/favicon.svg',
+    // TODO: Add favicon.ico, favicon-32x32.png, favicon-16x16.png to /public
+    // Currently using logo-mark.svg as fallback - replace with proper favicon files when available
+    icon: '/logo-mark.svg',
+    shortcut: '/logo-mark.svg',
     // TODO: Add apple-touch-icon.png to /public if you want iOS home screen icon
     // apple: '/apple-touch-icon.png',
   },
@@ -74,6 +77,7 @@ export default function RootLayout({
           </div>
         </header>
         {children}
+        <Footer />
       </body>
     </html>
   )

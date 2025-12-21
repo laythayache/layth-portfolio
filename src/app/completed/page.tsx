@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { getSectionByKey } from '@/lib/sections'
 
 export const metadata: Metadata = {
-  title: 'Completed Projects | Layth Ayache',
-  description: 'Personal projects that are done and have demos available.',
+  title: 'Completed Projects',
+  description: 'Finished builds with demos and postmortems. A record of what worked, what failed, and why—kept concise and honest.',
 }
 
 // Placeholder data - replace with actual data later
@@ -16,7 +16,7 @@ export default function CompletedPage() {
     <main className="min-h-screen pt-24 md:pt-32 px-4 md:px-6 pb-16">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-4" style={{ color: '#2b2e34' }}>
-          {section?.title || 'Completed'}
+          Completed Projects
         </h1>
         <p className="text-lg md:text-xl mb-12" style={{ color: '#6b7280' }}>
           {section?.intro}
