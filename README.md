@@ -1,12 +1,13 @@
 # Layth Portfolio
 
-Minimal, modern brand composition with responsive choreography built with Next.js and configured for Cloudflare Pages static deployment.
+This is a minimal Next.js App Router project configured for Cloudflare Pages static export.
 
-## Brand Colors
+## Tech Stack
 
-- **Primary (background)**: `#ede7dd`
-- **Secondary (text)**: `#2b2e34`
-- **Accent (emblem)**: `#6b7280`
+- **Framework:** Next.js 14.2.5 (App Router)
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Build Mode:** Static Export
 
 ## Development
 
@@ -33,10 +34,10 @@ This project is configured for static export and can be deployed to Cloudflare P
 
 Configure your Cloudflare Pages project with these exact settings:
 
-- **Framework preset**: Next.js (or "None" if Next.js preset is not available)
-- **Build command**: `npm run build`
-- **Build output directory**: `out`
-- **Node version**: 20 (if configurable in Cloudflare settings)
+- **Framework preset:** Next.js (or "None" if Next.js preset is not available)
+- **Build command:** `npm run build`
+- **Build output directory:** `out`
+- **Node version:** 20 (if configurable in Cloudflare settings)
 
 ### Important Notes
 
@@ -53,16 +54,3 @@ Configure your Cloudflare Pages project with these exact settings:
 4. Deploy
 
 The site will be available at your Cloudflare Pages URL after deployment.
-
-## Choreography
-
-The brand composition features a phase-based animation system:
-
-1. **Blank** (200ms): Initial hidden state
-2. **Loading** (1100ms): Emblem spins continuously
-3. **Expanding** (1400ms): Spin slows and emblem grows to final scale
-4. **Reveal** (550ms): Text appears with staggered timing (LAYTH first, then AYACHE 140ms later)
-5. **Idle**: Final static state
-
-Hover over the emblem or click anywhere to restart the choreography.
-
