@@ -33,10 +33,10 @@ export default function SpinningLogo({ src, alt, className }: SpinningLogoProps)
         const deltaTime = currentTime - lastFrameTime.current
         lastFrameTime.current = currentTime
 
-        // Speed increases from 60deg/s to 720deg/s over 2 seconds
+        // Speed increases from 60deg/s to 720deg/s over 9 seconds
         const minSpeed = 60 // degrees per second
         const maxSpeed = 720 // degrees per second
-        const accelerationTime = 2000 // 2 seconds to reach max speed
+        const accelerationTime = 9000 // 9 seconds to reach max speed
         
         const progress = Math.min(hoverDuration / accelerationTime, 1)
         const currentSpeed = minSpeed + (maxSpeed - minSpeed) * progress
