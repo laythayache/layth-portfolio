@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import { BrandSequenceProvider } from '@/components/brand/BrandSequenceProvider'
 
 export const metadata: Metadata = {
   title: 'Layth Ayache',
@@ -13,7 +14,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        <BrandSequenceProvider>
+          {children}
+        </BrandSequenceProvider>
+      </body>
     </html>
   )
 }
