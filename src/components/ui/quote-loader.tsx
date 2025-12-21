@@ -1,11 +1,7 @@
 'use client'
 
-import React, { useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
+import React, { useState, useEffect } from 'react'
 import { cn } from '@/lib/utils'
-
-gsap.registerPlugin(useGSAP)
 
 export interface QuoteItem {
   quote: string
@@ -25,83 +21,86 @@ const QuoteLoader: React.FC<QuoteLoaderProps> = ({
   quoteClassName,
   authorClassName,
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [isVisible, setIsVisible] = useState(true)
+  const [authorVisible, setAuthorVisible] = useState(false)
 
-  useGSAP(
-    () => {
-      const tl = gsap.timeline({ repeat: -1 })
-      const fadeInDuration = 0.6
-      const holdDuration = 2.5
-      const fadeOutDuration = 0.5
-      const totalDuration = fadeInDuration + holdDuration + fadeOutDuration
+  // Ensure we have at least one item
+  const validItems = items.filter((item) => item.quote && item.author && !item.quote.includes('TODO'))
+  const displayItems = validItems.length > 0 ? validItems : items
+  const currentItem = displayItems[activeIndex % displayItems.length]
 
-      items.forEach((_, index) => {
-        const startTime = index * totalDuration
+  // Show author after delay on mount and after each transition
+  useEffect(() => {
+    if (!currentItem) return
+    setAuthorVisible(false)
+    const authorTimer = setTimeout(() => {
+      setAuthorVisible(true)
+    }, 1000)
+    return () => clearTimeout(authorTimer)
+  }, [activeIndex, currentItem])
 
-        // Fade in with slight y movement
-        tl.fromTo(
-          `.quote-item-${index}`,
-          { opacity: 0, y: 6 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: fadeInDuration,
-            ease: 'power2.out',
-          },
-          startTime
-        )
+  // Rotate quotes every 5 seconds
+  useEffect(() => {
+    if (displayItems.length <= 1) return // No rotation needed for single quote
 
-        // Hold
-        // (no animation needed, just wait)
+    const interval = setInterval(() => {
+      // Fade out
+      setIsVisible(false)
+      setAuthorVisible(false)
+      
+      // After fade out completes, change quote and fade in
+      setTimeout(() => {
+        setActiveIndex((prev) => (prev + 1) % displayItems.length)
+        setIsVisible(true)
+        
+        // Show author after quote appears
+        setTimeout(() => {
+          setAuthorVisible(true)
+        }, 1000)
+      }, 600) // Wait for fade out to complete
+    }, 5000) // Total cycle: 5 seconds
 
-        // Fade out with slight y movement
-        tl.to(
-          `.quote-item-${index}`,
-          {
-            opacity: 0,
-            y: -4,
-            duration: fadeOutDuration,
-            ease: 'power2.in',
-          },
-          startTime + fadeInDuration + holdDuration
-        )
-      })
-    },
-    { scope: containerRef, dependencies: [items] }
-  )
+    return () => clearInterval(interval)
+  }, [displayItems.length])
+
+  if (!currentItem) {
+    return null
+  }
 
   return (
     <div
-      ref={containerRef}
-      className={cn('relative w-full', className)}
+      className={cn('relative w-full flex flex-col items-center justify-center px-4', className)}
       style={{ minHeight: '200px' }}
     >
-      {items.map((item, index) => (
-        <div
-          key={index}
-          className={`quote-item-${index} absolute inset-0 flex flex-col items-center justify-center px-4`}
-          style={{ opacity: 0 }}
+      <div
+        className={cn(
+          'flex flex-col items-center justify-center transition-all duration-600 ease-in-out',
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
+        )}
+      >
+        <blockquote
+          className={cn(
+            'quote-text text-lg md:text-xl lg:text-2xl leading-relaxed mb-4 text-center max-w-3xl',
+            quoteClassName
+          )}
+          style={{ color: '#2b2e34' }}
         >
-          <blockquote
-            className={cn(
-              'text-lg md:text-xl lg:text-2xl leading-relaxed mb-3 text-center max-w-3xl',
-              quoteClassName
-            )}
-            style={{ color: '#2b2e34' }}
-          >
-            "{item.quote}"
-          </blockquote>
-          <p
-            className={cn('text-sm md:text-base', authorClassName)}
-            style={{ color: '#6b7280' }}
-          >
-            — {item.author}
-          </p>
-        </div>
-      ))}
+          "{currentItem.quote}"
+        </blockquote>
+        <p
+          className={cn(
+            'author-text text-xs md:text-sm transition-opacity duration-700 ease-in-out',
+            authorVisible ? 'opacity-70' : 'opacity-0',
+            authorClassName
+          )}
+          style={{ color: '#6b7280' }}
+        >
+          — {currentItem.author}
+        </p>
+      </div>
     </div>
   )
 }
 
 export default QuoteLoader
-

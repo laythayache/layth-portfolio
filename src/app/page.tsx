@@ -5,11 +5,11 @@ import Link from 'next/link'
 
 export default function Page() {
   return (
-    <main className="min-h-screen pt-24 md:pt-32 px-4 md:px-6 pb-16">
-      <div className="max-w-4xl mx-auto">
-        {/* Hero Section */}
-        <div className="flex flex-col items-center space-y-6 mb-20 text-center">
-          <div className="mb-4">
+    <main>
+      {/* Hero Section - Full viewport */}
+      <section className="min-h-screen flex flex-col items-center justify-center px-4 text-center relative">
+        <div className="max-w-4xl mx-auto w-full flex flex-col items-center">
+          <div className="mb-6 flex justify-center">
             <SpinningLogo
               src="/logo-mark.svg"
               alt="Logo"
@@ -20,18 +20,26 @@ export default function Page() {
           <h1 className="text-5xl md:text-6xl font-semibold tracking-tight" style={{ color: '#2b2e34' }}>
             Layth Ayache
           </h1>
-          <div className="mt-4" style={{ color: '#6b7280' }}>
+          <div className="mt-8 md:mt-10 flex justify-center" style={{ color: '#6b7280' }}>
             <WordLoader
               words={['building', 'breaking', 'failing', 'documenting', 'revising', 'understanding', 'learning', 'sharing', 'repeat']}
-              textClassName="text-lg md:text-xl"
+              textClassName="text-sm md:text-base"
             />
           </div>
-          <p className="text-base md:text-lg leading-relaxed max-w-2xl mt-6" style={{ color: '#6b7280' }}>
+          <p className="text-sm md:text-base leading-relaxed max-w-2xl mx-auto mt-12 md:mt-16 opacity-60" style={{ color: '#6b7280' }}>
             I'm a student building in public—documenting decisions, failures, and what changed my mind. Some work here is finished with demos; some is ongoing and open to critique. The long game is a serious community that learns and builds together.
           </p>
         </div>
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in">
+          <p className="text-xs opacity-40" style={{ color: '#6b7280' }}>
+            Scroll ↓
+          </p>
+        </div>
+      </section>
 
-        {/* SEO Sections */}
+      {/* Content Sections - Below the fold */}
+      <section className="mx-auto max-w-5xl px-4 pb-20">
         <div className="space-y-12">
           <section className="max-w-2xl mx-auto">
             <h2 className="text-xl font-semibold tracking-tight mb-3" style={{ color: '#2b2e34' }}>
@@ -97,7 +105,7 @@ export default function Page() {
             </Link>
           </section>
         </div>
-      </div>
+      </section>
     </main>
   )
 }

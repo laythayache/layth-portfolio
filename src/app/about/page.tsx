@@ -29,25 +29,33 @@ export default function AboutPage() {
       author: 'John M. Culkin',
     },
     {
-      quote: 'TODO: Add another governing quote.',
-      author: '—',
+      quote: 'We are a process of recursive self-modification.',
+      author: 'Douglas Hofstadter',
+    },
+    {
+      quote: 'As you treat others, so shall you be treated.',
+      author: 'Imam Ali',
     },
   ]
 
   return (
     <>
-      <main className="min-h-screen">
+      <main>
         {/* Quote Section - Above the fold */}
-        <section className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 md:px-6 pt-24 md:pt-32">
+        <section className="min-h-screen flex flex-col items-center justify-center px-4 relative">
           <div className="max-w-4xl w-full">
-            <div className="border border-[#d1d5db] rounded-lg p-8 md:p-12">
-              <QuoteLoader items={quoteItems} />
-            </div>
+            <QuoteLoader items={quoteItems} />
+          </div>
+          {/* Scroll indicator */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in">
+            <p className="text-xs opacity-40" style={{ color: '#6b7280' }}>
+              Scroll ↓
+            </p>
           </div>
         </section>
 
         {/* Content Section - Below the fold */}
-        <section className="mx-auto max-w-7xl px-4 md:px-6 pb-16">
+        <section className="mx-auto max-w-6xl px-4 pb-16 pt-8">
           <h1 className="text-4xl md:text-5xl font-semibold tracking-tight mb-12" style={{ color: '#2b2e34' }}>
             About
           </h1>
