@@ -1,4 +1,5 @@
 import SpinningLogo from '@/components/SpinningLogo'
+import WordLoader from '@/components/ui/word-loader'
 import Link from 'next/link'
 // Home page uses global metadata from layout.tsx (no override needed)
 
@@ -19,10 +20,13 @@ export default function Page() {
           <h1 className="text-5xl md:text-6xl font-semibold tracking-tight" style={{ color: '#2b2e34' }}>
             Layth Ayache
           </h1>
-          <p className="text-xl md:text-2xl" style={{ color: '#6b7280' }}>
-            Building, breaking, documenting
-          </p>
-          <p className="text-base md:text-lg leading-relaxed max-w-2xl" style={{ color: '#6b7280' }}>
+          <div className="mt-4" style={{ color: '#6b7280' }}>
+            <WordLoader
+              words={['building', 'breaking', 'failing', 'documenting', 'revising', 'understanding', 'learning', 'sharing', 'repeat']}
+              textClassName="text-lg md:text-xl"
+            />
+          </div>
+          <p className="text-base md:text-lg leading-relaxed max-w-2xl mt-6" style={{ color: '#6b7280' }}>
             I'm a student building in public—documenting decisions, failures, and what changed my mind. Some work here is finished with demos; some is ongoing and open to critique. The long game is a serious community that learns and builds together.
           </p>
         </div>
