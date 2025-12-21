@@ -35,33 +35,25 @@ const WordLoader: React.FC<WordLoaderProps> = ({
       const fadeOutDuration = 0.4
       const holdDuration = wordDuration - fadeInDuration - fadeOutDuration
 
-      // Set initial state: all words invisible and reset transforms
+      // Set initial state: all words invisible
       words.forEach((_, index) => {
         gsap.set(`.word-${index} .char`, { 
           opacity: 0, 
-          y: 10,
-          clearProps: 'all'
+          y: 10
         })
         gsap.set(`.word-${index}`, { 
-          opacity: 1,
-          filter: 'none',
-          clearProps: 'filter'
+          opacity: 1
         })
       })
 
       const tl = gsap.timeline({ 
         repeat: -1,
         onRepeat: () => {
-          // Reset all words to invisible state and clear all transforms/filters
+          // Reset all words to invisible state
           words.forEach((_, index) => {
             gsap.set(`.word-${index} .char`, { 
               opacity: 0, 
-              y: 10,
-              clearProps: 'all'
-            })
-            gsap.set(`.word-${index}`, {
-              filter: 'none',
-              clearProps: 'filter'
+              y: 10
             })
           })
         }
@@ -79,7 +71,6 @@ const WordLoader: React.FC<WordLoaderProps> = ({
             duration: fadeInDuration,
             stagger: 0.04,
             ease: 'power2.out',
-            clearProps: 'filter'
           },
           startTime
         )
@@ -96,19 +87,14 @@ const WordLoader: React.FC<WordLoaderProps> = ({
             duration: fadeOutDuration,
             stagger: 0.04,
             ease: 'power2.in',
-            clearProps: 'filter'
           },
           startTime + fadeInDuration + holdDuration
         )
       })
 
       return () => {
-        // Cleanup: kill timeline and reset all
+        // Cleanup: kill timeline
         tl.kill()
-        words.forEach((_, index) => {
-          gsap.set(`.word-${index} .char`, { clearProps: 'all' })
-          gsap.set(`.word-${index}`, { clearProps: 'all' })
-        })
       }
     },
     { scope: containerRef, dependencies: [words] }
