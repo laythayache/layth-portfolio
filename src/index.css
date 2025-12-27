@@ -125,7 +125,7 @@
 @layer components {
   /* Word Loader styles */
   .word-sequence {
-    @apply font-mono text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight;
+    @apply font-mono text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight text-center;
     min-width: 300px;
   }
 
@@ -159,8 +159,8 @@
   }
 
   .emblem-navbar {
-    width: 40px;
-    height: 40px;
+    width: 80px;
+    height: 80px;
   }
 
   /* Navigation link */

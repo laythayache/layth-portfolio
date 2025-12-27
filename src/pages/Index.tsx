@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import WordLoader from "@/components/Home/WordLoader";
-import TravelingLogo from "@/components/Layout/TravellingLogo";
 import ScrollIndicator from "@/components/Layout/Scrollindicator";
+import Emblem from "@/components/UI/Emblem";
 import { motion } from "framer-motion";
 
 const Index = () => {
@@ -12,20 +12,24 @@ const Index = () => {
 
   return (
     <>
-      {/* Traveling Logo - Fixed positioned */}
-      <TravelingLogo />
-
       {/* Hero Section - Manifesto State */}
       <section className="relative min-h-screen flex flex-col items-center justify-center">
-        {/* Spacer for emblem */}
-        <div className="h-32 md:h-40" />
+        {/* Centered Emblem - Large */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-1 w-[300px] h-[300px] md:w-[500px] md:h-[500px] lg:w-[600px] lg:h-[600px]"
+        >
+          <Emblem size="centered" className="w-full h-full" />
+        </motion.div>
 
         {/* Word Loader */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="mt-8"
+          className="w-full flex justify-center"
         >
           <WordLoader />
         </motion.div>
