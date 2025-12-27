@@ -1,0 +1,14 @@
+# Cloudflare Pages configuration
+# This file is optional but recommended for Cloudflare Pages deployment
+# 
+# Build settings:
+# - Build command: npm run build
+# - Build output directory: out
+# - Root directory: ./
+
+name = "layth-portfolio"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "layth-portfolio"
+
