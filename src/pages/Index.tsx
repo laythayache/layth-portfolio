@@ -55,15 +55,16 @@ const Index = () => {
           </h2>
           <div className="space-y-6 text-muted-foreground leading-relaxed">
             <p>
-              This is not a portfolio. This is a timeline.
+              Every project should be a contribution to the world, but many ideas die 
+              before having the chance to shine.
             </p>
             <p>
-              Every project here exists in relation to time — when it was conceived, 
-              how long it took to break, and what emerged from the fragments.
+              The ideas here are for take. They are either completed projects awaiting 
+              funding, help, or reach; ongoing projects stuck on technical challenges; 
+              or ideas from community members who don't know how to implement them.
             </p>
             <p>
-              Process is the product. Failure is data. 
-              The only constant is forward motion.
+              If you see something that resonates, take it. Build on it. Make it yours.
             </p>
           </div>
         </motion.div>

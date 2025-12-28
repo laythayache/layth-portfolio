@@ -1,5 +1,7 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import NDABadge from "./NDABadge";
+import CharacterScramble from "./CharacterScramble";
+import MagneticButton from "./MagneticButton";
 
 const HeroSection = () => {
   const floatingEmojis = [
@@ -69,10 +71,12 @@ const HeroSection = () => {
             className="font-mono text-5xl md:text-7xl lg:text-8xl font-bold mb-6"
           >
             <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Breaking Barriers,
+              <CharacterScramble text="Breaking Barriers," delay={0.4} />
             </span>
             <br />
-            <span className="text-foreground">Building Bridges</span>
+            <span className="text-foreground">
+              <CharacterScramble text="Building Bridges" delay={0.4} />
+            </span>
           </motion.h1>
 
           {/* Subheading */}
@@ -113,14 +117,14 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="flex justify-center items-center mb-16"
+            className="flex justify-center items-center gap-4 mb-16"
           >
-            <a
+            <MagneticButton
               href="/projects/omnisign/contact"
               className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-mono text-sm uppercase tracking-widest hover:bg-primary/90 transition-colors shadow-lg hover:shadow-primary/50"
             >
               Try OmniSign Free
-            </a>
+            </MagneticButton>
           </motion.div>
 
           {/* Stats */}

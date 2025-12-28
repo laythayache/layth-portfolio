@@ -13,6 +13,7 @@ import TestimonialsSection from "@/components/Omnisign/TestimonialsSection";
 import LearningLSLSection from "@/components/Omnisign/LearningLSLSection";
 import TeamSection from "@/components/Omnisign/TeamSection";
 import Footer from "@/components/Omnisign/Footer";
+import SignWaveProgress from "@/components/Omnisign/SignWaveProgress";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -57,6 +58,7 @@ const ProjectDetail = () => {
   if (project.slug === "omnisign") {
     return (
       <div className="min-h-screen" style={{ backgroundColor: `hsl(${project.background})`, color: `hsl(${project.foreground})` }}>
+        <SignWaveProgress />
         <OmnisignNavbar />
         <main>
           <HeroSection />

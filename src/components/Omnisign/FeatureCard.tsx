@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { LucideIcon, FileText } from "lucide-react";
+import { useState } from "react";
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -20,6 +21,7 @@ const FeatureCard = ({
   requiresNDA = false,
   isHighlighted = false,
 }: FeatureCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
   const isPrimary = accentColor === "primary";
   
   return (
@@ -28,14 +30,29 @@ const FeatureCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay }}
-      className={`relative p-6 rounded-lg border-2 bg-card transition-all duration-300 hover:scale-105 ${
+      className={`relative p-6 rounded-lg border-2 bg-card transition-all duration-300 hover:scale-105 overflow-hidden ${
         isHighlighted
           ? "border-accent/40 hover:border-accent/60 bg-accent/5 shadow-lg shadow-accent/10"
           : isPrimary 
             ? "border-primary/20 hover:border-primary/40" 
             : "border-accent/20 hover:border-accent/40"
       }`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Neural Pulse Effect for Privacy Protected card */}
+      {isHighlighted && isHovered && (
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full border-2 border-accent/40 pointer-events-none"
+          initial={{ width: 0, height: 0, opacity: 0.8 }}
+          animate={{ 
+            width: 300, 
+            height: 300, 
+            opacity: 0,
+          }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+        />
+      )}
       {/* NDA Badge */}
       {requiresNDA && (
         <motion.div
