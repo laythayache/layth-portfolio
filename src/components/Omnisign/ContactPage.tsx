@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mail, MessageCircle, ArrowLeft, Hand } from "lucide-react";
+import { Mail, MessageCircle, ArrowLeft, Clock, Globe, Languages } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const ContactPage = () => {
@@ -7,43 +7,20 @@ const ContactPage = () => {
   const whatsappNumber = "+96171511302";
   const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}`;
 
-  const signLanguageEmojis = ["🤟", "👋", "✌️", "🙏", "👍", "❤️"];
-
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-24 relative overflow-hidden">
-      {/* Background Sign Language Emojis */}
+      {/* Subtle Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {signLanguageEmojis.map((emoji, index) => (
-          <motion.div
-            key={index}
-            className="absolute text-6xl md:text-8xl opacity-5"
-            style={{
-              left: `${15 + index * 15}%`,
-              top: `${20 + (index % 2) * 60}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              rotate: [0, 15, -15, 0],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 6 + index,
-              repeat: Infinity,
-              delay: index * 0.5,
-              ease: "easeInOut",
-            }}
-          >
-            {emoji}
-          </motion.div>
-        ))}
+        <div className="absolute top-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto max-w-2xl relative z-10">
+      <div className="container mx-auto max-w-4xl relative z-10">
         {/* Back Button */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="mb-8"
+          className="mb-12"
         >
           <Link
             to="/projects/omnisign"
@@ -54,151 +31,137 @@ const ContactPage = () => {
           </Link>
         </motion.div>
 
-        {/* Main Content */}
+        {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-center"
+          className="text-center mb-16"
         >
-          <motion.div
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.3, type: "spring" }}
-            className="mb-8"
-          >
-            <motion.div
-              className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 mb-6"
-              animate={{
-                rotate: [0, 10, -10, 0],
-                scale: [1, 1.05, 1],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            >
-              <span className="text-5xl">🤟</span>
-            </motion.div>
-          </motion.div>
-
-          <h1 className="font-mono text-4xl md:text-5xl font-bold text-foreground mb-4">
-            Let's Connect
+          <h1 className="font-mono text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+            Get in Touch
           </h1>
-          <p className="text-xl text-muted-foreground mb-4 max-w-xl mx-auto leading-relaxed">
-            Ready to try OmniSign? We're here to help bridge communication gaps.
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-4">
+            Ready to bridge communication gaps with OmniSign?
           </p>
-          <p className="text-lg text-muted-foreground mb-12 max-w-xl mx-auto leading-relaxed">
-            Whether you communicate in sign language, spoken language, or both—we're ready to listen.
+          <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            We support communication in all forms—sign language, text, or voice. Reach out in whichever way works best for you.
           </p>
+        </motion.div>
 
-          {/* Sign Language Gesture Row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+        {/* Contact Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          {/* Email Card */}
+          <motion.a
+            href={`mailto:${email}?subject=OmniSign Inquiry`}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="flex justify-center gap-4 mb-12"
+            transition={{ delay: 0.3 }}
+            className="group relative p-8 border-2 border-border rounded-lg hover:border-primary/50 transition-all duration-300 hover:shadow-xl bg-card/80 backdrop-blur-sm"
           >
-            {["👋", "🤟", "✌️", "🙏", "👍"].map((emoji, index) => (
-              <motion.div
-                key={index}
-                className="text-4xl"
-                animate={{
-                  y: [0, -10, 0],
-                  rotate: [0, 10, -10, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: index * 0.2,
-                  ease: "easeInOut",
-                }}
-              >
-                {emoji}
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Contact Options */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-            {/* Email */}
-            <motion.a
-              href={`mailto:${email}?subject=OmniSign Inquiry`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="group p-8 border-2 border-border rounded-lg hover:border-primary/40 transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm"
-            >
-              <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center mb-4 mx-auto group-hover:bg-primary/20 transition-colors">
-                <Mail className="w-8 h-8 text-primary" />
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0">
+                <Mail className="w-7 h-7 text-primary" />
               </div>
-              <div className="text-3xl mb-3">✉️</div>
-              <h3 className="font-mono text-lg font-medium text-foreground mb-2">
-                Email
-              </h3>
-              <p className="text-muted-foreground text-sm mb-3">
-                Send us a message in any language
-              </p>
-              <p className="font-mono text-sm text-primary break-all">
+              <div className="flex-1">
+                <h3 className="font-mono text-xl font-bold text-foreground mb-2">
+                  Email
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Send us a message in any language. We'll respond within 24 hours.
+                </p>
+              </div>
+            </div>
+            <div className="pt-4 border-t border-border/50">
+              <p className="font-mono text-sm text-primary break-all group-hover:text-primary/80 transition-colors">
                 {email}
               </p>
-            </motion.a>
+            </div>
+            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <ArrowLeft className="w-5 h-5 text-muted-foreground rotate-180" />
+            </div>
+          </motion.a>
 
-            {/* WhatsApp */}
-            <motion.a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="group p-8 border-2 border-border rounded-lg hover:border-accent/40 transition-all duration-300 hover:scale-105 bg-card/50 backdrop-blur-sm"
-            >
-              <div className="w-16 h-16 rounded-lg bg-accent/10 flex items-center justify-center mb-4 mx-auto group-hover:bg-accent/20 transition-colors">
-                <MessageCircle className="w-8 h-8 text-accent" />
+          {/* WhatsApp Card */}
+          <motion.a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="group relative p-8 border-2 border-border rounded-lg hover:border-accent/50 transition-all duration-300 hover:shadow-xl bg-card/80 backdrop-blur-sm"
+          >
+            <div className="flex items-start gap-4 mb-6">
+              <div className="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center group-hover:bg-accent/20 transition-colors flex-shrink-0">
+                <MessageCircle className="w-7 h-7 text-accent" />
               </div>
-              <div className="text-3xl mb-3">💬</div>
-              <h3 className="font-mono text-lg font-medium text-foreground mb-2">
-                WhatsApp
-              </h3>
-              <p className="text-muted-foreground text-sm mb-3">
-                Text or send voice messages
-              </p>
-              <p className="font-mono text-sm text-accent">
+              <div className="flex-1">
+                <h3 className="font-mono text-xl font-bold text-foreground mb-2">
+                  WhatsApp
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Text or send voice messages. Perfect for quick questions or voice communication.
+                </p>
+              </div>
+            </div>
+            <div className="pt-4 border-t border-border/50">
+              <p className="font-mono text-sm text-accent group-hover:text-accent/80 transition-colors">
                 {whatsappNumber}
               </p>
-            </motion.a>
-          </div>
-
-          {/* Sign Language Message */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7 }}
-            className="p-6 border-2 border-primary/20 rounded-lg bg-primary/5 mb-6"
-          >
-            <div className="flex items-center justify-center gap-3 mb-3">
-              <span className="text-2xl">🤟</span>
-              <p className="font-mono text-sm text-foreground">
-                We support communication in all forms
-              </p>
-              <span className="text-2xl">👋</span>
             </div>
-            <p className="text-muted-foreground text-sm">
-              Whether you prefer sign language, text, or voice—we're here to connect.
-            </p>
-          </motion.div>
+            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+              <ArrowLeft className="w-5 h-5 text-muted-foreground rotate-180" />
+            </div>
+          </motion.a>
+        </div>
 
-          {/* Additional Message */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-            className="text-muted-foreground text-sm"
-          >
-            We typically respond within 24 hours. <span className="text-foreground">🤟</span>
-          </motion.p>
+        {/* Communication Support Info */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+        >
+          <div className="p-6 border border-border/50 rounded-lg bg-card/50 text-center">
+            <Languages className="w-8 h-8 text-accent mx-auto mb-3" />
+            <h4 className="font-mono text-sm font-medium text-foreground mb-2">
+              All Languages
+            </h4>
+            <p className="text-xs text-muted-foreground">
+              English, Arabic, Sign Language
+            </p>
+          </div>
+          <div className="p-6 border border-border/50 rounded-lg bg-card/50 text-center">
+            <Globe className="w-8 h-8 text-primary mx-auto mb-3" />
+            <h4 className="font-mono text-sm font-medium text-foreground mb-2">
+              Multiple Formats
+            </h4>
+            <p className="text-xs text-muted-foreground">
+              Text, Voice, Video, Sign
+            </p>
+          </div>
+          <div className="p-6 border border-border/50 rounded-lg bg-card/50 text-center">
+            <Clock className="w-8 h-8 text-accent mx-auto mb-3" />
+            <h4 className="font-mono text-sm font-medium text-foreground mb-2">
+              Quick Response
+            </h4>
+            <p className="text-xs text-muted-foreground">
+              Within 24 hours
+            </p>
+          </div>
+        </motion.div>
+
+        {/* Footer Message */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="text-center"
+        >
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto">
+            We're committed to making communication accessible. Whether you prefer sign language, text, or voice—we're here to connect.
+          </p>
         </motion.div>
       </div>
     </div>

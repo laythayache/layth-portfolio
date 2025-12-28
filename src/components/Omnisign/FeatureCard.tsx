@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { LucideIcon, FileText } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import { useState } from "react";
 
 interface FeatureCardProps {
@@ -30,7 +30,7 @@ const FeatureCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay }}
-      className={`relative p-6 rounded-lg border-2 bg-card transition-all duration-300 hover:scale-105 overflow-hidden ${
+      className={`relative p-6 rounded-lg border-2 bg-card transition-all duration-300 hover:scale-105 overflow-visible ${
         isHighlighted
           ? "border-accent/40 hover:border-accent/60 bg-accent/5 shadow-lg shadow-accent/10"
           : isPrimary 
@@ -52,20 +52,6 @@ const FeatureCard = ({
           }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         />
-      )}
-      {/* NDA Badge */}
-      {requiresNDA && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
-          whileInView={{ opacity: 1, scale: 1, rotate: -5 }}
-          viewport={{ once: true }}
-          className="absolute -top-2 -right-2 z-10"
-        >
-          <div className="bg-accent text-accent-foreground px-2 py-1 rounded-md shadow-md border border-accent-foreground/20 flex items-center gap-1 font-mono text-[10px] font-bold uppercase tracking-wider">
-            <FileText className="w-2.5 h-2.5" />
-            <span>NDA</span>
-          </div>
-        </motion.div>
       )}
 
       <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${

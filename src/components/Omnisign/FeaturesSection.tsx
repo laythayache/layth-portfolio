@@ -1,6 +1,57 @@
 import { motion } from "framer-motion";
-import { Video, Brain, Users, GraduationCap, Accessibility, Globe, Zap, Shield } from "lucide-react";
+import { Video, Users, GraduationCap, HandHeart, Globe, Zap, Shield, Cpu, Network } from "lucide-react";
 import FeatureCard from "./FeatureCard";
+
+// Custom Federated/Distributed Icon - Three connected nodes
+const FederatedIcon = ({ className, size = 24, ...props }: { className?: string; size?: number; [key: string]: any }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    {...props}
+  >
+    {/* Three connected nodes representing federated learning */}
+    <circle cx="8" cy="8" r="3" />
+    <circle cx="16" cy="8" r="3" />
+    <circle cx="12" cy="16" r="3" />
+    {/* Connection lines */}
+    <line x1="9.5" y1="9.5" x2="13.5" y2="13.5" />
+    <line x1="14.5" y1="9.5" x2="10.5" y2="13.5" />
+    <line x1="8" y1="11" x2="12" y2="13" />
+    <line x1="16" y1="11" x2="12" y2="13" />
+  </svg>
+);
+
+// Custom Edge Security Icon - Shield with circuit pattern
+const EdgeSecurityIcon = ({ className, size = 24, ...props }: { className?: string; size?: number; [key: string]: any }) => (
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    {...props}
+  >
+    {/* Shield base */}
+    <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z" />
+    {/* Circuit pattern - representing edge computing */}
+    <rect x="8" y="9" width="2" height="2" fill="currentColor" />
+    <rect x="14" y="9" width="2" height="2" fill="currentColor" />
+    <line x1="10" y1="8" x2="10" y2="13" />
+    <line x1="14" y1="8" x2="14" y2="13" />
+    <line x1="8" y1="11" x2="16" y2="11" />
+  </svg>
+);
 
 const FeaturesSection = () => {
   const features = [
@@ -11,15 +62,16 @@ const FeaturesSection = () => {
       accentColor: "primary" as const,
     },
     {
-      icon: Brain,
+      icon: FederatedIcon,
       title: "AI Language Model",
       description: "Neural networks trained on diverse sign language datasets for 98% accuracy.",
       accentColor: "accent" as const,
+      requiresNDA: true,
     },
     {
       icon: Users,
-      title: "Bidirectional Communication",
-      description: "Sign-to-Text, Sign-to-Speech, and Text-to-Speech translation for seamless conversations.",
+      title: "Multi-Modal Output",
+      description: "Translate signs into real-time Text and Speech, with integrated Text-to-Speech support for listeners.",
       accentColor: "primary" as const,
     },
     {
@@ -30,16 +82,17 @@ const FeaturesSection = () => {
       requiresNDA: true,
     },
     {
-      icon: Accessibility,
+      icon: HandHeart,
       title: "Accessibility First",
       description: "WCAG compliant, haptic feedback, and full screen reader support.",
       accentColor: "primary" as const,
     },
     {
       icon: Globe,
-      title: "ASL & Lebanese Sign Language (LSL)",
+      title: "American & Lebanese Sign Language (LSL)",
       description: "Dedicated support for American Sign Language (ASL) and Lebanese Sign Language (LSL).",
       accentColor: "accent" as const,
+      requiresNDA: true,
     },
     {
       icon: Zap,
@@ -48,7 +101,7 @@ const FeaturesSection = () => {
       accentColor: "primary" as const,
     },
     {
-      icon: Shield,
+      icon: EdgeSecurityIcon,
       title: "Privacy Protected",
       description: "Privacy-first architecture using Edge Computing and a Federated Learning model. Your sign data never leaves your device.",
       accentColor: "accent" as const,

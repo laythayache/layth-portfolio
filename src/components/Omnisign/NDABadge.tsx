@@ -11,11 +11,11 @@ const NDABadge = ({ className = "" }: NDABadgeProps) => {
       initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
       animate={{ opacity: 1, scale: 1, rotate: -5 }}
       whileHover={{ scale: 1.05, rotate: -3 }}
-      className={`absolute top-4 right-4 z-20 ${className}`}
+      className={`absolute -top-[10px] -right-[10px] z-30 ${className}`}
     >
-      <div className="bg-accent text-accent-foreground px-4 py-2 rounded-lg shadow-lg border-2 border-accent-foreground/20 flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider">
-        <FileText className="w-3 h-3" />
-        <span>Enterprise Access: Available upon NDA</span>
+      <div className="bg-accent text-accent-foreground px-3 py-1.5 md:px-4 md:py-2 rounded-lg shadow-lg border-2 border-accent-foreground/20 flex items-center gap-1.5 md:gap-2 font-mono text-[9px] md:text-xs font-bold uppercase tracking-wider scale-90 md:scale-100">
+        <FileText className="w-2.5 h-2.5 md:w-3 md:h-3" />
+        <span className="whitespace-nowrap">Enterprise Access: Available upon NDA</span>
       </div>
     </motion.div>
   );
