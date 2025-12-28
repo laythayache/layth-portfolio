@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
-import { useRef, ReactNode } from "react";
+import { useRef, ReactNode, useEffect, useState } from "react";
 
 interface MagneticButtonProps {
   children: ReactNode;
@@ -13,13 +13,20 @@ const MagneticButton = ({ children, href, className = "", onClick }: MagneticBut
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const prefersReducedMotion = useReducedMotion();
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  // Detect touch device
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
 
   const springConfig = { damping: 15, stiffness: 150 };
   const xSpring = useSpring(x, springConfig);
   const ySpring = useSpring(y, springConfig);
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (prefersReducedMotion || !ref.current) return;
+    // Disable on touch devices or reduced motion
+    if (prefersReducedMotion || isTouchDevice || !ref.current) return;
     
     const rect = ref.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -44,11 +51,14 @@ const MagneticButton = ({ children, href, className = "", onClick }: MagneticBut
   const Component = href ? 'a' : 'button';
   const props = href ? { href } : { onClick, type: 'button' as const };
 
+  // Disable magnetic effect on touch devices
+  const shouldDisableMagnetic = prefersReducedMotion || isTouchDevice;
+
   return (
     <motion.div
       style={{
-        x: prefersReducedMotion ? 0 : xSpring,
-        y: prefersReducedMotion ? 0 : ySpring,
+        x: shouldDisableMagnetic ? 0 : xSpring,
+        y: shouldDisableMagnetic ? 0 : ySpring,
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -22,7 +22,13 @@ const FeatureCard = ({
   isHighlighted = false,
 }: FeatureCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const isPrimary = accentColor === "primary";
+
+  // Detect touch device
+  useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
   
   return (
     <motion.div
@@ -30,18 +36,19 @@ const FeatureCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.6, delay }}
-      className={`relative p-6 rounded-lg border-2 bg-card transition-all duration-300 hover:scale-105 overflow-visible ${
+      layout
+      className={`relative p-4 sm:p-6 rounded-lg border-2 bg-card transition-all duration-300 sm:hover:scale-105 overflow-visible ${
         isHighlighted
-          ? "border-accent/40 hover:border-accent/60 bg-accent/5 shadow-lg shadow-accent/10"
+          ? "border-accent/40 sm:hover:border-accent/60 bg-accent/5 shadow-lg shadow-accent/10"
           : isPrimary 
-            ? "border-primary/20 hover:border-primary/40" 
-            : "border-accent/20 hover:border-accent/40"
+            ? "border-primary/20 sm:hover:border-primary/40" 
+            : "border-accent/20 sm:hover:border-accent/40"
       }`}
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => !isTouchDevice && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Neural Pulse Effect for Privacy Protected card */}
-      {isHighlighted && isHovered && (
+      {/* Neural Pulse Effect for Privacy Protected card - Disabled on touch devices */}
+      {isHighlighted && isHovered && !isTouchDevice && (
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full border-2 border-accent/40 pointer-events-none"
           initial={{ width: 0, height: 0, opacity: 0.8 }}
@@ -54,14 +61,14 @@ const FeatureCard = ({
         />
       )}
 
-      <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${
+      <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center mb-3 sm:mb-4 ${
         isHighlighted
           ? "bg-accent/20"
           : isPrimary 
             ? "bg-primary/10" 
             : "bg-accent/10"
       }`}>
-        <Icon className={`w-6 h-6 ${
+        <Icon className={`w-5 h-5 sm:w-6 sm:h-6 ${
           isHighlighted
             ? "text-accent"
             : isPrimary 
@@ -69,8 +76,8 @@ const FeatureCard = ({
               : "text-accent"
         }`} />
       </div>
-      <h3 className="font-mono text-xl font-medium text-foreground mb-2">{title}</h3>
-      <p className="text-muted-foreground leading-relaxed">{description}</p>
+      <h3 className="font-mono text-lg sm:text-xl font-medium text-foreground mb-2">{title}</h3>
+      <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{description}</p>
       
       {/* NDA Access Text */}
       {requiresNDA && (

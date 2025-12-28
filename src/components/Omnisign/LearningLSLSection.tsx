@@ -8,7 +8,7 @@ const TimelineThread = ({ progress, prefersReducedMotion }: { progress: MotionVa
   
   return (
     <motion.div 
-      className="absolute left-8 top-0 bottom-0 w-0.5 bg-border/50 hidden lg:block origin-top"
+      className="absolute left-4 sm:left-6 lg:left-8 top-0 bottom-0 w-0.5 bg-border/50 hidden sm:block origin-top"
       style={{
         scaleY: prefersReducedMotion ? 1 : scaleY,
       }}
@@ -135,7 +135,7 @@ const LearningLSLSection = () => {
 
   return (
     <motion.section 
-      className="py-20 md:py-32 px-6 transition-colors duration-1000"
+      className="py-12 sm:py-16 md:py-20 lg:py-32 px-6 sm:px-12 lg:px-24 transition-colors duration-1000"
       ref={containerRef}
       style={{
         backgroundColor: card5InView 
@@ -149,20 +149,20 @@ const LearningLSLSection = () => {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 md:mb-16"
         >
-          <h2 className="font-mono text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h2 className="font-mono text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
             The LSL Mission
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             A journey from fragmentation to the first functional foundation
           </p>
         </motion.div>
 
-        {/* Two-Column Story Scroll Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Left Side - Sticky Digital Frame */}
-          <div className="lg:sticky lg:top-24 order-2 lg:order-1">
+        {/* Responsive Layout: Vertical Stack on Mobile, Two-Column on Desktop */}
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-start">
+          {/* Left Side - Digital Frame (Top on Mobile, Sticky on Desktop) */}
+          <div className="w-full lg:sticky lg:top-24 order-1">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -230,12 +230,12 @@ const LearningLSLSection = () => {
           </div>
 
           {/* Right Side - Scrolling Story Cards */}
-          <div className="order-1 lg:order-2 relative" ref={cardsRef}>
-            {/* Timeline Thread - Animated Drawing */}
+          <div className="w-full order-2 lg:order-2 relative" ref={cardsRef}>
+            {/* Timeline Thread - Animated Drawing (Left-aligned on Mobile) */}
             <TimelineThread progress={cardsScrollProgress} prefersReducedMotion={prefersReducedMotion} />
             
             {/* Story Cards */}
-            <div className="space-y-8 lg:space-y-12">
+            <div className="space-y-6 sm:space-y-8 lg:space-y-12">
               {storyCards.map((card, index) => (
                 <motion.div
                   key={card.id}
@@ -256,7 +256,7 @@ const LearningLSLSection = () => {
                   className="relative"
                 >
                   {/* Timeline Dot */}
-                  <div className="absolute left-0 top-6 -translate-x-[calc(2rem+2px)] hidden lg:block">
+                  <div className="absolute left-4 sm:left-6 lg:left-0 top-6 -translate-x-[calc(1rem+2px)] lg:-translate-x-[calc(2rem+2px)] hidden sm:block">
                     <div className={`w-4 h-4 rounded-full border-2 ${
                       card.isSuccess 
                         ? 'bg-accent border-accent shadow-lg shadow-accent/50' 
@@ -277,7 +277,7 @@ const LearningLSLSection = () => {
 
                   {/* Card */}
                   <motion.div
-                    className={`relative pl-12 lg:pl-16 pr-6 py-8 rounded-lg border-2 transition-all duration-300 ${
+                    className={`relative pl-12 sm:pl-14 lg:pl-16 pr-4 sm:pr-6 py-6 sm:py-8 rounded-lg border-2 transition-all duration-300 ${
                       card.isSuccess
                         ? 'border-accent bg-gradient-to-br from-card via-card to-accent/10 shadow-xl shadow-accent/20'
                         : 'border-border bg-card hover:border-accent/50'
@@ -303,10 +303,10 @@ const LearningLSLSection = () => {
 
                     {/* Card Content */}
                     <div className="relative z-10">
-                      <h3 className="font-mono text-xl md:text-2xl font-bold text-foreground mb-4">
+                      <h3 className="font-mono text-lg sm:text-xl md:text-2xl font-bold text-foreground mb-3 sm:mb-4">
                         {card.title}
                       </h3>
-                      <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
+                      <p className="text-muted-foreground leading-relaxed text-sm sm:text-base md:text-lg">
                         {card.body}
                       </p>
                     </div>

@@ -34,23 +34,23 @@ const AudienceSection = () => {
   ];
 
   return (
-    <section className="py-20 md:py-32 px-6">
+    <section className="py-12 sm:py-16 md:py-20 lg:py-32 px-6 sm:px-12 lg:px-24">
       <div className="container mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 md:mb-16"
         >
-          <h2 className="font-mono text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h2 className="font-mono text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
             Built for Everyone
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             OmniSign serves diverse communities and use cases
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
           {audiences.map((audience, index) => {
             const isNDARequired = audience.title === "Developers" || audience.title === "Organizations";
             return (
@@ -89,7 +89,7 @@ const AudienceSection = () => {
                       transition={{ delay: index * 0.1 + 0.2 }}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="mt-auto inline-block px-6 py-3 bg-foreground text-background rounded-full font-mono text-xs font-bold uppercase tracking-widest shadow-lg transition-colors hover:bg-foreground/90 w-fit"
+                      className="mt-auto inline-block w-full sm:w-fit px-6 py-3 bg-foreground text-background rounded-full font-mono text-xs font-bold uppercase tracking-widest shadow-lg transition-colors hover:bg-foreground/90 text-center"
                     >
                       Request Access (NDA Required)
                     </motion.a>

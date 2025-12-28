@@ -110,23 +110,23 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <section id="features" className="py-20 md:py-32 px-6 bg-muted/30">
+    <section id="features" className="py-12 sm:py-16 md:py-20 lg:py-32 px-6 sm:px-12 lg:px-24 bg-muted/30">
       <div className="container mx-auto max-w-7xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 md:mb-16"
         >
-          <h2 className="font-mono text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h2 className="font-mono text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4">
             Powerful Features
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
             Everything you need for seamless sign language communication
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {features.map((feature, index) => (
             <FeatureCard
               key={index}
