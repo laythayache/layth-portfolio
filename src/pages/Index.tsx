@@ -72,19 +72,19 @@ const Index = () => {
       {/* Featured Projects Section */}
       <section className="min-h-screen flex flex-col items-center justify-center px-6 py-24">
         <div className="container mx-auto max-w-6xl">
-          <motion.div
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.6 }}
             className="mb-16 text-center"
-          >
+        >
             <h2 className="font-mono text-3xl md:text-4xl font-medium mb-4 text-foreground">
               Timeline
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
               A selection of work across time — completed, ongoing, and emerging.
-            </p>
+          </p>
           </motion.div>
 
           {/* Featured Projects Grid */}
@@ -161,7 +161,7 @@ const Index = () => {
               View Friends
               <ArrowRight className="inline-block ml-2 group-hover:translate-x-1 transition-transform" size={16} />
             </Link>
-          </motion.div>
+        </motion.div>
         </div>
       </section>
 

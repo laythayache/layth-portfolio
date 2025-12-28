@@ -12,14 +12,14 @@ export type ProjectConfig = {
   
   export const projects: ProjectConfig[] = [
     {
-      slug: "project-alpha",
-      title: "Project Alpha",
-      description: "An exploration of generative systems and emergent behavior.",
+      slug: "omnisign",
+      title: "Omnisign",
+      description: "AI-powered sign language translation system focused on Lebanese Sign Language (LSL). A research-oriented project combining computer vision, NLP, and mobile development to address an underserved language in accessibility technology. Unfinished but meaningful—exploring the intersection of engineering and social impact where data scarcity meets real-world complexity.",
       status: "completed",
       year: "2024",
-      background: "220 10% 18%",
-      foreground: "36 23% 90%",
-      accent: "45 100% 60%",
+      background: "210 40% 96%",
+      foreground: "220 35% 18%",
+      accent: "190 95% 45%",
     },
     {
       slug: "project-beta",

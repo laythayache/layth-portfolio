@@ -42,6 +42,12 @@
 
     --radius: 0.5rem;
 
+    /* Omnisign Design System Colors */
+    --omnisign-primary: 175 65% 40%;
+    --omnisign-primary-glow: 175 65% 55%;
+    --omnisign-accent: 15 85% 60%;
+    --omnisign-accent-glow: 15 85% 70%;
+
     /* Custom tokens */
     --emblem-size: 120px;
     --navbar-height: 72px;

@@ -3,6 +3,15 @@ import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getProjectBySlug } from "@/lib/projectConfig";
 import { ArrowLeft } from "lucide-react";
+import OmnisignNavbar from "@/components/Omnisign/OmnisignNavbar";
+import HeroSection from "@/components/Omnisign/HeroSection";
+import FeaturesSection from "@/components/Omnisign/FeaturesSection";
+import DemoSection from "@/components/Omnisign/DemoSection";
+import HowItWorksSection from "@/components/Omnisign/HowItWorksSection";
+import AudienceSection from "@/components/Omnisign/AudienceSection";
+import TestimonialsSection from "@/components/Omnisign/TestimonialsSection";
+import CTASection from "@/components/Omnisign/CTASection";
+import Footer from "@/components/Omnisign/Footer";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -42,6 +51,26 @@ const ProjectDetail = () => {
     );
   }
 
+  // Render full Omnisign microsite
+  if (project.slug === "omnisign") {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: `hsl(${project.background})`, color: `hsl(${project.foreground})` }}>
+        <OmnisignNavbar />
+        <main>
+          <HeroSection />
+          <FeaturesSection />
+          <DemoSection />
+          <HowItWorksSection />
+          <AudienceSection />
+          <TestimonialsSection />
+          <CTASection />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Default project detail page for other projects
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.98 }}
@@ -96,7 +125,7 @@ const ProjectDetail = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="prose prose-lg max-w-3xl"
+          className="max-w-3xl"
         >
           <div className="space-y-8 text-muted-foreground">
             <p>
