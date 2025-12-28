@@ -14,6 +14,7 @@ import Ongoing from "./pages/Ongoing";
 import Friends from "./pages/Friends";
 import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
+import OmnisignContact from "./pages/OmnisignContact";
 
 const queryClient = new QueryClient();
 
@@ -33,8 +34,9 @@ const AppContent = () => {
       <Navbar isVisible={showNavbar} />
       <main>
         <AnimatePresence mode="wait" initial={false}>
-          {isProjectPage ? (
+          {isProjectPage || location.pathname.startsWith("/projects/omnisign/contact") ? (
             <Routes location={location} key={location.pathname}>
+              <Route path="/projects/omnisign/contact" element={<OmnisignContact />} />
               <Route path="/projects/:slug" element={<ProjectDetail />} />
             </Routes>
           ) : (

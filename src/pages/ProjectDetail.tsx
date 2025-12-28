@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getProjectBySlug } from "@/lib/projectConfig";
 import { ArrowLeft } from "lucide-react";
@@ -10,11 +10,13 @@ import DemoSection from "@/components/Omnisign/DemoSection";
 import HowItWorksSection from "@/components/Omnisign/HowItWorksSection";
 import AudienceSection from "@/components/Omnisign/AudienceSection";
 import TestimonialsSection from "@/components/Omnisign/TestimonialsSection";
-import CTASection from "@/components/Omnisign/CTASection";
+import LearningLSLSection from "@/components/Omnisign/LearningLSLSection";
+import TeamSection from "@/components/Omnisign/TeamSection";
 import Footer from "@/components/Omnisign/Footer";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
+  const location = useLocation();
   const project = slug ? getProjectBySlug(slug) : undefined;
 
   useEffect(() => {
@@ -63,7 +65,8 @@ const ProjectDetail = () => {
           <HowItWorksSection />
           <AudienceSection />
           <TestimonialsSection />
-          <CTASection />
+          <LearningLSLSection />
+          <TeamSection />
         </main>
         <Footer />
       </div>

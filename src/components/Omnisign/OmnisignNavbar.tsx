@@ -6,7 +6,6 @@ import Emblem from "@/components/UI/Emblem";
 
 const navLinks = [
   { label: "Features", href: "#features" },
-  { label: "Demo", href: "#demo" },
   { label: "How It Works", href: "#how-it-works" },
   { label: "Community", href: "#testimonials" },
 ];
@@ -18,13 +17,22 @@ const OmnisignNavbar = () => {
     <motion.nav
       initial={false}
       animate={{ opacity: 1, y: 0 }}
-      className="fixed top-0 left-0 right-0 z-50 navbar-glass"
-      style={{ height: "var(--navbar-height, 72px)" }}
+      className="fixed top-0 left-0 right-0 z-50 border-b border-border/50"
+      style={{ 
+        height: "var(--navbar-height, 72px)",
+        backgroundColor: "white",
+        backdropFilter: "none",
+      }}
     >
       <div className="container mx-auto px-6 h-full flex items-center justify-between">
         {/* Logo/Emblem */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center gap-3">
           <Emblem size="navbar" />
+          <img 
+            src="/omnisign-logo.png" 
+            alt="Omnisign" 
+            className="h-10 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -55,7 +63,8 @@ const OmnisignNavbar = () => {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="md:hidden border-t border-border bg-background/95 backdrop-blur-lg"
+          className="md:hidden border-t border-border"
+          style={{ backgroundColor: "white" }}
         >
           <div className="container mx-auto px-6 py-4 space-y-4">
             {navLinks.map((link) => (

@@ -14,7 +14,7 @@ const HowItWorksSection = () => {
       icon: Cpu,
       number: 2,
       title: "Process",
-      description: "AI analyzes context, grammar, and temporal patterns to understand meaning.",
+      description: "Federated Model processing analyzes context, grammar, and temporal patterns to understand meaning.",
       gradient: "from-accent to-accent/60",
     },
     {

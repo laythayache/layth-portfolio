@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import NDABadge from "./NDABadge";
 
 const HeroSection = () => {
   const floatingEmojis = [
@@ -94,6 +94,7 @@ const HeroSection = () => {
               className="mb-12 max-w-4xl mx-auto"
             >
               <div className="relative w-full rounded-lg overflow-hidden border-2 border-border/30 bg-background/50 shadow-lg">
+                <NDABadge />
                 <video
                   className="w-full h-auto"
                   controls
@@ -112,15 +113,14 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
+            className="flex justify-center items-center mb-16"
           >
-            <button className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-mono text-sm uppercase tracking-widest hover:bg-primary/90 transition-colors shadow-lg hover:shadow-primary/50">
+            <a
+              href="/projects/omnisign/contact"
+              className="px-8 py-4 bg-primary text-primary-foreground rounded-full font-mono text-sm uppercase tracking-widest hover:bg-primary/90 transition-colors shadow-lg hover:shadow-primary/50"
+            >
               Try OmniSign Free
-            </button>
-            <button className="px-8 py-4 border-2 border-border rounded-full font-mono text-sm uppercase tracking-widest hover:border-foreground transition-colors flex items-center gap-2">
-              <Play size={16} />
-              Watch Demo
-            </button>
+            </a>
           </motion.div>
 
           {/* Stats */}
@@ -128,19 +128,15 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
-            className="grid grid-cols-3 gap-8 max-w-2xl mx-auto"
+            className="grid grid-cols-2 gap-8 max-w-xl mx-auto"
           >
             <div>
-              <div className="font-mono text-3xl md:text-4xl font-bold text-foreground mb-2">99%</div>
+              <div className="font-mono text-3xl md:text-4xl font-bold text-foreground mb-2">98%</div>
               <div className="text-sm text-muted-foreground uppercase tracking-widest">Accuracy</div>
             </div>
             <div>
-              <div className="font-mono text-3xl md:text-4xl font-bold text-foreground mb-2">50+</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-widest">Languages</div>
-            </div>
-            <div>
-              <div className="font-mono text-3xl md:text-4xl font-bold text-foreground mb-2">100K+</div>
-              <div className="text-sm text-muted-foreground uppercase tracking-widest">Users</div>
+              <div className="font-mono text-sm md:text-base font-bold text-foreground mb-2 leading-tight">ASL & LSL</div>
+              <div className="text-xs text-muted-foreground uppercase tracking-widest">American & Lebanese Sign Language</div>
             </div>
           </motion.div>
         </div>

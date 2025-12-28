@@ -13,13 +13,13 @@ const FeaturesSection = () => {
     {
       icon: Brain,
       title: "AI Language Model",
-      description: "Neural networks trained on diverse sign language datasets for high accuracy.",
+      description: "Neural networks trained on diverse sign language datasets for 98% accuracy.",
       accentColor: "accent" as const,
     },
     {
       icon: Users,
       title: "Bidirectional Communication",
-      description: "Sign↔Speech translation both ways for seamless conversations.",
+      description: "Sign-to-Text, Sign-to-Speech, and Text-to-Speech translation for seamless conversations.",
       accentColor: "primary" as const,
     },
     {
@@ -27,6 +27,7 @@ const FeaturesSection = () => {
       title: "Learning Platform",
       description: "Interactive lessons, progress tracking, and personalized learning paths.",
       accentColor: "accent" as const,
+      requiresNDA: true,
     },
     {
       icon: Accessibility,
@@ -36,8 +37,8 @@ const FeaturesSection = () => {
     },
     {
       icon: Globe,
-      title: "50+ Sign Languages",
-      description: "Support for ASL, BSL, and regional sign languages worldwide.",
+      title: "ASL & Lebanese Sign Language (LSL)",
+      description: "Dedicated support for American Sign Language (ASL) and Lebanese Sign Language (LSL).",
       accentColor: "accent" as const,
     },
     {
@@ -49,8 +50,9 @@ const FeaturesSection = () => {
     {
       icon: Shield,
       title: "Privacy Protected",
-      description: "On-device processing and end-to-end encryption for your conversations.",
+      description: "Privacy-first architecture using Edge Computing and a Federated Learning model. Your sign data never leaves your device.",
       accentColor: "accent" as const,
+      isHighlighted: true,
     },
   ];
 
@@ -80,6 +82,8 @@ const FeaturesSection = () => {
               description={feature.description}
               accentColor={feature.accentColor}
               delay={index * 0.1}
+              requiresNDA={feature.requiresNDA}
+              isHighlighted={feature.isHighlighted}
             />
           ))}
         </div>

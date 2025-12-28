@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Heart, BookOpen, Code, Building } from "lucide-react";
+import NDABadge from "./NDABadge";
 
 const AudienceSection = () => {
   const audiences = [
@@ -51,36 +52,48 @@ const AudienceSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {audiences.map((audience, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="flex flex-col md:flex-row gap-6 border-2 border-border rounded-lg p-6 hover:border-primary/40 transition-all"
-            >
-              <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <audience.icon className="w-8 h-8 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-mono text-2xl font-medium text-foreground mb-2">
-                  {audience.title}
-                </h3>
-                <p className="text-muted-foreground mb-4 leading-relaxed">
-                  {audience.description}
-                </p>
-                <ul className="space-y-2">
-                  {audience.features.map((feature, i) => (
-                    <li key={i} className="flex items-center gap-2 text-muted-foreground">
-                      <span className="text-primary">•</span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          ))}
+          {audiences.map((audience, index) => {
+            const isNDARequired = audience.title === "Developers" || audience.title === "Organizations";
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="relative flex flex-col md:flex-row gap-6 border-2 border-border rounded-lg p-6 hover:border-primary/40 transition-all"
+              >
+                {isNDARequired && <NDABadge />}
+                <div className="w-16 h-16 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <audience.icon className="w-8 h-8 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-mono text-2xl font-medium text-foreground mb-2">
+                    {audience.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-4 leading-relaxed">
+                    {audience.description}
+                  </p>
+                  <ul className="space-y-2 mb-4">
+                    {audience.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2 text-muted-foreground">
+                        <span className="text-primary">•</span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  {isNDARequired && (
+                    <a
+                      href="/projects/omnisign/contact"
+                      className="inline-block px-6 py-2 bg-primary text-primary-foreground rounded-full font-mono text-xs uppercase tracking-widest hover:bg-primary/90 transition-colors"
+                    >
+                      Request Access (NDA Required)
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

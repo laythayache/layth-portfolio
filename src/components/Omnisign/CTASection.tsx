@@ -53,12 +53,18 @@ const CTASection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <button className="px-8 py-4 bg-foreground text-background rounded-full font-mono text-sm uppercase tracking-widest hover:bg-foreground/90 transition-colors">
+            <a
+              href="/projects/omnisign/contact"
+              className="px-8 py-4 bg-foreground text-background rounded-full font-mono text-sm uppercase tracking-widest hover:bg-foreground/90 transition-colors"
+            >
               Get Started Free
-            </button>
-            <button className="px-8 py-4 border-2 border-foreground rounded-full font-mono text-sm uppercase tracking-widest hover:bg-foreground/10 transition-colors">
+            </a>
+            <a
+              href="/projects/omnisign/contact"
+              className="px-8 py-4 border-2 border-foreground rounded-full font-mono text-sm uppercase tracking-widest hover:bg-foreground/10 transition-colors"
+            >
               Contact Sales
-            </button>
+            </a>
           </div>
 
           {/* Social Links */}

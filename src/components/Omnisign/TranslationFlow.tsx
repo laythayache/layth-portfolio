@@ -24,9 +24,12 @@ const TranslationFlow = () => {
 
   return (
     <div className="w-full">
-      <h3 className="font-mono text-2xl font-medium text-foreground mb-8 text-center">
+      <h3 className="font-mono text-2xl font-medium text-foreground mb-4 text-center">
         Real-Time Translation Flow
       </h3>
+      <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
+        Sign-to-Text, Sign-to-Speech, and Text-to-Speech translation
+      </p>
       
       <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-8">
         {/* Sign Input */}
@@ -67,7 +70,7 @@ const TranslationFlow = () => {
           >
             {current.text}
           </motion.p>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">AI Processing</p>
+          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Federated Model Processing</p>
         </motion.div>
 
         {/* Arrow */}
@@ -93,7 +96,7 @@ const TranslationFlow = () => {
           >
             {current.spoken}
           </motion.p>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Output</p>
+          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Text & Speech Output</p>
         </motion.div>
       </div>
 
