@@ -86,24 +86,26 @@ const HeroSection = () => {
           </motion.p>
 
           {/* Hero Video */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="mb-12 max-w-4xl mx-auto"
-          >
-            <div className="relative w-full rounded-lg overflow-hidden border-2 border-border/30 bg-background/50 shadow-lg">
-              <video
-                className="w-full h-auto"
-                controls
-                playsInline
-                preload="metadata"
-              >
-                <source src="/omnisign-hero.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            </div>
-          </motion.div>
+          {import.meta.env.VITE_OMNISIGN_VIDEO_URL && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 }}
+              className="mb-12 max-w-4xl mx-auto"
+            >
+              <div className="relative w-full rounded-lg overflow-hidden border-2 border-border/30 bg-background/50 shadow-lg">
+                <video
+                  className="w-full h-auto"
+                  controls
+                  playsInline
+                  preload="metadata"
+                >
+                  <source src={import.meta.env.VITE_OMNISIGN_VIDEO_URL} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </motion.div>
+          )}
 
           {/* CTAs */}
           <motion.div

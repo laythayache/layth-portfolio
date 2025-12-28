@@ -13,6 +13,10 @@ dist-ssr
 out
 *.local
 
+# Large video files (exceed Cloudflare Pages 25MB limit)
+omnisign-hero.mp4
+*.mp4
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
