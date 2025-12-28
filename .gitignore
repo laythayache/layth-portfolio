@@ -13,6 +13,11 @@ dist-ssr
 out
 *.local
 
+# Environment variables
+.env
+.env.local
+.env*.local
+
 # Large video files (exceed Cloudflare Pages 25MB limit)
 omnisign-hero.mp4
 *.mp4
