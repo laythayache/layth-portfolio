@@ -1,7 +1,3 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
@@ -16,17 +12,12 @@ import ProjectDetail from "./pages/ProjectDetail";
 import NotFound from "./pages/NotFound";
 import OmnisignContact from "./pages/OmnisignContact";
 
-const queryClient = new QueryClient();
-
 const AppContent = () => {
   const location = useLocation();
   const { isScrolled } = useScrollPosition();
   const { direction } = usePageDirection();
 
-  // Show navbar when scrolled or not on home page
   const showNavbar = isScrolled || location.pathname !== "/";
-
-  // Check if on project detail page (uses fade instead of slide)
   const isProjectPage = location.pathname.startsWith("/projects/");
 
   return (
@@ -34,7 +25,7 @@ const AppContent = () => {
       <Navbar isVisible={showNavbar} />
       <main>
         <AnimatePresence mode="wait" initial={false}>
-          {isProjectPage || location.pathname.startsWith("/projects/omnisign/contact") ? (
+          {isProjectPage ? (
             <Routes location={location} key={location.pathname}>
               <Route path="/projects/omnisign/contact" element={<OmnisignContact />} />
               <Route path="/projects/:slug" element={<ProjectDetail />} />
@@ -83,15 +74,9 @@ const AppContent = () => {
 };
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <BrowserRouter>
+    <AppContent />
+  </BrowserRouter>
 );
 
 export default App;

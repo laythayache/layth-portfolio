@@ -40,7 +40,7 @@ const TestimonialsSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {specialThanks.map((item, index) => (
             <motion.div
-              key={index}
+              key={item.name}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

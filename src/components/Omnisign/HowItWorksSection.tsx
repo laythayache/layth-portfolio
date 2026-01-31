@@ -1,38 +1,38 @@
 import { motion } from "framer-motion";
 import { Camera, Cpu, MessageSquare, Check } from "lucide-react";
 
-const HowItWorksSection = () => {
-  const steps = [
-    {
-      icon: Camera,
-      number: 1,
-      title: "Capture",
-      description: "Computer vision captures gestures in real-time from video input.",
-      gradient: "from-primary to-primary/60",
-    },
-    {
-      icon: Cpu,
-      number: 2,
-      title: "Process",
-      description: "Federated Model processing analyzes context, grammar, and temporal patterns to understand meaning.",
-      gradient: "from-accent to-accent/60",
-    },
-    {
-      icon: MessageSquare,
-      number: 3,
-      title: "Translate",
-      description: "Neural networks convert gestures to text and generate speech output.",
-      gradient: "from-primary to-primary/60",
-    },
-    {
-      icon: Check,
-      number: 4,
-      title: "Connect",
-      description: "Real-time bidirectional communication enables seamless conversations.",
-      gradient: "from-accent to-accent/60",
-    },
-  ];
+const steps = [
+  {
+    icon: Camera,
+    number: 1,
+    title: "Capture",
+    description: "Computer vision captures gestures in real-time from video input.",
+    gradient: "from-primary to-primary/60",
+  },
+  {
+    icon: Cpu,
+    number: 2,
+    title: "Process",
+    description: "Federated Model processing analyzes context, grammar, and temporal patterns to understand meaning.",
+    gradient: "from-accent to-accent/60",
+  },
+  {
+    icon: MessageSquare,
+    number: 3,
+    title: "Translate",
+    description: "Neural networks convert gestures to text and generate speech output.",
+    gradient: "from-primary to-primary/60",
+  },
+  {
+    icon: Check,
+    number: 4,
+    title: "Connect",
+    description: "Real-time bidirectional communication enables seamless conversations.",
+    gradient: "from-accent to-accent/60",
+  },
+];
 
+const HowItWorksSection = () => {
   return (
     <section id="how-it-works" className="py-20 md:py-32 px-6 bg-muted/30">
       <div className="container mx-auto max-w-7xl">
@@ -57,7 +57,7 @@ const HowItWorksSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
             {steps.map((step, index) => (
               <motion.div
-                key={index}
+                key={step.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

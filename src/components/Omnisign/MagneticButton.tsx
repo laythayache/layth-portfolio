@@ -1,5 +1,6 @@
 import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
-import { useRef, ReactNode, useEffect, useState } from "react";
+import { useRef, ReactNode } from "react";
+import useTouchDevice from "@/hooks/useTouchDevice";
 
 interface MagneticButtonProps {
   children: ReactNode;
@@ -13,12 +14,7 @@ const MagneticButton = ({ children, href, className = "", onClick }: MagneticBut
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const prefersReducedMotion = useReducedMotion();
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
-
-  // Detect touch device
-  useEffect(() => {
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, []);
+  const isTouchDevice = useTouchDevice();
 
   const springConfig = { damping: 15, stiffness: 150 };
   const xSpring = useSpring(x, springConfig);

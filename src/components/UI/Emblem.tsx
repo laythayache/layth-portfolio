@@ -23,7 +23,7 @@ const Emblem = ({ className, size = "centered", ...motionProps }: EmblemProps) =
     >
       <img
         src="/logo-mark.svg"
-        alt="Logo"
+        alt="Layth Ayache"
         className="w-full h-full object-contain"
       />
     </motion.div>

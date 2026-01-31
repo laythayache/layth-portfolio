@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { LucideIcon } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import useTouchDevice from "@/hooks/useTouchDevice";
 
 interface FeatureCardProps {
   icon: LucideIcon;
@@ -22,13 +23,8 @@ const FeatureCard = ({
   isHighlighted = false,
 }: FeatureCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const isTouchDevice = useTouchDevice();
   const isPrimary = accentColor === "primary";
-
-  // Detect touch device
-  useEffect(() => {
-    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, []);
   
   return (
     <motion.div

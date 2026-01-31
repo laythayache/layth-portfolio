@@ -1,6 +1,6 @@
-import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
 
 interface Friend {
   name: string;
@@ -12,29 +12,23 @@ const friends: Friend[] = [
   {
     name: "Collaborator One",
     description: "Building the infrastructure for human coordination.",
-    url: "#",
   },
   {
-    name: "Collaborator Two", 
+    name: "Collaborator Two",
     description: "Research into distributed systems and emergence.",
-    url: "#",
   },
   {
     name: "Collaborator Three",
     description: "Design systems for complex information spaces.",
-    url: "#",
   },
 ];
 
 const Friends = () => {
-  useEffect(() => {
-    document.title = "Friends — Layth Ayache";
-  }, []);
+  useDocumentTitle("Friends — Layth Ayache");
 
   return (
     <div className="min-h-screen pt-24 pb-16">
       <div className="container mx-auto px-6">
-        {/* Header */}
         <motion.header
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -49,7 +43,6 @@ const Friends = () => {
           </p>
         </motion.header>
 
-        {/* Friends Grid */}
         <div className="grid gap-8 md:gap-12">
           {friends.map((friend, index) => (
             <motion.article
@@ -95,18 +88,18 @@ const Friends = () => {
           ))}
         </div>
 
-        {/* Call to collaborate */}
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
           className="mt-24 pt-16 border-t border-border text-center"
+          aria-label="Collaborate"
         >
           <p className="font-mono text-muted-foreground mb-4">
             Building something interesting?
           </p>
           <a
-            href="mailto:hello@example.com"
+            href="mailto:laythayache5@gmail.com"
             className="inline-block font-mono text-foreground border-b border-foreground pb-1 hover:border-accent hover:text-accent transition-colors"
           >
             Let's talk

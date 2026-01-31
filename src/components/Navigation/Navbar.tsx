@@ -23,6 +23,7 @@ const Navbar = ({ isVisible }: NavbarProps) => {
         isVisible ? "pointer-events-auto" : "pointer-events-none"
       }`}
       style={{ height: "var(--navbar-height, 72px)" }}
+      aria-label="Main navigation"
     >
       <div className="container mx-auto px-6 h-full flex items-center justify-between">
         {/* Logo/Emblem */}

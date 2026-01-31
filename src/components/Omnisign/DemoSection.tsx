@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import TranslationFlow from "./TranslationFlow";
 
 const DemoSection = () => {

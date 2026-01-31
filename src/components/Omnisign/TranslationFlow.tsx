@@ -104,7 +104,8 @@ const TranslationFlow = () => {
       <div className="flex justify-center gap-2 mt-8">
         {translations.map((_, index) => (
           <button
-            key={index}
+            key={`dot-${index}`}
+            aria-label={`Go to translation ${index + 1}`}
             onClick={() => setCurrentIndex(index)}
             className={`w-2 h-2 rounded-full transition-all ${
               index === currentIndex ? "bg-primary w-8" : "bg-border"

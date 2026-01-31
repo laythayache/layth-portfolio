@@ -3,6 +3,16 @@ import { useState, useEffect } from "react";
 import CharacterScramble from "./CharacterScramble";
 import MagneticButton from "./MagneticButton";
 
+// Reduce emojis on mobile: 4 on mobile, 6 on desktop
+const floatingEmojis = [
+  { emoji: "👋", x: "10%", y: "20%", delay: 0, showOnMobile: true },
+  { emoji: "🤟", x: "85%", y: "15%", delay: 0.2, showOnMobile: true },
+  { emoji: "✌️", x: "15%", y: "70%", delay: 0.4, showOnMobile: true },
+  { emoji: "🙏", x: "80%", y: "65%", delay: 0.6, showOnMobile: true },
+  { emoji: "👍", x: "50%", y: "10%", delay: 0.8, showOnMobile: false },
+  { emoji: "❤️", x: "90%", y: "80%", delay: 1, showOnMobile: false },
+];
+
 const HeroSection = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [showVideo, setShowVideo] = useState(false);
@@ -37,15 +47,6 @@ const HeroSection = () => {
       clearTimeout(restTimer);
     };
   }, [prefersReducedMotion]);
-  // Reduce emojis on mobile: 4 on mobile, 6 on desktop
-  const floatingEmojis = [
-    { emoji: "👋", x: "10%", y: "20%", delay: 0, showOnMobile: true },
-    { emoji: "🤟", x: "85%", y: "15%", delay: 0.2, showOnMobile: true },
-    { emoji: "✌️", x: "15%", y: "70%", delay: 0.4, showOnMobile: true },
-    { emoji: "🙏", x: "80%", y: "65%", delay: 0.6, showOnMobile: true },
-    { emoji: "👍", x: "50%", y: "10%", delay: 0.8, showOnMobile: false },
-    { emoji: "❤️", x: "90%", y: "80%", delay: 1, showOnMobile: false },
-  ];
 
   return (
     <section className="relative min-h-screen flex flex-col overflow-hidden py-12 md:py-16 lg:py-20">
@@ -59,7 +60,7 @@ const HeroSection = () => {
       {/* Floating Emojis - Reduced on Mobile */}
       {floatingEmojis.map((item, index) => (
         <motion.div
-          key={index}
+          key={item.emoji}
           className={`absolute text-3xl sm:text-4xl md:text-6xl opacity-20 ${item.showOnMobile ? 'block' : 'hidden md:block'}`}
           style={{ left: item.x, top: item.y }}
           animate={{

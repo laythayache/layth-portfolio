@@ -42,18 +42,12 @@ const Footer = () => {
             © {new Date().getFullYear()} OmniSign. All rights reserved.
           </p>
           <div className="flex gap-4 sm:gap-6 text-xs text-muted-foreground">
-            <a 
-              href="#" 
-              className="hover:text-foreground transition-colors"
-            >
+            <span className="hover:text-foreground transition-colors">
               Privacy
-            </a>
-            <a 
-              href="#" 
-              className="hover:text-foreground transition-colors"
-            >
+            </span>
+            <span className="hover:text-foreground transition-colors">
               Terms
-            </a>
+            </span>
           </div>
         </div>
       </div>

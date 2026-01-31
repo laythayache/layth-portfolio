@@ -10,40 +10,40 @@ interface TeamMember {
   email?: string;
 }
 
-const TeamSection = () => {
-  const teamMembers: TeamMember[] = [
-    {
-      name: "Tayseer Laz",
-      role: "Web & PR Coordinator",
-      image: "/tayseer-laz.jpeg",
-    },
-    {
-      name: "Layth Ayache",
-      role: "Computer Vision & Machine Learning Engineer",
-      image: "/layth-ayache.jpeg",
-    },
-    {
-      name: "Abu Baker Hussein El Khatib",
-      role: "Mobile & Web Application Development",
-      image: "/abubaker.jpeg",
-    },
-    {
-      name: "Noor El Hariri",
-      role: "Web Developer & Project Coordinator",
-      image: "/noor-el-hariri.jpeg",
-    },
-    {
-      name: "Rami Kronbi",
-      role: "Computer Vision & Machine Learning Engineer",
-      image: "/rami-kronbi.jpeg",
-    },
-    {
-      name: "Dr. Oussama Mustapha",
-      role: "Research Advisor and Consultant",
-      image: "/oussama-mustapha.jpeg",
-    },
-  ];
+const teamMembers: TeamMember[] = [
+  {
+    name: "Tayseer Laz",
+    role: "Web & PR Coordinator",
+    image: "/tayseer-laz.jpeg",
+  },
+  {
+    name: "Layth Ayache",
+    role: "Computer Vision & Machine Learning Engineer",
+    image: "/layth-ayache.jpeg",
+  },
+  {
+    name: "Abu Baker Hussein El Khatib",
+    role: "Mobile & Web Application Development",
+    image: "/abubaker.jpeg",
+  },
+  {
+    name: "Noor El Hariri",
+    role: "Web Developer & Project Coordinator",
+    image: "/noor-el-hariri.jpeg",
+  },
+  {
+    name: "Rami Kronbi",
+    role: "Computer Vision & Machine Learning Engineer",
+    image: "/rami-kronbi.jpeg",
+  },
+  {
+    name: "Dr. Oussama Mustapha",
+    role: "Research Advisor and Consultant",
+    image: "/oussama-mustapha.jpeg",
+  },
+];
 
+const TeamSection = () => {
   return (
     <section className="relative py-20 md:py-32 px-6 overflow-hidden">
       {/* Background Gradient */}
@@ -71,7 +71,7 @@ const TeamSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {teamMembers.map((member, index) => (
             <motion.div
-              key={index}
+              key={member.name}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

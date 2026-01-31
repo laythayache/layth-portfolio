@@ -1,6 +1,6 @@
-import { motion, useScroll, useTransform, useReducedMotion, MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, useMotionTemplate, MotionValue } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
-import { ScanLine, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 
 // Timeline Thread Component
 const TimelineThread = ({ progress, prefersReducedMotion }: { progress: MotionValue<number>, prefersReducedMotion: boolean | null }) => {
@@ -18,38 +18,17 @@ const TimelineThread = ({ progress, prefersReducedMotion }: { progress: MotionVa
 
 // Neural Pulse Component
 const NeuralPulse = () => {
-  const [isActive, setIsActive] = useState(false);
-  
   return (
-    <div 
-      className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none z-0"
-      onMouseEnter={() => setIsActive(true)}
-      onMouseLeave={() => setIsActive(false)}
-    >
-      {isActive && (
-        <>
-          <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full border-2 border-accent/40"
-            initial={{ width: 0, height: 0, opacity: 0.8 }}
-            animate={{ 
-              width: 400, 
-              height: 400, 
-              opacity: 0,
-            }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-          />
-          <motion.div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 rounded-full border-2 border-accent/30"
-            initial={{ width: 0, height: 0, opacity: 0.6 }}
-            animate={{ 
-              width: 500, 
-              height: 500, 
-              opacity: 0,
-            }}
-            transition={{ duration: 2, ease: "easeOut", delay: 0.2 }}
-          />
-        </>
-      )}
+    <div className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none z-0">
+      <motion.div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent/40"
+        animate={{
+          width: [0, 400, 0],
+          height: [0, 400, 0],
+          opacity: [0.8, 0, 0.8],
+        }}
+        transition={{ duration: 3, ease: "easeOut", repeat: Infinity, repeatDelay: 1 }}
+      />
     </div>
   );
 };
@@ -84,6 +63,7 @@ const LearningLSLSection = () => {
     [0, 0.8],
     [100, 0]
   );
+  const imageFilter = useMotionTemplate`blur(${imageBlur}px) grayscale(${imageGrayscale}%)`;
 
   // Trigger success animation when Card 5 comes into view
   useEffect(() => {
@@ -210,12 +190,11 @@ const LearningLSLSection = () => {
                     src="/arabic-sign-language-alphabet.png"
                     alt="Chart showing Arabic Sign Language gestures used as a basis for the LSL dataset"
                     className="w-full h-auto rounded-md"
-                    style={{
-                      filter: prefersReducedMotion 
-                        ? "none"
-                        : `blur(${imageBlur}px) grayscale(${imageGrayscale}%)`,
-                      transition: prefersReducedMotion ? "none" : "filter 0.3s ease-out",
-                    }}
+                    style={
+                      prefersReducedMotion
+                        ? undefined
+                        : { filter: imageFilter as any }
+                    }
                   />
                 </div>
 

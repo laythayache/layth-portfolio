@@ -1,8 +1,9 @@
-import { useEffect } from "react";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getProjectBySlug } from "@/lib/projectConfig";
 import { ArrowLeft } from "lucide-react";
+import useDocumentTitle from "@/hooks/useDocumentTitle";
+import useProjectTheme from "@/hooks/useProjectTheme";
 import OmnisignNavbar from "@/components/Omnisign/OmnisignNavbar";
 import HeroSection from "@/components/Omnisign/HeroSection";
 import FeaturesSection from "@/components/Omnisign/FeaturesSection";
@@ -17,29 +18,10 @@ import SignWaveProgress from "@/components/Omnisign/SignWaveProgress";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
-  const location = useLocation();
   const project = slug ? getProjectBySlug(slug) : undefined;
 
-  useEffect(() => {
-    if (project) {
-      document.title = `${project.title} — Layth Ayache`;
-
-      // Apply project-specific theming
-      const root = document.documentElement;
-      root.style.setProperty("--background", project.background);
-      root.style.setProperty("--foreground", project.foreground);
-      if (project.accent) {
-        root.style.setProperty("--accent", project.accent);
-      }
-
-      return () => {
-        // Reset to default theme on unmount
-        root.style.removeProperty("--background");
-        root.style.removeProperty("--foreground");
-        root.style.removeProperty("--accent");
-      };
-    }
-  }, [project]);
+  useDocumentTitle(project ? `${project.title} — Layth Ayache` : "Project — Layth Ayache");
+  useProjectTheme(project);
 
   if (!project) {
     return (
@@ -54,7 +36,6 @@ const ProjectDetail = () => {
     );
   }
 
-  // Render full Omnisign microsite
   if (project.slug === "omnisign") {
     return (
       <div className="min-h-screen" style={{ backgroundColor: `hsl(${project.background})`, color: `hsl(${project.foreground})` }}>
@@ -75,7 +56,6 @@ const ProjectDetail = () => {
     );
   }
 
-  // Default project detail page for other projects
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.98 }}
@@ -85,7 +65,6 @@ const ProjectDetail = () => {
       className="min-h-screen pt-24 pb-16 bg-background"
     >
       <div className="container mx-auto px-6">
-        {/* Back link */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -101,7 +80,6 @@ const ProjectDetail = () => {
           </Link>
         </motion.div>
 
-        {/* Project Header */}
         <motion.header
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -112,7 +90,7 @@ const ProjectDetail = () => {
             <span className="font-mono text-sm text-muted-foreground">
               {project.year}
             </span>
-            <span className="text-border">•</span>
+            <span className="text-border" aria-hidden="true">&bull;</span>
             <span className="font-mono text-sm capitalize text-muted-foreground">
               {project.status}
             </span>
@@ -125,7 +103,6 @@ const ProjectDetail = () => {
           </p>
         </motion.header>
 
-        {/* Project Content */}
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

@@ -1,38 +1,34 @@
 import { motion } from "framer-motion";
 import { Heart, BookOpen, Code, Building } from "lucide-react";
 
-const AudienceSection = () => {
-  const audiences = [
-    {
-      icon: Heart,
-      title: "Individuals",
-      description: "Personal communication, video calls, and everyday accessibility",
-      features: ["Mobile app", "Video call integration", "Personal subtitles"],
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&h=400&fit=crop",
-    },
-    {
-      icon: BookOpen,
-      title: "Educators",
-      description: "Teaching tools, curriculum support, and student engagement",
-      features: ["Interactive lessons", "Progress tracking", "Classroom integration"],
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop",
-    },
-    {
-      icon: Code,
-      title: "Developers",
-      description: "API access, SDKs, and integration tools for your applications",
-      features: ["REST API", "JavaScript SDK", "Comprehensive docs"],
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
-    },
-    {
-      icon: Building,
-      title: "Organizations",
-      description: "Enterprise solutions, training, and compliance support",
-      features: ["Enterprise plans", "Team training", "WCAG compliance"],
-      image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop",
-    },
-  ];
+const audiences = [
+  {
+    icon: Heart,
+    title: "Individuals",
+    description: "Personal communication, video calls, and everyday accessibility",
+    features: ["Mobile app", "Video call integration", "Personal subtitles"],
+  },
+  {
+    icon: BookOpen,
+    title: "Educators",
+    description: "Teaching tools, curriculum support, and student engagement",
+    features: ["Interactive lessons", "Progress tracking", "Classroom integration"],
+  },
+  {
+    icon: Code,
+    title: "Developers",
+    description: "API access, SDKs, and integration tools for your applications",
+    features: ["REST API", "JavaScript SDK", "Comprehensive docs"],
+  },
+  {
+    icon: Building,
+    title: "Organizations",
+    description: "Enterprise solutions, training, and compliance support",
+    features: ["Enterprise plans", "Team training", "WCAG compliance"],
+  },
+];
 
+const AudienceSection = () => {
   return (
     <section className="py-12 sm:py-16 md:py-20 lg:py-32 px-6 sm:px-12 lg:px-24">
       <div className="container mx-auto max-w-7xl">
@@ -55,7 +51,7 @@ const AudienceSection = () => {
             const isNDARequired = audience.title === "Developers" || audience.title === "Organizations";
             return (
               <motion.div
-                key={index}
+                key={audience.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

@@ -1,9 +1,10 @@
+import React from "react";
 import { motion } from "framer-motion";
 import { Video, Users, GraduationCap, HandHeart, Globe, Zap, Shield, Cpu, Network } from "lucide-react";
 import FeatureCard from "./FeatureCard";
 
 // Custom Federated/Distributed Icon - Three connected nodes
-const FederatedIcon = ({ className, size = 24, ...props }: { className?: string; size?: number; [key: string]: any }) => (
+const FederatedIcon = ({ className, size = 24, ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) => (
   <svg
     width={size}
     height={size}
@@ -29,7 +30,7 @@ const FederatedIcon = ({ className, size = 24, ...props }: { className?: string;
 );
 
 // Custom Edge Security Icon - Shield with circuit pattern
-const EdgeSecurityIcon = ({ className, size = 24, ...props }: { className?: string; size?: number; [key: string]: any }) => (
+const EdgeSecurityIcon = ({ className, size = 24, ...props }: React.SVGProps<SVGSVGElement> & { size?: number }) => (
   <svg
     width={size}
     height={size}
@@ -53,8 +54,7 @@ const EdgeSecurityIcon = ({ className, size = 24, ...props }: { className?: stri
   </svg>
 );
 
-const FeaturesSection = () => {
-  const features = [
+const features = [
     {
       icon: Video,
       title: "Real-Time Translation",
@@ -107,8 +107,9 @@ const FeaturesSection = () => {
       accentColor: "accent" as const,
       isHighlighted: true,
     },
-  ];
+];
 
+const FeaturesSection = () => {
   return (
     <section id="features" className="py-12 sm:py-16 md:py-20 lg:py-32 px-6 sm:px-12 lg:px-24 bg-muted/30">
       <div className="container mx-auto max-w-7xl">
@@ -129,7 +130,7 @@ const FeaturesSection = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {features.map((feature, index) => (
             <FeatureCard
-              key={index}
+              key={feature.title}
               icon={feature.icon}
               title={feature.title}
               description={feature.description}
