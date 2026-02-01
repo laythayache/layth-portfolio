@@ -6,7 +6,6 @@ import About from "@/pages/About";
 import Submit from "@/pages/Submit";
 import ProjectDetail from "@/pages/ProjectDetail";
 import OmnisignMicrosite from "@/pages/OmnisignMicrosite";
-import OmnisignContact from "@/pages/OmnisignContact";
 import Systems from "@/pages/Systems";
 import SystemDetail from "@/pages/SystemDetail";
 import NotFound from "@/pages/NotFound";
@@ -31,10 +30,6 @@ export default function App() {
           <Route
             path="/friends"
             element={<Navigate to="/explore?friends=true" replace />}
-          />
-          <Route
-            path="/projects/omnisign/contact"
-            element={<OmnisignContact />}
           />
           <Route
             path="/projects/omnisign"
