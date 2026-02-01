@@ -1,82 +1,51 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
-import { useScrollPosition } from "@/hooks/useScrollPosition";
-import { usePageDirection } from "@/hooks/usePageDirection";
-import Navbar from "@/components/Navigation/Navbar";
-import PageTransition from "@/components/Layout/PageTransition";
-import Index from "./pages/Index";
-import Completed from "./pages/Completed";
-import Ongoing from "./pages/Ongoing";
-import Friends from "./pages/Friends";
-import ProjectDetail from "./pages/ProjectDetail";
-import NotFound from "./pages/NotFound";
-import OmnisignContact from "./pages/OmnisignContact";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import RootLayout from "@/layouts/RootLayout";
+import Home from "@/pages/Home";
+import Explore from "@/pages/Explore";
+import About from "@/pages/About";
+import Submit from "@/pages/Submit";
+import ProjectDetail from "@/pages/ProjectDetail";
+import OmnisignMicrosite from "@/pages/OmnisignMicrosite";
+import OmnisignContact from "@/pages/OmnisignContact";
+import Systems from "@/pages/Systems";
+import SystemDetail from "@/pages/SystemDetail";
+import NotFound from "@/pages/NotFound";
 
-const AppContent = () => {
-  const location = useLocation();
-  const { isScrolled } = useScrollPosition();
-  const { direction } = usePageDirection();
-
-  const showNavbar = isScrolled || location.pathname !== "/";
-  const isProjectPage = location.pathname.startsWith("/projects/");
-
+export default function App() {
   return (
-    <>
-      <Navbar isVisible={showNavbar} />
-      <main>
-        <AnimatePresence mode="wait" initial={false}>
-          {isProjectPage ? (
-            <Routes location={location} key={location.pathname}>
-              <Route path="/projects/omnisign/contact" element={<OmnisignContact />} />
-              <Route path="/projects/:slug" element={<ProjectDetail />} />
-            </Routes>
-          ) : (
-            <Routes location={location} key={location.pathname}>
-              <Route
-                path="/"
-                element={
-                  <PageTransition direction={direction}>
-                    <Index />
-                  </PageTransition>
-                }
-              />
-              <Route
-                path="/completed"
-                element={
-                  <PageTransition direction={direction}>
-                    <Completed />
-                  </PageTransition>
-                }
-              />
-              <Route
-                path="/ongoing"
-                element={
-                  <PageTransition direction={direction}>
-                    <Ongoing />
-                  </PageTransition>
-                }
-              />
-              <Route
-                path="/friends"
-                element={
-                  <PageTransition direction={direction}>
-                    <Friends />
-                  </PageTransition>
-                }
-              />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          )}
-        </AnimatePresence>
-      </main>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<RootLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/submit" element={<Submit />} />
+          <Route
+            path="/completed"
+            element={<Navigate to="/explore?status=completed" replace />}
+          />
+          <Route
+            path="/ongoing"
+            element={<Navigate to="/explore?status=ongoing" replace />}
+          />
+          <Route
+            path="/friends"
+            element={<Navigate to="/explore?friends=true" replace />}
+          />
+          <Route
+            path="/projects/omnisign/contact"
+            element={<OmnisignContact />}
+          />
+          <Route
+            path="/projects/omnisign"
+            element={<OmnisignMicrosite />}
+          />
+          <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="/systems" element={<Systems />} />
+          <Route path="/systems/:slug" element={<SystemDetail />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
-};
-
-const App = () => (
-  <BrowserRouter>
-    <AppContent />
-  </BrowserRouter>
-);
-
-export default App;
+}

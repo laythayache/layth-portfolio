@@ -1,32 +1,22 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import useDocumentTitle from "@/hooks/useDocumentTitle";
 
-const NotFound = () => {
-  useDocumentTitle("404 — Layth Ayache");
-
+export default function NotFound() {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="flex min-h-screen items-center justify-center"
-    >
-      <div className="text-center px-6">
-        <h1 className="font-mono text-6xl md:text-8xl font-medium text-foreground mb-4">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center px-6">
+      <div className="flex flex-col items-center gap-4 text-center">
+        <span className="font-mono text-6xl font-bold text-text-muted">
           404
-        </h1>
-        <p className="font-mono text-lg text-muted-foreground mb-8">
-          This page doesn't exist yet.
+        </span>
+        <p className="text-sm text-text-secondary">
+          This page doesn't exist.
         </p>
         <Link
           to="/"
-          className="inline-block px-8 py-4 border border-border rounded-lg hover:border-foreground/30 transition-all duration-300 font-mono text-sm uppercase tracking-widest"
+          className="mt-4 font-mono text-xs uppercase tracking-wider text-text-muted underline underline-offset-4 hover:text-text-secondary"
         >
-          Return home
+          Go home
         </Link>
       </div>
-    </motion.div>
+    </div>
   );
-};
-
-export default NotFound;
+}

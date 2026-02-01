@@ -1,0 +1,41 @@
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/700.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --surface: 9 9 11;
+    --surface-raised: 24 24 27;
+    --surface-overlay: 39 39 42;
+    --text-primary: 250 250 250;
+    --text-secondary: 161 161 170;
+    --text-muted: 113 113 122;
+    --border: 39 39 42;
+    --border-strong: 63 63 70;
+    --accent: 161 161 170;
+  }
+
+  * {
+    border-color: rgb(var(--border));
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-text-primary antialiased;
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  ::selection {
+    @apply bg-text-primary/10;
+  }
+}
