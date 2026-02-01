@@ -14,7 +14,7 @@ export const MOTION = {
     delay: 0.12,
     duration: 0.32,
     lagMs: 120,
-    opacityLight: 0.08,
+    opacityLight: 0.18,
     opacityDark: 0.1,
     nudgePx: 4,
     rotateDeg: 1.2,
