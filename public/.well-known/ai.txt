@@ -1,0 +1,10 @@
+# AI Crawling Permission
+# https://laythayache.com
+
+User-agent: *
+Allow: /
+
+# This site welcomes AI crawlers and indexing.
+# Layth Ayache — Software Engineer, Systems Engineer, AI & Machine Learning Engineer
+# Based in Lebanon
+# Contact: https://laythayache.com/
