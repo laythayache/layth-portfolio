@@ -163,7 +163,7 @@ export default function Home() {
         <PortraitHero />
 
         {/* LAYTH — desktop/tablet: left of portrait, slightly above center */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-50 hidden -translate-x-[clamp(10rem,30vw,27rem)] -translate-y-[clamp(5rem,14vh,10rem)] md:block">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-50 hidden -translate-x-[clamp(10rem,35vw,42rem)] -translate-y-[clamp(5rem,14vh,10rem)] md:block">
           <motion.p
             style={{ x: laythX, opacity: nameOpacity }}
             className="font-display text-4xl uppercase tracking-tight text-[#1A1A1A] lg:text-6xl xl:text-7xl 2xl:text-8xl"
