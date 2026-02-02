@@ -43,6 +43,7 @@ export default function Home() {
     return {
       vw,
       vh,
+      containerW,
       startScale: initialW / LOGO_W,
       navLeft: containerLeft + 24, // px-6
     };
@@ -59,6 +60,7 @@ export default function Home() {
       setDims({
         vw,
         vh,
+        containerW,
         startScale: initialW / LOGO_W,
         navLeft: containerLeft + 24,
       });
@@ -98,11 +100,15 @@ export default function Home() {
   const nameOpacity = useTransform(scrollY, [0, NAME_EXIT], [1, 0]);
   const laythX = useTransform(scrollY, (s) => {
     const t = Math.min(s / NAME_EXIT, 1);
-    return -t * dims.vw * 0.5;
+    // Use the bounded container width (max 1024) and clamp the maximum
+    // horizontal shift so resizing doesn't fling the text unpredictably.
+    const maxShift = Math.min(dims.containerW * 0.5, 480);
+    return -t * maxShift;
   });
   const ayacheX = useTransform(scrollY, (s) => {
     const t = Math.min(s / NAME_EXIT, 1);
-    return t * dims.vw * 0.5;
+    const maxShift = Math.min(dims.containerW * 0.5, 480);
+    return t * maxShift;
   });
 
   return (
@@ -160,7 +166,7 @@ export default function Home() {
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-50 hidden -translate-x-[clamp(10rem,30vw,27rem)] -translate-y-[clamp(5rem,14vh,10rem)] md:block">
           <motion.p
             style={{ x: laythX, opacity: nameOpacity }}
-            className="font-sans text-4xl font-bold uppercase tracking-tight text-[#1A1A1A] lg:text-6xl xl:text-7xl 2xl:text-8xl"
+            className="font-display text-4xl uppercase tracking-tight text-[#1A1A1A] lg:text-6xl xl:text-7xl 2xl:text-8xl"
           >
             LAYTH
           </motion.p>
@@ -170,7 +176,7 @@ export default function Home() {
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-50 hidden translate-x-[clamp(3rem,11vw,9rem)] translate-y-[clamp(2rem,6vh,5rem)] md:block">
           <motion.p
             style={{ x: ayacheX, opacity: nameOpacity }}
-            className="font-sans text-4xl font-bold uppercase tracking-tight text-[#1A1A1A] lg:text-6xl xl:text-7xl 2xl:text-8xl"
+            className="font-display text-4xl uppercase tracking-tight text-[#1A1A1A] lg:text-6xl xl:text-7xl 2xl:text-8xl"
           >
             AYACHE
           </motion.p>
@@ -180,7 +186,7 @@ export default function Home() {
         <div className="absolute inset-x-0 top-6 z-50 px-6 md:hidden">
           <motion.p
             style={{ x: laythX, opacity: nameOpacity }}
-            className="text-left font-sans text-4xl font-bold uppercase tracking-tight text-[#1A1A1A] sm:text-5xl"
+            className="text-left font-display text-4xl uppercase tracking-tight text-[#1A1A1A] sm:text-5xl"
           >
             LAYTH
           </motion.p>
@@ -188,7 +194,7 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-6 z-50 px-6 md:hidden">
           <motion.p
             style={{ x: ayacheX, opacity: nameOpacity }}
-            className="text-right font-sans text-4xl font-bold uppercase tracking-tight text-[#1A1A1A] sm:text-5xl"
+            className="text-right font-display text-4xl uppercase tracking-tight text-[#1A1A1A] sm:text-5xl"
           >
             AYACHE
           </motion.p>

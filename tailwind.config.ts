@@ -7,6 +7,7 @@ export default {
       fontFamily: {
         mono: ["JetBrains Mono", "monospace"],
         sans: ["Inter", "system-ui", "sans-serif"],
+        display: ["Black Ops One", "sans-serif"],
       },
       colors: {
         surface: {
