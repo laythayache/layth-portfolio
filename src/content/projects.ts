@@ -17,6 +17,13 @@ export const projects: Project[] = [
     },
     challenge_url: "/submit?project=omnisign",
     friend_project: false,
+    card: {
+      accent: "teal",
+      size: "lg",
+      variant: "featured",
+      tagline: "AI + Sign Language",
+      highlight: "~89% accuracy · First-ever LSL dataset · Team of 6",
+    },
     sections: {
       problem:
         "Lebanese Sign Language has no digital infrastructure. No standard dataset, no translation system, no unified reference. Deaf communities in Lebanon navigate daily life through a language invisible to technology.",
@@ -48,6 +55,12 @@ export const projects: Project[] = [
       repo: "https://github.com/laythayache/budget-tracker",
     },
     friend_project: false,
+    card: {
+      accent: "amber",
+      size: "md",
+      variant: "standard",
+      tagline: "Fiscal Transparency",
+    },
     sections: {
       problem:
         "Municipal budgets in Lebanon are technically public but practically inaccessible. PDF-only, inconsistent formats, no historical comparison tools.",
@@ -76,6 +89,11 @@ export const projects: Project[] = [
     summary:
       "Agent-based simulation of power grid failure cascades under different infrastructure investment scenarios.",
     friend_project: false,
+    card: {
+      accent: "stone",
+      size: "sm",
+      variant: "minimal",
+    },
     sections: {
       problem:
         "Lebanon's power grid fails unpredictably. Citizens and planners have no model to evaluate which infrastructure investments would reduce outage frequency.",
@@ -104,6 +122,12 @@ export const projects: Project[] = [
     summary:
       "Concept: map informal supply chains in Beirut to identify single points of failure before they break.",
     friend_project: false,
+    card: {
+      accent: "sky",
+      size: "md",
+      variant: "conceptual",
+      highlight: "Looking for collaborators and a viable data collection method",
+    },
     sections: {
       problem:
         "Informal supply chains in Lebanon are invisible until they break. No one maps the dependencies between wholesalers, distributors, and retail.",
@@ -133,6 +157,12 @@ export const projects: Project[] = [
       demo: "https://clinic-queue-demo.pages.dev",
     },
     friend_project: true,
+    card: {
+      accent: "emerald",
+      size: "md",
+      variant: "highlight",
+      highlight: "Adopted by clinic staff within one week",
+    },
     sections: {
       problem:
         "A community clinic in Beirut used a paper sign-in sheet. Patients had no visibility into wait times. Staff spent time managing the queue instead of patients.",
@@ -164,6 +194,13 @@ export const projects: Project[] = [
       repo: "https://github.com/laythayache/water-quality",
     },
     friend_project: true,
+    card: {
+      accent: "blue",
+      size: "md",
+      variant: "standard",
+      tagline: "Environmental Data",
+      highlight: "12 coastal locations · 5 years of data",
+    },
     sections: {
       problem:
         "Water quality data for Lebanon's coast exists but is fragmented across NGO reports, university studies, and government releases. No unified view.",
@@ -192,6 +229,12 @@ export const projects: Project[] = [
     summary:
       "Concept: crowdsourced noise level mapping for Beirut neighborhoods using phone microphones.",
     friend_project: false,
+    card: {
+      accent: "violet",
+      size: "sm",
+      variant: "conceptual",
+      highlight: "Seeking validation partners",
+    },
     sections: {
       problem:
         "Noise pollution in Beirut is severe but unmeasured. No public data exists on which areas exceed safe levels or when.",

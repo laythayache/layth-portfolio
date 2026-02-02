@@ -10,12 +10,13 @@ const links = [
 export default function Navbar() {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
+  const isLightPage = isHome || pathname === "/explore";
 
   return (
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 h-16 transition-colors duration-300",
-        isHome
+        isLightPage
           ? ""
           : "border-b border-border bg-surface/80 backdrop-blur-md"
       )}
@@ -44,7 +45,7 @@ export default function Navbar() {
                 to={link.to}
                 className={cn(
                   "font-mono text-xs uppercase tracking-widest transition-colors",
-                  isHome
+                  isLightPage
                     ? active
                       ? "text-[#1A1A1A]"
                       : "text-[#1A1A1A]/40 hover:text-[#1A1A1A]/70"
