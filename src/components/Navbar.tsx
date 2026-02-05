@@ -17,7 +17,7 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 h-16 transition-colors duration-300",
         isLightPage
-          ? ""
+          ? "bg-[#F2EDE8]"
           : "border-b border-border bg-surface/80 backdrop-blur-md"
       )}
     >
