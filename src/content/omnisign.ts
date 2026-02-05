@@ -27,7 +27,7 @@ export interface Partner {
 
 // ── Video ───────────────────────────────────
 export const VIDEO_URL =
-  "https://pub-40220d605cd89e6a1ae98b129c6bb0c0.r2.dev/WhatsApp%20Video%202025-11-29%20at%2012.43.10%20PM.mp4";
+  "https://pub-f6654749f9534ed48b99cc5f4b614b9b.r2.dev/WhatsApp%20Video%202025-11-29%20at%2012.43.10%20PM.mp4";
 
 // ── Hero ────────────────────────────────────
 export const tagline =
