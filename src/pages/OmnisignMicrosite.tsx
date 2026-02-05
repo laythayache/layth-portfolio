@@ -686,6 +686,9 @@ export default function OmnisignMicrosite() {
                 <p className="font-mono text-[11px] font-medium text-teal-600">
                   {member.role}
                 </p>
+                <p className="mt-1 text-[11px] leading-snug text-slate-400">
+                  {member.detail}
+                </p>
               </motion.div>
             ))}
           </div>
