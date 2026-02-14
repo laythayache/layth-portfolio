@@ -13,6 +13,7 @@ import SystemCard from "@/components/SystemCard";
 import SystemsSnapshot from "@/components/SystemsSnapshot";
 import TechStackVisualization from "@/components/TechStackVisualization";
 import ScaleMetrics from "@/components/ScaleMetrics";
+import DecisionMatrix from "@/components/DecisionMatrix";
 import { projects, getProjectBySlug } from "@/content/projects";
 
 /** Scroll distance (px) over which the emblem transitions to the navbar. */
@@ -361,6 +362,14 @@ export default function Home() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* ── Decision Rationale ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
+        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+          How I Think About Trade-offs
+        </h2>
+        <DecisionMatrix />
       </section>
 
       {/* ── Collaborations ── */}
