@@ -1,7 +1,12 @@
 /**
- * Beautiful decision matrix showing architectural trade-offs
- * Demonstrates systems thinking and reasoning
+ * Decision matrix showing architectural trade-offs
+ * Collapsed by default, hover for preview, click to expand full comparison
+ * Shows systems thinking and clear reasoning
  */
+
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 
 interface Decision {
   title: string;
@@ -64,179 +69,191 @@ const decisions: Decision[] = [
 ];
 
 export default function DecisionMatrix() {
+  const [expanded, setExpanded] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+
   return (
     <div className="w-full space-y-6">
-      {decisions.map((decision, idx) => (
-        <div
-          key={idx}
-          className="group relative overflow-hidden rounded-xl border border-[#1A1A1A]/10 bg-white transition-all duration-300 hover:border-[#1A1A1A]/20 hover:shadow-lg"
-        >
-          {/* Subtle gradient on hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-3 transition-opacity duration-300 bg-gradient-to-br from-[#1A1A1A] to-transparent" />
+      {decisions.map((decision, idx) => {
+        const chosenOption = decision.chosen === "option1" ? decision.option1 : decision.option2;
+        const isExpanded = expanded === idx;
 
-          {/* Decision title header */}
-          <div className="relative z-10 border-b border-[#1A1A1A]/10 bg-gradient-to-r from-white to-[#FEFDFB] px-6 py-5 group-hover:from-[#FEFDFB] group-hover:to-white transition-colors duration-300">
-            <h3 className="font-sans text-base font-semibold text-[#1A1A1A] tracking-tight">
-              {decision.title}
-            </h3>
-          </div>
-
-          {/* Options comparison grid */}
-          <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#1A1A1A]/10">
-            {/* Option 1 */}
-            <div className="relative p-6 overflow-hidden group/option transition-all duration-300">
-              {/* Option background on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover/option:opacity-2 transition-opacity duration-300 bg-gradient-to-br from-[#1A1A1A] to-transparent" />
-
-              <div className="relative z-10 space-y-4">
-                {/* Option title with indicator */}
-                <div className="flex items-center gap-3 mb-5">
-                  <div
-                    className={`flex items-center justify-center w-6 h-6 rounded-full border-2 transition-all duration-300 ${
-                      decision.chosen === "option1"
-                        ? "border-[#1A1A1A] bg-[#1A1A1A]"
-                        : "border-[#1A1A1A]/30 group-hover/option:border-[#1A1A1A]/50"
+        return (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: idx * 0.15 }}
+            className="relative overflow-hidden rounded-xl bg-white shadow-sm"
+          >
+            {/* Header - always visible */}
+            <button
+              onClick={() => setExpanded(isExpanded ? null : idx)}
+              onMouseEnter={() => setHovered(idx)}
+              onMouseLeave={() => setHovered(null)}
+              className="w-full px-8 py-6 text-left hover:bg-[#F2EDE8]/30 transition-colors duration-300"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-lg font-semibold text-[#1A1A1A]">
+                  {decision.title}
+                </h3>
+                <div className="flex items-center gap-3 flex-shrink-0">
+                  <span className="font-mono text-xs uppercase tracking-wider text-[#1A1A1A]/60 bg-[#F2EDE8] px-3 py-1 rounded-full whitespace-nowrap">
+                    Chosen: {chosenOption.choice}
+                  </span>
+                  <ChevronDown
+                    size={20}
+                    className={`text-[#1A1A1A]/40 transition-transform duration-300 ${
+                      isExpanded ? 'rotate-180' : ''
                     }`}
+                  />
+                </div>
+              </div>
+
+              {/* Hover preview - shows reasoning on hover */}
+              <AnimatePresence>
+                {hovered === idx && !isExpanded && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-4 pt-4 border-t border-[#1A1A1A]/10"
                   >
-                    {decision.chosen === "option1" && (
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    )}
+                    <p className="text-sm text-[#1A1A1A]/70 leading-relaxed">
+                      {decision.reason}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </button>
+
+            {/* Expanded content - full trade-off comparison */}
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="border-t border-[#1A1A1A]/10 overflow-hidden"
+                >
+                  {/* Options comparison grid */}
+                  <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#1A1A1A]/10">
+                    {/* Option 1 */}
+                    <div className="p-8 space-y-6">
+                      <div className="space-y-1">
+                        <h4 className="font-sans text-base font-semibold text-[#1A1A1A]">
+                          {decision.option1.choice}
+                        </h4>
+                        {decision.chosen === "option1" && (
+                          <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40">
+                            ✓ Chosen option
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Pros */}
+                      <div className="space-y-3">
+                        <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
+                          Advantages
+                        </p>
+                        <ul className="space-y-2">
+                          {decision.option1.pros.map((pro, i) => (
+                            <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/70">
+                              <span className="text-[#1A1A1A]/40 flex-shrink-0">•</span>
+                              <span>{pro}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Cons */}
+                      <div className="space-y-3">
+                        <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
+                          Trade-offs
+                        </p>
+                        <ul className="space-y-2">
+                          {decision.option1.cons.map((con, i) => (
+                            <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/60">
+                              <span className="text-[#1A1A1A]/30 flex-shrink-0">•</span>
+                              <span>{con}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Option 2 */}
+                    <div className="p-8 space-y-6">
+                      <div className="space-y-1">
+                        <h4 className="font-sans text-base font-semibold text-[#1A1A1A]">
+                          {decision.option2.choice}
+                        </h4>
+                        {decision.chosen === "option2" && (
+                          <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40">
+                            ✓ Chosen option
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Pros */}
+                      <div className="space-y-3">
+                        <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
+                          Advantages
+                        </p>
+                        <ul className="space-y-2">
+                          {decision.option2.pros.map((pro, i) => (
+                            <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/70">
+                              <span className="text-[#1A1A1A]/40 flex-shrink-0">•</span>
+                              <span>{pro}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Cons */}
+                      <div className="space-y-3">
+                        <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
+                          Trade-offs
+                        </p>
+                        <ul className="space-y-2">
+                          {decision.option2.cons.map((con, i) => (
+                            <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/60">
+                              <span className="text-[#1A1A1A]/30 flex-shrink-0">•</span>
+                              <span>{con}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
-                  <h4 className="font-sans font-semibold text-[#1A1A1A] group-hover/option:text-[#1A1A1A]/80 transition-colors duration-300">
-                    {decision.option1.choice}
-                  </h4>
-                  {decision.chosen === "option1" && (
-                    <span className="ml-auto text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/60 bg-[#1A1A1A]/5 px-2 py-1 rounded">
-                      Chosen
-                    </span>
-                  )}
-                </div>
 
-                {/* Pros */}
-                <div className="space-y-2">
-                  <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
-                    Advantages
-                  </p>
-                  <ul className="space-y-2">
-                    {decision.option1.pros.map((pro, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/75 group-hover/option:text-[#1A1A1A]/90 transition-colors duration-300">
-                        <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#1A1A1A]/40 group-hover/option:text-[#1A1A1A]/60 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>{pro}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Cons */}
-                <div className="space-y-2">
-                  <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
-                    Trade-offs
-                  </p>
-                  <ul className="space-y-2">
-                    {decision.option1.cons.map((con, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/60 group-hover/option:text-[#1A1A1A]/75 transition-colors duration-300">
-                        <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#1A1A1A]/30 group-hover/option:text-[#1A1A1A]/50 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        <span>{con}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-
-            {/* Option 2 */}
-            <div className="relative p-6 overflow-hidden group/option transition-all duration-300">
-              {/* Option background on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover/option:opacity-2 transition-opacity duration-300 bg-gradient-to-br from-[#1A1A1A] to-transparent" />
-
-              <div className="relative z-10 space-y-4">
-                {/* Option title with indicator */}
-                <div className="flex items-center gap-3 mb-5">
-                  <div
-                    className={`flex items-center justify-center w-6 h-6 rounded-full border-2 transition-all duration-300 ${
-                      decision.chosen === "option2"
-                        ? "border-[#1A1A1A] bg-[#1A1A1A]"
-                        : "border-[#1A1A1A]/30 group-hover/option:border-[#1A1A1A]/50"
-                    }`}
-                  >
-                    {decision.chosen === "option2" && (
-                      <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                    )}
+                  {/* Reasoning footer */}
+                  <div className="border-t border-[#1A1A1A]/10 bg-[#F2EDE8]/30 p-8">
+                    <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold mb-3">
+                      Reasoning
+                    </p>
+                    <p className="text-sm text-[#1A1A1A]/80 leading-relaxed">
+                      {decision.reason}
+                    </p>
                   </div>
-                  <h4 className="font-sans font-semibold text-[#1A1A1A] group-hover/option:text-[#1A1A1A]/80 transition-colors duration-300">
-                    {decision.option2.choice}
-                  </h4>
-                  {decision.chosen === "option2" && (
-                    <span className="ml-auto text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/60 bg-[#1A1A1A]/5 px-2 py-1 rounded">
-                      Chosen
-                    </span>
-                  )}
-                </div>
-
-                {/* Pros */}
-                <div className="space-y-2">
-                  <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
-                    Advantages
-                  </p>
-                  <ul className="space-y-2">
-                    {decision.option2.pros.map((pro, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/75 group-hover/option:text-[#1A1A1A]/90 transition-colors duration-300">
-                        <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#1A1A1A]/40 group-hover/option:text-[#1A1A1A]/60 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>{pro}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Cons */}
-                <div className="space-y-2">
-                  <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
-                    Trade-offs
-                  </p>
-                  <ul className="space-y-2">
-                    {decision.option2.cons.map((con, i) => (
-                      <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/60 group-hover/option:text-[#1A1A1A]/75 transition-colors duration-300">
-                        <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-[#1A1A1A]/30 group-hover/option:text-[#1A1A1A]/50 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        <span>{con}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Reasoning footer */}
-          <div className="relative z-10 border-t border-[#1A1A1A]/10 bg-gradient-to-r from-[#FEFDFB] to-white px-6 py-4 group-hover:from-white group-hover:to-[#FEFDFB] transition-colors duration-300">
-            <div className="flex items-start gap-3">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#1A1A1A]/40 mt-2 flex-shrink-0" />
-              <div>
-                <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/50 mb-2 font-semibold">
-                  Reasoning
-                </p>
-                <p className="text-sm text-[#1A1A1A]/75 leading-relaxed group-hover:text-[#1A1A1A]/85 transition-colors duration-300">
-                  {decision.reason}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        );
+      })}
 
       {/* Footer note */}
-      <div className="relative overflow-hidden rounded-xl border border-[#1A1A1A]/10 bg-gradient-to-br from-white via-[#FEFDFB] to-white p-6 transition-all duration-300 hover:border-[#1A1A1A]/20 hover:shadow-lg">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7, ease: "easeOut", delay: 0.54 }}
+        className="relative overflow-hidden rounded-xl border border-[#1A1A1A]/10 bg-white p-8 shadow-sm"
+      >
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1A1A1A]/10 to-transparent" />
 
         <div className="relative z-10 space-y-3">
@@ -247,7 +264,7 @@ export default function DecisionMatrix() {
             Architecture is about choosing the best failure mode for your context. Every decision involves trade-offs. The goal isn't perfection — it's making informed choices with clear reasoning.
           </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

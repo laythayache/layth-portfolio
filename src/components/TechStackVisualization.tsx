@@ -1,6 +1,9 @@
 /**
- * Simple, elegant tech stack display
+ * Tech stack display with categories
+ * Spacious layout with staggered fade-in animations
  */
+
+import { motion } from 'framer-motion';
 
 const categories = [
   {
@@ -24,20 +27,27 @@ const categories = [
 export default function TechStackVisualization() {
   return (
     <div className="w-full">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-        {categories.map((cat) => (
-          <div key={cat.name} className="space-y-3">
-            <div className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/40">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
+        {categories.map((cat, idx) => (
+          <motion.div
+            key={cat.name}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease: "easeOut", delay: idx * 0.15 }}
+            className="space-y-6"
+          >
+            <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/40">
               {cat.name}
-            </div>
-            <div className="space-y-2">
+            </h3>
+            <ul className="space-y-4">
               {cat.items.map((tech) => (
-                <div key={tech} className="text-sm text-[#1A1A1A]/70">
+                <li key={tech} className="text-base text-[#1A1A1A]/80">
                   {tech}
-                </div>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </motion.div>
         ))}
       </div>
     </div>
