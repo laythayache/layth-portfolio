@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -17,6 +17,15 @@ const tabs: { label: string; value: ProjectStatus | "" }[] = [
 export default function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const reduced = useReducedMotion();
+
+  // Auto-refresh on first visit to ensure latest content
+  useEffect(() => {
+    const hasRefreshed = sessionStorage.getItem("explore-refreshed");
+    if (!hasRefreshed) {
+      sessionStorage.setItem("explore-refreshed", "true");
+      window.location.reload();
+    }
+  }, []);
 
   const [activeTab, setActiveTab] = useState<ProjectStatus | "">(
     (searchParams.get("status") as ProjectStatus) || ""

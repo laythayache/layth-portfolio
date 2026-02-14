@@ -26,6 +26,12 @@ const NAV_H = 64;
 const LOGO_H = 32; // h-8
 const LOGO_W = Math.round(LOGO_H * (1248 / 832)); // ~48px, preserves SVG aspect
 const NAV_Y = (NAV_H - LOGO_H) / 2; // 16px — vertically centered in navbar
+const latestProjects = [...projects]
+  .sort(
+    (a, b) =>
+      new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+  )
+  .slice(0, 6);
 
 export default function Home() {
   const reduced = useReducedMotion();
@@ -201,71 +207,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── Vision & Mission ── */}
-      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 py-24 md:py-32">
-        <div className="grid gap-16 md:grid-cols-2 md:gap-12">
-          <div>
-            <h2 className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[#1A1A1A]/50">
-              Vision
-            </h2>
-            <div className="flex flex-col gap-4 font-sans text-lg leading-relaxed text-[#1A1A1A]/80 md:text-xl">
-              <p>I want to build in public.</p>
-              <p>
-                Not to perform expertise, but to expose how systems actually
-                behave when you touch them.
-              </p>
-              <p>
-                Most things look coherent from the outside. They break only
-                when you try to use them.
-              </p>
-              <p>
-                My vision is a public space where work is shown before it's
-                clean, where assumptions are questioned early, and where
-                failure is documented instead of hidden. A place that treats
-                complexity seriously and doesn't confuse confidence with
-                correctness.
-              </p>
-              <p>
-                Over time, this should grow into something larger than me: a
-                shared surface where people who care about systems —
-                technical, social, institutional — can think together without
-                pretending the answers are easy.
-              </p>
-            </div>
-          </div>
-          <div>
-            <h2 className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-[#1A1A1A]/50">
-              Mission
-            </h2>
-            <div className="flex flex-col gap-4 font-sans text-lg leading-relaxed text-[#1A1A1A]/80 md:text-xl">
-              <p>
-                My work is to understand broken systems by engaging with them
-                directly.
-              </p>
-              <p>
-                I don't start with opinions. I start with constraints. I try
-                things, I document what happens, I say what worked, what
-                didn't, and what I still don't understand.
-              </p>
-              <p>This site exists to:</p>
-              <ul className="flex flex-col gap-1 pl-5">
-                <li className="list-disc">make my thinking legible</li>
-                <li className="list-disc">
-                  invite challenge rather than agreement
-                </li>
-                <li className="list-disc">
-                  leave traces that others can build on or argue against
-                </li>
-              </ul>
-              <p>
-                I'm not here to convince. I'm here to work honestly, in
-                public, and accept the consequences of being wrong.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ── Projects ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-24 md:pb-32">
         <div className="mb-10 flex items-end justify-between">
@@ -285,7 +226,7 @@ export default function Home() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.slice(0, 6).map((project) => (
+          {latestProjects.map((project) => (
             <Link
               key={project.slug}
               to={`/projects/${project.slug}`}

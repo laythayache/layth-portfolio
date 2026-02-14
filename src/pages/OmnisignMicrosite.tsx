@@ -726,12 +726,10 @@ export default function OmnisignMicrosite() {
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
             <a
-              href="https://github.com/laythayache/omnisign"
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:laythayache5@gmail.com?subject=OmniSign%20-%20Getting%20Involved"
               className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 font-sans text-sm font-semibold text-teal-700 shadow-lg transition-all hover:bg-teal-50 hover:shadow-xl"
             >
-              View on GitHub
+              Get Involved
               <ArrowUpRight size={16} />
             </a>
             <Link
