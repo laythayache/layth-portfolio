@@ -42,10 +42,13 @@ export interface ProjectSections {
   problem: string;
   systemReality: string;
   intervention: string;
+  architecture?: string;
+  tradeoffs: string;
   worked: string;
   didnt: string;
   unsolved: string;
   challenges: string;
+  reliability?: string;
 }
 
 export interface Project {
@@ -57,6 +60,11 @@ export interface Project {
   ui_mode: UIMode;
   updated_at: string;
   summary: string;
+  outcome?: string;
+  role?: string;
+  stack?: string;
+  timeframe?: string;
+  architectureDiagram?: string;
   links?: ProjectLinks;
   challenge_url?: string;
   friend_project?: boolean;

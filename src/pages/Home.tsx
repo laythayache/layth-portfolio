@@ -6,7 +6,7 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, HelpCircle, CheckCircle } from "lucide-react";
 import { MOTION } from "@/motion/tokens";
 import PortraitHero from "@/components/PortraitHero";
 import SystemCard from "@/components/SystemCard";
@@ -29,40 +29,37 @@ const selectedSystems = [
 
 const principles = [
   {
-    title: "Clarity over noise",
-    description: "Systems that expose structure, not obscure it",
+    title: "Reliability under uncertainty",
+    description: "Systems fail. Plan for degradation, graceful fallbacks.",
   },
   {
-    title: "Built to survive reality",
-    description: "Production-grade, not proof-of-concept",
+    title: "Clear interfaces",
+    description: "Boundaries between humans and systems explicit and obvious.",
   },
   {
-    title: "Accountability by design",
-    description: "Versioning, provenance, auditability",
+    title: "Auditability by design",
+    description: "Every state change traceable: what, when, why, who.",
   },
   {
-    title: "Truthful engineering",
-    description: "No hype metrics, honest constraints",
+    title: "Performance as constraint",
+    description: "Latency and throughput are architecture decisions.",
+  },
+  {
+    title: "Security as architecture",
+    description: "Vulnerabilities fixed structurally, not patched.",
   },
 ];
 
-const proofPoints = [
+const collaborations = [
   {
-    title: "Data Pipelines",
+    title: "Public Information Infrastructure",
     description:
-      "Automated collection, transformation, and normalization workflows",
+      "Technical Architect & Lead Engineer. Building distributed scraping framework, change detection architecture, normalization pipeline, API layer for media tracking.",
   },
   {
-    title: "Production Deployment",
-    description: "CI/CD, monitoring, error handling at scale",
-  },
-  {
-    title: "RAG Systems",
-    description: "Retrieval-augmented generation for information extraction",
-  },
-  {
-    title: "OCR Integration",
-    description: "Document processing and structured data extraction",
+    title: "OmniSign",
+    description:
+      "Federated Learning Architect (team of 6). Designed privacy-first sign language translation system: 89% alphabet accuracy, on-device inference, federated learning across distributed nodes.",
   },
 ];
 
@@ -70,6 +67,7 @@ export default function Home() {
   const reduced = useReducedMotion();
   const { scrollY } = useScroll();
   const { hysteresis } = MOTION;
+  const [showExplainer, setShowExplainer] = useState(false);
 
   // Viewport + computed positions, recomputed on resize.
   const [dims, setDims] = useState(() => {
@@ -242,17 +240,63 @@ export default function Home() {
 
       {/* ── Role Statement ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-12">
-        <div className="mb-16 flex flex-col gap-4 border-b border-[#1A1A1A]/10 pb-8">
-          <h1 className="font-sans text-3xl font-semibold text-[#1A1A1A]">
-            Technical Architect
-          </h1>
-          <p className="text-lg leading-relaxed text-[#1A1A1A]/70 max-w-2xl">
-            I design and build production-grade public information infrastructure.
-            Systems that track change, ensure provenance, and serve structured data at scale.
-          </p>
+        <div className="mb-16 flex flex-col gap-6 border-b border-[#1A1A1A]/10 pb-8">
+          <div>
+            <h1 className="font-sans text-4xl font-semibold text-[#1A1A1A] mb-4">
+              I architect serious systems.
+            </h1>
+            <p className="text-xl leading-relaxed text-[#1A1A1A]/80 max-w-2xl mb-2">
+              Production-grade infrastructure that turns unstable environments into rational operating structures.
+            </p>
+            <p className="text-base text-[#1A1A1A]/60 max-w-2xl mb-4">
+              Data, infrastructure, and automation — built to survive messy reality. Proof over hype. Clarity over noise.
+            </p>
+
+            {/* Inline explainer */}
+            <button
+              onClick={() => setShowExplainer(!showExplainer)}
+              className="inline-flex items-center gap-1 text-sm text-[#1A1A1A]/40 hover:text-[#1A1A1A]/60 transition-colors"
+            >
+              <HelpCircle size={14} />
+              What does this mean?
+            </button>
+            {showExplainer && (
+              <div className="mt-3 text-sm bg-[#EBE5DE] border-l-2 border-[#1A1A1A]/20 p-3 max-w-2xl">
+                <p className="text-[#1A1A1A]/70">
+                  Systems that track what news outlets publish and when content changes. Infrastructure
+                  for change detection, data normalization, and structured API access to information
+                  that matters. Built for reliability under real-world constraints.
+                </p>
+              </div>
+            )}
+          </div>
+
           <p className="font-mono text-sm text-[#1A1A1A]/50">
-            Current focus: Public data collection, normalization, and API infrastructure for media tracking
+            Focus: Public data infrastructure, distributed systems, change detection, production deployment
           </p>
+        </div>
+      </section>
+
+      {/* ── Proof Strip ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
+        <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
+          {[
+            "Shipped production systems",
+            "Security + reliability hardening",
+            "Data pipelines + analytics",
+            "Distributed systems architecture",
+            "Real-world constraints",
+          ].map((chip) => (
+            <div
+              key={chip}
+              className="flex items-center gap-2 rounded-full border border-[#1A1A1A]/10 bg-[#F2EDE8] px-4 py-2"
+            >
+              <CheckCircle size={14} className="text-[#1A1A1A]/40 shrink-0" />
+              <span className="font-mono text-xs text-[#1A1A1A]/60 whitespace-nowrap">
+                {chip}
+              </span>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -268,12 +312,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── How I Work ── */}
+      {/* ── Operating Principles ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
         <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
-          Principles
+          What I Optimize
         </h2>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {principles.map((principle) => (
             <div key={principle.title} className="flex flex-col gap-2">
               <h3 className="font-sans text-sm font-semibold text-[#1A1A1A]">
@@ -287,22 +331,22 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Proof Points ── */}
+      {/* ── Collaborations ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-24">
         <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
-          Experience
+          Collaborations
         </h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          {proofPoints.map((point) => (
+        <div className="grid gap-6 md:grid-cols-1">
+          {collaborations.map((collab) => (
             <div
-              key={point.title}
-              className="border border-[#1A1A1A]/10 p-5"
+              key={collab.title}
+              className="border border-[#1A1A1A]/10 p-6"
             >
-              <h3 className="font-mono text-xs uppercase tracking-wider text-[#1A1A1A]/50 mb-2">
-                {point.title}
+              <h3 className="font-sans text-lg font-semibold text-[#1A1A1A] mb-2">
+                {collab.title}
               </h3>
-              <p className="text-sm text-[#1A1A1A]/70">
-                {point.description}
+              <p className="text-base text-[#1A1A1A]/70 leading-relaxed">
+                {collab.description}
               </p>
             </div>
           ))}

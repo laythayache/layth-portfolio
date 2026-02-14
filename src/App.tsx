@@ -4,6 +4,8 @@ import Home from "@/pages/Home";
 import Explore from "@/pages/Explore";
 import About from "@/pages/About";
 import Submit from "@/pages/Submit";
+import Playbook from "@/pages/Playbook";
+import Now from "@/pages/Now";
 import ProjectDetail from "@/pages/ProjectDetail";
 import OmnisignMicrosite from "@/pages/OmnisignMicrosite";
 import Systems from "@/pages/Systems";
@@ -19,7 +21,9 @@ export default function App() {
           <Route path="/" element={<Home />} />
           {/* Primary routes */}
           <Route path="/systems" element={<Explore />} />
+          <Route path="/playbook" element={<Playbook />} />
           <Route path="/writing" element={<Writing />} />
+          <Route path="/now" element={<Now />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Submit />} />
 

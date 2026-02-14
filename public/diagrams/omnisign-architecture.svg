@@ -1,0 +1,115 @@
+<svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .box { fill: #f2ede8; stroke: #1a1a1a; stroke-width: 2; }
+      .title { font-family: sans-serif; font-size: 14px; font-weight: bold; fill: #1a1a1a; }
+      .label { font-family: monospace; font-size: 11px; fill: #1a1a1a; }
+      .arrow { stroke: #1a1a1a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .section-label { font-family: monospace; font-size: 10px; fill: #1a1a1a; opacity: 0.5; text-transform: uppercase; }
+      .federated { fill: none; stroke: #1a1a1a; stroke-width: 1; stroke-dasharray: 5,5; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#1a1a1a" />
+    </marker>
+  </defs>
+
+  <!-- Background sections -->
+  <g opacity="0.05">
+    <rect x="20" y="20" width="280" height="560" fill="#1a1a1a" />
+    <rect x="320" y="20" width="320" height="560" fill="#1a1a1a" />
+    <rect x="660" y="20" width="320" height="560" fill="#1a1a1a" />
+  </g>
+
+  <!-- Section labels -->
+  <text x="30" y="45" class="section-label">On-Device</text>
+  <text x="330" y="45" class="section-label">Federated Learning</text>
+  <text x="670" y="45" class="section-label">Output & Export</text>
+
+  <!-- ON-DEVICE LAYER -->
+  <!-- Camera/Input -->
+  <rect x="30" y="70" width="100" height="60" rx="4" class="box" />
+  <text x="80" y="92" text-anchor="middle" class="title">Video Input</text>
+  <text x="80" y="110" text-anchor="middle" class="label">Camera Stream</text>
+
+  <!-- Landmark Extraction -->
+  <rect x="30" y="160" width="100" height="80" rx="4" class="box" />
+  <text x="80" y="190" text-anchor="middle" class="title">MediaPipe</text>
+  <text x="80" y="208" text-anchor="middle" class="title">Pose Extract</text>
+  <text x="80" y="226" text-anchor="middle" class="label">Hand/Body Points</text>
+
+  <!-- On-Device Model -->
+  <rect x="30" y="270" width="100" height="80" rx="4" class="box" />
+  <text x="80" y="300" text-anchor="middle" class="title">TensorFlow</text>
+  <text x="80" y="318" text-anchor="middle" class="title">Lite Model</text>
+  <text x="80" y="336" text-anchor="middle" class="label">&lt;50MB, Optimized</text>
+
+  <!-- FEDERATED LEARNING LAYER -->
+  <!-- Local training -->
+  <rect x="330" y="100" width="140" height="100" rx="4" class="box" />
+  <text x="400" y="135" text-anchor="middle" class="title">Local Training</text>
+  <text x="400" y="153" text-anchor="middle" class="label">Device Updates</text>
+  <text x="400" y="171" text-anchor="middle" class="label">No Data Leaves</text>
+
+  <!-- Model coordination -->
+  <rect x="330" y="230" width="140" height="100" rx="4" class="box" />
+  <text x="400" y="270" text-anchor="middle" class="title">Coordinator</text>
+  <text x="400" y="288" text-anchor="middle" class="label">Aggregates Updates</text>
+  <text x="400" y="306" text-anchor="middle" class="label">Validates Changes</text>
+
+  <!-- Dataset versioning -->
+  <rect x="330" y="360" width="140" height="80" rx="4" class="box" />
+  <text x="400" y="395" text-anchor="middle" class="title">Dataset</text>
+  <text x="400" y="413" text-anchor="middle" class="title">Versioning</text>
+  <text x="400" y="431" text-anchor="middle" class="label">Provenance Tracking</text>
+
+  <!-- OUTPUT & EXPORT LAYER -->
+  <!-- Text output -->
+  <rect x="670" y="70" width="140" height="80" rx="4" class="box" />
+  <text x="740" y="100" text-anchor="middle" class="title">Text Output</text>
+  <text x="740" y="118" text-anchor="middle" class="label">Transcription</text>
+  <text x="740" y="136" text-anchor="middle" class="label">Real-time &lt;100ms</text>
+
+  <!-- Speech synthesis -->
+  <rect x="670" y="180" width="140" height="80" rx="4" class="box" />
+  <text x="740" y="210" text-anchor="middle" class="title">Speech</text>
+  <text x="740" y="228" text-anchor="middle" class="title">Synthesis</text>
+  <text x="740" y="246" text-anchor="middle" class="label">Multi-modal Output</text>
+
+  <!-- App Distribution -->
+  <rect x="670" y="290" width="140" height="100" rx="4" class="box" />
+  <text x="740" y="325" text-anchor="middle" class="title">React Native</text>
+  <text x="740" y="343" text-anchor="middle" class="title">App</text>
+  <text x="740" y="361" text-anchor="middle" class="label">iOS &amp; Android</text>
+  <text x="740" y="379" text-anchor="middle" class="label">WebRTC for Video</text>
+
+  <!-- ARROWS - Data flow -->
+  <!-- Input to landmark -->
+  <path class="arrow" d="M 80 130 L 80 160" />
+
+  <!-- Landmark to model -->
+  <path class="arrow" d="M 80 240 L 80 270" />
+
+  <!-- On-device to federated -->
+  <path class="arrow" d="M 130 310 L 330 160" />
+
+  <!-- Federated communication (bidirectional) -->
+  <path class="arrow" d="M 400 200 L 400 230" />
+  <path class="arrow" d="M 400 330 L 400 360" />
+
+  <!-- Local back to on-device -->
+  <path class="arrow" d="M 330 140 L 130 310" stroke-dasharray="5,5" />
+
+  <!-- Output paths -->
+  <path class="arrow" d="M 130 290 L 670 110" />
+  <path class="arrow" d="M 330 270 L 670 220" />
+  <path class="arrow" d="M 330 340 L 670 330" />
+
+  <!-- Privacy & Constraints box -->
+  <rect x="30" y="430" width="950" height="140" rx="4" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="50" y="455" class="section-label">Privacy & Design Decisions</text>
+  <text x="50" y="475" class="label">✓ On-device processing prevents data leakage (privacy-first)</text>
+  <text x="50" y="495" class="label">✓ Federated learning allows 6 contributors to improve model without centralizing data</text>
+  <text x="50" y="515" class="label">✓ Alphabet-level accuracy (89%) chosen over full translation to avoid complexity at this stage</text>
+  <text x="50" y="535" class="label">✓ Model size constrained to &lt;50MB for mobile; cloud inference would be faster but creates dependency</text>
+  <text x="50" y="555" class="label">✓ Real-time &lt;100ms latency critical for conversational usability</text>
+</svg>

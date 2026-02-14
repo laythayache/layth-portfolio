@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { projects } from "@/content/projects";
 import type { ProjectStatus } from "@/content/types";
 import ExploreCard from "@/components/ExploreCard";
+import SystemsMap from "@/components/SystemsMap";
 
 const tabs: { label: string; value: ProjectStatus | "" }[] = [
   { label: "All", value: "" },
@@ -16,6 +17,7 @@ const tabs: { label: string; value: ProjectStatus | "" }[] = [
 export default function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const reduced = useReducedMotion();
+  const [viewMode, setViewMode] = useState<"list" | "map">("list");
 
   const [activeTab, setActiveTab] = useState<ProjectStatus | "">(
     (searchParams.get("status") as ProjectStatus) || ""
@@ -60,63 +62,106 @@ export default function Explore() {
           </p>
         </div>
 
-        {/* Tab bar */}
-        <div className="flex items-center gap-6 border-b border-[#1A1A1A]/10">
-          {tabs.map((tab) => (
+        {/* Tab bar + View toggle */}
+        <div className="flex items-center justify-between border-b border-[#1A1A1A]/10 pb-3">
+          <div className="flex items-center gap-6">
+            {tabs.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => handleTabChange(tab.value)}
+                className={cn(
+                  "relative pb-3 font-mono text-xs uppercase tracking-[0.15em] transition-colors",
+                  activeTab === tab.value
+                    ? "text-[#1A1A1A]"
+                    : "text-[#1A1A1A]/35 hover:text-[#1A1A1A]/60"
+                )}
+              >
+                {tab.label}
+                {activeTab === tab.value && (
+                  <motion.div
+                    layoutId="explore-tab"
+                    className="absolute bottom-0 left-0 right-0 h-px bg-[#1A1A1A]"
+                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+
+          {/* View toggle */}
+          <div className="flex items-center gap-2">
             <button
-              key={tab.value}
-              onClick={() => handleTabChange(tab.value)}
+              onClick={() => setViewMode("list")}
               className={cn(
-                "relative pb-3 font-mono text-xs uppercase tracking-[0.15em] transition-colors",
-                activeTab === tab.value
-                  ? "text-[#1A1A1A]"
-                  : "text-[#1A1A1A]/35 hover:text-[#1A1A1A]/60"
+                "px-3 py-1 font-mono text-xs uppercase tracking-wider rounded transition-colors",
+                viewMode === "list"
+                  ? "bg-[#1A1A1A] text-[#F2EDE8]"
+                  : "bg-[#1A1A1A]/5 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/10"
               )}
             >
-              {tab.label}
-              {activeTab === tab.value && (
-                <motion.div
-                  layoutId="explore-tab"
-                  className="absolute bottom-0 left-0 right-0 h-px bg-[#1A1A1A]"
-                  transition={{ type: "spring", stiffness: 500, damping: 35 }}
-                />
-              )}
+              List
             </button>
-          ))}
+            <button
+              onClick={() => setViewMode("map")}
+              className={cn(
+                "px-3 py-1 font-mono text-xs uppercase tracking-wider rounded transition-colors",
+                viewMode === "map"
+                  ? "bg-[#1A1A1A] text-[#F2EDE8]"
+                  : "bg-[#1A1A1A]/5 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/10"
+              )}
+            >
+              Map
+            </button>
+          </div>
         </div>
 
-        {/* Masonry grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: reduced ? 0 : 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: reduced ? 0 : -4 }}
-            transition={{ duration: reduced ? 0.1 : 0.25, ease: [0, 0, 0.2, 1] }}
-            className="mt-10 columns-1 gap-5 md:columns-2"
-          >
-            {filtered.map((project, i) => (
+        {/* View mode: List or Map */}
+        {viewMode === "list" ? (
+          <>
+            {/* Masonry grid */}
+            <AnimatePresence mode="wait">
               <motion.div
-                key={project.slug}
-                initial={{ opacity: 0, y: reduced ? 0 : 16 }}
+                key={activeTab}
+                initial={{ opacity: 0, y: reduced ? 0 : 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{
-                  delay: reduced ? 0 : i * 0.06,
-                  duration: reduced ? 0.1 : 0.4,
-                  ease: [0, 0, 0.2, 1],
-                }}
-                className="mb-5 break-inside-avoid"
+                exit={{ opacity: 0, y: reduced ? 0 : -4 }}
+                transition={{ duration: reduced ? 0.1 : 0.25, ease: [0, 0, 0.2, 1] }}
+                className="mt-10 columns-1 gap-5 md:columns-2"
               >
-                <ExploreCard project={project} />
+                {filtered.map((project, i) => (
+                  <motion.div
+                    key={project.slug}
+                    initial={{ opacity: 0, y: reduced ? 0 : 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      delay: reduced ? 0 : i * 0.06,
+                      duration: reduced ? 0.1 : 0.4,
+                      ease: [0, 0, 0.2, 1],
+                    }}
+                    className="mb-5 break-inside-avoid"
+                  >
+                    <ExploreCard project={project} />
+                  </motion.div>
+                ))}
               </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
+            </AnimatePresence>
 
-        {filtered.length === 0 && (
-          <p className="mt-16 text-center font-mono text-sm text-[#1A1A1A]/40">
-            No projects in this category yet.
-          </p>
+            {filtered.length === 0 && (
+              <p className="mt-16 text-center font-mono text-sm text-[#1A1A1A]/40">
+                No projects in this category yet.
+              </p>
+            )}
+          </>
+        ) : (
+          <>
+            {/* Systems Map */}
+            <div className="mt-10">
+              <SystemsMap />
+              <p className="mt-4 text-xs text-[#1A1A1A]/50 font-mono">
+                Click on a project node to view details. Gray dots are components and technologies.
+              </p>
+            </div>
+          </>
         )}
       </div>
     </div>

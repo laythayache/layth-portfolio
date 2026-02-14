@@ -27,6 +27,17 @@ export default function SystemCard({ project }: { project: Project }) {
         {project.summary}
       </p>
 
+      {project.outcome && (
+        <div className="border-l-2 border-[#1A1A1A]/20 pl-4">
+          <p className="font-mono text-xs uppercase tracking-wider text-[#1A1A1A]/40 mb-1">
+            Outcome
+          </p>
+          <p className="text-sm text-[#1A1A1A]/70 font-semibold">
+            {project.outcome}
+          </p>
+        </div>
+      )}
+
       {project.card?.highlight && (
         <div className="border-l-2 border-[#1A1A1A]/20 pl-4">
           <p className="font-mono text-xs text-[#1A1A1A]/50">

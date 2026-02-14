@@ -13,6 +13,7 @@
     "@fontsource/black-ops-one": "^5.2.8",
     "@fontsource/inter": "^5.2.8",
     "@fontsource/jetbrains-mono": "^5.2.8",
+    "@xyflow/react": "^12.10.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.26",
     "lucide-react": "^0.462.0",
