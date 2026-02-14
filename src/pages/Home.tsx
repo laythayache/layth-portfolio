@@ -10,6 +10,9 @@ import { ArrowUpRight, HelpCircle, CheckCircle } from "lucide-react";
 import { MOTION } from "@/motion/tokens";
 import PortraitHero from "@/components/PortraitHero";
 import SystemCard from "@/components/SystemCard";
+import SystemsSnapshot from "@/components/SystemsSnapshot";
+import TechStackVisualization from "@/components/TechStackVisualization";
+import ScaleMetrics from "@/components/ScaleMetrics";
 import { projects, getProjectBySlug } from "@/content/projects";
 
 /** Scroll distance (px) over which the emblem transitions to the navbar. */
@@ -300,6 +303,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Scale & Metrics ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
+        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+          Scale & Impact
+        </h2>
+        <ScaleMetrics />
+      </section>
+
       {/* ── Selected Systems ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
         <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
@@ -310,6 +321,27 @@ export default function Home() {
             <SystemCard key={project.slug} project={project} />
           ))}
         </div>
+      </section>
+
+      {/* ── Architecture Snapshot ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
+        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+          How Systems Connect
+        </h2>
+        <div className="border border-[#1A1A1A]/10 p-8 bg-[#FEFDFB] rounded">
+          <SystemsSnapshot />
+        </div>
+        <p className="mt-4 text-xs text-[#1A1A1A]/50 font-mono">
+          Data flows left-to-right: from collection through processing to access layers. Each system emphasizes reliability, change tracking, and auditability.
+        </p>
+      </section>
+
+      {/* ── Technical Stack ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
+        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+          Technical Foundation
+        </h2>
+        <TechStackVisualization />
       </section>
 
       {/* ── Operating Principles ── */}
