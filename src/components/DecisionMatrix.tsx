@@ -85,13 +85,16 @@ export default function DecisionMatrix() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: "easeOut", delay: idx * 0.15 }}
-            className="relative overflow-hidden rounded-xl bg-white shadow-sm"
+            className="relative overflow-hidden rounded-lg bg-white shadow-sm"
           >
             {/* Header - always visible */}
             <button
               onClick={() => setExpanded(isExpanded ? null : idx)}
               onMouseEnter={() => setHovered(idx)}
               onMouseLeave={() => setHovered(null)}
+              onFocus={() => setHovered(idx)}
+              onBlur={() => setHovered(null)}
+              aria-expanded={isExpanded}
               className="w-full px-8 py-6 text-left hover:bg-[#F2EDE8]/30 transition-colors duration-300"
             >
               <div className="flex items-center justify-between gap-4">
@@ -252,7 +255,7 @@ export default function DecisionMatrix() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.54 }}
-        className="relative overflow-hidden rounded-xl border border-[#1A1A1A]/10 bg-white p-8 shadow-sm"
+        className="relative overflow-hidden rounded-lg border border-[#1A1A1A]/10 bg-white p-8 shadow-sm"
       >
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1A1A1A]/10 to-transparent" />
 

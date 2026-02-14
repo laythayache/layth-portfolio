@@ -14,6 +14,7 @@ import SystemsSnapshot from "@/components/SystemsSnapshot";
 import TechStackVisualization from "@/components/TechStackVisualization";
 import ScaleMetrics from "@/components/ScaleMetrics";
 import DecisionMatrix from "@/components/DecisionMatrix";
+import GrainOverlay from "@/components/GrainOverlay";
 import { projects, getProjectBySlug } from "@/content/projects";
 
 /** Scroll distance (px) over which the emblem transitions to the navbar. */
@@ -155,14 +156,7 @@ export default function Home() {
   return (
     <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-[#F2EDE8]">
       {/* Layer 1: static grain texture */}
-      <div
-        className="pointer-events-none absolute inset-0 z-30"
-        aria-hidden="true"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-          opacity: 0.035,
-        }}
-      />
+      <GrainOverlay />
 
       {/* Hysteresis emblem — z-[5], behind portrait (z-10), above background.
           Starts huge & centered behind face, scroll-drives to navbar logo slot.
@@ -275,9 +269,21 @@ export default function Home() {
             )}
           </div>
 
-          <p className="font-mono text-sm text-[#1A1A1A]/50">
-            Focus: Public data infrastructure, distributed systems, change detection, production deployment
-          </p>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link
+              to="/systems"
+              className="inline-flex items-center gap-2 rounded border border-[#1A1A1A] bg-[#1A1A1A] px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-[#F2EDE8] transition-colors hover:bg-[#1A1A1A]/80"
+            >
+              Explore Systems
+              <ArrowUpRight size={14} />
+            </Link>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 rounded border border-[#1A1A1A]/20 px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-[#1A1A1A]/70 transition-colors hover:border-[#1A1A1A]/40 hover:text-[#1A1A1A]"
+            >
+              Get in Touch
+            </Link>
+          </div>
         </div>
       </section>
 

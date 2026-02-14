@@ -6,6 +6,7 @@ import { projects } from "@/content/projects";
 import type { ProjectStatus } from "@/content/types";
 import ExploreCard from "@/components/ExploreCard";
 import SystemsMap from "@/components/SystemsMap";
+import GrainOverlay from "@/components/GrainOverlay";
 
 const tabs: { label: string; value: ProjectStatus | "" }[] = [
   { label: "All", value: "" },
@@ -41,14 +42,7 @@ export default function Explore() {
   return (
     <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-[#F2EDE8]">
       {/* Grain texture */}
-      <div
-        className="pointer-events-none absolute inset-0 z-30"
-        aria-hidden="true"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`,
-          opacity: 0.035,
-        }}
-      />
+      <GrainOverlay />
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-28 pb-24">
@@ -89,9 +83,10 @@ export default function Explore() {
           </div>
 
           {/* View toggle */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2" role="group" aria-label="View mode">
             <button
               onClick={() => setViewMode("list")}
+              aria-pressed={viewMode === "list"}
               className={cn(
                 "px-3 py-1 font-mono text-xs uppercase tracking-wider rounded transition-colors",
                 viewMode === "list"
@@ -103,6 +98,7 @@ export default function Explore() {
             </button>
             <button
               onClick={() => setViewMode("map")}
+              aria-pressed={viewMode === "map"}
               className={cn(
                 "px-3 py-1 font-mono text-xs uppercase tracking-wider rounded transition-colors",
                 viewMode === "map"

@@ -164,7 +164,7 @@ function Standard({
     <motion.article
       whileHover={{ y: -2 }}
       transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
-      className="flex flex-col gap-3 border border-[#1A1A1A]/10 border-t-2 p-5 transition-colors hover:bg-[#EBE5DE]"
+      className="flex flex-col gap-3 border border-[#1A1A1A]/10 border-t-2 p-6 transition-colors hover:bg-[#EBE5DE]"
       style={{ borderTopColor: accent.color }}
     >
       <span
@@ -314,7 +314,7 @@ function Conceptual({
     <motion.article
       whileHover={{ y: -2 }}
       transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
-      className="flex flex-col gap-3 border border-dashed p-5 transition-colors hover:bg-[#EBE5DE]"
+      className="flex flex-col gap-3 border border-dashed p-6 transition-colors hover:bg-[#EBE5DE]"
       style={{ borderColor: `${accent.color}40` }}
     >
       <div className="flex items-center justify-between">

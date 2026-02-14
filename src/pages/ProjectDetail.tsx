@@ -1,6 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, ChevronDown, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getProjectBySlug } from "@/content/projects";
 import ProjectShell from "@/layouts/ProjectShell";
 import NotFound from "./NotFound";
@@ -47,6 +47,16 @@ export default function ProjectDetail() {
   const [expandedDiagram, setExpandedDiagram] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  // Close diagram modal on Escape
+  useEffect(() => {
+    if (!expandedDiagram) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setExpandedDiagram(null);
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [expandedDiagram]);
+
   if (!project) return <NotFound />;
 
   return (
@@ -73,6 +83,7 @@ export default function ProjectDetail() {
             >
               <button
                 onClick={() => setExpandedDiagram(null)}
+                aria-label="Close diagram"
                 className="absolute -top-8 right-0 text-white hover:text-gray-300"
               >
                 <X size={24} />
@@ -144,15 +155,24 @@ export default function ProjectDetail() {
             </CollapsibleSection>
 
             {project.sections.architecture && (
-              <CollapsibleSection title="Architecture">
+              <CollapsibleSection title="Architecture" defaultOpen>
                 <div className="space-y-4">
                   {project.architectureDiagram && (
-                    <img
-                      src={project.architectureDiagram}
-                      alt={`${project.title} architecture`}
-                      className="w-full cursor-pointer hover:opacity-80 transition-opacity rounded border border-border"
+                    <button
                       onClick={() => setExpandedDiagram(project.architectureDiagram!)}
-                    />
+                      className="group relative w-full text-left"
+                      aria-label="View full-size architecture diagram"
+                    >
+                      <img
+                        src={project.architectureDiagram}
+                        alt={`${project.title} architecture`}
+                        loading="lazy"
+                        className="w-full cursor-pointer hover:opacity-80 transition-opacity rounded border border-border"
+                      />
+                      <span className="absolute bottom-2 right-2 rounded bg-text-primary/70 px-2 py-1 font-mono text-[10px] text-surface opacity-0 transition-opacity group-hover:opacity-100">
+                        Click to expand
+                      </span>
+                    </button>
                   )}
                   <p>{project.sections.architecture}</p>
                 </div>
@@ -225,7 +245,7 @@ export default function ProjectDetail() {
 
           {/* Sticky TL;DR Card (desktop only) */}
           <aside className="hidden lg:block">
-            <div className="sticky top-24 border border-border p-6 bg-surface rounded">
+            <div className="sticky top-24 border border-border p-6 bg-surface-raised rounded">
               <h3 className="font-sans text-sm font-semibold text-text-primary mb-4">
                 TL;DR
               </h3>
@@ -307,7 +327,7 @@ export default function ProjectDetail() {
         </div>
 
         {/* Mobile TL;DR (shown at top on mobile) */}
-        <div className="lg:hidden mb-8 border border-border p-4 bg-surface rounded">
+        <div className="lg:hidden mb-8 border border-border p-4 bg-surface-raised rounded">
           <h3 className="font-sans text-sm font-semibold text-text-primary mb-3">
             TL;DR
           </h3>

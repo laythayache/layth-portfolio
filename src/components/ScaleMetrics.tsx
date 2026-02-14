@@ -64,7 +64,7 @@ export default function ScaleMetrics() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: "easeOut", delay: idx * 0.12 }}
             whileHover={{ y: -4, scale: 1.02 }}
-            className="bg-white p-8 rounded-xl shadow-sm hover:shadow-lg transition-all duration-700 ease-out"
+            className="bg-white p-6 rounded-lg shadow-sm hover:shadow-lg transition-all duration-700 ease-out"
           >
             {/* Giant display number */}
             <div className="text-7xl font-bold tracking-tight text-[#1A1A1A] mb-3">
@@ -98,7 +98,7 @@ export default function ScaleMetrics() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.72 }}
-        className="relative overflow-hidden rounded-xl border border-[#1A1A1A]/10 bg-white p-8 shadow-sm"
+        className="relative overflow-hidden rounded-lg border border-[#1A1A1A]/10 bg-white p-6 shadow-sm"
       >
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1A1A1A]/10 to-transparent" />
 

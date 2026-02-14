@@ -205,7 +205,7 @@ export default function SystemsMap() {
   );
 
   return (
-    <div className="flex h-[600px] w-full gap-4 rounded border border-border bg-surface">
+    <div className="flex h-[600px] w-full gap-4 rounded border border-border bg-surface-raised">
       <div className="flex-1">
         <ReactFlow
           nodes={nodes}
