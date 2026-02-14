@@ -8,6 +8,7 @@ import ProjectDetail from "@/pages/ProjectDetail";
 import OmnisignMicrosite from "@/pages/OmnisignMicrosite";
 import Systems from "@/pages/Systems";
 import SystemDetail from "@/pages/SystemDetail";
+import Writing from "@/pages/Writing";
 import NotFound from "@/pages/NotFound";
 
 export default function App() {
@@ -16,28 +17,40 @@ export default function App() {
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/explore" element={<Explore />} />
+          {/* Primary routes */}
+          <Route path="/systems" element={<Explore />} />
+          <Route path="/writing" element={<Writing />} />
           <Route path="/about" element={<About />} />
-          <Route path="/submit" element={<Submit />} />
+          <Route path="/contact" element={<Submit />} />
+
+          {/* Backward compatibility redirects */}
+          <Route path="/explore" element={<Navigate to="/systems" replace />} />
+          <Route path="/submit" element={<Navigate to="/contact" replace />} />
+
+          {/* Legacy redirect routes */}
           <Route
             path="/completed"
-            element={<Navigate to="/explore?status=completed" replace />}
+            element={<Navigate to="/systems?status=completed" replace />}
           />
           <Route
             path="/ongoing"
-            element={<Navigate to="/explore?status=ongoing" replace />}
+            element={<Navigate to="/systems?status=ongoing" replace />}
           />
           <Route
             path="/friends"
-            element={<Navigate to="/explore?friends=true" replace />}
+            element={<Navigate to="/systems?friends=true" replace />}
           />
+
+          {/* Project detail routes */}
           <Route
             path="/projects/omnisign"
             element={<OmnisignMicrosite />}
           />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
-          <Route path="/systems" element={<Systems />} />
-          <Route path="/systems/:slug" element={<SystemDetail />} />
+
+          {/* System category routes (for future use) */}
+          <Route path="/systems-category/:slug" element={<SystemDetail />} />
+
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

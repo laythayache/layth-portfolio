@@ -1,59 +1,113 @@
+import SEO from "@/components/SEO";
+
 export default function About() {
   return (
-    <div className="mx-auto max-w-3xl px-6 py-12">
-      <h1 className="mb-8 font-sans text-2xl font-semibold text-text-primary">
-        About
-      </h1>
+    <>
+      <SEO
+        title="About — Layth Ayache"
+        description="Technical architect specializing in public information infrastructure, data pipelines, and production systems engineering."
+        canonical="https://laythayache.com/about"
+      />
 
-      <div className="flex flex-col gap-8 text-base leading-relaxed text-text-secondary">
-        <section>
-          <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
-            Method
-          </h2>
-          <p>
-            I treat every project as a system to understand before intervening.
-            The process is always the same: map the problem, document the
-            constraints honestly, build the smallest viable intervention, then
-            record what worked and what didn't — publicly.
-          </p>
-        </section>
+      <div className="mx-auto max-w-3xl px-6 py-12">
+        <h1 className="mb-8 font-sans text-2xl font-semibold text-text-primary">
+          About
+        </h1>
 
-        <section>
-          <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
-            Who I am
-          </h2>
-          <p>
-            Layth Ayache. Based in Lebanon. I work at the intersection of
-            software engineering and systems that affect real people —
-            accessibility, public infrastructure, environmental data, healthcare
-            logistics. I'm not building a career narrative. I'm building things
-            that need to exist, documenting the process honestly, and inviting
-            scrutiny.
-          </p>
-        </section>
+        <div className="flex flex-col gap-10 text-base leading-relaxed text-text-secondary">
+          {/* What I build */}
+          <section>
+            <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+              What I build
+            </h2>
+            <p>
+              Production-grade public information infrastructure. Systems that
+              collect, normalize, and serve structured data at scale. Infrastructure
+              designed for reliability, change tracking, and accountability.
+            </p>
+            <p className="mt-4">
+              Focus areas: distributed data pipelines, API design, change detection
+              systems, and deployment automation. Work spans accessibility technology,
+              public data infrastructure, and information flow architecture.
+            </p>
+          </section>
 
-        <section>
-          <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
-            Why public
-          </h2>
-          <p>
-            Most portfolios present polished results. This workspace shows the
-            full picture: the failures, the unsolved problems, the tradeoffs I'm
-            not sure about. If you see something wrong, that's not a bug in the
-            presentation — it's an invitation to challenge it.
-          </p>
-        </section>
+          {/* What I optimize for */}
+          <section>
+            <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+              What I optimize for
+            </h2>
+            <div className="space-y-3">
+              <p>
+                <strong>Clarity over noise.</strong> Systems that expose structure,
+                not obscure it.
+              </p>
+              <p>
+                <strong>Durability.</strong> Production systems that survive reality,
+                not proof-of-concept demos.
+              </p>
+              <p>
+                <strong>Structural accountability.</strong> Versioning, provenance,
+                auditability by design.
+              </p>
+              <p>
+                <strong>Honest engineering.</strong> No hype metrics. Transparent
+                about constraints and trade-offs.
+              </p>
+            </div>
+          </section>
 
-        <section>
-          <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
-            Stack
-          </h2>
-          <p className="font-mono text-sm text-text-muted">
-            React · TypeScript · Vite · Tailwind CSS · Framer Motion ·
-            Cloudflare Pages
-          </p>
-        </section>
+          {/* Current focus */}
+          <section>
+            <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+              Current focus
+            </h2>
+            <p>
+              Building public information infrastructure: scraping pipelines, data
+              normalization, change detection, and API services for media tracking.
+              Designing for scale and reliability from the ground up.
+            </p>
+          </section>
+
+          {/* Background */}
+          <section>
+            <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+              Background
+            </h2>
+            <p>
+              Layth Ayache. Based in Lebanon. Software engineer and technical
+              architect with experience in data pipelines, production deployment, RAG
+              systems, and OCR integration. Work focuses on systems that serve public
+              needs — accessibility, information infrastructure, and structured data
+              access.
+            </p>
+          </section>
+
+          {/* Approach */}
+          <section>
+            <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+              Approach
+            </h2>
+            <p>
+              Every system is documented with transparent methodology. Project pages
+              show not just outcomes, but architecture decisions, reliability
+              considerations, limitations, and unsolved problems. This isn't portfolio
+              curation — it's engineering accountability.
+            </p>
+          </section>
+
+          {/* Stack */}
+          <section>
+            <h2 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+              Stack
+            </h2>
+            <p className="font-mono text-sm text-text-muted">
+              TypeScript · React · Python · Node.js · PostgreSQL · Redis · Docker ·
+              CI/CD · REST APIs · TensorFlow · MediaPipe
+            </p>
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

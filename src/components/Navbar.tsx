@@ -2,15 +2,16 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { to: "/explore", label: "Explore" },
+  { to: "/systems", label: "Systems" },
+  { to: "/writing", label: "Writing" },
   { to: "/about", label: "About" },
-  { to: "/submit", label: "Submit" },
+  { to: "/contact", label: "Contact" },
 ] as const;
 
 export default function Navbar() {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
-  const isLightPage = isHome || pathname === "/explore";
+  const isLightPage = isHome || pathname === "/systems";
 
   return (
     <nav

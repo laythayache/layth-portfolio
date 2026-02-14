@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -8,24 +8,14 @@ import ExploreCard from "@/components/ExploreCard";
 
 const tabs: { label: string; value: ProjectStatus | "" }[] = [
   { label: "All", value: "" },
-  { label: "Ongoing", value: "ongoing" },
+  { label: "Production", value: "ongoing" },
   { label: "Completed", value: "completed" },
-  { label: "Paused", value: "paused" },
-  { label: "Ideas", value: "idea" },
+  { label: "Archived", value: "paused" },
 ];
 
 export default function Explore() {
   const [searchParams, setSearchParams] = useSearchParams();
   const reduced = useReducedMotion();
-
-  // Auto-refresh on first visit to ensure latest content
-  useEffect(() => {
-    const hasRefreshed = sessionStorage.getItem("explore-refreshed");
-    if (!hasRefreshed) {
-      sessionStorage.setItem("explore-refreshed", "true");
-      window.location.reload();
-    }
-  }, []);
 
   const [activeTab, setActiveTab] = useState<ProjectStatus | "">(
     (searchParams.get("status") as ProjectStatus) || ""
@@ -60,6 +50,16 @@ export default function Explore() {
 
       {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-28 pb-24">
+        {/* Heading */}
+        <div className="mb-8 flex flex-col gap-2">
+          <h1 className="font-sans text-2xl font-semibold text-[#1A1A1A]">
+            Systems
+          </h1>
+          <p className="text-sm text-[#1A1A1A]/50">
+            Production infrastructure and technical interventions
+          </p>
+        </div>
+
         {/* Tab bar */}
         <div className="flex items-center gap-6 border-b border-[#1A1A1A]/10">
           {tabs.map((tab) => (

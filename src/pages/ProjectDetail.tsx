@@ -25,11 +25,11 @@ export default function ProjectDetail() {
       <ProjectShell project={project}>
         {/* Back link */}
         <Link
-          to="/explore"
+          to="/systems"
           className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-text-secondary"
         >
           <ArrowLeft size={14} />
-          Back to explore
+          Back to systems
         </Link>
 
         {/* Header */}

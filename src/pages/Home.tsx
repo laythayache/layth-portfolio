@@ -9,14 +9,8 @@ import {
 import { ArrowUpRight } from "lucide-react";
 import { MOTION } from "@/motion/tokens";
 import PortraitHero from "@/components/PortraitHero";
-import { projects } from "@/content/projects";
-
-const statusDot: Record<string, string> = {
-  completed: "bg-emerald-600",
-  ongoing: "bg-amber-600",
-  paused: "bg-[#1A1A1A]/30",
-  idea: "bg-sky-600",
-};
+import SystemCard from "@/components/SystemCard";
+import { projects, getProjectBySlug } from "@/content/projects";
 
 /** Scroll distance (px) over which the emblem transitions to the navbar. */
 const SCROLL_END = 400;
@@ -26,12 +20,51 @@ const NAV_H = 64;
 const LOGO_H = 32; // h-8
 const LOGO_W = Math.round(LOGO_H * (1248 / 832)); // ~48px, preserves SVG aspect
 const NAV_Y = (NAV_H - LOGO_H) / 2; // 16px — vertically centered in navbar
-const latestProjects = [...projects]
-  .sort(
-    (a, b) =>
-      new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
-  )
-  .slice(0, 6);
+
+// Get selected systems: flagship + OmniSign
+const selectedSystems = [
+  getProjectBySlug("public-information-infrastructure"),
+  getProjectBySlug("omnisign"),
+].filter((p) => p !== undefined) as typeof projects;
+
+const principles = [
+  {
+    title: "Clarity over noise",
+    description: "Systems that expose structure, not obscure it",
+  },
+  {
+    title: "Built to survive reality",
+    description: "Production-grade, not proof-of-concept",
+  },
+  {
+    title: "Accountability by design",
+    description: "Versioning, provenance, auditability",
+  },
+  {
+    title: "Truthful engineering",
+    description: "No hype metrics, honest constraints",
+  },
+];
+
+const proofPoints = [
+  {
+    title: "Data Pipelines",
+    description:
+      "Automated collection, transformation, and normalization workflows",
+  },
+  {
+    title: "Production Deployment",
+    description: "CI/CD, monitoring, error handling at scale",
+  },
+  {
+    title: "RAG Systems",
+    description: "Retrieval-augmented generation for information extraction",
+  },
+  {
+    title: "OCR Integration",
+    description: "Document processing and structured data extraction",
+  },
+];
 
 export default function Home() {
   const reduced = useReducedMotion();
@@ -207,58 +240,71 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── Projects ── */}
-      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-24 md:pb-32">
-        <div className="mb-10 flex items-end justify-between">
-          <h2 className="font-sans text-2xl font-semibold text-[#1A1A1A] md:text-3xl">
-            Projects
-          </h2>
-          <Link
-            to="/explore"
-            className="group flex items-center gap-1 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/50 transition-colors hover:text-[#1A1A1A]"
-          >
-            View all
-            <ArrowUpRight
-              size={14}
-              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-            />
-          </Link>
+      {/* ── Role Statement ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-12">
+        <div className="mb-16 flex flex-col gap-4 border-b border-[#1A1A1A]/10 pb-8">
+          <h1 className="font-sans text-3xl font-semibold text-[#1A1A1A]">
+            Technical Architect
+          </h1>
+          <p className="text-lg leading-relaxed text-[#1A1A1A]/70 max-w-2xl">
+            I design and build production-grade public information infrastructure.
+            Systems that track change, ensure provenance, and serve structured data at scale.
+          </p>
+          <p className="font-mono text-sm text-[#1A1A1A]/50">
+            Current focus: Public data collection, normalization, and API infrastructure for media tracking
+          </p>
         </div>
+      </section>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {latestProjects.map((project) => (
-            <Link
-              key={project.slug}
-              to={`/projects/${project.slug}`}
-              className="group flex flex-col gap-3 border border-[#1A1A1A]/10 bg-[#F2EDE8] p-5 transition-colors hover:border-[#1A1A1A]/25 hover:bg-[#EBE5DE]"
-            >
-              <div className="flex items-start justify-between">
-                <h3 className="font-sans text-base font-semibold text-[#1A1A1A]">
-                  {project.title}
-                </h3>
-                <ArrowUpRight
-                  size={16}
-                  className="shrink-0 text-[#1A1A1A]/30 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#1A1A1A]/60"
-                />
-              </div>
-              <p className="text-sm leading-relaxed text-[#1A1A1A]/60">
-                {project.summary}
+      {/* ── Selected Systems ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
+        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+          Selected Systems
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          {selectedSystems.map((project) => (
+            <SystemCard key={project.slug} project={project} />
+          ))}
+        </div>
+      </section>
+
+      {/* ── How I Work ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
+        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+          Principles
+        </h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {principles.map((principle) => (
+            <div key={principle.title} className="flex flex-col gap-2">
+              <h3 className="font-sans text-sm font-semibold text-[#1A1A1A]">
+                {principle.title}
+              </h3>
+              <p className="text-sm text-[#1A1A1A]/60 leading-relaxed">
+                {principle.description}
               </p>
-              <div className="mt-auto flex flex-wrap items-center gap-3 pt-1">
-                <span className="flex items-center gap-1.5">
-                  <span
-                    className={`inline-block h-1.5 w-1.5 rounded-full ${statusDot[project.status] ?? "bg-[#1A1A1A]/30"}`}
-                  />
-                  <span className="font-mono text-xs uppercase tracking-wider text-[#1A1A1A]/40">
-                    {project.status}
-                  </span>
-                </span>
-                <span className="text-[#1A1A1A]/20">&middot;</span>
-                <span className="font-mono text-xs text-[#1A1A1A]/40">
-                  {project.system}
-                </span>
-              </div>
-            </Link>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Proof Points ── */}
+      <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-24">
+        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+          Experience
+        </h2>
+        <div className="grid gap-4 md:grid-cols-2">
+          {proofPoints.map((point) => (
+            <div
+              key={point.title}
+              className="border border-[#1A1A1A]/10 p-5"
+            >
+              <h3 className="font-mono text-xs uppercase tracking-wider text-[#1A1A1A]/50 mb-2">
+                {point.title}
+              </h3>
+              <p className="text-sm text-[#1A1A1A]/70">
+                {point.description}
+              </p>
+            </div>
           ))}
         </div>
       </section>
