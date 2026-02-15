@@ -70,7 +70,11 @@ export default function FilterBar({
 
   return (
     <div className="flex flex-col gap-4">
+      <label htmlFor="project-search" className="sr-only">
+        Search projects
+      </label>
       <input
+        id="project-search"
         type="text"
         value={search}
         onChange={(e) => onSearchChange(e.target.value)}

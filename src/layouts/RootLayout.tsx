@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useLocation, Outlet } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 
@@ -17,7 +17,9 @@ export default function RootLayout() {
       </a>
       <Navbar />
       <main id="main-content" className="min-h-screen pt-16">
-        <Outlet />
+        <Suspense fallback={<div className="flex items-center justify-center py-12"><div className="text-sm text-text-muted">Loading...</div></div>}>
+          <Outlet />
+        </Suspense>
       </main>
     </>
   );

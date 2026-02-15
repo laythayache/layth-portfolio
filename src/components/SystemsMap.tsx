@@ -11,6 +11,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { projects } from "@/content/projects";
 
 interface GraphNode extends Node {
   data: {
@@ -66,8 +67,8 @@ export default function SystemsMap() {
     const graphEdges: GraphEdge[] = [];
     const nodeSet = new Set<string>();
 
-    // Fetch projects data
-    import("@/content/projects").then(({ projects }) => {
+    // Build graph from projects data
+    {
       let yOffset = 0;
 
       // Add project nodes
@@ -192,7 +193,7 @@ export default function SystemsMap() {
 
       setNodes(graphNodes);
       setEdges(graphEdges);
-    });
+    }
   }, [setNodes, setEdges]);
 
   const handleNodeClick = useCallback(

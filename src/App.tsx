@@ -1,16 +1,18 @@
+import { lazy } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RootLayout from "@/layouts/RootLayout";
-import Home from "@/pages/Home";
-import Explore from "@/pages/Explore";
-import About from "@/pages/About";
-import Submit from "@/pages/Submit";
-import Playbook from "@/pages/Playbook";
-import Now from "@/pages/Now";
-import ProjectDetail from "@/pages/ProjectDetail";
-import OmnisignMicrosite from "@/pages/OmnisignMicrosite";
-import SystemDetail from "@/pages/SystemDetail";
-import Writing from "@/pages/Writing";
 import NotFound from "@/pages/NotFound";
+
+// Lazy-loaded route components for code splitting
+const Home = lazy(() => import("@/pages/Home"));
+const Explore = lazy(() => import("@/pages/Explore"));
+const About = lazy(() => import("@/pages/About"));
+const Submit = lazy(() => import("@/pages/Submit"));
+const Playbook = lazy(() => import("@/pages/Playbook"));
+const Now = lazy(() => import("@/pages/Now"));
+const ProjectDetail = lazy(() => import("@/pages/ProjectDetail"));
+const OmnisignMicrosite = lazy(() => import("@/pages/OmnisignMicrosite"));
+const Writing = lazy(() => import("@/pages/Writing"));
 
 export default function App() {
   return (
@@ -50,9 +52,6 @@ export default function App() {
             element={<OmnisignMicrosite />}
           />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
-
-          {/* System category routes (for future use) */}
-          <Route path="/systems-category/:slug" element={<SystemDetail />} />
 
           <Route path="*" element={<NotFound />} />
         </Route>

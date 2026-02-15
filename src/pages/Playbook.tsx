@@ -1,39 +1,6 @@
 import SEO from "@/components/SEO";
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import CollapsibleSection from "@/components/CollapsibleSection";
 import { DEFAULT_KEYWORDS, playbookPageJsonLd } from "@/content/siteSeo";
-
-function CollapsibleSection({
-  title,
-  children,
-  defaultOpen = false,
-}: {
-  title: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
-  return (
-    <section className="mb-8 border-b border-border pb-8 last:border-0">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between"
-      >
-        <h2 className="font-sans text-lg font-semibold text-text-primary">
-          {title}
-        </h2>
-        <ChevronDown
-          size={20}
-          className={`shrink-0 text-text-muted transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-      {isOpen && <div className="mt-4 text-base leading-relaxed text-text-secondary">{children}</div>}
-    </section>
-  );
-}
 
 export default function Playbook() {
   return (

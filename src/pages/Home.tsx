@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   motion,
@@ -18,7 +18,6 @@ import GrainOverlay from "@/components/GrainOverlay";
 import SEO from "@/components/SEO";
 import { projects, getProjectBySlug } from "@/content/projects";
 import { DEFAULT_KEYWORDS, homePageJsonLd } from "@/content/siteSeo";
-import { useState } from "react";
 
 /** Scroll distance (px) over which the emblem transitions to the navbar. */
 const SCROLL_END = 400;

@@ -1,61 +1,73 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, ChevronDown, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ArrowLeft, ArrowUpRight, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import { getProjectBySlug } from "@/content/projects";
 import ProjectShell from "@/layouts/ProjectShell";
+import CollapsibleSection from "@/components/CollapsibleSection";
 import SEO from "@/components/SEO";
 import { DEFAULT_KEYWORDS, projectPageJsonLd } from "@/content/siteSeo";
 import NotFound from "./NotFound";
-
-function CollapsibleSection({
-  title,
-  children,
-  defaultOpen = false,
-}: {
-  title: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
-  return (
-    <section className="mb-8 border-b border-border pb-8 last:border-0">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between"
-      >
-        <h2 className="font-sans text-lg font-semibold text-text-primary">
-          {title}
-        </h2>
-        <ChevronDown
-          size={20}
-          className={`shrink-0 transition-transform ${
-            isOpen ? "rotate-180 text-accent" : "text-text-muted"
-          }`}
-        />
-      </button>
-      {isOpen && (
-        <div className="mt-4 text-base leading-relaxed text-text-secondary prose prose-sm max-w-none">
-          {children}
-        </div>
-      )}
-    </section>
-  );
-}
 
 export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const project = slug ? getProjectBySlug(slug) : undefined;
   const [expandedDiagram, setExpandedDiagram] = useState<string | null>(null);
+  const focusedElementRef = useRef<HTMLElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  // Close diagram modal on Escape
+  // Focus trap and keyboard handling for modal
   useEffect(() => {
-    if (!expandedDiagram) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setExpandedDiagram(null);
+    if (!expandedDiagram) {
+      // Restore focus to the element that triggered the modal
+      if (focusedElementRef.current) {
+        focusedElementRef.current.focus();
+        focusedElementRef.current = null;
+      }
+      return;
+    }
+
+    // Store the element that triggered the modal
+    focusedElementRef.current = document.activeElement as HTMLElement;
+
+    // Focus close button when modal opens
+    setTimeout(() => {
+      closeButtonRef.current?.focus();
+    }, 0);
+
+    // Keyboard handlers
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setExpandedDiagram(null);
+      }
+      // Focus trap: Tab through only close button and image
+      if (e.key === "Tab" && modalRef.current) {
+        const focusableElements = modalRef.current.querySelectorAll(
+          "button, [href], img"
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[
+          focusableElements.length - 1
+        ] as HTMLElement;
+
+        if (e.shiftKey) {
+          // Shift + Tab: move focus backward
+          if (document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+          }
+        } else {
+          // Tab: move focus forward
+          if (document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+          }
+        }
+      }
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [expandedDiagram]);
 
   if (!project) return <NotFound />;
@@ -93,15 +105,20 @@ export default function ProjectDetail() {
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
             onClick={() => setExpandedDiagram(null)}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Architecture diagram viewer"
           >
             <div
+              ref={modalRef}
               className="relative max-h-[90vh] max-w-4xl w-full"
               onClick={(e) => e.stopPropagation()}
             >
               <button
+                ref={closeButtonRef}
                 onClick={() => setExpandedDiagram(null)}
                 aria-label="Close diagram"
-                className="absolute -top-8 right-0 text-white hover:text-gray-300"
+                className="absolute -top-8 right-0 text-white hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white rounded"
               >
                 <X size={24} />
               </button>

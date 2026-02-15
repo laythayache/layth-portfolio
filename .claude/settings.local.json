@@ -5,7 +5,10 @@
       "Bash(npx tsc:*)",
       "Bash(npm install:*)",
       "Bash(ls:*)",
-      "WebFetch(domain:medium.com)"
+      "WebFetch(domain:medium.com)",
+      "Bash(gzip:*)",
+      "Bash(du:*)",
+      "Bash(node scripts/optimize-images.js:*)"
     ]
   }
 }

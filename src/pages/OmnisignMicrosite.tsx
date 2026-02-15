@@ -35,7 +35,7 @@ import CTACards from "@/components/omnisign/CTACards";
 /* ── Animation constants ── */
 const EASE_OUT: [number, number, number, number] = [0, 0, 0.2, 1];
 
-const IS_VIDEO_READY = !VIDEO_URL.includes("XXXXX");
+const IS_VIDEO_READY = Boolean(VIDEO_URL);
 
 const regions = [
   "Beqaa",

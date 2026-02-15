@@ -1,10 +1,11 @@
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/500.css";
-@import "@fontsource/jetbrains-mono/700.css";
-@import "@fontsource/inter/400.css";
-@import "@fontsource/inter/500.css";
-@import "@fontsource/inter/600.css";
-@import "@fontsource/black-ops-one/400.css";
+/* Latin-only font subsets for faster loading */
+@import "@fontsource/jetbrains-mono/latin-400.css";
+@import "@fontsource/jetbrains-mono/latin-500.css";
+@import "@fontsource/jetbrains-mono/latin-700.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/black-ops-one/latin-400.css";
 
 @tailwind base;
 @tailwind components;
@@ -17,7 +18,7 @@
     --surface-overlay: 220 215 208;   /* #DCD7D0 */
     --text-primary:    28 28 28;      /* #1C1C1C — deep charcoal */
     --text-secondary:  74 74 74;      /* #4A4A4A */
-    --text-muted:      138 138 138;   /* #8A8A8A */
+    --text-muted:      107 107 107;   /* #6B6B6B — WCAG AA compliant */
     --border:          200 200 200;   /* #C8C8C8 — secondary structural */
     --border-strong:   160 160 160;   /* #A0A0A0 */
     --accent:          138 106 63;    /* #8A6A3F — burnt bronze */
