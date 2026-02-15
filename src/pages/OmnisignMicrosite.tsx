@@ -704,6 +704,42 @@ export default function OmnisignMicrosite() {
         </motion.div>
       </section>
 
+      {/* ── Media & Social Links ── */}
+      <section className="bg-slate-50 border-t border-slate-100">
+        <div className="mx-auto max-w-5xl px-6 py-12 flex flex-col items-center gap-4 text-center">
+          <h3 className="font-sans text-lg font-semibold text-slate-800 mb-2">Learn more & connect</h3>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a
+              href="https://medium.com/@laythayache5/building-in-a-country-with-no-infrastructure-3f8595472895"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 font-mono text-xs text-slate-700 hover:text-teal-700 hover:border-teal-400 transition"
+            >
+              <span>Read the story on Medium</span>
+              <ArrowUpRight size={14} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/laythayache"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 font-mono text-xs text-slate-700 hover:text-teal-700 hover:border-teal-400 transition"
+            >
+              <span>Connect on LinkedIn</span>
+              <ArrowUpRight size={14} />
+            </a>
+            <a
+              href="https://github.com/laythayache"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 font-mono text-xs text-slate-700 hover:text-teal-700 hover:border-teal-400 transition"
+            >
+              <span>View GitHub</span>
+              <ArrowUpRight size={14} />
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ── Footer ── */}
       <footer className="border-t border-slate-100">
         <div className="mx-auto max-w-5xl px-6 py-8">
