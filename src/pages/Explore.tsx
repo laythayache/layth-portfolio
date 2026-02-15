@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+﻿import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -8,6 +8,7 @@ import ExploreCard from "@/components/ExploreCard";
 import SystemsMap from "@/components/SystemsMap";
 import GrainOverlay from "@/components/GrainOverlay";
 import SEO from "@/components/SEO";
+import { DEFAULT_KEYWORDS, systemsPageJsonLd } from "@/content/siteSeo";
 
 const tabs: { label: string; value: ProjectStatus | "" }[] = [
   { label: "All", value: "" },
@@ -43,9 +44,12 @@ export default function Explore() {
   return (
     <>
     <SEO
-      title="Systems — Layth Ayache"
+      title="Systems | Layth Ayache"
       description="Production infrastructure and technical interventions. Systems designed for reliability, change tracking, and auditability."
       canonical="https://laythayache.com/systems"
+      keywords={DEFAULT_KEYWORDS}
+      modifiedTime="2026-02-15"
+      jsonLd={systemsPageJsonLd(filtered)}
     />
     <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-surface">
       {/* Grain texture */}
@@ -74,15 +78,15 @@ export default function Explore() {
                   "relative pb-3 font-mono text-xs uppercase tracking-[0.15em] transition-colors",
                   activeTab === tab.value
                     ? "text-text-primary"
-                    : "text-text-muted hover:text-text-secondary"
+                    : "text-text-muted hover:text-accent"
                 )}
               >
                 {tab.label}
                 {activeTab === tab.value && (
                   <motion.div
                     layoutId="explore-tab"
-                    className="absolute bottom-0 left-0 right-0 h-px bg-text-primary"
-                    transition={{ type: "spring", stiffness: 500, damping: 35 }}
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
+                    transition={{ duration: 0.25, ease: [0, 0, 0.2, 1] }}
                   />
                 )}
               </button>
@@ -97,8 +101,8 @@ export default function Explore() {
               className={cn(
                 "px-3 py-1 font-mono text-xs uppercase tracking-wider rounded transition-colors",
                 viewMode === "list"
-                  ? "bg-text-primary text-surface"
-                  : "bg-surface-raised text-text-muted hover:bg-surface-overlay"
+                  ? "bg-accent text-surface"
+                  : "bg-surface-raised text-text-muted hover:text-accent"
               )}
             >
               List
@@ -109,8 +113,8 @@ export default function Explore() {
               className={cn(
                 "px-3 py-1 font-mono text-xs uppercase tracking-wider rounded transition-colors",
                 viewMode === "map"
-                  ? "bg-text-primary text-surface"
-                  : "bg-surface-raised text-text-muted hover:bg-surface-overlay"
+                  ? "bg-accent text-surface"
+                  : "bg-surface-raised text-text-muted hover:text-accent"
               )}
             >
               Map
@@ -171,3 +175,4 @@ export default function Explore() {
     </>
   );
 }
+

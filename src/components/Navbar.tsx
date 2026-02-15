@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -16,12 +16,22 @@ export default function Navbar() {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Check initial scroll position
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 h-16 transition-colors duration-300",
-        isHome
+        isHome && !scrolled
           ? "bg-surface"
           : "border-b border-border bg-surface"
       )}
@@ -33,7 +43,7 @@ export default function Navbar() {
             alt="Layth Ayache"
             className={cn(
               "h-8 w-auto transition-opacity",
-              isHome
+              isHome && !scrolled
                 ? "pointer-events-none opacity-0"
                 : "opacity-50 hover:opacity-70"
             )}

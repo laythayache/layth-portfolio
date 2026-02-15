@@ -25,9 +25,9 @@ export default function SystemsSnapshot() {
             </h3>
             <div className="space-y-6">
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-accent/40 transition-all"
               >
                 Media sources
               </motion.div>
@@ -37,13 +37,13 @@ export default function SystemsSnapshot() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="w-px h-8 bg-gradient-to-b from-border-strong to-transparent mx-auto"
+                className="w-px h-8 bg-gradient-to-b from-accent/30 to-transparent mx-auto"
               />
 
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-accent/40 transition-all"
               >
                 Scrape & detect
               </motion.div>
@@ -63,9 +63,9 @@ export default function SystemsSnapshot() {
             </h3>
             <div className="space-y-6">
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-accent/40 transition-all"
               >
                 Normalize schema
               </motion.div>
@@ -75,13 +75,13 @@ export default function SystemsSnapshot() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.25 }}
-                className="w-px h-8 bg-gradient-to-b from-border-strong to-transparent mx-auto"
+                className="w-px h-8 bg-gradient-to-b from-accent/30 to-transparent mx-auto"
               />
 
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-accent/40 transition-all"
               >
                 Version & store
               </motion.div>
@@ -91,13 +91,13 @@ export default function SystemsSnapshot() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.3 }}
-                className="w-px h-8 bg-gradient-to-b from-border-strong to-transparent mx-auto"
+                className="w-px h-8 bg-gradient-to-b from-accent/30 to-transparent mx-auto"
               />
 
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-accent/40 transition-all"
               >
                 Monitor changes
               </motion.div>
@@ -117,9 +117,9 @@ export default function SystemsSnapshot() {
             </h3>
             <div className="space-y-6">
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-accent/40 transition-all"
               >
                 REST API
               </motion.div>
@@ -129,13 +129,13 @@ export default function SystemsSnapshot() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.35 }}
-                className="w-px h-8 bg-gradient-to-b from-border-strong to-transparent mx-auto"
+                className="w-px h-8 bg-gradient-to-b from-accent/30 to-transparent mx-auto"
               />
 
               <motion.div
-                whileHover={{ y: -4 }}
+                whileHover={{ y: -2 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-accent/40 transition-all"
               >
                 Serve data
               </motion.div>

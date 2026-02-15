@@ -1,72 +1,20 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import type { Project, CardConfig, CardAccent } from "@/content/types";
-
-interface AccentStyle {
-  color: string;
-  text: string;
-  textMuted: string;
-  bg: string;
-}
-
-const accentStyles: Record<CardAccent, AccentStyle> = {
-  teal: {
-    color: "#2dd4bf",
-    text: "text-teal-400",
-    textMuted: "text-teal-400/60",
-    bg: "bg-teal-400/10",
-  },
-  amber: {
-    color: "#fbbf24",
-    text: "text-amber-400",
-    textMuted: "text-amber-400/60",
-    bg: "bg-amber-400/10",
-  },
-  emerald: {
-    color: "#34d399",
-    text: "text-emerald-400",
-    textMuted: "text-emerald-400/60",
-    bg: "bg-emerald-400/10",
-  },
-  sky: {
-    color: "#38bdf8",
-    text: "text-sky-400",
-    textMuted: "text-sky-400/60",
-    bg: "bg-sky-400/10",
-  },
-  blue: {
-    color: "#60a5fa",
-    text: "text-blue-400",
-    textMuted: "text-blue-400/60",
-    bg: "bg-blue-400/10",
-  },
-  violet: {
-    color: "#a78bfa",
-    text: "text-violet-400",
-    textMuted: "text-violet-400/60",
-    bg: "bg-violet-400/10",
-  },
-  stone: {
-    color: "#a8a29e",
-    text: "text-stone-400",
-    textMuted: "text-stone-400/60",
-    bg: "bg-stone-400/10",
-  },
-};
+import type { Project, CardConfig } from "@/content/types";
 
 const statusDot: Record<string, string> = {
-  completed: "bg-emerald-400",
-  ongoing: "bg-amber-400",
-  paused: "bg-text-primary/30",
-  idea: "bg-sky-400",
+  completed: "bg-accent",
+  ongoing: "bg-accent/60",
+  paused: "bg-text-muted/30",
+  idea: "bg-accent/30",
 };
 
 function StatusBadge({ status }: { status: string }) {
   return (
     <span className="flex items-center gap-1.5">
       <span
-        className={`inline-block h-1.5 w-1.5 rounded-full ${statusDot[status] ?? "bg-text-primary/30"}`}
+        className={`inline-block h-1.5 w-1.5 rounded-full ${statusDot[status] ?? "bg-text-muted/30"}`}
       />
       <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">
         {status}
@@ -79,32 +27,27 @@ function Arrow() {
   return (
     <ArrowUpRight
       size={14}
-      className="shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-text-secondary"
+      className="shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
     />
   );
 }
 
-/* ── FEATURED ── large card with accent left border, prominent layout ── */
+/* ── FEATURED ── large card with bronze left border ── */
 function Featured({
   project,
-  accent,
   card,
 }: {
   project: Project;
-  accent: AccentStyle;
   card: CardConfig;
 }) {
   return (
     <motion.article
-      whileHover={{ y: -3 }}
+      whileHover={{ y: -2 }}
       transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
-      className="flex flex-col gap-4 border border-border border-l-4 p-6 transition-colors hover:bg-surface-raised"
-      style={{ borderLeftColor: accent.color }}
+      className="flex flex-col gap-4 border border-border border-l-4 border-l-accent p-6 transition-colors hover:bg-surface-raised"
     >
       <div className="flex items-center gap-2">
-        <span
-          className={`font-mono text-[10px] uppercase tracking-[0.2em] ${accent.text}`}
-        >
+        <span className="font-mono text-[10px] uppercase tracking-widest text-accent">
           {project.system}
         </span>
         <span className="text-text-muted/40">&middot;</span>
@@ -116,7 +59,7 @@ function Featured({
           {project.title}
         </h3>
         {card.tagline && (
-          <p className={`mt-1 font-mono text-xs tracking-wide ${accent.textMuted}`}>
+          <p className="mt-1 font-mono text-xs tracking-wide text-accent/60">
             {card.tagline}
           </p>
         )}
@@ -127,15 +70,15 @@ function Featured({
       </p>
 
       {card.highlight && (
-        <div className={`${accent.bg} px-4 py-3`}>
-          <p className={`font-mono text-xs leading-relaxed ${accent.text}`}>
+        <div className="bg-accent/5 px-4 py-3">
+          <p className="font-mono text-xs leading-relaxed text-accent">
             {card.highlight}
           </p>
         </div>
       )}
 
       {project.friend_project && (
-        <span className="font-mono text-[10px] uppercase tracking-wider text-sky-400">
+        <span className="font-mono text-[10px] uppercase tracking-wider text-accent/60">
           with a friend
         </span>
       )}
@@ -150,26 +93,21 @@ function Featured({
   );
 }
 
-/* ── STANDARD ── medium card with accent top border ── */
+/* ── STANDARD ── medium card with bronze top border ── */
 function Standard({
   project,
-  accent,
   card,
 }: {
   project: Project;
-  accent: AccentStyle;
   card: CardConfig;
 }) {
   return (
     <motion.article
       whileHover={{ y: -2 }}
       transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
-      className="flex flex-col gap-3 border border-border border-t-2 p-6 transition-colors hover:bg-surface-raised"
-      style={{ borderTopColor: accent.color }}
+      className="flex flex-col gap-3 border border-border border-t-2 border-t-accent p-6 transition-colors hover:bg-surface-raised"
     >
-      <span
-        className={`font-mono text-[10px] uppercase tracking-[0.2em] ${accent.text}`}
-      >
+      <span className="font-mono text-[10px] uppercase tracking-widest text-accent">
         {project.system}
       </span>
 
@@ -179,7 +117,7 @@ function Standard({
             {project.title}
           </h3>
           {card.tagline && (
-            <p className={`mt-0.5 font-mono text-[10px] tracking-wide ${accent.textMuted}`}>
+            <p className="mt-0.5 font-mono text-[10px] tracking-wide text-accent/60">
               {card.tagline}
             </p>
           )}
@@ -192,7 +130,7 @@ function Standard({
       </p>
 
       {card.highlight && (
-        <p className={`font-mono text-[10px] ${accent.textMuted}`}>
+        <p className="font-mono text-[10px] text-accent/60">
           {card.highlight}
         </p>
       )}
@@ -206,7 +144,7 @@ function Standard({
         {project.friend_project && (
           <>
             <span className="text-text-muted/40">&middot;</span>
-            <span className="font-mono text-[10px] text-sky-400">friend</span>
+            <span className="font-mono text-[10px] text-accent/60">friend</span>
           </>
         )}
       </div>
@@ -217,11 +155,9 @@ function Standard({
 /* ── HIGHLIGHT ── centered quote/stat hero, then metadata below ── */
 function Highlight({
   project,
-  accent,
   card,
 }: {
   project: Project;
-  accent: AccentStyle;
   card: CardConfig;
 }) {
   return (
@@ -236,7 +172,7 @@ function Highlight({
         </blockquote>
       )}
 
-      <div className="h-px bg-border" />
+      <div className="h-px bg-accent/20" />
 
       <div className="flex items-start justify-between">
         <div>
@@ -244,9 +180,7 @@ function Highlight({
             {project.title}
           </h3>
           <div className="mt-2 flex flex-wrap items-center gap-2">
-            <span
-              className={`font-mono text-[10px] uppercase tracking-[0.2em] ${accent.text}`}
-            >
+            <span className="font-mono text-[10px] uppercase tracking-widest text-accent">
               {project.system}
             </span>
             <span className="text-text-muted/40">&middot;</span>
@@ -254,7 +188,7 @@ function Highlight({
             {project.friend_project && (
               <>
                 <span className="text-text-muted/40">&middot;</span>
-                <span className="font-mono text-[10px] text-sky-400">
+                <span className="font-mono text-[10px] text-accent/60">
                   with a friend
                 </span>
               </>
@@ -270,10 +204,8 @@ function Highlight({
 /* ── MINIMAL ── compact, subdued, for paused/background projects ── */
 function Minimal({
   project,
-  accent,
 }: {
   project: Project;
-  accent: AccentStyle;
 }) {
   return (
     <motion.article
@@ -286,9 +218,7 @@ function Minimal({
           {project.title}
         </h3>
         <div className="flex items-center gap-2">
-          <span
-            className={`font-mono text-[10px] uppercase tracking-wider ${accent.text}`}
-          >
+          <span className="font-mono text-[10px] uppercase tracking-wider text-accent">
             {project.system}
           </span>
           <span className="text-text-muted/30">&middot;</span>
@@ -303,24 +233,19 @@ function Minimal({
 /* ── CONCEPTUAL ── dashed border, idea-stage feel ── */
 function Conceptual({
   project,
-  accent,
   card,
 }: {
   project: Project;
-  accent: AccentStyle;
   card: CardConfig;
 }) {
   return (
     <motion.article
       whileHover={{ y: -2 }}
       transition={{ duration: 0.15, ease: [0, 0, 0.2, 1] }}
-      className="flex flex-col gap-3 border border-dashed p-6 transition-colors hover:bg-surface-raised"
-      style={{ borderColor: `${accent.color}40` }}
+      className="flex flex-col gap-3 border border-dashed border-accent/30 p-6 transition-colors hover:bg-surface-raised"
     >
       <div className="flex items-center justify-between">
-        <span
-          className={`font-mono text-[10px] uppercase tracking-[0.2em] ${accent.text}`}
-        >
+        <span className="font-mono text-[10px] uppercase tracking-widest text-accent">
           concept
         </span>
         <Arrow />
@@ -335,7 +260,7 @@ function Conceptual({
       </p>
 
       {card.highlight && (
-        <p className={`font-mono text-[10px] italic ${accent.textMuted}`}>
+        <p className="font-mono text-[10px] italic text-accent/60">
           {card.highlight}
         </p>
       )}
@@ -351,7 +276,6 @@ function Conceptual({
 export default function ExploreCard({ project }: { project: Project }) {
   const card = project.card;
   const variant = card?.variant ?? "standard";
-  const accent = accentStyles[card?.accent ?? "stone"];
   const c: CardConfig = card ?? {
     accent: "stone",
     size: "md",
@@ -361,19 +285,19 @@ export default function ExploreCard({ project }: { project: Project }) {
   return (
     <Link to={`/projects/${project.slug}`} className="group block">
       {variant === "featured" && (
-        <Featured project={project} accent={accent} card={c} />
+        <Featured project={project} card={c} />
       )}
       {variant === "standard" && (
-        <Standard project={project} accent={accent} card={c} />
+        <Standard project={project} card={c} />
       )}
       {variant === "highlight" && (
-        <Highlight project={project} accent={accent} card={c} />
+        <Highlight project={project} card={c} />
       )}
       {variant === "minimal" && (
-        <Minimal project={project} accent={accent} />
+        <Minimal project={project} />
       )}
       {variant === "conceptual" && (
-        <Conceptual project={project} accent={accent} card={c} />
+        <Conceptual project={project} card={c} />
       )}
     </Link>
   );

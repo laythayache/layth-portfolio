@@ -8,7 +8,6 @@ import Playbook from "@/pages/Playbook";
 import Now from "@/pages/Now";
 import ProjectDetail from "@/pages/ProjectDetail";
 import OmnisignMicrosite from "@/pages/OmnisignMicrosite";
-import Systems from "@/pages/Systems";
 import SystemDetail from "@/pages/SystemDetail";
 import Writing from "@/pages/Writing";
 import NotFound from "@/pages/NotFound";

@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-# AI Crawlers — explicitly welcomed
+# AI crawlers explicitly welcomed
 User-agent: GPTBot
 Allow: /
 
@@ -30,3 +30,5 @@ Sitemap: https://laythayache.com/sitemap.xml
 
 # AI-readable site summary
 # https://laythayache.com/llms.txt
+# AI crawling policy
+# https://laythayache.com/.well-known/ai.txt

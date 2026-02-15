@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUpRight, Play } from "lucide-react";
 import { useRef, useState } from "react";
 import SEO from "@/components/SEO";
 import { omnisignJsonLd } from "@/content/omnisign-seo";
+import { DEFAULT_KEYWORDS } from "@/content/siteSeo";
 import {
   VIDEO_URL,
   tagline,
@@ -84,12 +85,23 @@ export default function OmnisignMicrosite() {
   return (
     <article className="relative min-h-screen bg-white">
       <SEO
-        title="OmniSign — AI Sign Language Translation | Lebanese Sign Language"
+        title="OmniSign | AI Sign Language Translation for Lebanese Sign Language"
         description="OmniSign is an AI-powered Lebanese Sign Language (LSL) translation system built by Layth Ayache, Tayseer Laz, Rami Kronbi, Noor El Hariri, Abu Baker El Khatib, and Dr. Oussama Mustapha at Rafik Hariri University. Partnered with SignWithNaila. 50,000+ signs, 98% accuracy, self-funded."
-        keywords="OmniSign, Lebanese Sign Language, LSL, Sign Language Lebanon, Arabic Sign Language, sign language translation, AI sign language, computer vision sign language, deaf community Lebanon, SignWithNaila, Rafik Hariri University, Layth Ayache, Tayseer Laz, Abu Baker Hussein El Khatib, Noor El Hariri, Rami Kronbi, Dr. Oussama Mustapha, accessibility, real-time translation, machine learning"
+        keywords={[
+          ...DEFAULT_KEYWORDS,
+          "OmniSign",
+          "Lebanese Sign Language",
+          "LSL",
+          "sign language translation",
+          "AI sign language translation",
+          "accessibility technology Lebanon",
+          "computer vision",
+        ]}
         canonical="https://laythayache.com/projects/omnisign"
         ogType="article"
         ogImage="https://laythayache.com/omnisign-logo.png"
+        ogImageAlt="OmniSign logo"
+        modifiedTime="2026-02-05"
         jsonLd={omnisignJsonLd}
       />
 

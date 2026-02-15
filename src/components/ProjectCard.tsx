@@ -8,10 +8,10 @@ interface ProjectCardProps {
 }
 
 const statusColor: Record<string, string> = {
-  completed: "text-emerald-400",
-  ongoing: "text-amber-400",
+  completed: "text-accent",
+  ongoing: "text-accent/60",
   paused: "text-text-muted",
-  idea: "text-sky-400",
+  idea: "text-accent/30",
 };
 
 export default function ProjectCard({ project }: ProjectCardProps) {
@@ -20,7 +20,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       <motion.article
         whileHover={{ y: -2 }}
         transition={{ duration: 0.15 }}
-        className="group flex flex-col gap-3 border border-border p-5 transition-colors hover:border-border-strong hover:bg-surface-raised"
+        className="group flex flex-col gap-3 border border-border p-5 transition-colors hover:border-accent/40 hover:bg-surface-raised"
       >
         <div className="flex items-start justify-between">
           <h3 className="font-sans text-base font-semibold text-text-primary">
@@ -28,7 +28,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           </h3>
           <ArrowUpRight
             size={16}
-            className="text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-text-secondary"
+            className="text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
           />
         </div>
 
@@ -53,7 +53,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           {project.friend_project && (
             <>
               <span className="text-text-muted">&middot;</span>
-              <span className="font-mono text-xs text-sky-400">friend</span>
+              <span className="font-mono text-xs text-accent/60">friend</span>
             </>
           )}
         </div>

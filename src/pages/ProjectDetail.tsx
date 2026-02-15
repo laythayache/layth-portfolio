@@ -1,9 +1,10 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, ChevronDown, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getProjectBySlug } from "@/content/projects";
 import ProjectShell from "@/layouts/ProjectShell";
 import SEO from "@/components/SEO";
+import { DEFAULT_KEYWORDS, projectPageJsonLd } from "@/content/siteSeo";
 import NotFound from "./NotFound";
 
 function CollapsibleSection({
@@ -28,8 +29,8 @@ function CollapsibleSection({
         </h2>
         <ChevronDown
           size={20}
-          className={`shrink-0 text-text-muted transition-transform ${
-            isOpen ? "rotate-180" : ""
+          className={`shrink-0 transition-transform ${
+            isOpen ? "rotate-180 text-accent" : "text-text-muted"
           }`}
         />
       </button>
@@ -46,7 +47,6 @@ export default function ProjectDetail() {
   const { slug } = useParams<{ slug: string }>();
   const project = slug ? getProjectBySlug(slug) : undefined;
   const [expandedDiagram, setExpandedDiagram] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   // Close diagram modal on Escape
   useEffect(() => {
@@ -60,28 +60,21 @@ export default function ProjectDetail() {
 
   if (!project) return <NotFound />;
 
-  const projectJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": project.title,
-    "description": project.summary,
-    "url": `https://laythayache.com/projects/${project.slug}`,
-    "applicationCategory": "Infrastructure",
-    "author": {
-      "@type": "Person",
-      "name": "Layth Ayache",
-      "url": "https://laythayache.com/",
-    },
-    ...(project.stack && { "operatingSystem": project.stack }),
-    ...(project.outcome && { "abstract": project.outcome }),
-  };
+  const projectJsonLd = projectPageJsonLd(project);
 
   return (
     <>
     <SEO
-      title={`${project.title} — Layth Ayache`}
+      title={`${project.title} | Layth Ayache`}
       description={project.summary}
       canonical={`https://laythayache.com/projects/${project.slug}`}
+      keywords={[
+        ...DEFAULT_KEYWORDS,
+        project.title,
+        project.system,
+        project.kind,
+      ]}
+      modifiedTime={project.updated_at}
       jsonLd={projectJsonLd}
     />
     <div className="px-6 py-12">
@@ -89,7 +82,7 @@ export default function ProjectDetail() {
         {/* Back link */}
         <Link
           to="/systems"
-          className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-text-secondary"
+          className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-accent"
         >
           <ArrowLeft size={14} />
           Back to systems
@@ -157,7 +150,7 @@ export default function ProjectDetail() {
                 {project.friend_project && (
                   <>
                     <span className="text-text-muted">&middot;</span>
-                    <span className="font-mono text-xs text-sky-400">
+                    <span className="font-mono text-xs text-accent/60">
                       friend project
                     </span>
                   </>
@@ -247,7 +240,7 @@ export default function ProjectDetail() {
               {project.challenge_url ? (
                 <Link
                   to={project.challenge_url}
-                  className="inline-flex items-center gap-2 border border-text-primary px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-text-primary transition-colors hover:bg-text-primary hover:text-surface"
+                  className="inline-flex items-center gap-2 border border-accent px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-accent transition-colors hover:bg-accent hover:text-surface"
                 >
                   Challenge this project
                   <ArrowUpRight size={14} />

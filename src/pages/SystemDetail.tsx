@@ -16,7 +16,7 @@ export default function SystemDetail() {
     <div className="mx-auto max-w-5xl px-6 py-12">
       <Link
         to="/systems"
-        className="mb-8 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-text-secondary"
+        className="mb-8 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-accent"
       >
         <ArrowLeft size={14} />
         All systems

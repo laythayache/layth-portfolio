@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import SEO from "@/components/SEO";
+import { DEFAULT_KEYWORDS, contactPageJsonLd } from "@/content/siteSeo";
 
 const EMAIL = "hello@laythayache.com";
 
@@ -32,9 +33,12 @@ export default function Submit() {
   return (
     <>
       <SEO
-        title="Contact — Layth Ayache"
+        title="Contact | Layth Ayache"
         description="Collaboration, technical critique, and systems architecture inquiries."
         canonical="https://laythayache.com/contact"
+        keywords={DEFAULT_KEYWORDS}
+        modifiedTime="2026-02-15"
+        jsonLd={contactPageJsonLd()}
       />
 
       <div className="mx-auto max-w-3xl px-6 py-12">

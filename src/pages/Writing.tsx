@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import SEO from "@/components/SEO";
+import { DEFAULT_KEYWORDS, writingPageJsonLd } from "@/content/siteSeo";
 
 interface Article {
   slug: string;
@@ -35,9 +36,12 @@ export default function Writing() {
   return (
     <>
       <SEO
-        title="Writing — Layth Ayache"
+        title="Writing | Layth Ayache"
         description="Technical notes on infrastructure, architecture, pipelines, and systems design."
         canonical="https://laythayache.com/writing"
+        keywords={DEFAULT_KEYWORDS}
+        modifiedTime="2026-02-15"
+        jsonLd={writingPageJsonLd(articles)}
       />
 
       <div className="mx-auto max-w-3xl px-6 py-12">

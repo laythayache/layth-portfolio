@@ -27,15 +27,15 @@ interface GraphEdge extends Edge {
 function getNodeColor(type: string): string {
   switch (type) {
     case "project":
-      return "rgb(242 237 232)";
+      return "rgb(240 236 230)";
     case "component":
-      return "rgb(80 76 71)";
+      return "rgb(200 200 200)";
     case "technology":
-      return "rgb(55 52 48)";
+      return "rgb(220 215 208)";
     case "domain":
-      return "rgb(38 36 33)";
+      return "rgb(231 226 219)";
     default:
-      return "rgb(38 36 33)";
+      return "rgb(231 226 219)";
   }
 }
 
@@ -43,8 +43,8 @@ function getNodeStyle(type: string) {
   const backgroundColor = getNodeColor(type);
   return {
     background: backgroundColor,
-    color: type === "project" ? "rgb(26 25 23)" : "rgb(180 174 167)",
-    border: `2px solid ${backgroundColor}`,
+    color: type === "project" ? "rgb(28 28 28)" : "rgb(74 74 74)",
+    border: `2px solid ${type === "domain" ? "rgb(200 200 200)" : backgroundColor}`,
     borderRadius: "6px",
     padding: "8px 12px",
     fontSize: "12px",
@@ -71,7 +71,7 @@ export default function SystemsMap() {
       let yOffset = 0;
 
       // Add project nodes
-      projects.forEach((project, idx) => {
+      projects.forEach((project) => {
         graphNodes.push({
           id: project.slug,
           data: {
@@ -107,7 +107,7 @@ export default function SystemsMap() {
           label: "belongs to",
           animated: false,
           markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
-          style: { stroke: "#cbd5e1", strokeWidth: 2 },
+          style: { stroke: "rgb(200 200 200)", strokeWidth: 2 },
         });
       });
 
@@ -141,7 +141,7 @@ export default function SystemsMap() {
             label: "uses",
             animated: false,
             markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
-            style: { stroke: "#94a3b8", strokeWidth: 1.5 },
+            style: { stroke: "rgb(200 200 200)", strokeWidth: 1.5 },
           });
         });
       });
@@ -183,7 +183,7 @@ export default function SystemsMap() {
             target: tech.toLowerCase().replace(/\s+/g, "-"),
             animated: false,
             markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
-            style: { stroke: "#cbd5e1", strokeWidth: 1 },
+            style: { stroke: "rgb(200 200 200)", strokeWidth: 1 },
           });
         });
 

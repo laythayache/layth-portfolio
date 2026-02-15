@@ -17,6 +17,7 @@ import DecisionMatrix from "@/components/DecisionMatrix";
 import GrainOverlay from "@/components/GrainOverlay";
 import SEO from "@/components/SEO";
 import { projects, getProjectBySlug } from "@/content/projects";
+import { DEFAULT_KEYWORDS, homePageJsonLd } from "@/content/siteSeo";
 import { useState } from "react";
 
 /** Scroll distance (px) over which the emblem transitions to the navbar. */
@@ -163,9 +164,12 @@ export default function Home() {
   return (
     <>
     <SEO
-      title="Layth Ayache — Technical Architect"
-      description="Technical architect building production-grade public information infrastructure. Systems designed for reliability, accountability, and scale."
+      title="Layth Ayache | AI Systems Architect in Lebanon"
+      description="AI systems architect in Lebanon building production-grade infrastructure, public information systems, and computer-vision-driven products."
       canonical="https://laythayache.com/"
+      keywords={DEFAULT_KEYWORDS}
+      modifiedTime="2026-02-15"
+      jsonLd={homePageJsonLd()}
     />
     <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-surface">
       {/* Layer 1: static grain texture */}

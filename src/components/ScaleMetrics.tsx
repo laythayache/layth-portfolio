@@ -63,8 +63,8 @@ export default function ScaleMetrics() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: "easeOut", delay: idx * 0.12 }}
-            whileHover={{ y: -4, scale: 1.02 }}
-            className="bg-surface-raised border border-border p-6 rounded-lg hover:border-border-strong transition-all duration-700 ease-out"
+            whileHover={{ y: -2 }}
+            className="bg-surface-raised border border-border p-6 hover:border-accent/40 transition-all duration-700 ease-out"
           >
             {/* Giant display number */}
             <div className="text-7xl font-bold tracking-tight text-text-primary mb-3">
@@ -77,7 +77,7 @@ export default function ScaleMetrics() {
             </h3>
 
             {/* Divider */}
-            <div className="h-px bg-gradient-to-r from-border via-border-strong to-border mb-4" />
+            <div className="h-px bg-accent/20 mb-4" />
 
             {/* Description */}
             <p className="text-sm font-medium text-text-secondary mb-2 leading-relaxed">
@@ -98,9 +98,9 @@ export default function ScaleMetrics() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.72 }}
-        className="relative overflow-hidden rounded-lg border border-border bg-surface-raised p-6"
+        className="relative overflow-hidden border border-border bg-surface-raised p-6"
       >
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-accent/20" />
 
         <div className="relative z-10 space-y-3">
           <h4 className="font-sans text-sm font-semibold text-text-primary">

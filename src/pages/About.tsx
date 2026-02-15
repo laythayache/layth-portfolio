@@ -1,12 +1,16 @@
 import SEO from "@/components/SEO";
+import { DEFAULT_KEYWORDS, aboutPageJsonLd } from "@/content/siteSeo";
 
 export default function About() {
   return (
     <>
       <SEO
-        title="About — Layth Ayache"
+        title="About | Layth Ayache"
         description="Technical architect specializing in public information infrastructure, data pipelines, and production systems engineering."
         canonical="https://laythayache.com/about"
+        keywords={DEFAULT_KEYWORDS}
+        modifiedTime="2026-02-15"
+        jsonLd={aboutPageJsonLd()}
       />
 
       <div className="mx-auto max-w-3xl px-6 py-12">

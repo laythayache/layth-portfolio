@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { DEFAULT_KEYWORDS, playbookPageJsonLd } from "@/content/siteSeo";
 
 function CollapsibleSection({
   title,
@@ -38,9 +39,12 @@ export default function Playbook() {
   return (
     <>
       <SEO
-        title="Playbook — Layth Ayache"
+        title="Playbook | Layth Ayache"
         description="Operating principles, decision frameworks, and checklists for building production systems."
         canonical="https://laythayache.com/playbook"
+        keywords={DEFAULT_KEYWORDS}
+        modifiedTime="2026-02-15"
+        jsonLd={playbookPageJsonLd()}
       />
 
       <div className="mx-auto max-w-3xl px-6 py-12">

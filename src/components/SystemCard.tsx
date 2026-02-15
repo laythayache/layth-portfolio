@@ -6,7 +6,7 @@ export default function SystemCard({ project }: { project: Project }) {
   return (
     <Link
       to={`/projects/${project.slug}`}
-      className="group flex flex-col gap-4 border border-border p-6 transition-colors hover:border-border-strong hover:bg-surface-raised"
+      className="group flex flex-col gap-4 border border-border border-l-2 border-l-accent/40 p-6 transition-colors hover:border-accent/60"
     >
       <div className="flex items-start justify-between">
         <div>
@@ -19,7 +19,7 @@ export default function SystemCard({ project }: { project: Project }) {
         </div>
         <ArrowUpRight
           size={18}
-          className="shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-text-secondary"
+          className="shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
         />
       </div>
 
@@ -28,7 +28,7 @@ export default function SystemCard({ project }: { project: Project }) {
       </p>
 
       {project.outcome && (
-        <div className="border-l-2 border-border-strong pl-4">
+        <div className="border-l-2 border-accent/40 pl-4">
           <p className="font-mono text-xs uppercase tracking-wider text-text-muted mb-1">
             Outcome
           </p>
@@ -39,7 +39,7 @@ export default function SystemCard({ project }: { project: Project }) {
       )}
 
       {project.card?.highlight && (
-        <div className="border-l-2 border-border-strong pl-4">
+        <div className="border-l-2 border-accent/40 pl-4">
           <p className="font-mono text-xs text-text-muted">
             {project.card.highlight}
           </p>

@@ -1,12 +1,16 @@
 import SEO from "@/components/SEO";
+import { DEFAULT_KEYWORDS, nowPageJsonLd } from "@/content/siteSeo";
 
 export default function Now() {
   return (
     <>
       <SEO
-        title="Now — Layth Ayache"
+        title="Now | Layth Ayache"
         description="What I'm working on right now."
         canonical="https://laythayache.com/now"
+        keywords={DEFAULT_KEYWORDS}
+        modifiedTime="2026-02-15"
+        jsonLd={nowPageJsonLd()}
       />
 
       <div className="mx-auto max-w-3xl px-6 py-12">

@@ -102,13 +102,13 @@ export default function DecisionMatrix() {
                   {decision.title}
                 </h3>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="font-mono text-xs uppercase tracking-wider text-text-muted bg-surface-overlay px-3 py-1 rounded-full whitespace-nowrap">
+                  <span className="font-mono text-xs uppercase tracking-wider text-accent bg-accent/10 px-3 py-1 rounded-full whitespace-nowrap">
                     Chosen: {chosenOption.choice}
                   </span>
                   <ChevronDown
                     size={20}
-                    className={`text-text-muted transition-transform duration-300 ${
-                      isExpanded ? 'rotate-180' : ''
+                    className={`transition-transform duration-300 ${
+                      isExpanded ? 'rotate-180 text-accent' : 'text-text-muted'
                     }`}
                   />
                 </div>
@@ -140,7 +140,7 @@ export default function DecisionMatrix() {
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="border-t border-border overflow-hidden"
+                  className="border-t border-accent/30 overflow-hidden"
                 >
                   {/* Options comparison grid */}
                   <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border">
@@ -255,9 +255,9 @@ export default function DecisionMatrix() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.54 }}
-        className="relative overflow-hidden rounded-lg border border-border bg-surface-raised p-8"
+        className="relative overflow-hidden border border-border bg-surface-raised p-8"
       >
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-accent/20" />
 
         <div className="relative z-10 space-y-3">
           <h4 className="font-sans text-sm font-semibold text-text-primary">
