@@ -25,6 +25,27 @@ export interface Partner {
   note: string;
 }
 
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export interface TimelineItem {
+  date: string;
+  title: string;
+  description: string;
+  status: "completed" | "current" | "upcoming";
+}
+
+export interface CTACard {
+  icon: "hand" | "heart" | "users";
+  title: string;
+  description: string;
+  action: string;
+  email: string;
+  subject: string;
+}
+
 // ── Video ───────────────────────────────────
 export const VIDEO_URL =
   "https://pub-f6654749f9534ed48b99cc5f4b614b9b.r2.dev/WhatsApp%20Video%202025-11-29%20at%2012.43.10%20PM.mp4";
@@ -242,5 +263,116 @@ export const team: TeamMember[] = [
     role: "Research Advisor",
     detail: "Academic guidance, research methodology, project oversight",
     image: "/oussama-mustapha.jpeg",
+  },
+];
+
+// ── FAQ ─────────────────────────────────────
+export const faqItems: FAQItem[] = [
+  {
+    question: "Which sign languages do you support?",
+    answer:
+      "We currently support Lebanese Sign Language (LSL) and basic American Sign Language (ASL). LSL is our primary focus — we built the first dataset for it from scratch. We handle dialect variation by collecting data from multiple regions across Lebanon: Beqaa, South Lebanon, and Beirut.",
+  },
+  {
+    question: "Is this real-time translation or batch processing?",
+    answer:
+      "Real-time. Our computer vision pipeline processes video frames as they come in, with sub-100ms latency. You sign, it translates — instantly.",
+  },
+  {
+    question: "How accurate is it?",
+    answer:
+      "98% accuracy in our internal evaluations. We were surprised too. In controlled conditions with good lighting and clear signing, we've yet to encounter accuracy issues. Real-world performance may vary with lighting, camera quality, and signing speed.",
+  },
+  {
+    question: "How are you collecting and labeling sign data?",
+    answer:
+      "In-house collection through events, community collaboration, and partnerships with deaf organizations. We record volunteers signing, extract landmark features using MediaPipe, and label everything manually. The deaf community helps us learn proper form and validates our labels. Want to help? Get in touch.",
+  },
+  {
+    question: "What model architecture are you using?",
+    answer:
+      "Currently an LSTM (Long Short-Term Memory) network for sequence recognition. Our technical lead Rami is deep in research mode with Layth, exploring more scalable architectures like Transformers for the next iteration.",
+  },
+  {
+    question: "Who is this for?",
+    answer:
+      "Everyone. If you're deaf, OmniSign helps you communicate. If you want to speak with a deaf person, it bridges that gap. Our next focus is clinical vocabulary — helping doctors and healthcare workers communicate with deaf patients where miscommunication carries the highest cost.",
+  },
+];
+
+// ── Timeline ────────────────────────────────
+export const timelineItems: TimelineItem[] = [
+  {
+    date: "Early 2025",
+    title: "Started as FYP",
+    description:
+      "OmniSign began as a Final Year Project at Rafik Hariri University. Six students chose to find their own challenge instead of picking from faculty-approved projects.",
+    status: "completed",
+  },
+  {
+    date: "Mid 2025",
+    title: "50,000 signs collected",
+    description:
+      "Data collection campaigns across Lebanon. Partnerships with Aaramoun Orphanage, Sin El Fil Church, and SignWithNaila. 80,000+ processed samples after augmentation.",
+    status: "completed",
+  },
+  {
+    date: "Late 2025",
+    title: "98% accuracy achieved",
+    description:
+      "LSTM model trained on full Arabic alphabet plus 30+ daily expressions. Internal evaluation shows 98% accuracy in controlled conditions.",
+    status: "completed",
+  },
+  {
+    date: "Now",
+    title: "Weekly development",
+    description:
+      "Fresh graduates with jobs, putting in weekly one-hour meetings plus coding sessions. Self-funded, community-supported, still building.",
+    status: "current",
+  },
+  {
+    date: "Next",
+    title: "Clinical vocabulary",
+    description:
+      "Medical and clinical phrases — the most requested addition from the deaf community. Where miscommunication carries the highest cost.",
+    status: "upcoming",
+  },
+  {
+    date: "Future",
+    title: "Scalable architecture",
+    description:
+      "Researching Transformer-based models for better real-world performance and easier scaling to new sign languages.",
+    status: "upcoming",
+  },
+];
+
+// ── CTA Cards ───────────────────────────────
+export const ctaCards: CTACard[] = [
+  {
+    icon: "hand",
+    title: "Contribute Signs",
+    description:
+      "Help us grow the dataset. We'll set you up with our data collector app — completely free. Record signs from your community.",
+    action: "Get the app",
+    email: "laythayache5@gmail.com",
+    subject: "OmniSign - I want to contribute sign data",
+  },
+  {
+    icon: "heart",
+    title: "Fund the Mission",
+    description:
+      "We're self-funded and not doing this for profit. Donations go directly to events, data collection, and development.",
+    action: "Support us",
+    email: "laythayache5@gmail.com",
+    subject: "OmniSign - I want to support/donate",
+  },
+  {
+    icon: "users",
+    title: "Connect Your Community",
+    description:
+      "Know a deaf community, school, or organization in Lebanon? Connect us. We need as much help as we can get.",
+    action: "Make an intro",
+    email: "laythayache5@gmail.com",
+    subject: "OmniSign - Community connection",
   },
 ];

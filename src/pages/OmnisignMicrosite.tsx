@@ -22,7 +22,15 @@ import {
   communityStory,
   roadmapItems,
   team,
+  faqItems,
+  timelineItems,
+  ctaCards,
 } from "@/content/omnisign";
+import AnimatedCounter from "@/components/omnisign/AnimatedCounter";
+import FAQAccordion from "@/components/omnisign/FAQAccordion";
+import HandLandmarks from "@/components/omnisign/HandLandmarks";
+import VisualTimeline from "@/components/omnisign/VisualTimeline";
+import CTACards from "@/components/omnisign/CTACards";
 
 /* ── Animation constants ── */
 const EASE_OUT: [number, number, number, number] = [0, 0, 0.2, 1];
@@ -113,7 +121,11 @@ export default function OmnisignMicrosite() {
       />
 
       {/* ── Hero ── */}
-      <section id="hero" className="pb-6 pt-8">
+      <section id="hero" className="relative pb-6 pt-8">
+        {/* Decorative hand landmarks background */}
+        <div className="pointer-events-none absolute -right-10 top-0 h-64 w-64 opacity-[0.07] md:right-10 md:h-96 md:w-96">
+          <HandLandmarks className="h-full w-full text-teal-600" />
+        </div>
         <div className="mx-auto max-w-6xl px-6">
           <motion.div {...section}>
             <Link
@@ -228,34 +240,17 @@ export default function OmnisignMicrosite() {
         </section>
       )}
 
-      {/* ── Stats — floating glass cards ── */}
+      {/* ── Stats — animated counters ── */}
       <section id="stats" className="relative z-10 mx-auto -mt-8 max-w-5xl px-6 pb-16">
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+        <div className="grid grid-cols-2 gap-3 rounded-2xl border border-slate-200/60 bg-white/80 shadow-lg backdrop-blur-sm sm:grid-cols-4 sm:gap-4">
           {quickFacts.map((fact, i) => (
-            <motion.div
+            <AnimatedCounter
               key={fact.label}
-              className="rounded-xl border border-slate-200/60 bg-white/80 p-5 text-center shadow-lg backdrop-blur-sm sm:p-6"
-              initial={{ opacity: 0, y: reduced ? 0 : 20, scale: reduced ? 1 : 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                delay: reduced ? 0 : 0.1 + i * 0.08,
-                duration: reduced ? 0.15 : 0.5,
-                ease: EASE_OUT,
-              }}
-            >
-              <span className="block font-sans text-3xl font-extrabold tracking-tight text-teal-600 sm:text-4xl md:text-5xl">
-                {fact.value}
-              </span>
-              <span className="mt-1.5 block font-mono text-[10px] uppercase tracking-wider text-slate-500 sm:text-[11px]">
-                {fact.label}
-              </span>
-              {fact.caveat && (
-                <span className="mt-1 block text-[10px] leading-tight text-slate-400">
-                  {fact.caveat}
-                </span>
-              )}
-            </motion.div>
+              value={fact.value}
+              label={fact.label}
+              caveat={fact.caveat}
+              index={i}
+            />
           ))}
         </div>
       </section>
@@ -590,7 +585,7 @@ export default function OmnisignMicrosite() {
       {/* ── Roadmap ── */}
       <section id="roadmap" className="border-t border-slate-100 bg-slate-50">
         <motion.div
-          className="mx-auto max-w-5xl px-6 py-20 md:py-28"
+          className="mx-auto max-w-3xl px-6 py-20 md:py-28"
           {...section}
         >
           <p className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-teal-600">
@@ -600,61 +595,24 @@ export default function OmnisignMicrosite() {
             The road ahead
           </h2>
 
-          {/* Timeline */}
-          <div className="relative">
-            {/* Animated connecting line */}
-            <motion.div
-              className="absolute left-4 top-0 hidden w-px md:block"
-              style={{ background: "linear-gradient(180deg, #0d9488 0%, #cbd5e1 100%)" }}
-              initial={{ height: "0%" }}
-              whileInView={{ height: "100%" }}
-              viewport={{ once: true }}
-              transition={{ duration: reduced ? 0.15 : 1.2, ease: EASE_OUT }}
-            />
+          <VisualTimeline items={timelineItems} />
+        </motion.div>
+      </section>
 
-            <div className="flex flex-col gap-6">
-              {roadmapItems.map((item, i) => (
-                <motion.div
-                  key={item.label}
-                  className="relative flex gap-6"
-                  {...stagger(i)}
-                  whileHover={lift}
-                >
-                  {/* Dot on timeline */}
-                  <div className="relative z-10 hidden md:block">
-                    <div
-                      className={`flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors ${
-                        i === 0
-                          ? "border-teal-600 bg-teal-600 shadow-md shadow-teal-600/30"
-                          : "border-slate-300 bg-white"
-                      }`}
-                    >
-                      <span
-                        className={`font-mono text-[10px] font-bold ${
-                          i === 0 ? "text-white" : "text-slate-400"
-                        }`}
-                      >
-                        {i + 1}
-                      </span>
-                    </div>
-                  </div>
+      {/* ── FAQ ── */}
+      <section id="faq" className="bg-white">
+        <motion.div
+          className="mx-auto max-w-3xl px-6 py-20 md:py-28"
+          {...section}
+        >
+          <p className="mb-6 font-mono text-xs uppercase tracking-[0.2em] text-teal-600">
+            Questions
+          </p>
+          <h2 className="mb-10 font-sans text-3xl font-bold text-slate-900 md:text-4xl lg:text-5xl">
+            Frequently asked
+          </h2>
 
-                  {/* Content */}
-                  <div className="flex-1 rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
-                    <span className="mb-2 inline-block rounded-full bg-teal-50 px-3 py-0.5 font-mono text-[10px] uppercase tracking-wider text-teal-600">
-                      {item.label}
-                    </span>
-                    <h3 className="mb-1 font-sans text-lg font-semibold text-slate-900">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-slate-500">
-                      {item.description}
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+          <FAQAccordion items={faqItems} />
         </motion.div>
       </section>
 
@@ -720,37 +678,29 @@ export default function OmnisignMicrosite() {
           aria-hidden="true"
           style={{ backgroundImage: GRAIN, opacity: 0.03 }}
         />
+        {/* Decorative hand landmarks */}
+        <div className="pointer-events-none absolute -right-20 top-10 h-60 w-60 opacity-10 md:h-80 md:w-80">
+          <HandLandmarks className="h-full w-full text-white" />
+        </div>
         <motion.div
-          className="relative mx-auto max-w-5xl px-6 py-20 text-center md:py-28"
+          className="relative mx-auto max-w-5xl px-6 py-20 md:py-28"
           initial={{ opacity: 0, y: reduced ? 0 : 32 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: reduced ? 0.15 : 0.6, ease: EASE_OUT }}
         >
-          <h2 className="mb-5 font-sans text-3xl font-bold text-white md:text-4xl">
-            This project needs people, not just code.
-          </h2>
-          <p className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-teal-100/90">
-            OmniSign needs community involvement, linguistic expertise, data
-            contribution, and sustained funding to move beyond its current
-            stage. If you can contribute in any way — this is an open
-            invitation.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="mailto:laythayache5@gmail.com?subject=OmniSign%20-%20Getting%20Involved"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 font-sans text-sm font-semibold text-teal-700 shadow-lg transition-all hover:bg-teal-50 hover:shadow-xl"
-            >
-              Get Involved
-              <ArrowUpRight size={16} />
-            </a>
-            <Link
-              to="/submit?project=omnisign"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/25 px-7 py-3.5 font-sans text-sm font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10"
-            >
-              Submit a challenge
-            </Link>
+          <div className="mb-12 text-center">
+            <h2 className="mb-5 font-sans text-3xl font-bold text-white md:text-4xl">
+              This project needs people, not just code.
+            </h2>
+            <p className="mx-auto max-w-xl text-base leading-relaxed text-teal-100/90">
+              OmniSign needs community involvement, linguistic expertise, data
+              contribution, and sustained funding to move beyond its current
+              stage. Here&apos;s how you can help.
+            </p>
           </div>
+          
+          <CTACards cards={ctaCards} />
         </motion.div>
       </section>
 
