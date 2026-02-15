@@ -1,4 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ExternalLink } from "lucide-react";
+import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { DEFAULT_KEYWORDS, writingPageJsonLd } from "@/content/siteSeo";
 
@@ -9,26 +10,26 @@ interface Article {
   date: string;
   tags: string[];
   draft?: boolean;
+  externalUrl?: string;
+  relatedProject?: {
+    slug: string;
+    label: string;
+  };
 }
 
 const articles: Article[] = [
   {
-    slug: "pipelines-that-dont-fail-silently",
-    title: "Pipelines That Don't Fail Silently",
+    slug: "building-in-a-country-with-no-infrastructure",
+    title: "Building in a Country with No Infrastructure",
     summary:
-      "Error handling, monitoring, and alerting patterns for production data pipelines. Why silent failures are worse than crashes.",
-    date: "2026-02-10",
-    tags: ["infrastructure", "monitoring", "pipelines"],
-    draft: true,
-  },
-  {
-    slug: "versioning-public-data",
-    title: "Versioning Public Data",
-    summary:
-      "Change detection and diff storage for dynamic content. Design decisions for tracking what was published, when it changed, and what the source actually said.",
-    date: "2026-01-28",
-    tags: ["architecture", "versioning", "public-data"],
-    draft: true,
+      "How infrastructure fragility becomes an engineering variable. Exploring the OmniSign project—a Lebanese Sign Language interpreter built from first principles in an environment where data, connectivity, and stability cannot be assumed.",
+    date: "2026-02-15",
+    tags: ["infrastructure", "lebanon", "engineering", "systems"],
+    externalUrl: "https://medium.com/@laythayache5/building-in-a-country-with-no-infrastructure-3f8595472895",
+    relatedProject: {
+      slug: "omnisign",
+      label: "Explore OmniSign",
+    },
   },
 ];
 
@@ -60,50 +61,81 @@ export default function Writing() {
           </p>
         ) : (
           <div className="flex flex-col gap-6">
-            {articles.map((article) => (
-              <div
-                key={article.slug}
-                className="group flex flex-col gap-3 border border-border p-6 transition-colors"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <h2 className="font-sans text-lg font-semibold text-text-primary">
-                        {article.title}
-                      </h2>
-                      {article.draft && (
-                        <span className="rounded border border-border-strong px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-text-muted">
-                          Coming soon
-                        </span>
-                      )}
+            {articles.map((article) => {
+              const articleContent = (
+                <div
+                  className={`group flex flex-col gap-3 border border-border p-6 transition-colors ${
+                    article.externalUrl ? "hover:border-border-strong hover:bg-background-secondary cursor-pointer" : ""
+                  }`}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h2 className="font-sans text-lg font-semibold text-text-primary">
+                          {article.title}
+                        </h2>
+                        {article.draft && (
+                          <span className="rounded border border-border-strong px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-text-muted">
+                            Coming soon
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm leading-relaxed text-text-secondary">
+                        {article.summary}
+                      </p>
                     </div>
-                    <p className="text-sm leading-relaxed text-text-secondary">
-                      {article.summary}
-                    </p>
+                    {!article.draft && (
+                      <ArrowUpRight
+                        size={16}
+                        className="shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                      />
+                    )}
                   </div>
-                  {!article.draft && (
-                    <ArrowUpRight
-                      size={16}
-                      className="shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                    />
-                  )}
+                  <div className="flex flex-col gap-3 pt-2">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="font-mono text-xs text-text-muted">
+                        {new Date(article.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </span>
+                      {article.tags.map((tag) => (
+                        <span key={tag} className="font-mono text-xs text-text-muted">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                    {article.relatedProject && (
+                      <Link
+                        to={`/projects/${article.relatedProject.slug}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-2 rounded border border-border-strong px-3 py-1.5 font-mono text-xs font-semibold text-text-primary transition-colors hover:bg-background-secondary w-fit"
+                      >
+                        {article.relatedProject.label}
+                        <ExternalLink size={12} />
+                      </Link>
+                    )}
+                  </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-3 pt-1">
-                  <span className="font-mono text-xs text-text-muted">
-                    {new Date(article.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </span>
-                  {article.tags.map((tag) => (
-                    <span key={tag} className="font-mono text-xs text-text-muted">
-                      #{tag}
-                    </span>
-                  ))}
+              );
+
+              return article.externalUrl ? (
+                <a
+                  key={article.slug}
+                  href={article.externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block no-underline"
+                >
+                  {articleContent}
+                </a>
+              ) : (
+                <div key={article.slug}>
+                  {articleContent}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
