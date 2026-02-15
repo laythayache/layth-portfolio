@@ -8,13 +8,19 @@ interface AnimatedCounterProps {
   index?: number;
 }
 
-function parseValue(value: string): { num: number; suffix: string; prefix: string } {
+function parseValue(value: string): { num: number; suffix: string; prefix: string; isNumeric: boolean } {
   // Handle values like "50,000+", "98%", "80,000+"
+  const numStr = value.replace(/[^\d]/g, "");
+  
+  // If no digits found, treat as pure text
+  if (!numStr) {
+    return { num: 0, suffix: "", prefix: "", isNumeric: false };
+  }
+  
   const prefix = value.match(/^[^\d]*/)?.[0] || "";
   const suffix = value.match(/[^\d]*$/)?.[0] || "";
-  const numStr = value.replace(/[^\d]/g, "");
   const num = parseInt(numStr, 10) || 0;
-  return { num, suffix, prefix };
+  return { num, suffix, prefix, isNumeric: true };
 }
 
 function formatNumber(n: number, originalValue: string): string {
@@ -36,10 +42,10 @@ export default function AnimatedCounter({
   const reduced = useReducedMotion();
   const [displayNum, setDisplayNum] = useState(0);
 
-  const { num, suffix, prefix } = parseValue(value);
+  const { num, suffix, prefix, isNumeric } = parseValue(value);
 
   useEffect(() => {
-    if (!isInView || reduced) {
+    if (!isNumeric || !isInView || reduced) {
       setDisplayNum(num);
       return;
     }
@@ -96,11 +102,17 @@ export default function AnimatedCounter({
         </svg>
       </div>
 
-      {/* Number */}
-      <span className="font-sans text-4xl font-bold text-teal-600 md:text-5xl">
-        {prefix}
-        {formatNumber(displayNum, value)}
-        {suffix}
+      {/* Number or Text value */}
+      <span className="font-sans text-3xl font-bold text-teal-600 md:text-4xl">
+        {isNumeric ? (
+          <>
+            {prefix}
+            {formatNumber(displayNum, value)}
+            {suffix}
+          </>
+        ) : (
+          value
+        )}
       </span>
 
       {/* Label */}
