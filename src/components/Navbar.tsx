@@ -20,8 +20,10 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 h-16 bg-[#F2EDE8] transition-colors duration-300",
-        !isHome && "border-b border-[#1A1A1A]/10"
+        "fixed top-0 left-0 right-0 z-50 h-16 transition-colors duration-300",
+        isHome
+          ? "bg-surface"
+          : "border-b border-border bg-surface"
       )}
     >
       <div className="mx-auto flex h-full max-w-5xl items-center justify-between px-6">
@@ -33,13 +35,13 @@ export default function Navbar() {
               "h-8 w-auto transition-opacity",
               isHome
                 ? "pointer-events-none opacity-0"
-                : "opacity-70 hover:opacity-100"
+                : "opacity-50 hover:opacity-70"
             )}
           />
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden items-center gap-6 md:flex">
+        <div className="hidden items-center gap-8 md:flex">
           <div className="flex items-center gap-8">
             {links.map((link) => {
               const active =
@@ -50,40 +52,37 @@ export default function Navbar() {
                   to={link.to}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "font-mono text-xs uppercase tracking-widest transition-colors",
+                    "relative pb-1 font-mono text-xs uppercase tracking-widest transition-colors",
                     active
-                      ? "text-[#1A1A1A]"
-                      : "text-[#1A1A1A]/50 hover:text-[#1A1A1A]/70"
+                      ? "text-text-primary"
+                      : "text-text-muted hover:text-accent"
                   )}
                 >
                   {link.label}
+                  {active && (
+                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />
+                  )}
                 </Link>
               );
             })}
           </div>
 
-          {/* Primary CTA button */}
+          {/* Contact — thin bronze border, no fill */}
           <Link
             to="/contact"
-            className="rounded border border-[#1A1A1A] bg-[#1A1A1A] px-4 py-2 font-mono text-xs uppercase tracking-wider text-[#F2EDE8] transition-colors hover:bg-[#1A1A1A]/80"
+            className="border border-accent px-4 py-2 font-mono text-xs uppercase tracking-wider text-accent transition-colors hover:bg-accent hover:text-surface"
           >
             Contact
           </Link>
         </div>
 
-        {/* Mobile: Contact + Hamburger */}
-        <div className="flex items-center gap-3 md:hidden">
-          <Link
-            to="/contact"
-            className="rounded border border-[#1A1A1A] bg-[#1A1A1A] px-3 py-1.5 font-mono text-xs uppercase tracking-wider text-[#F2EDE8] transition-colors hover:bg-[#1A1A1A]/80"
-          >
-            Contact
-          </Link>
+        {/* Mobile: Hamburger only */}
+        <div className="flex items-center md:hidden">
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
-            className="p-2 text-[#1A1A1A] transition-colors"
+            className="p-2 text-text-primary transition-colors"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -98,7 +97,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
-            className="overflow-hidden border-b border-[#1A1A1A]/10 bg-[#F2EDE8] md:hidden"
+            className="overflow-hidden border-b border-border bg-surface md:hidden"
           >
             <div className="mx-auto flex max-w-5xl flex-col gap-1 px-6 py-4">
               {links.map((link) => {
@@ -111,16 +110,23 @@ export default function Navbar() {
                     aria-current={active ? "page" : undefined}
                     onClick={() => setMobileOpen(false)}
                     className={cn(
-                      "rounded px-3 py-2.5 font-mono text-sm uppercase tracking-widest transition-colors",
+                      "px-3 py-2.5 font-mono text-sm uppercase tracking-widest transition-colors",
                       active
-                        ? "bg-[#1A1A1A]/5 text-[#1A1A1A]"
-                        : "text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/5 hover:text-[#1A1A1A]"
+                        ? "text-text-primary border-l-2 border-accent"
+                        : "text-text-muted hover:text-accent"
                     )}
                   >
                     {link.label}
                   </Link>
                 );
               })}
+              <Link
+                to="/contact"
+                onClick={() => setMobileOpen(false)}
+                className="mt-2 px-3 py-2.5 font-mono text-sm uppercase tracking-widest text-accent transition-colors hover:text-accent-hover"
+              >
+                Contact
+              </Link>
             </div>
           </motion.div>
         )}

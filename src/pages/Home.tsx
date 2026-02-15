@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   motion,
@@ -6,7 +6,7 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
-import { ArrowUpRight, HelpCircle, CheckCircle } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { MOTION } from "@/motion/tokens";
 import PortraitHero from "@/components/PortraitHero";
 import SystemCard from "@/components/SystemCard";
@@ -15,7 +15,9 @@ import TechStackVisualization from "@/components/TechStackVisualization";
 import ScaleMetrics from "@/components/ScaleMetrics";
 import DecisionMatrix from "@/components/DecisionMatrix";
 import GrainOverlay from "@/components/GrainOverlay";
+import SEO from "@/components/SEO";
 import { projects, getProjectBySlug } from "@/content/projects";
+import { useState } from "react";
 
 /** Scroll distance (px) over which the emblem transitions to the navbar. */
 const SCROLL_END = 400;
@@ -68,11 +70,18 @@ const collaborations = [
   },
 ];
 
+const proofItems = [
+  "Shipped production systems",
+  "Security + reliability hardening",
+  "Data pipelines + analytics",
+  "Distributed systems architecture",
+  "Real-world constraints",
+];
+
 export default function Home() {
   const reduced = useReducedMotion();
   const { scrollY } = useScroll();
   const { hysteresis } = MOTION;
-  const [showExplainer, setShowExplainer] = useState(false);
 
   // Viewport + computed positions, recomputed on resize.
   const [dims, setDims] = useState(() => {
@@ -142,8 +151,6 @@ export default function Home() {
   const nameOpacity = useTransform(scrollY, [0, NAME_EXIT], [1, 0]);
   const laythX = useTransform(scrollY, (s) => {
     const t = Math.min(s / NAME_EXIT, 1);
-    // Use the bounded container width (max 1024) and clamp the maximum
-    // horizontal shift so resizing doesn't fling the text unpredictably.
     const maxShift = Math.min(dims.containerW * 0.5, 480);
     return -t * maxShift;
   });
@@ -154,7 +161,13 @@ export default function Home() {
   });
 
   return (
-    <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-[#F2EDE8]">
+    <>
+    <SEO
+      title="Layth Ayache — Technical Architect"
+      description="Technical architect building production-grade public information infrastructure. Systems designed for reliability, accountability, and scale."
+      canonical="https://laythayache.com/"
+    />
+    <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-surface">
       {/* Layer 1: static grain texture */}
       <GrainOverlay />
 
@@ -201,7 +214,7 @@ export default function Home() {
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-50 hidden -translate-x-[clamp(16rem,38vw,42rem)] -translate-y-[clamp(5rem,14vh,10rem)] md:block">
           <motion.p
             style={{ x: laythX, opacity: nameOpacity }}
-            className="font-display text-4xl uppercase tracking-tight text-[#1A1A1A] lg:text-6xl xl:text-7xl 2xl:text-8xl"
+            className="font-display text-4xl uppercase tracking-tight text-text-primary lg:text-6xl xl:text-7xl 2xl:text-8xl"
           >
             LAYTH
           </motion.p>
@@ -211,7 +224,7 @@ export default function Home() {
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-50 hidden translate-x-[clamp(8rem,20vw,24rem)] translate-y-[clamp(2rem,6vh,5rem)] md:block">
           <motion.p
             style={{ x: ayacheX, opacity: nameOpacity }}
-            className="font-display text-4xl uppercase tracking-tight text-[#1A1A1A] lg:text-6xl xl:text-7xl 2xl:text-8xl"
+            className="font-display text-4xl uppercase tracking-tight text-text-primary lg:text-6xl xl:text-7xl 2xl:text-8xl"
           >
             AYACHE
           </motion.p>
@@ -221,7 +234,7 @@ export default function Home() {
         <div className="absolute inset-x-0 top-6 z-50 px-6 md:hidden">
           <motion.p
             style={{ x: laythX, opacity: nameOpacity }}
-            className="text-left font-display text-4xl uppercase tracking-tight text-[#1A1A1A] sm:text-5xl"
+            className="text-left font-display text-4xl uppercase tracking-tight text-text-primary sm:text-5xl"
           >
             LAYTH
           </motion.p>
@@ -229,7 +242,7 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-6 z-50 px-6 md:hidden">
           <motion.p
             style={{ x: ayacheX, opacity: nameOpacity }}
-            className="text-right font-display text-4xl uppercase tracking-tight text-[#1A1A1A] sm:text-5xl"
+            className="text-right font-display text-4xl uppercase tracking-tight text-text-primary sm:text-5xl"
           >
             AYACHE
           </motion.p>
@@ -238,48 +251,30 @@ export default function Home() {
 
       {/* ── Role Statement ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-12">
-        <div className="mb-16 flex flex-col gap-6 border-b border-[#1A1A1A]/10 pb-8">
+        <div className="mb-16 flex flex-col gap-6 border-b border-border pb-8">
           <div>
-            <h1 className="font-sans text-4xl font-semibold text-[#1A1A1A] mb-4">
+            <h1 className="font-sans text-4xl font-semibold text-text-primary mb-4">
               I architect serious systems.
             </h1>
-            <p className="text-xl leading-relaxed text-[#1A1A1A]/80 max-w-2xl mb-2">
+            <p className="text-xl leading-relaxed text-text-secondary max-w-2xl mb-2">
               Production-grade infrastructure that turns unstable environments into rational operating structures.
             </p>
-            <p className="text-base text-[#1A1A1A]/60 max-w-2xl mb-4">
+            <p className="text-base text-text-muted max-w-2xl">
               Data, infrastructure, and automation — built to survive messy reality. Proof over hype. Clarity over noise.
             </p>
-
-            {/* Inline explainer */}
-            <button
-              onClick={() => setShowExplainer(!showExplainer)}
-              className="inline-flex items-center gap-1 text-sm text-[#1A1A1A]/40 hover:text-[#1A1A1A]/60 transition-colors"
-            >
-              <HelpCircle size={14} />
-              What does this mean?
-            </button>
-            {showExplainer && (
-              <div className="mt-3 text-sm bg-[#EBE5DE] border-l-2 border-[#1A1A1A]/20 p-3 max-w-2xl">
-                <p className="text-[#1A1A1A]/70">
-                  Systems that track what news outlets publish and when content changes. Infrastructure
-                  for change detection, data normalization, and structured API access to information
-                  that matters. Built for reliability under real-world constraints.
-                </p>
-              </div>
-            )}
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
             <Link
               to="/systems"
-              className="inline-flex items-center gap-2 rounded border border-[#1A1A1A] bg-[#1A1A1A] px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-[#F2EDE8] transition-colors hover:bg-[#1A1A1A]/80"
+              className="inline-flex items-center gap-2 border border-accent px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-accent transition-colors hover:bg-accent hover:text-surface"
             >
               Explore Systems
               <ArrowUpRight size={14} />
             </Link>
             <Link
               to="/contact"
-              className="inline-flex items-center gap-2 rounded border border-[#1A1A1A]/20 px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-[#1A1A1A]/70 transition-colors hover:border-[#1A1A1A]/40 hover:text-[#1A1A1A]"
+              className="inline-flex items-center gap-2 border border-border px-5 py-2.5 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:border-accent hover:text-accent"
             >
               Get in Touch
             </Link>
@@ -289,30 +284,23 @@ export default function Home() {
 
       {/* ── Proof Strip ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
-        <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4">
-          {[
-            "Shipped production systems",
-            "Security + reliability hardening",
-            "Data pipelines + analytics",
-            "Distributed systems architecture",
-            "Real-world constraints",
-          ].map((chip) => (
-            <div
-              key={chip}
-              className="flex items-center gap-2 rounded-full border border-[#1A1A1A]/10 bg-[#F2EDE8] px-4 py-2"
-            >
-              <CheckCircle size={14} className="text-[#1A1A1A]/40 shrink-0" />
-              <span className="font-mono text-xs text-[#1A1A1A]/60 whitespace-nowrap">
-                {chip}
+        <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1">
+          {proofItems.map((item, i) => (
+            <span key={item} className="flex items-center gap-2">
+              <span className="font-mono text-xs text-text-muted whitespace-nowrap">
+                {item}
               </span>
-            </div>
+              {i < proofItems.length - 1 && (
+                <span className="text-accent/40">&middot;</span>
+              )}
+            </span>
           ))}
         </div>
       </section>
 
       {/* ── Scale & Metrics ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
-        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+        <h2 className="border-b border-accent/30 pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-text-muted">
           Scale & Impact
         </h2>
         <ScaleMetrics />
@@ -320,7 +308,7 @@ export default function Home() {
 
       {/* ── Selected Systems ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
-        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+        <h2 className="border-b border-accent/30 pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-text-muted">
           Selected Systems
         </h2>
         <div className="grid gap-6 md:grid-cols-2">
@@ -332,20 +320,20 @@ export default function Home() {
 
       {/* ── Architecture Snapshot ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
-        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+        <h2 className="border-b border-accent/30 pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-text-muted">
           How Systems Connect
         </h2>
-        <div className="border border-[#1A1A1A]/10 p-8 bg-[#FEFDFB] rounded">
+        <div className="border border-border p-8 bg-surface-raised">
           <SystemsSnapshot />
         </div>
-        <p className="mt-4 text-xs text-[#1A1A1A]/50 font-mono">
+        <p className="mt-4 text-xs text-text-muted font-mono">
           Data flows left-to-right: from collection through processing to access layers. Each system emphasizes reliability, change tracking, and auditability.
         </p>
       </section>
 
       {/* ── Technical Stack ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
-        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+        <h2 className="border-b border-accent/30 pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-text-muted">
           Technical Foundation
         </h2>
         <TechStackVisualization />
@@ -353,16 +341,16 @@ export default function Home() {
 
       {/* ── Operating Principles ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
-        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+        <h2 className="border-b border-accent/30 pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-text-muted">
           What I Optimize
         </h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {principles.map((principle) => (
-            <div key={principle.title} className="flex flex-col gap-2">
-              <h3 className="font-sans text-sm font-semibold text-[#1A1A1A]">
+            <div key={principle.title} className="flex flex-col gap-2 border-l border-accent/40 pl-4">
+              <h3 className="font-sans text-sm font-semibold text-text-primary">
                 {principle.title}
               </h3>
-              <p className="text-sm text-[#1A1A1A]/60 leading-relaxed">
+              <p className="text-sm text-text-muted leading-relaxed">
                 {principle.description}
               </p>
             </div>
@@ -372,7 +360,7 @@ export default function Home() {
 
       {/* ── Decision Rationale ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-16">
-        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+        <h2 className="border-b border-accent/30 pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-text-muted">
           How I Think About Trade-offs
         </h2>
         <DecisionMatrix />
@@ -380,19 +368,19 @@ export default function Home() {
 
       {/* ── Collaborations ── */}
       <section className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-24">
-        <h2 className="mb-8 font-mono text-xs uppercase tracking-[0.15em] text-[#1A1A1A]/40">
+        <h2 className="border-b border-accent/30 pb-2 mb-8 font-mono text-xs uppercase tracking-widest text-text-muted">
           Collaborations
         </h2>
         <div className="grid gap-6 md:grid-cols-1">
           {collaborations.map((collab) => (
             <div
               key={collab.title}
-              className="border border-[#1A1A1A]/10 p-6"
+              className="border border-border p-6 transition-colors hover:border-accent/40"
             >
-              <h3 className="font-sans text-lg font-semibold text-[#1A1A1A] mb-2">
+              <h3 className="font-sans text-lg font-semibold text-text-primary mb-2">
                 {collab.title}
               </h3>
-              <p className="text-base text-[#1A1A1A]/70 leading-relaxed">
+              <p className="text-base text-text-secondary leading-relaxed">
                 {collab.description}
               </p>
             </div>
@@ -400,5 +388,6 @@ export default function Home() {
         </div>
       </section>
     </div>
+    </>
   );
 }

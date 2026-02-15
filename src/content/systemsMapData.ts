@@ -50,9 +50,9 @@ export function generateSystemsGraph(): {
       },
       position: { x: 50, y: yOffset },
       style: {
-        background: "#1A1A1A",
-        color: "#F2EDE8",
-        border: "2px solid #1A1A1A",
+        background: "rgb(242 237 232)",
+        color: "rgb(26 25 23)",
+        border: "2px solid rgb(242 237 232)",
         borderRadius: "6px",
         padding: "8px 12px",
         fontSize: "12px",
@@ -78,9 +78,9 @@ export function generateSystemsGraph(): {
         },
         position: { x: 300, y: idx * 120 },
         style: {
-          background: "#cbd5e1",
-          color: "#1A1A1A",
-          border: "2px solid #cbd5e1",
+          background: "rgb(38 36 33)",
+          color: "rgb(180 174 167)",
+          border: "2px solid rgb(55 52 48)",
           borderRadius: "6px",
           padding: "8px 12px",
           fontSize: "12px",
@@ -101,7 +101,7 @@ export function generateSystemsGraph(): {
       label: "belongs to",
       animated: false,
       markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
-      style: { stroke: "#cbd5e1", strokeWidth: 2 },
+      style: { stroke: "rgb(55 52 48)", strokeWidth: 2 },
     });
   });
 
@@ -148,9 +148,9 @@ export function generateSystemsGraph(): {
       },
       position: { x: 550, y: idx * 100 },
       style: {
-        background: "#64748b",
-        color: "#F2EDE8",
-        border: "2px solid #64748b",
+        background: "rgb(80 76 71)",
+        color: "rgb(242 237 232)",
+        border: "2px solid rgb(80 76 71)",
         borderRadius: "6px",
         padding: "8px 12px",
         fontSize: "12px",
@@ -170,7 +170,7 @@ export function generateSystemsGraph(): {
         label: "uses",
         animated: false,
         markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
-        style: { stroke: "#94a3b8", strokeWidth: 1.5 },
+        style: { stroke: "rgb(80 76 71)", strokeWidth: 1.5 },
       });
     });
   });
@@ -203,9 +203,9 @@ export function generateSystemsGraph(): {
       },
       position: { x: 800, y: techIdx * 70 },
       style: {
-        background: "#94a3b8",
-        color: "#F2EDE8",
-        border: "2px solid #94a3b8",
+        background: "rgb(55 52 48)",
+        color: "rgb(180 174 167)",
+        border: "2px solid rgb(55 52 48)",
         borderRadius: "6px",
         padding: "8px 12px",
         fontSize: "11px",
@@ -224,7 +224,7 @@ export function generateSystemsGraph(): {
         target: techId,
         animated: false,
         markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
-        style: { stroke: "#cbd5e1", strokeWidth: 1 },
+        style: { stroke: "rgb(55 52 48)", strokeWidth: 1 },
       });
     });
 
@@ -258,9 +258,9 @@ export function generateSystemsGraphCompact(): {
       },
       position: { x: 0, y: yOffset },
       style: {
-        background: "#1A1A1A",
-        color: "#F2EDE8",
-        border: "2px solid #1A1A1A",
+        background: "rgb(242 237 232)",
+        color: "rgb(26 25 23)",
+        border: "2px solid rgb(242 237 232)",
         borderRadius: "6px",
         padding: "8px 12px",
         fontSize: "12px",
@@ -283,9 +283,9 @@ export function generateSystemsGraphCompact(): {
         },
         position: { x: 200, y: idx * 100 },
         style: {
-          background: "#cbd5e1",
-          color: "#1A1A1A",
-          border: "2px solid #cbd5e1",
+          background: "rgb(38 36 33)",
+          color: "rgb(180 174 167)",
+          border: "2px solid rgb(55 52 48)",
           borderRadius: "6px",
           padding: "8px 12px",
           fontSize: "12px",
@@ -300,7 +300,7 @@ export function generateSystemsGraphCompact(): {
         target: project.system,
         animated: false,
         markerEnd: { type: MarkerType.ArrowClosed, width: 20, height: 20 },
-        style: { stroke: "#cbd5e1", strokeWidth: 2 },
+        style: { stroke: "rgb(55 52 48)", strokeWidth: 2 },
       });
     }
   });

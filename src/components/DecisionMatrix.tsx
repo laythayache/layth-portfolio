@@ -85,7 +85,7 @@ export default function DecisionMatrix() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: "easeOut", delay: idx * 0.15 }}
-            className="relative overflow-hidden rounded-lg bg-white shadow-sm"
+            className="relative overflow-hidden rounded-lg bg-surface-raised border border-border"
           >
             {/* Header - always visible */}
             <button
@@ -95,19 +95,19 @@ export default function DecisionMatrix() {
               onFocus={() => setHovered(idx)}
               onBlur={() => setHovered(null)}
               aria-expanded={isExpanded}
-              className="w-full px-8 py-6 text-left hover:bg-[#F2EDE8]/30 transition-colors duration-300"
+              className="w-full px-8 py-6 text-left hover:bg-surface-overlay/50 transition-colors duration-300"
             >
               <div className="flex items-center justify-between gap-4">
-                <h3 className="text-lg font-semibold text-[#1A1A1A]">
+                <h3 className="text-lg font-semibold text-text-primary">
                   {decision.title}
                 </h3>
                 <div className="flex items-center gap-3 flex-shrink-0">
-                  <span className="font-mono text-xs uppercase tracking-wider text-[#1A1A1A]/60 bg-[#F2EDE8] px-3 py-1 rounded-full whitespace-nowrap">
+                  <span className="font-mono text-xs uppercase tracking-wider text-text-muted bg-surface-overlay px-3 py-1 rounded-full whitespace-nowrap">
                     Chosen: {chosenOption.choice}
                   </span>
                   <ChevronDown
                     size={20}
-                    className={`text-[#1A1A1A]/40 transition-transform duration-300 ${
+                    className={`text-text-muted transition-transform duration-300 ${
                       isExpanded ? 'rotate-180' : ''
                     }`}
                   />
@@ -122,9 +122,9 @@ export default function DecisionMatrix() {
                     animate={{ opacity: 1, height: 'auto' }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="mt-4 pt-4 border-t border-[#1A1A1A]/10"
+                    className="mt-4 pt-4 border-t border-border"
                   >
-                    <p className="text-sm text-[#1A1A1A]/70 leading-relaxed">
+                    <p className="text-sm text-text-secondary leading-relaxed">
                       {decision.reason}
                     </p>
                   </motion.div>
@@ -140,18 +140,18 @@ export default function DecisionMatrix() {
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="border-t border-[#1A1A1A]/10 overflow-hidden"
+                  className="border-t border-border overflow-hidden"
                 >
                   {/* Options comparison grid */}
-                  <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#1A1A1A]/10">
+                  <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border">
                     {/* Option 1 */}
                     <div className="p-8 space-y-6">
                       <div className="space-y-1">
-                        <h4 className="font-sans text-base font-semibold text-[#1A1A1A]">
+                        <h4 className="font-sans text-base font-semibold text-text-primary">
                           {decision.option1.choice}
                         </h4>
                         {decision.chosen === "option1" && (
-                          <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40">
+                          <p className="text-xs font-mono uppercase tracking-wider text-text-muted">
                             ✓ Chosen option
                           </p>
                         )}
@@ -159,13 +159,13 @@ export default function DecisionMatrix() {
 
                       {/* Pros */}
                       <div className="space-y-3">
-                        <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
+                        <p className="text-xs font-mono uppercase tracking-wider text-text-muted font-semibold">
                           Advantages
                         </p>
                         <ul className="space-y-2">
                           {decision.option1.pros.map((pro, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/70">
-                              <span className="text-[#1A1A1A]/40 flex-shrink-0">•</span>
+                            <li key={i} className="flex items-start gap-3 text-sm text-text-secondary">
+                              <span className="text-text-muted flex-shrink-0">•</span>
                               <span>{pro}</span>
                             </li>
                           ))}
@@ -174,13 +174,13 @@ export default function DecisionMatrix() {
 
                       {/* Cons */}
                       <div className="space-y-3">
-                        <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
+                        <p className="text-xs font-mono uppercase tracking-wider text-text-muted font-semibold">
                           Trade-offs
                         </p>
                         <ul className="space-y-2">
                           {decision.option1.cons.map((con, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/60">
-                              <span className="text-[#1A1A1A]/30 flex-shrink-0">•</span>
+                            <li key={i} className="flex items-start gap-3 text-sm text-text-muted">
+                              <span className="text-text-muted/60 flex-shrink-0">•</span>
                               <span>{con}</span>
                             </li>
                           ))}
@@ -191,11 +191,11 @@ export default function DecisionMatrix() {
                     {/* Option 2 */}
                     <div className="p-8 space-y-6">
                       <div className="space-y-1">
-                        <h4 className="font-sans text-base font-semibold text-[#1A1A1A]">
+                        <h4 className="font-sans text-base font-semibold text-text-primary">
                           {decision.option2.choice}
                         </h4>
                         {decision.chosen === "option2" && (
-                          <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40">
+                          <p className="text-xs font-mono uppercase tracking-wider text-text-muted">
                             ✓ Chosen option
                           </p>
                         )}
@@ -203,13 +203,13 @@ export default function DecisionMatrix() {
 
                       {/* Pros */}
                       <div className="space-y-3">
-                        <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
+                        <p className="text-xs font-mono uppercase tracking-wider text-text-muted font-semibold">
                           Advantages
                         </p>
                         <ul className="space-y-2">
                           {decision.option2.pros.map((pro, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/70">
-                              <span className="text-[#1A1A1A]/40 flex-shrink-0">•</span>
+                            <li key={i} className="flex items-start gap-3 text-sm text-text-secondary">
+                              <span className="text-text-muted flex-shrink-0">•</span>
                               <span>{pro}</span>
                             </li>
                           ))}
@@ -218,13 +218,13 @@ export default function DecisionMatrix() {
 
                       {/* Cons */}
                       <div className="space-y-3">
-                        <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold">
+                        <p className="text-xs font-mono uppercase tracking-wider text-text-muted font-semibold">
                           Trade-offs
                         </p>
                         <ul className="space-y-2">
                           {decision.option2.cons.map((con, i) => (
-                            <li key={i} className="flex items-start gap-3 text-sm text-[#1A1A1A]/60">
-                              <span className="text-[#1A1A1A]/30 flex-shrink-0">•</span>
+                            <li key={i} className="flex items-start gap-3 text-sm text-text-muted">
+                              <span className="text-text-muted/60 flex-shrink-0">•</span>
                               <span>{con}</span>
                             </li>
                           ))}
@@ -234,11 +234,11 @@ export default function DecisionMatrix() {
                   </div>
 
                   {/* Reasoning footer */}
-                  <div className="border-t border-[#1A1A1A]/10 bg-[#F2EDE8]/30 p-8">
-                    <p className="text-xs font-mono uppercase tracking-wider text-[#1A1A1A]/40 font-semibold mb-3">
+                  <div className="border-t border-border bg-surface-overlay p-8">
+                    <p className="text-xs font-mono uppercase tracking-wider text-text-muted font-semibold mb-3">
                       Reasoning
                     </p>
-                    <p className="text-sm text-[#1A1A1A]/80 leading-relaxed">
+                    <p className="text-sm text-text-secondary leading-relaxed">
                       {decision.reason}
                     </p>
                   </div>
@@ -255,15 +255,15 @@ export default function DecisionMatrix() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.54 }}
-        className="relative overflow-hidden rounded-lg border border-[#1A1A1A]/10 bg-white p-8 shadow-sm"
+        className="relative overflow-hidden rounded-lg border border-border bg-surface-raised p-8"
       >
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1A1A1A]/10 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
         <div className="relative z-10 space-y-3">
-          <h4 className="font-sans text-sm font-semibold text-[#1A1A1A]">
+          <h4 className="font-sans text-sm font-semibold text-text-primary">
             Philosophy
           </h4>
-          <p className="text-xs text-[#1A1A1A]/60 leading-relaxed font-mono">
+          <p className="text-xs text-text-muted leading-relaxed font-mono">
             Architecture is about choosing the best failure mode for your context. Every decision involves trade-offs. The goal isn't perfection — it's making informed choices with clear reasoning.
           </p>
         </div>

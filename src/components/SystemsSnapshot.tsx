@@ -20,33 +20,30 @@ export default function SystemsSnapshot() {
             transition={{ duration: 0.7, ease: "easeOut", delay: 0 }}
             className="space-y-8"
           >
-            <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/40">
+            <h3 className="text-xs font-mono uppercase tracking-widest text-text-muted">
               Collection
             </h3>
             <div className="space-y-6">
-              {/* First box */}
               <motion.div
-                whileHover={{ y: -4, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-white p-6 rounded-lg shadow-sm text-sm text-[#1A1A1A]/80 hover:scale-[1.02]"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
               >
                 Media sources
               </motion.div>
 
-              {/* Arrow connector */}
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.2 }}
-                className="w-px h-8 bg-gradient-to-b from-[#1A1A1A]/20 to-transparent mx-auto"
+                className="w-px h-8 bg-gradient-to-b from-border-strong to-transparent mx-auto"
               />
 
-              {/* Second box */}
               <motion.div
-                whileHover={{ y: -4, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-white p-6 rounded-lg shadow-sm text-sm text-[#1A1A1A]/80 hover:scale-[1.02]"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
               >
                 Scrape & detect
               </motion.div>
@@ -61,51 +58,46 @@ export default function SystemsSnapshot() {
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
             className="space-y-8"
           >
-            <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/40">
+            <h3 className="text-xs font-mono uppercase tracking-widest text-text-muted">
               Processing
             </h3>
             <div className="space-y-6">
-              {/* First box */}
               <motion.div
-                whileHover={{ y: -4, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-white p-6 rounded-lg shadow-sm text-sm text-[#1A1A1A]/80 hover:scale-[1.02]"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
               >
                 Normalize schema
               </motion.div>
 
-              {/* Arrow connector */}
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.25 }}
-                className="w-px h-8 bg-gradient-to-b from-[#1A1A1A]/20 to-transparent mx-auto"
+                className="w-px h-8 bg-gradient-to-b from-border-strong to-transparent mx-auto"
               />
 
-              {/* Second box */}
               <motion.div
-                whileHover={{ y: -4, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-white p-6 rounded-lg shadow-sm text-sm text-[#1A1A1A]/80 hover:scale-[1.02]"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
               >
                 Version & store
               </motion.div>
 
-              {/* Arrow connector */}
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.3 }}
-                className="w-px h-8 bg-gradient-to-b from-[#1A1A1A]/20 to-transparent mx-auto"
+                className="w-px h-8 bg-gradient-to-b from-border-strong to-transparent mx-auto"
               />
 
-              {/* Third box */}
               <motion.div
-                whileHover={{ y: -4, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-white p-6 rounded-lg shadow-sm text-sm text-[#1A1A1A]/80 hover:scale-[1.02]"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
               >
                 Monitor changes
               </motion.div>
@@ -120,33 +112,30 @@ export default function SystemsSnapshot() {
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
             className="space-y-8"
           >
-            <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/40">
+            <h3 className="text-xs font-mono uppercase tracking-widest text-text-muted">
               Access
             </h3>
             <div className="space-y-6">
-              {/* First box */}
               <motion.div
-                whileHover={{ y: -4, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-white p-6 rounded-lg shadow-sm text-sm text-[#1A1A1A]/80 hover:scale-[1.02]"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
               >
                 REST API
               </motion.div>
 
-              {/* Arrow connector */}
               <motion.div
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.35 }}
-                className="w-px h-8 bg-gradient-to-b from-[#1A1A1A]/20 to-transparent mx-auto"
+                className="w-px h-8 bg-gradient-to-b from-border-strong to-transparent mx-auto"
               />
 
-              {/* Second box */}
               <motion.div
-                whileHover={{ y: -4, boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{ y: -4 }}
                 transition={{ duration: 0.7, ease: "easeOut" }}
-                className="bg-white p-6 rounded-lg shadow-sm text-sm text-[#1A1A1A]/80 hover:scale-[1.02]"
+                className="bg-surface-raised border border-border p-6 rounded-lg text-sm text-text-secondary hover:border-border-strong hover:scale-[1.02] transition-all"
               >
                 Serve data
               </motion.div>
@@ -160,7 +149,7 @@ export default function SystemsSnapshot() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, ease: "easeOut", delay: 0.45 }}
-          className="pt-12 border-t border-[#1A1A1A]/10"
+          className="pt-12 border-t border-border"
         >
           <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
             {[
@@ -176,7 +165,7 @@ export default function SystemsSnapshot() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 + idx * 0.1 }}
               >
-                <div className="text-[#1A1A1A]/40 font-mono text-xs uppercase tracking-wider">
+                <div className="text-text-muted font-mono text-xs uppercase tracking-wider">
                   {principle}
                 </div>
               </motion.div>

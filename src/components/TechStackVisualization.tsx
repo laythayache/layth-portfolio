@@ -37,12 +37,12 @@ export default function TechStackVisualization() {
             transition={{ duration: 0.7, ease: "easeOut", delay: idx * 0.15 }}
             className="space-y-6"
           >
-            <h3 className="text-xs font-mono uppercase tracking-widest text-[#1A1A1A]/40">
+            <h3 className="text-xs font-mono uppercase tracking-widest text-text-muted">
               {cat.name}
             </h3>
             <ul className="space-y-4">
               {cat.items.map((tech) => (
-                <li key={tech} className="text-base text-[#1A1A1A]/80">
+                <li key={tech} className="text-base text-text-secondary">
                   {tech}
                 </li>
               ))}

@@ -6,24 +6,30 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://laythayache.com/systems</loc>
+    <priority>0.9</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
+    <loc>https://laythayache.com/writing</loc>
+    <priority>0.7</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://laythayache.com/about</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://laythayache.com/explore</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://laythayache.com/systems</loc>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://laythayache.com/submit</loc>
+    <loc>https://laythayache.com/contact</loc>
     <priority>0.5</priority>
     <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://laythayache.com/projects/public-information-infrastructure</loc>
+    <lastmod>2026-02-14</lastmod>
+    <priority>1.0</priority>
+    <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://laythayache.com/projects/omnisign</loc>
@@ -34,7 +40,7 @@
   <url>
     <loc>https://laythayache.com/projects/public-budget-tracker</loc>
     <priority>0.7</priority>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://laythayache.com/projects/grid-resilience-sim</loc>
@@ -54,7 +60,7 @@
   <url>
     <loc>https://laythayache.com/projects/water-quality-dashboard</loc>
     <priority>0.7</priority>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
   </url>
   <url>
     <loc>https://laythayache.com/projects/neighborhood-noise-map</loc>

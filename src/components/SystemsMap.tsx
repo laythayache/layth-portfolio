@@ -27,15 +27,15 @@ interface GraphEdge extends Edge {
 function getNodeColor(type: string): string {
   switch (type) {
     case "project":
-      return "#1A1A1A";
+      return "rgb(242 237 232)";
     case "component":
-      return "#64748b";
+      return "rgb(80 76 71)";
     case "technology":
-      return "#94a3b8";
+      return "rgb(55 52 48)";
     case "domain":
-      return "#cbd5e1";
+      return "rgb(38 36 33)";
     default:
-      return "#e2e8f0";
+      return "rgb(38 36 33)";
   }
 }
 
@@ -43,7 +43,7 @@ function getNodeStyle(type: string) {
   const backgroundColor = getNodeColor(type);
   return {
     background: backgroundColor,
-    color: type === "project" ? "#F2EDE8" : "#1A1A1A",
+    color: type === "project" ? "rgb(26 25 23)" : "rgb(180 174 167)",
     border: `2px solid ${backgroundColor}`,
     borderRadius: "6px",
     padding: "8px 12px",

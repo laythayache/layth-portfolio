@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowUpRight, ChevronDown, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { getProjectBySlug } from "@/content/projects";
 import ProjectShell from "@/layouts/ProjectShell";
+import SEO from "@/components/SEO";
 import NotFound from "./NotFound";
 
 function CollapsibleSection({
@@ -59,7 +60,30 @@ export default function ProjectDetail() {
 
   if (!project) return <NotFound />;
 
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": project.title,
+    "description": project.summary,
+    "url": `https://laythayache.com/projects/${project.slug}`,
+    "applicationCategory": "Infrastructure",
+    "author": {
+      "@type": "Person",
+      "name": "Layth Ayache",
+      "url": "https://laythayache.com/",
+    },
+    ...(project.stack && { "operatingSystem": project.stack }),
+    ...(project.outcome && { "abstract": project.outcome }),
+  };
+
   return (
+    <>
+    <SEO
+      title={`${project.title} — Layth Ayache`}
+      description={project.summary}
+      canonical={`https://laythayache.com/projects/${project.slug}`}
+      jsonLd={projectJsonLd}
+    />
     <div className="px-6 py-12">
       <ProjectShell project={project}>
         {/* Back link */}
@@ -406,5 +430,6 @@ export default function ProjectDetail() {
         </div>
       </ProjectShell>
     </div>
+    </>
   );
 }

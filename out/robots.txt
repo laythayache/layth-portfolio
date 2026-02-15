@@ -27,3 +27,6 @@ User-agent: ClaudeBot
 Allow: /
 
 Sitemap: https://laythayache.com/sitemap.xml
+
+# AI-readable site summary
+# https://laythayache.com/llms.txt

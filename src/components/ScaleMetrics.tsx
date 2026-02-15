@@ -64,28 +64,28 @@ export default function ScaleMetrics() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: "easeOut", delay: idx * 0.12 }}
             whileHover={{ y: -4, scale: 1.02 }}
-            className="bg-white p-6 rounded-lg shadow-sm hover:shadow-lg transition-all duration-700 ease-out"
+            className="bg-surface-raised border border-border p-6 rounded-lg hover:border-border-strong transition-all duration-700 ease-out"
           >
             {/* Giant display number */}
-            <div className="text-7xl font-bold tracking-tight text-[#1A1A1A] mb-3">
+            <div className="text-7xl font-bold tracking-tight text-text-primary mb-3">
               {metric.value}
             </div>
 
             {/* Label */}
-            <h3 className="font-mono text-xs uppercase tracking-widest text-[#1A1A1A]/40 mb-4">
+            <h3 className="font-mono text-xs uppercase tracking-widest text-text-muted mb-4">
               {metric.label}
             </h3>
 
             {/* Divider */}
-            <div className="h-px bg-gradient-to-r from-[#1A1A1A]/10 via-[#1A1A1A]/20 to-[#1A1A1A]/10 mb-4" />
+            <div className="h-px bg-gradient-to-r from-border via-border-strong to-border mb-4" />
 
             {/* Description */}
-            <p className="text-sm font-medium text-[#1A1A1A]/80 mb-2 leading-relaxed">
+            <p className="text-sm font-medium text-text-secondary mb-2 leading-relaxed">
               {metric.description}
             </p>
 
             {/* Context */}
-            <p className="text-xs text-[#1A1A1A]/50 leading-relaxed">
+            <p className="text-xs text-text-muted leading-relaxed">
               {metric.context}
             </p>
           </motion.div>
@@ -98,15 +98,15 @@ export default function ScaleMetrics() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.7, ease: "easeOut", delay: 0.72 }}
-        className="relative overflow-hidden rounded-lg border border-[#1A1A1A]/10 bg-white p-6 shadow-sm"
+        className="relative overflow-hidden rounded-lg border border-border bg-surface-raised p-6"
       >
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1A1A1A]/10 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
 
         <div className="relative z-10 space-y-3">
-          <h4 className="font-sans text-sm font-semibold text-[#1A1A1A]">
+          <h4 className="font-sans text-sm font-semibold text-text-primary">
             About these metrics
           </h4>
-          <p className="text-xs text-[#1A1A1A]/60 leading-relaxed font-mono">
+          <p className="text-xs text-text-muted leading-relaxed font-mono">
             All metrics are measured in production contexts with honest constraints noted. No cherry-picked benchmarks. Accuracy figures include real-world degradation scenarios. Latency measured on mid-range devices. Uptime targets are aspirational but grounded in realistic failure modes.
           </p>
         </div>

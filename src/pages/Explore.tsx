@@ -7,6 +7,7 @@ import type { ProjectStatus } from "@/content/types";
 import ExploreCard from "@/components/ExploreCard";
 import SystemsMap from "@/components/SystemsMap";
 import GrainOverlay from "@/components/GrainOverlay";
+import SEO from "@/components/SEO";
 
 const tabs: { label: string; value: ProjectStatus | "" }[] = [
   { label: "All", value: "" },
@@ -40,7 +41,13 @@ export default function Explore() {
   }
 
   return (
-    <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-[#F2EDE8]">
+    <>
+    <SEO
+      title="Systems — Layth Ayache"
+      description="Production infrastructure and technical interventions. Systems designed for reliability, change tracking, and auditability."
+      canonical="https://laythayache.com/systems"
+    />
+    <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-surface">
       {/* Grain texture */}
       <GrainOverlay />
 
@@ -48,16 +55,16 @@ export default function Explore() {
       <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-28 pb-24">
         {/* Heading */}
         <div className="mb-8 flex flex-col gap-2">
-          <h1 className="font-sans text-2xl font-semibold text-[#1A1A1A]">
+          <h1 className="font-sans text-2xl font-semibold text-text-primary">
             Systems
           </h1>
-          <p className="text-sm text-[#1A1A1A]/50">
+          <p className="text-sm text-text-muted">
             Production infrastructure and technical interventions
           </p>
         </div>
 
         {/* Tab bar + View toggle */}
-        <div className="flex items-center justify-between border-b border-[#1A1A1A]/10 pb-3">
+        <div className="flex items-center justify-between border-b border-border pb-3">
           <div className="flex items-center gap-6">
             {tabs.map((tab) => (
               <button
@@ -66,15 +73,15 @@ export default function Explore() {
                 className={cn(
                   "relative pb-3 font-mono text-xs uppercase tracking-[0.15em] transition-colors",
                   activeTab === tab.value
-                    ? "text-[#1A1A1A]"
-                    : "text-[#1A1A1A]/35 hover:text-[#1A1A1A]/60"
+                    ? "text-text-primary"
+                    : "text-text-muted hover:text-text-secondary"
                 )}
               >
                 {tab.label}
                 {activeTab === tab.value && (
                   <motion.div
                     layoutId="explore-tab"
-                    className="absolute bottom-0 left-0 right-0 h-px bg-[#1A1A1A]"
+                    className="absolute bottom-0 left-0 right-0 h-px bg-text-primary"
                     transition={{ type: "spring", stiffness: 500, damping: 35 }}
                   />
                 )}
@@ -90,8 +97,8 @@ export default function Explore() {
               className={cn(
                 "px-3 py-1 font-mono text-xs uppercase tracking-wider rounded transition-colors",
                 viewMode === "list"
-                  ? "bg-[#1A1A1A] text-[#F2EDE8]"
-                  : "bg-[#1A1A1A]/5 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/10"
+                  ? "bg-text-primary text-surface"
+                  : "bg-surface-raised text-text-muted hover:bg-surface-overlay"
               )}
             >
               List
@@ -102,8 +109,8 @@ export default function Explore() {
               className={cn(
                 "px-3 py-1 font-mono text-xs uppercase tracking-wider rounded transition-colors",
                 viewMode === "map"
-                  ? "bg-[#1A1A1A] text-[#F2EDE8]"
-                  : "bg-[#1A1A1A]/5 text-[#1A1A1A]/60 hover:bg-[#1A1A1A]/10"
+                  ? "bg-text-primary text-surface"
+                  : "bg-surface-raised text-text-muted hover:bg-surface-overlay"
               )}
             >
               Map
@@ -143,7 +150,7 @@ export default function Explore() {
             </AnimatePresence>
 
             {filtered.length === 0 && (
-              <p className="mt-16 text-center font-mono text-sm text-[#1A1A1A]/40">
+              <p className="mt-16 text-center font-mono text-sm text-text-muted">
                 No projects in this category yet.
               </p>
             )}
@@ -153,7 +160,7 @@ export default function Explore() {
             {/* Systems Map */}
             <div className="mt-10">
               <SystemsMap />
-              <p className="mt-4 text-xs text-[#1A1A1A]/50 font-mono">
+              <p className="mt-4 text-xs text-text-muted font-mono">
                 Click on a project node to view details. Gray dots are components and technologies.
               </p>
             </div>
@@ -161,5 +168,6 @@ export default function Explore() {
         )}
       </div>
     </div>
+    </>
   );
 }

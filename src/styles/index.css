@@ -12,15 +12,16 @@
 
 @layer base {
   :root {
-    --surface: 242 237 232;
-    --surface-raised: 254 253 251;
-    --surface-overlay: 235 229 222;
-    --text-primary: 26 26 26;
-    --text-secondary: 90 87 83;
-    --text-muted: 105 102 98;
-    --border: 220 216 211;
-    --border-strong: 188 184 179;
-    --accent: 90 87 83;
+    --surface:         231 226 219;   /* #E7E2DB — warm institutional beige */
+    --surface-raised:  240 236 230;   /* #F0ECE6 */
+    --surface-overlay: 220 215 208;   /* #DCD7D0 */
+    --text-primary:    28 28 28;      /* #1C1C1C — deep charcoal */
+    --text-secondary:  74 74 74;      /* #4A4A4A */
+    --text-muted:      138 138 138;   /* #8A8A8A */
+    --border:          200 200 200;   /* #C8C8C8 — secondary structural */
+    --border-strong:   160 160 160;   /* #A0A0A0 */
+    --accent:          138 106 63;    /* #8A6A3F — burnt bronze */
+    --accent-hover:    110 82 48;     /* #6E5230 */
   }
 
   * {
@@ -37,7 +38,7 @@
   }
 
   ::selection {
-    @apply bg-text-primary/10;
+    @apply bg-accent/10;
   }
 
   /* Skip-to-content link */
@@ -50,7 +51,7 @@
 
   /* Global focus-visible styles */
   *:focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid rgb(var(--accent) / 0.5);
     outline-offset: 2px;
   }
 
