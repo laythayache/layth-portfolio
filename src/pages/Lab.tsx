@@ -1,4 +1,4 @@
-﻿import { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -8,7 +8,7 @@ import ExploreCard from "@/components/ExploreCard";
 import SystemsMap from "@/components/SystemsMap";
 import GrainOverlay from "@/components/GrainOverlay";
 import SEO from "@/components/SEO";
-import { DEFAULT_KEYWORDS, systemsPageJsonLd } from "@/content/siteSeo";
+import { DEFAULT_KEYWORDS, labPageJsonLd } from "@/content/siteSeo";
 
 const tabs: { label: string; value: ProjectStatus | "" }[] = [
   { label: "All", value: "" },
@@ -17,7 +17,7 @@ const tabs: { label: string; value: ProjectStatus | "" }[] = [
   { label: "Archived", value: "paused" },
 ];
 
-export default function Explore() {
+export default function Lab() {
   const [searchParams, setSearchParams] = useSearchParams();
   const reduced = useReducedMotion();
   const [viewMode, setViewMode] = useState<"list" | "map">("list");
@@ -44,30 +44,26 @@ export default function Explore() {
   return (
     <>
     <SEO
-      title="Systems | Layth Ayache"
-      description="Production infrastructure and technical interventions. Systems designed for reliability, change tracking, and auditability."
-      canonical="https://laythayache.com/systems"
+      title="The Lab | Layth Ayache"
+      description="Projects, failures, iterations. Each entry documents what was tried and what I learned."
+      canonical="https://laythayache.com/lab"
       keywords={DEFAULT_KEYWORDS}
-      modifiedTime="2026-02-15"
-      jsonLd={systemsPageJsonLd(filtered)}
+      modifiedTime="2026-02-16"
+      jsonLd={labPageJsonLd(filtered)}
     />
     <div className="relative -mt-16 flex min-h-screen flex-col overflow-x-hidden bg-surface">
-      {/* Grain texture */}
       <GrainOverlay />
 
-      {/* Content */}
       <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pt-28 pb-24">
-        {/* Heading */}
         <div className="mb-8 flex flex-col gap-2">
           <h1 className="font-sans text-2xl font-semibold text-text-primary">
-            Systems
+            The Lab
           </h1>
           <p className="text-sm text-text-muted">
-            Production infrastructure and technical interventions
+            Projects, failures, iterations. Each entry documents what was tried and what I learned.
           </p>
         </div>
 
-        {/* Tab bar + View toggle */}
         <div className="flex items-center justify-between border-b border-border pb-3">
           <div className="flex items-center gap-6">
             {tabs.map((tab) => (
@@ -84,7 +80,7 @@ export default function Explore() {
                 {tab.label}
                 {activeTab === tab.value && (
                   <motion.div
-                    layoutId="explore-tab"
+                    layoutId="lab-tab"
                     className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
                     transition={{ duration: 0.25, ease: [0, 0, 0.2, 1] }}
                   />
@@ -93,7 +89,6 @@ export default function Explore() {
             ))}
           </div>
 
-          {/* View toggle */}
           <div className="flex items-center gap-2" role="group" aria-label="View mode">
             <button
               onClick={() => setViewMode("list")}
@@ -122,10 +117,8 @@ export default function Explore() {
           </div>
         </div>
 
-        {/* View mode: List or Map */}
         {viewMode === "list" ? (
           <>
-            {/* Masonry grid */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeTab}
@@ -160,19 +153,15 @@ export default function Explore() {
             )}
           </>
         ) : (
-          <>
-            {/* Systems Map */}
-            <div className="mt-10">
-              <SystemsMap />
-              <p className="mt-4 text-xs text-text-muted font-mono">
-                Click on a project node to view details. Gray dots are components and technologies.
-              </p>
-            </div>
-          </>
+          <div className="mt-10">
+            <SystemsMap />
+            <p className="mt-4 text-xs text-text-muted font-mono">
+              Click on a project node to view details. Gray dots are components and technologies.
+            </p>
+          </div>
         )}
       </div>
     </div>
     </>
   );
 }
-

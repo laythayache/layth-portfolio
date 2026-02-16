@@ -1,57 +1,29 @@
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import SEO from "@/components/SEO";
-import { DEFAULT_KEYWORDS, writingPageJsonLd } from "@/content/siteSeo";
+import { DEFAULT_KEYWORDS, thinkingPageJsonLd } from "@/content/siteSeo";
+import { articles } from "@/content/articles";
 
-interface Article {
-  slug: string;
-  title: string;
-  summary: string;
-  date: string;
-  tags: string[];
-  draft?: boolean;
-  externalUrl?: string;
-  relatedProject?: {
-    slug: string;
-    label: string;
-  };
-}
-
-const articles: Article[] = [
-  {
-    slug: "building-in-a-country-with-no-infrastructure",
-    title: "Building in a Country with No Infrastructure",
-    summary:
-      "How infrastructure fragility becomes an engineering variable. Exploring the OmniSign project—a Lebanese Sign Language interpreter built from first principles in an environment where data, connectivity, and stability cannot be assumed.",
-    date: "2026-02-15",
-    tags: ["infrastructure", "lebanon", "engineering", "systems"],
-    externalUrl: "https://medium.com/@laythayache5/building-in-a-country-with-no-infrastructure-3f8595472895",
-    relatedProject: {
-      slug: "omnisign",
-      label: "Explore OmniSign",
-    },
-  },
-];
-
-export default function Writing() {
+export default function Thinking() {
   return (
     <>
       <SEO
-        title="Writing | Layth Ayache"
-        description="Technical notes on infrastructure, architecture, pipelines, and systems design."
-        canonical="https://laythayache.com/writing"
+        title="Thinking | Layth Ayache"
+        description="Technical essays on infrastructure, architecture, and building from unstable ground."
+        canonical="https://laythayache.com/thinking"
         keywords={DEFAULT_KEYWORDS}
-        modifiedTime="2026-02-15"
-        jsonLd={writingPageJsonLd(articles)}
+        modifiedTime="2026-02-16"
+        jsonLd={thinkingPageJsonLd(articles)}
       />
 
       <div className="mx-auto max-w-3xl px-6 py-12">
         <div className="mb-10 flex flex-col gap-2">
           <h1 className="font-sans text-2xl font-semibold text-text-primary">
-            Writing
+            Thinking
           </h1>
           <p className="text-sm text-text-secondary">
-            Technical notes on infrastructure, architecture, and systems design.
+            Technical essays on infrastructure, decisions, and building from
+            unstable ground.
           </p>
         </div>
 
@@ -65,12 +37,14 @@ export default function Writing() {
               const articleContent = (
                 <div
                   className={`group flex flex-col gap-3 border border-border p-6 transition-colors ${
-                    article.externalUrl ? "hover:border-border-strong hover:bg-background-secondary cursor-pointer" : ""
+                    article.externalUrl
+                      ? "cursor-pointer hover:border-border-strong"
+                      : ""
                   }`}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
+                      <div className="mb-2 flex items-center gap-3">
                         <h2 className="font-sans text-lg font-semibold text-text-primary">
                           {article.title}
                         </h2>
@@ -101,7 +75,10 @@ export default function Writing() {
                         })}
                       </span>
                       {article.tags.map((tag) => (
-                        <span key={tag} className="font-mono text-xs text-text-muted">
+                        <span
+                          key={tag}
+                          className="font-mono text-xs text-text-muted"
+                        >
                           #{tag}
                         </span>
                       ))}
@@ -110,7 +87,7 @@ export default function Writing() {
                       <Link
                         to={`/projects/${article.relatedProject.slug}`}
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-2 rounded border border-border-strong px-3 py-1.5 font-mono text-xs font-semibold text-text-primary transition-colors hover:bg-background-secondary w-fit"
+                        className="inline-flex w-fit items-center gap-2 rounded border border-border-strong px-3 py-1.5 font-mono text-xs font-semibold text-text-primary transition-colors hover:border-accent hover:text-accent"
                       >
                         {article.relatedProject.label}
                         <ExternalLink size={12} />
@@ -131,9 +108,7 @@ export default function Writing() {
                   {articleContent}
                 </a>
               ) : (
-                <div key={article.slug}>
-                  {articleContent}
-                </div>
+                <div key={article.slug}>{articleContent}</div>
               );
             })}
           </div>

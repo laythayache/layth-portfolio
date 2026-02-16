@@ -1,0 +1,175 @@
+Rami Kronbi
+MISSION
+EXPERIENCE
+PROJECTS
+TESTIMONIALS
+BLOG
+CERTIFICATIONS
+SERVICES
+CONTACT ME
+RAMI
+KRONBI
+AI & Computer Vision Engineer
+Building multidisciplinary intelligent systems—from autonomous robotics to enterprise computer vision and real-time ML applications.
+Computer Vision
+Real-Time AI
+Autonomous Robotics
+Edge ML
+Machine Learning
+MISSION &
+VISION
+Building Communities Beyond Code
+"Nasna" - crisis support
+Founder of a nonprofit NGO that applies data to deliver aid and crisis support to communities impacted by the war in Lebanon.
+2024
+NASA Space Apps Beirut
+Organizing the Beirut chapter of NASA's Space Apps—the world's largest global hackathon
+2022 - 2025
+Daleel (دليل)
+Security-first platform for Lebanese election transparency. Features immutable history, source archiving, and multilingual support.
+2026
+DevFest Beirut
+Delivered a lecture on embedded AI at Lebanon's premier developer conference.
+2025
+National Physics Day
+Leading and organizing Lebanon's biggest annual event for the physics and astronomy community.
+2021 - 2025
+EXPLORE
+Professional
+Milestones & Achievements
+Now
+EVOID
+Founder & Tech Lead
+Building bespoke AI/CV and robotics products for startups + industry teams.
+Impact
+4+
+Years Experience
+10+
+Projects Delivered
+5+
+Awards Won
+2024 - Now
+Oreyeon LDA
+Applied AI & CV Engineer
+Improving runway safety through advanced computer vision solutions.
+2023
+Champion
+WRO Future Engineers
+Led an autonomous race-car build from concept to podium in 20 days.
+2021 - 2024
+Tech Lead & Volunteer
+NASA Space Apps
+Took part in leading the largest global hackathon in Lebanon.
+Continuously growing
+Always learning
+Real work,
+delivered with impact
+Portfolio Projects
+Real-Time Thermal Super-Resolution System
+Machine learning system that enhances low-resolution thermal camera feeds to high-quality images at 229+ FPS for robotics and autonomous systems.
+Real-Time Lebanese Sign Language Translator
+AI system that translates Lebanese Sign Language into spoken and written text in real-time using computer vision and natural language processing.
+Autonomous Race Car - WRO 2023 Champion
+Fully autonomous vehicle built in 20 days that won the World Robot Olympiad Future Engineers 2023 competition using computer vision and sensor fusion.
+AI-Powered Smart Desk for Classrooms
+IoT desk with computer vision-based posture tracking and automatic ergonomic adjustments for enhanced learning and health outcomes.
+360° Spherical Mobile Panorama
+A professional computer vision pipeline for creating seamless 360° spherical panoramas from phone footage.
+Want a similar transformation?
+Let's design your roadmap
+and launch faster.
+Global
+Endorsements
+People I have worked with
+"
+Working together has been a genuinely great experience. Rami consistently showed professionalism, clear communication, and a strong sense of ownership over your work. What stood out most was his ability to translate ideas into practical results while staying open to feedback.
+Khaled Frayji
+Founder & CEO
+@
+TechTalks
+Beirut, Lebanon
+Ramy is exceptionally smart, quick to grasp concepts, and highly adaptable. I have worked with him on several projects. Rami delivered high-quality work with impressive efficiency and professionalism. Rami stands out for his technical strength, problem-solving skills, and reliability. He is an outstanding engineer and a great person to work with
+Dr. Ahmad Audi
+Senior CV Engineer, Professor
+LAU
+It was a pleasure working with Ramy, who demonstrated outstanding professionalism, solid technical expertise, and excellent public speaking and interpersonal skills throughout our collaboration.
+Sara Rashidi
+CodeWithSerah
+International
+Latest Articles
+BLOG ARTICLES
+Exploring AI, Computer Vision, and Technology through writing
+18h ago
+Seeing in the Dark: Real-Time Thermal Super-Resolution
+Real-time thermal super-resolution system that enhances low-resolution thermal camera feeds to high-quality images at 229+ FPS for robotics and autonomous systems.
+24d ago
+AI Should Serve Society - Not Just Industry and Billionaires
+Build with purpose. Others will follow. When AI serves only industry titans and billionaires, we miss out on its most profound potential: the ability to uplift society at large.
+Certifications & recognition
+Proof of execution
+Google Project Management: Professional Certificate
+Google / Coursera
+Issued:
+Ongoing
+ID:
+JDQM5WZLUW27
+Verify certificate
+Full Stack Software Development: Forward Mena
+Forward Mena/ OnRamp Lebanon
+Supervised Machine Learning: Regression and Classification
+Stanford University
+Finished
+Services with
+clear outcomes
+Signature engagements
+4-8 weeks
+AI Solutions
+Scope, prototype, and validate AI ideas without a full in-house team.
+Roadmap + KPIs
+Hands-on build
+Weekly reviews
+3-6 weeks
+Computer Vision Systems
+Perception stacks tuned for robotics, inspection, and edge deployments.
+Dataset plan
+Model + optimization
+Deployment ready
+2-4 weeks
+ML Advisory
+Audits, hiring support, and tighter ML processes for growing teams.
+Architecture audit
+Team enablement
+Hiring support
+4-10 weeks
+Robotics & Autonomy
+Sensor fusion, control, and system design with PM rigor.
+Firmware + CV
+Sim + field tests
+Documentation
+Let's build your next intelligent product
+Preferred channels
+GitHub
+Case studies
+LinkedIn
+Professional updates
+ramykronby@gmail.com
+Best for briefs
+Open to new opportunities and collaborations.
+Typical response time: 24-48 hours.
+Frequently Asked
+Questions
+Everything you need to know
+What does Rami Kronbi specialize in?
+Rami Kronbi specializes in AI and Computer Vision engineering. He builds multidisciplinary intelligent systems including real-time computer vision applications, autonomous robotics, edge-optimized ML deployment, and custom machine learning solutions. His expertise spans the full development lifecycle from prototype to production deployment, with a focus on delivering production-ready systems for startups, agencies, and tech companies.
+What kind of projects does Rami Kronbi work on?
+Rami works on production-ready AI systems across multiple domains: computer vision for robotics and enterprise applications, real-time perception systems for autonomous vehicles, thermal imaging pipelines, sign language translation systems, and custom machine learning solutions. His projects include autonomous race cars, thermal super-resolution systems achieving 229+ FPS, AI-powered accessibility tools, and IoT smart systems. Project engagements typically range from 3-10 weeks depending on complexity and scope.
+Who does Rami Kronbi work with?
+Rami works with startups building intelligent products, agencies delivering AI solutions to their clients, and tech companies modernizing their systems with computer vision and machine learning. His clients operate across multiple industries including robotics, autonomous systems, industrial inspection, accessibility technology, and enterprise AI applications. He serves teams that need reliable, production-ready computer vision and ML solutions delivered efficiently.
+What technologies does Rami Kronbi use?
+Rami works with PyTorch and TensorFlow for deep learning model development, OpenCV for computer vision applications, and TensorRT for edge optimization and production deployment. He has extensive experience with embedded systems platforms including Jetson Nano, ESP32, and Arduino. His technical stack also includes Python and C++ for system development, and he specializes in optimizing models for real-time performance on edge devices and embedded systems.
+How can I hire Rami Kronbi for a project?
+For project inquiries, email ramykronby@gmail.com with your project brief including scope, timeline, and technical requirements. Typical response time is 24-48 hours. Rami offers several engagement types: AI Solutions (4-8 weeks), Computer Vision Systems (3-6 weeks), ML Advisory (2-4 weeks), and Robotics & Autonomy projects (4-10 weeks). He is open to new opportunities and collaborations with startups, agencies, and tech companies.
+What makes Rami Kronbi different from other AI engineers?
+Rami brings hands-on experience across the full AI development cycle—from research and prototyping to production deployment and edge optimization. He has built award-winning autonomous systems (WRO 2023 Champion), delivered real-time AI solutions achieving industry-leading performance (thermal SR at 229+ FPS), and led community initiatives including NASA Space Apps Beirut and crisis support NGOs. His multidisciplinary approach combines computer vision, robotics, and systems engineering to deliver reliable, production-ready solutions rather than just research prototypes.
+Have more questions?
+Get in touch

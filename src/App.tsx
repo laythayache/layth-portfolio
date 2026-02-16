@@ -5,14 +5,12 @@ import NotFound from "@/pages/NotFound";
 
 // Lazy-loaded route components for code splitting
 const Home = lazy(() => import("@/pages/Home"));
-const Explore = lazy(() => import("@/pages/Explore"));
+const Lab = lazy(() => import("@/pages/Lab"));
+const Experiments = lazy(() => import("@/pages/Experiments"));
+const Thinking = lazy(() => import("@/pages/Thinking"));
 const About = lazy(() => import("@/pages/About"));
-const Submit = lazy(() => import("@/pages/Submit"));
-const Playbook = lazy(() => import("@/pages/Playbook"));
-const Now = lazy(() => import("@/pages/Now"));
 const ProjectDetail = lazy(() => import("@/pages/ProjectDetail"));
 const OmnisignMicrosite = lazy(() => import("@/pages/OmnisignMicrosite"));
-const Writing = lazy(() => import("@/pages/Writing"));
 
 export default function App() {
   return (
@@ -21,29 +19,32 @@ export default function App() {
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
           {/* Primary routes */}
-          <Route path="/systems" element={<Explore />} />
-          <Route path="/playbook" element={<Playbook />} />
-          <Route path="/writing" element={<Writing />} />
-          <Route path="/now" element={<Now />} />
+          <Route path="/lab" element={<Lab />} />
+          <Route path="/experiments" element={<Experiments />} />
+          <Route path="/thinking" element={<Thinking />} />
           <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Submit />} />
 
           {/* Backward compatibility redirects */}
-          <Route path="/explore" element={<Navigate to="/systems" replace />} />
-          <Route path="/submit" element={<Navigate to="/contact" replace />} />
+          <Route path="/systems" element={<Navigate to="/lab" replace />} />
+          <Route path="/explore" element={<Navigate to="/lab" replace />} />
+          <Route path="/writing" element={<Navigate to="/thinking" replace />} />
+          <Route path="/playbook" element={<Navigate to="/" replace />} />
+          <Route path="/now" element={<Navigate to="/" replace />} />
+          <Route path="/contact" element={<Navigate to="/about" replace />} />
+          <Route path="/submit" element={<Navigate to="/about" replace />} />
 
           {/* Legacy redirect routes */}
           <Route
             path="/completed"
-            element={<Navigate to="/systems?status=completed" replace />}
+            element={<Navigate to="/lab?status=completed" replace />}
           />
           <Route
             path="/ongoing"
-            element={<Navigate to="/systems?status=ongoing" replace />}
+            element={<Navigate to="/lab?status=ongoing" replace />}
           />
           <Route
             path="/friends"
-            element={<Navigate to="/systems?friends=true" replace />}
+            element={<Navigate to="/lab?friends=true" replace />}
           />
 
           {/* Project detail routes */}

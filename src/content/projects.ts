@@ -2,55 +2,6 @@ import type { Project, ProjectFilters } from "./types";
 
 export const projects: Project[] = [
   {
-    slug: "public-information-infrastructure",
-    title: "Public Information Infrastructure",
-    status: "ongoing",
-    kind: "infrastructure",
-    system: "public data",
-    ui_mode: "bureaucratic",
-    updated_at: "2026-02-14",
-    summary:
-      "Production-grade infrastructure for collecting, normalizing, and serving public media data. Tracks changes, ensures provenance, provides structured API access to information that matters.",
-    outcome:
-      "Infrastructure for tracking media edits, content changes, and source accountability at scale",
-    role: "Technical Architect & Lead Engineer",
-    stack: "TypeScript, Node.js, PostgreSQL, Redis, Docker, Python",
-    timeframe: "2023 - Present",
-    architectureDiagram: "/diagrams/pub-info-architecture.svg",
-    card: {
-      accent: "blue",
-      size: "lg",
-      variant: "featured",
-      tagline: "Infrastructure that others rely on",
-      highlight: "Change detection · Versioned data · Production APIs",
-    },
-    sections: {
-      problem:
-        "Public information (media announcements, policy changes, official statements) is scattered, ephemeral, and unstructured. No unified system tracks what was published, when it changed, or what the source actually said. Researchers, journalists, and citizens rely on manual archive.org snapshots or institutional memory.",
-      systemReality:
-        "Media outlets use dynamic CMS systems. Content changes without version history exposed. No standard schema for information structure. Rate limiting and anti-scraping measures protect servers. Ethical boundaries around web scraping. Storage costs scale with retention requirements. Quality vs. cost trade-offs for long-term archives.",
-      intervention:
-        "Building infrastructure from the ground up: distributed scraping framework with change detection, normalization layer that transforms heterogeneous sources into unified schema, versioned storage with diff tracking, RESTful API layer with query capabilities, monitoring and alerting for pipeline health.",
-      architecture:
-        "Distributed scraping framework with rate limiting and retry logic. Normalization pipeline transforming heterogeneous sources into unified schema. Versioned PostgreSQL storage with diff-tracking for change detection. Redis cache for query performance. RESTful API layer with query DSL. Prometheus + Grafana monitoring stack.",
-      tradeoffs: `**Centralized vs Federated:** Chose centralized architecture for consistency and query performance. Federated model would improve regional resilience but complicate change detection synchronization.
-
-**Scraping frequency vs cost:** 15-minute intervals balance freshness with infrastructure costs. Real-time would require 10x budget for marginal value.
-
-**Schema flexibility vs performance:** Strict schema enforces data quality but limits source diversity. Chose quality over breadth—better to track 50 sources reliably than 500 inconsistently.`,
-      worked:
-        "System in active development. Change detection architecture operational. Normalization pipeline processing multiple source formats. Versioned storage with diff capabilities. Monitoring infrastructure tracking pipeline health.",
-      didnt:
-        "Scale vs. cost trade-offs still being evaluated. Handling dynamic paywalled content remains unsolved. Ethical boundaries of public data collection require ongoing assessment. API rate limiting and abuse prevention strategies under development.",
-      reliability:
-        "Automated scraping with retry logic and error handling. Change detection diffs stored for auditability. Pipeline monitoring with alerting for failures. Rate limiting respect to avoid blocking. Data validation at ingestion. Graceful degradation when sources become unavailable.",
-      unsolved:
-        "Optimal storage architecture for long-term retention. Ethical framework for scraping decisions. Federated vs. centralized data model. Schema normalization across vastly different source types. Sustainable funding model. Community contribution mechanisms.",
-      challenges:
-        "Open to critique on: web scraping ethics, data retention policies, schema design decisions, API design choices, whether centralized infrastructure is the right model vs. federated approaches, and the trade-offs between completeness and resource constraints.",
-    },
-  },
-  {
     slug: "omnisign",
     title: "OmniSign",
     status: "ongoing",

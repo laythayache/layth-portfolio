@@ -16,10 +16,10 @@
 @layer base {
   :root {
     --surface:         17 24 39;        /* #111827 — deep graphite */
-    --surface-raised:  51 65 85;        /* #334155 — slate steel */
+    --surface-raised:  31 41 55;        /* #1F2937 */
     --surface-overlay: 30 41 59;        /* #1E293B */
-    --text-primary:    241 245 249;     /* #F1F5F9 */
-    --text-secondary:  203 213 225;     /* #CBD5E1 */
+    --text-primary:    229 231 235;     /* #E5E7EB */
+    --text-secondary:  156 163 175;     /* #9CA3AF */
     --text-muted:      148 163 184;     /* #94A3B8 */
     --border:          63 79 70;        /* #3F4F46 — oxidized copper */
     --border-strong:   100 116 108;     /* #64746C */

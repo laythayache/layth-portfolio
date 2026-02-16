@@ -7,16 +7,14 @@ export const DEFAULT_OG_IMAGE = `${SITE_URL}/apple-touch-icon.png`;
 export const DEFAULT_KEYWORDS = [
   "Layth Ayache",
   "AI engineer Lebanon",
-  "AI systems architect Lebanon",
+  "AI infrastructure engineer Lebanon",
   "machine learning engineer Lebanon",
   "computer vision engineer Lebanon",
   "software engineer Lebanon",
-  "technical architect",
+  "lab notebook",
+  "technical documentation",
   "distributed systems",
   "data pipelines",
-  "public information infrastructure",
-  "federated learning",
-  "accessibility technology",
   "production engineering",
   "TypeScript",
   "Python",
@@ -53,11 +51,11 @@ export function websiteJsonLd() {
     name: SITE_NAME,
     inLanguage: "en",
     description:
-      "Portfolio and systems work by Layth Ayache, an AI systems architect and infrastructure engineer based in Lebanon.",
+      "AI infrastructure engineer documenting the process of building serious systems from unstable ground.",
     publisher: { "@id": ORG_ID },
     potentialAction: {
       "@type": "SearchAction",
-      target: `${SITE_URL}/systems?search={search_term_string}`,
+      target: `${SITE_URL}/lab?search={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
   };
@@ -69,11 +67,11 @@ export function personJsonLd() {
     "@id": PERSON_ID,
     name: "Layth Ayache",
     url: SITE_URL,
-    image: absoluteUrl("/portrait.png"),
+    image: absoluteUrl("/apple-touch-icon.png"),
     jobTitle: [
-      "AI Systems Architect",
+      "AI Infrastructure Engineer",
       "Machine Learning Engineer",
-      "Infrastructure Engineer",
+      "Software Engineer",
     ],
     worksFor: { "@id": ORG_ID },
     homeLocation: {
@@ -94,8 +92,7 @@ export function personJsonLd() {
       "Computer Vision",
       "Distributed Systems",
       "Data Engineering",
-      "Public Information Infrastructure",
-      "Federated Learning",
+      "AI Infrastructure",
       "Software Architecture",
       "TypeScript",
       "Python",
@@ -144,9 +141,9 @@ export function homePageJsonLd() {
         "@type": "ProfilePage",
         "@id": `${SITE_URL}/#profile`,
         url: SITE_URL,
-        name: "Layth Ayache | AI Systems Architect in Lebanon",
+        name: "Layth Ayache | AI Infrastructure Engineer",
         description:
-          "AI systems architect in Lebanon building production-grade infrastructure, public information systems, and computer-vision-driven products.",
+          "AI infrastructure engineer documenting the process of building serious systems from unstable ground.",
         isPartOf: { "@id": WEBSITE_ID },
         about: { "@id": PERSON_ID },
         inLanguage: "en",
@@ -167,30 +164,30 @@ export function homePageJsonLd() {
   };
 }
 
-export function systemsPageJsonLd(items: Project[]) {
+export function labPageJsonLd(items: Project[]) {
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "CollectionPage",
-        "@id": `${SITE_URL}/systems#webpage`,
-        url: `${SITE_URL}/systems`,
-        name: "Systems | Layth Ayache",
+        "@id": `${SITE_URL}/lab#webpage`,
+        url: `${SITE_URL}/lab`,
+        name: "The Lab | Layth Ayache",
         description:
-          "Production systems and infrastructure projects by Layth Ayache.",
+          "Projects, failures, iterations. Each entry documents what was tried and what I learned.",
         inLanguage: "en",
         isPartOf: { "@id": WEBSITE_ID },
         about: { "@id": PERSON_ID },
-        mainEntity: { "@id": `${SITE_URL}/systems#project-list` },
+        mainEntity: { "@id": `${SITE_URL}/lab#project-list` },
         breadcrumb: breadcrumbJsonLd([
           { name: "Home", path: "/" },
-          { name: "Systems", path: "/systems" },
+          { name: "Lab", path: "/lab" },
         ]),
       },
       {
         "@type": "ItemList",
-        "@id": `${SITE_URL}/systems#project-list`,
-        name: "Systems Projects",
+        "@id": `${SITE_URL}/lab#project-list`,
+        name: "Lab Projects",
         numberOfItems: items.length,
         itemListElement: items.map((project, index) => ({
           "@type": "ListItem",
@@ -198,6 +195,29 @@ export function systemsPageJsonLd(items: Project[]) {
           url: absoluteUrl(`/projects/${project.slug}`),
           name: project.title,
         })),
+      },
+    ],
+  };
+}
+
+export function experimentsPageJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/experiments#webpage`,
+        url: `${SITE_URL}/experiments`,
+        name: "Experiments | Layth Ayache",
+        description:
+          "Ongoing technical experiments in AI infrastructure, multilingual retrieval, edge inference, and data extraction.",
+        inLanguage: "en",
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": PERSON_ID },
+        breadcrumb: breadcrumbJsonLd([
+          { name: "Home", path: "/" },
+          { name: "Experiments", path: "/experiments" },
+        ]),
       },
     ],
   };
@@ -213,7 +233,7 @@ export function aboutPageJsonLd() {
         url: `${SITE_URL}/about`,
         name: "About | Layth Ayache",
         description:
-          "Background, methodology, and systems engineering approach of Layth Ayache.",
+          "AI infrastructure engineer documenting the process of building serious systems from unstable ground.",
         about: { "@id": PERSON_ID },
         inLanguage: "en",
         isPartOf: { "@id": WEBSITE_ID },
@@ -227,85 +247,7 @@ export function aboutPageJsonLd() {
   };
 }
 
-export function contactPageJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "ContactPage",
-        "@id": `${SITE_URL}/contact#webpage`,
-        url: `${SITE_URL}/contact`,
-        name: "Contact | Layth Ayache",
-        description: "Contact and collaboration information for Layth Ayache.",
-        inLanguage: "en",
-        isPartOf: { "@id": WEBSITE_ID },
-        breadcrumb: breadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Contact", path: "/contact" },
-        ]),
-      },
-      {
-        "@type": "Person",
-        "@id": PERSON_ID,
-        contactPoint: [
-          {
-            "@type": "ContactPoint",
-            contactType: "professional inquiries",
-            email: "hello@laythayache.com",
-            availableLanguage: ["en", "fr", "ar"],
-          },
-        ],
-      },
-    ],
-  };
-}
-
-export function playbookPageJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": `${SITE_URL}/playbook#webpage`,
-        url: `${SITE_URL}/playbook`,
-        name: "Playbook | Layth Ayache",
-        description:
-          "Operating principles, architecture frameworks, and production checklists.",
-        inLanguage: "en",
-        isPartOf: { "@id": WEBSITE_ID },
-        about: { "@id": PERSON_ID },
-        breadcrumb: breadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Playbook", path: "/playbook" },
-        ]),
-      },
-    ],
-  };
-}
-
-export function nowPageJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": `${SITE_URL}/now#webpage`,
-        url: `${SITE_URL}/now`,
-        name: "Now | Layth Ayache",
-        description: "Current work, focus areas, and active technical priorities.",
-        inLanguage: "en",
-        isPartOf: { "@id": WEBSITE_ID },
-        about: { "@id": PERSON_ID },
-        breadcrumb: breadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Now", path: "/now" },
-        ]),
-      },
-    ],
-  };
-}
-
-export function writingPageJsonLd(articles: Array<{
+export function thinkingPageJsonLd(articles: Array<{
   slug: string;
   title: string;
   summary: string;
@@ -319,24 +261,24 @@ export function writingPageJsonLd(articles: Array<{
     "@graph": [
       {
         "@type": "Blog",
-        "@id": `${SITE_URL}/writing#blog`,
-        url: `${SITE_URL}/writing`,
-        name: "Writing | Layth Ayache",
+        "@id": `${SITE_URL}/thinking#blog`,
+        url: `${SITE_URL}/thinking`,
+        name: "Thinking | Layth Ayache",
         description:
-          "Technical notes on infrastructure, architecture, data systems, and production engineering.",
+          "Technical essays on infrastructure, architecture, and building from unstable ground.",
         inLanguage: "en",
         isPartOf: { "@id": WEBSITE_ID },
         author: { "@id": PERSON_ID },
       },
       ...published.map((article) => ({
         "@type": "BlogPosting",
-        "@id": `${SITE_URL}/writing/${article.slug}#article`,
+        "@id": `${SITE_URL}/thinking/${article.slug}#article`,
         headline: article.title,
         datePublished: article.date,
         dateModified: article.date,
         description: article.summary,
         author: { "@id": PERSON_ID },
-        mainEntityOfPage: `${SITE_URL}/writing`,
+        mainEntityOfPage: `${SITE_URL}/thinking`,
         inLanguage: "en",
       })),
     ],
@@ -349,7 +291,7 @@ export function projectPageJsonLd(project: Project) {
     project.kind,
     project.system,
     project.status,
-    "AI systems engineering",
+    "AI infrastructure",
     "Lebanon",
   ];
 
@@ -385,7 +327,7 @@ export function projectPageJsonLd(project: Project) {
         isPartOf: { "@id": WEBSITE_ID },
         breadcrumb: breadcrumbJsonLd([
           { name: "Home", path: "/" },
-          { name: "Systems", path: "/systems" },
+          { name: "Lab", path: "/lab" },
           { name: project.title, path: `/projects/${project.slug}` },
         ]),
       },

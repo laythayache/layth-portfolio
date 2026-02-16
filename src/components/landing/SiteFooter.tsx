@@ -9,25 +9,19 @@ const fade = {
   },
 };
 
-export default function PhilosophyFooter() {
+export default function SiteFooter() {
   const reduced = useReducedMotion();
 
   return (
     <footer className="bg-surface px-6 py-24 md:py-32">
       <motion.div
-        className="mx-auto max-w-[680px] text-center"
+        className="mx-auto max-w-3xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
         variants={fade}
       >
-        <div className="space-y-2 font-serif text-lg leading-relaxed text-text-secondary md:text-xl">
-          <p>I build in unstable environments.</p>
-          <p>Constraint creates clarity.</p>
-          <p>Systems outlast hype.</p>
-        </div>
-
-        <div className="mt-16 flex items-center justify-center gap-8">
+        <div className="flex items-center justify-center gap-8">
           <a
             href="mailto:hello@laythayache.com"
             className="font-mono text-xs tracking-wide text-text-muted underline underline-offset-4 decoration-border transition-colors hover:text-accent hover:decoration-accent"

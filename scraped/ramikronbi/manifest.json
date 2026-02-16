@@ -1,0 +1,66 @@
+{
+  "source": "https://ramikronbi.com/",
+  "crawledAt": "2026-02-16T22:03:32.588Z",
+  "robotsUrl": "https://ramikronbi.com/robots.txt",
+  "sitemapUrl": "https://ramikronbi.com/sitemap.xml",
+  "sitemapLocs": [
+    "https://ramikronbi.com/",
+    "https://ramikronbi.com/#about",
+    "https://ramikronbi.com/#projects",
+    "https://ramikronbi.com/#contact",
+    "https://ramikronbi.com/#services",
+    "https://ramikronbi.com/favicon.ico",
+    "https://ramikronbi.com/favicon-16x16.png",
+    "https://ramikronbi.com/favicon-32x32.png",
+    "https://ramikronbi.com/favicon-48x48.png",
+    "https://ramikronbi.com/apple-touch-icon.png",
+    "https://ramikronbi.com/icon-192.png",
+    "https://ramikronbi.com/icon-512.png"
+  ],
+  "internalCandidates": [
+    "https://ramikronbi.com/",
+    "https://ramikronbi.com/a/b",
+    "https://ramikronbi.com/a/i",
+    "https://ramikronbi.com/apple-touch-icon.png",
+    "https://ramikronbi.com/favicon-16x16.png",
+    "https://ramikronbi.com/favicon-32x32.png",
+    "https://ramikronbi.com/favicon-48x48.png",
+    "https://ramikronbi.com/favicon.ico",
+    "https://ramikronbi.com/icon-192.png",
+    "https://ramikronbi.com/icon-512.png"
+  ],
+  "htmlPages": [
+    {
+      "url": "https://ramikronbi.com/",
+      "title": "Rami Kronbi",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "rawFile": "scraped/ramikronbi/raw/root.html",
+      "textFile": "scraped/ramikronbi/text/root.txt",
+      "sectionsFile": "scraped/ramikronbi/sections/root.json",
+      "sectionIds": [
+        "home",
+        "community",
+        "experience",
+        "projects",
+        "testimonials",
+        "blog",
+        "certifications",
+        "services",
+        "contact",
+        "faq"
+      ]
+    }
+  ],
+  "externalLinks": [
+    "https://fonts.googleapis.com/",
+    "https://fonts.gstatic.com/",
+    "https://github.com/Kronbii",
+    "https://www.coursera.org/account/accomplishments/records/JDQM5WZLUW27",
+    "https://www.linkedin.com/in/rami-kronbi/"
+  ],
+  "errors": [
+    "GET https://ramikronbi.com/a/i -> 404 (text/html; charset=utf-8)",
+    "GET https://ramikronbi.com/a/b -> 404 (text/html; charset=utf-8)"
+  ]
+}

@@ -93,11 +93,11 @@ export default function ProjectDetail() {
       <ProjectShell project={project}>
         {/* Back link */}
         <Link
-          to="/systems"
+          to="/lab"
           className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-accent"
         >
           <ArrowLeft size={14} />
-          Back to systems
+          Back to the lab
         </Link>
 
         {/* Expanded diagram modal */}
@@ -265,12 +265,12 @@ export default function ProjectDetail() {
               ) : (
                 <p className="font-mono text-xs text-text-muted">
                   Challenge URL not set for this project. Reach out via{" "}
-                  <Link
-                    to="/contact"
+                  <a
+                    href="mailto:hello@laythayache.com"
                     className="underline underline-offset-2 hover:text-text-secondary"
                   >
-                    /contact
-                  </Link>{" "}
+                    hello@laythayache.com
+                  </a>{" "}
                   to challenge or critique this work.
                 </p>
               )}

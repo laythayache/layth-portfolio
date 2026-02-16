@@ -1,9 +1,9 @@
 import SEO from "@/components/SEO";
 import Hero from "@/components/landing/Hero";
-import Manifesto from "@/components/landing/Manifesto";
-import Systems from "@/components/landing/Systems";
-import Experiments from "@/components/landing/Experiments";
-import PhilosophyFooter from "@/components/landing/PhilosophyFooter";
+import LabPreview from "@/components/landing/LabPreview";
+import ExperimentsPreview from "@/components/landing/ExperimentsPreview";
+import ThinkingPreview from "@/components/landing/ThinkingPreview";
+import SiteFooter from "@/components/landing/SiteFooter";
 import { DEFAULT_KEYWORDS, homePageJsonLd } from "@/content/siteSeo";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <SEO
         title="Layth Ayache | AI Infrastructure Engineer"
-        description="AI infrastructure engineer in Lebanon building decision systems, multilingual AI, and production-grade data infrastructure."
+        description="AI infrastructure engineer documenting the process of building serious systems from unstable ground. Projects, failures, iterations, thinking."
         canonical="https://laythayache.com/"
         keywords={DEFAULT_KEYWORDS}
         modifiedTime="2026-02-16"
@@ -19,10 +19,10 @@ export default function Home() {
       />
       <div className="-mt-16">
         <Hero />
-        <Manifesto />
-        <Systems />
-        <Experiments />
-        <PhilosophyFooter />
+        <LabPreview />
+        <ExperimentsPreview />
+        <ThinkingPreview />
+        <SiteFooter />
       </div>
     </>
   );

@@ -5,10 +5,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { to: "/systems", label: "Systems" },
-  { to: "/playbook", label: "Playbook" },
-  { to: "/writing", label: "Writing" },
-  { to: "/now", label: "Now" },
+  { to: "/lab", label: "Lab" },
+  { to: "/experiments", label: "Experiments" },
+  { to: "/thinking", label: "Thinking" },
   { to: "/about", label: "About" },
 ] as const;
 
@@ -52,38 +51,28 @@ export default function Navbar() {
 
         {/* Desktop nav links */}
         <div className="hidden items-center gap-8 md:flex">
-          <div className="flex items-center gap-8">
-            {links.map((link) => {
-              const active =
-                pathname === link.to || pathname.startsWith(link.to + "/");
-              return (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "relative pb-1 font-mono text-xs uppercase tracking-widest transition-colors",
-                    active
-                      ? "text-text-primary"
-                      : "text-text-muted hover:text-accent"
-                  )}
-                >
-                  {link.label}
-                  {active && (
-                    <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Contact — thin bronze border */}
-          <Link
-            to="/contact"
-            className="border border-accent px-4 py-2 font-mono text-xs uppercase tracking-wider text-accent transition-colors hover:bg-accent hover:text-text-primary"
-          >
-            Contact
-          </Link>
+          {links.map((link) => {
+            const active =
+              pathname === link.to || pathname.startsWith(link.to + "/");
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "relative pb-1 font-mono text-xs uppercase tracking-widest transition-colors",
+                  active
+                    ? "text-text-primary"
+                    : "text-text-muted hover:text-accent"
+                )}
+              >
+                {link.label}
+                {active && (
+                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />
+                )}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Mobile: Hamburger only */}
@@ -130,13 +119,6 @@ export default function Navbar() {
                   </Link>
                 );
               })}
-              <Link
-                to="/contact"
-                onClick={() => setMobileOpen(false)}
-                className="mt-2 px-3 py-2.5 font-mono text-sm uppercase tracking-widest text-accent transition-colors hover:text-accent-hover"
-              >
-                Contact
-              </Link>
             </div>
           </motion.div>
         )}

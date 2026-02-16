@@ -8,7 +8,8 @@
       "WebFetch(domain:medium.com)",
       "Bash(gzip:*)",
       "Bash(du:*)",
-      "Bash(node scripts/optimize-images.js:*)"
+      "Bash(node scripts/optimize-images.js:*)",
+      "WebFetch(domain:ramikronbi.com)"
     ]
   }
 }
