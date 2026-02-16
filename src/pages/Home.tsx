@@ -8,7 +8,6 @@ import {
 } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { MOTION } from "@/motion/tokens";
-import PortraitHero from "@/components/PortraitHero";
 import SystemCard from "@/components/SystemCard";
 import SystemsSnapshot from "@/components/SystemsSnapshot";
 import TechStackVisualization from "@/components/TechStackVisualization";
@@ -210,10 +209,7 @@ export default function Home() {
 
       {/* ── Centered composition (first viewport) ── */}
       <div className="relative flex h-[calc(100vh-4rem)] items-center justify-center px-6">
-        {/* Portrait (centered anchor) */}
-        <PortraitHero />
-
-        {/* LAYTH — desktop/tablet: left of portrait, slightly above center */}
+        {/* LAYTH — desktop/tablet: left of center, slightly above center */}
         <div className="pointer-events-none absolute left-1/2 top-1/2 z-50 hidden -translate-x-[clamp(16rem,38vw,42rem)] -translate-y-[clamp(5rem,14vh,10rem)] md:block">
           <motion.p
             style={{ x: laythX, opacity: nameOpacity }}
