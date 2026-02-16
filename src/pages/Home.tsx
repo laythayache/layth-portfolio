@@ -1,28 +1,36 @@
 import SEO from "@/components/SEO";
-import Hero from "@/components/landing/Hero";
-import LabPreview from "@/components/landing/LabPreview";
-import ExperimentsPreview from "@/components/landing/ExperimentsPreview";
-import ThinkingPreview from "@/components/landing/ThinkingPreview";
-import SiteFooter from "@/components/landing/SiteFooter";
+import HeroSection from "@/components/sections/HeroSection";
+import AboutSection from "@/components/sections/AboutSection";
+import ExperienceSection from "@/components/sections/ExperienceSection";
+import ProjectsSection from "@/components/sections/ProjectsSection";
+import SpeakingSection from "@/components/sections/SpeakingSection";
+import BlogSection from "@/components/sections/BlogSection";
+import CertificationsSection from "@/components/sections/CertificationsSection";
+import FAQSection from "@/components/sections/FAQSection";
+import ContactSection from "@/components/sections/ContactSection";
 import { DEFAULT_KEYWORDS, homePageJsonLd } from "@/content/siteSeo";
 
 export default function Home() {
   return (
     <>
       <SEO
-        title="Layth Ayache | AI Infrastructure Engineer"
-        description="AI infrastructure engineer documenting the process of building serious systems from unstable ground. Projects, failures, iterations, thinking."
+        title="Layth Ayache | AI Systems Engineer & Technical Consultant"
+        description="AI systems engineer and technical consultant building AI infrastructure, automating workflows, and consulting for companies across telecom, finance, and healthcare. Based in Beirut."
         canonical="https://laythayache.com/"
         keywords={DEFAULT_KEYWORDS}
         modifiedTime="2026-02-16"
         jsonLd={homePageJsonLd()}
       />
       <div className="-mt-16">
-        <Hero />
-        <LabPreview />
-        <ExperimentsPreview />
-        <ThinkingPreview />
-        <SiteFooter />
+        <HeroSection />
+        <AboutSection />
+        <ExperienceSection />
+        <ProjectsSection />
+        <SpeakingSection />
+        <BlogSection />
+        <CertificationsSection />
+        <FAQSection />
+        <ContactSection />
       </div>
     </>
   );

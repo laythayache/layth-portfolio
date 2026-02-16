@@ -6,29 +6,8 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://laythayache.com/lab</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://laythayache.com/experiments</loc>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://laythayache.com/thinking</loc>
-    <priority>0.7</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://laythayache.com/about</loc>
-    <priority>0.8</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
     <loc>https://laythayache.com/projects/omnisign</loc>
-    <lastmod>2026-02-01</lastmod>
     <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
   </url>
 </urlset>

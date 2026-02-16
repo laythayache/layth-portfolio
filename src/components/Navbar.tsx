@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-const links = [
-  { to: "/lab", label: "Lab" },
-  { to: "/experiments", label: "Experiments" },
-  { to: "/thinking", label: "Thinking" },
-  { to: "/about", label: "About" },
+const NAV_SECTIONS = [
+  { id: "about", label: "About" },
+  { id: "experience", label: "Experience" },
+  { id: "projects", label: "Projects" },
+  { id: "speaking", label: "Speaking" },
+  { id: "blog", label: "Blog" },
+  { id: "certifications", label: "Certs" },
+  { id: "faq", label: "FAQ" },
+  { id: "contact", label: "Contact" },
 ] as const;
 
 export default function Navbar() {
@@ -16,27 +20,88 @@ export default function Navbar() {
   const isHome = pathname === "/";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState<string>("");
 
+  // Scroll progress bar
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
+
+  // Scroll detection for background
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Intersection Observer scroll spy (homepage only)
+  useEffect(() => {
+    if (!isHome) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+    );
+
+    const ids = NAV_SECTIONS.map((s) => s.id);
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+
+    return () => observer.disconnect();
+  }, [isHome]);
+
+  const scrollToSection = useCallback(
+    (id: string) => {
+      setMobileOpen(false);
+      if (isHome) {
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.location.href = `/#${id}`;
+      }
+    },
+    [isHome]
+  );
+
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 h-16 transition-colors duration-300",
+        "fixed top-0 left-0 right-0 z-50 transition-colors duration-300",
         isHome && !scrolled
           ? "bg-transparent"
           : "border-b border-border bg-surface/95 backdrop-blur-sm"
       )}
     >
-      <div className="mx-auto flex h-full max-w-5xl items-center justify-between px-6">
-        <Link to="/" aria-label="Home" className="flex items-center">
+      {/* Progress bar */}
+      {isHome && (
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-[2px] origin-left bg-accent"
+          style={{ scaleX }}
+        />
+      )}
+
+      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
+        {/* Logo / home link */}
+        <Link
+          to="/"
+          aria-label="Home"
+          className="flex items-center"
+          onClick={() => {
+            if (isHome) window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
           <img
             src="/logo-mark.svg"
             alt="Layth Ayache"
@@ -50,15 +115,14 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden items-center gap-8 md:flex">
-          {links.map((link) => {
-            const active =
-              pathname === link.to || pathname.startsWith(link.to + "/");
+        <div className="hidden items-center gap-6 lg:flex">
+          {NAV_SECTIONS.map((section) => {
+            const active = isHome && activeSection === section.id;
             return (
-              <Link
-                key={link.to}
-                to={link.to}
-                aria-current={active ? "page" : undefined}
+              <button
+                key={section.id}
+                type="button"
+                onClick={() => scrollToSection(section.id)}
                 className={cn(
                   "relative pb-1 font-mono text-xs uppercase tracking-widest transition-colors",
                   active
@@ -66,17 +130,21 @@ export default function Navbar() {
                     : "text-text-muted hover:text-accent"
                 )}
               >
-                {link.label}
+                {section.label}
                 {active && (
-                  <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent" />
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
                 )}
-              </Link>
+              </button>
             );
           })}
         </div>
 
-        {/* Mobile: Hamburger only */}
-        <div className="flex items-center md:hidden">
+        {/* Mobile hamburger */}
+        <div className="flex items-center lg:hidden">
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -96,27 +164,25 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
-            className="overflow-hidden border-b border-border bg-surface md:hidden"
+            className="overflow-hidden border-b border-border bg-surface lg:hidden"
           >
             <div className="mx-auto flex max-w-5xl flex-col gap-1 px-6 py-4">
-              {links.map((link) => {
-                const active =
-                  pathname === link.to || pathname.startsWith(link.to + "/");
+              {NAV_SECTIONS.map((section) => {
+                const active = isHome && activeSection === section.id;
                 return (
-                  <Link
-                    key={link.to}
-                    to={link.to}
-                    aria-current={active ? "page" : undefined}
-                    onClick={() => setMobileOpen(false)}
+                  <button
+                    key={section.id}
+                    type="button"
+                    onClick={() => scrollToSection(section.id)}
                     className={cn(
-                      "px-3 py-2.5 font-mono text-sm uppercase tracking-widest transition-colors",
+                      "px-3 py-2.5 text-left font-mono text-sm uppercase tracking-widest transition-colors",
                       active
-                        ? "text-text-primary border-l-2 border-accent"
+                        ? "border-l-2 border-accent text-text-primary"
                         : "text-text-muted hover:text-accent"
                     )}
                   >
-                    {link.label}
-                  </Link>
+                    {section.label}
+                  </button>
                 );
               })}
             </div>

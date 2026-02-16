@@ -15,16 +15,16 @@
 
 @layer base {
   :root {
-    --surface:         17 24 39;        /* #111827 — deep graphite */
-    --surface-raised:  31 41 55;        /* #1F2937 */
-    --surface-overlay: 30 41 59;        /* #1E293B */
-    --text-primary:    229 231 235;     /* #E5E7EB */
-    --text-secondary:  156 163 175;     /* #9CA3AF */
-    --text-muted:      148 163 184;     /* #94A3B8 */
-    --border:          63 79 70;        /* #3F4F46 — oxidized copper */
-    --border-strong:   100 116 108;     /* #64746C */
-    --accent:          180 83 9;        /* #B45309 — burnt bronze */
-    --accent-hover:    217 119 6;       /* #D97706 */
+    --surface:         248 250 252;     /* #F8FAFC — slate-50 */
+    --surface-raised:  255 255 255;     /* #FFFFFF — white cards */
+    --surface-overlay: 241 245 249;     /* #F1F5F9 — slate-100 */
+    --text-primary:     15  23  42;     /* #0F172A — slate-900 */
+    --text-secondary:   71  85 105;     /* #475569 — slate-600 */
+    --text-muted:      148 163 184;     /* #94A3B8 — slate-400 */
+    --border:          226 232 240;     /* #E2E8F0 — slate-200 */
+    --border-strong:   203 213 225;     /* #CBD5E1 — slate-300 */
+    --accent:           37  99 235;     /* #2563EB — blue-600 */
+    --accent-hover:     29  78 216;     /* #1D4ED8 — blue-700 */
   }
 
   * {
