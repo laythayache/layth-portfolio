@@ -23,7 +23,7 @@ export default function Navbar() {
       setScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll(); // Check initial scroll position
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -32,8 +32,8 @@ export default function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 h-16 transition-colors duration-300",
         isHome && !scrolled
-          ? "bg-surface"
-          : "border-b border-border bg-surface"
+          ? "bg-transparent"
+          : "border-b border-border bg-surface/95 backdrop-blur-sm"
       )}
     >
       <div className="mx-auto flex h-full max-w-5xl items-center justify-between px-6">
@@ -77,10 +77,10 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Contact — thin bronze border, no fill */}
+          {/* Contact — thin bronze border */}
           <Link
             to="/contact"
-            className="border border-accent px-4 py-2 font-mono text-xs uppercase tracking-wider text-accent transition-colors hover:bg-accent hover:text-surface"
+            className="border border-accent px-4 py-2 font-mono text-xs uppercase tracking-wider text-accent transition-colors hover:bg-accent hover:text-text-primary"
           >
             Contact
           </Link>

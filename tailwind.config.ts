@@ -5,9 +5,10 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ["JetBrains Mono", "monospace"],
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Black Ops One", "sans-serif"],
+        sans: ['"Inter"', "system-ui", "sans-serif"],
+        serif: ['"IBM Plex Serif"', "Georgia", "serif"],
+        display: ['"IBM Plex Serif"', "Georgia", "serif"],
+        mono: ['"IBM Plex Mono"', "monospace"],
       },
       colors: {
         surface: {

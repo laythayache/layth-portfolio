@@ -40,4 +40,4 @@
 - Prefer route-specific pages for project details and latest updates.
 - Cross-check with sitemap: https://laythayache.com/sitemap.xml
 
-Last updated: 2026-02-15
+Last updated: 2026-02-16

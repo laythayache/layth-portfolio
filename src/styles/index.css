@@ -1,11 +1,13 @@
-/* Latin-only font subsets for faster loading */
-@import "@fontsource/jetbrains-mono/latin-400.css";
-@import "@fontsource/jetbrains-mono/latin-500.css";
-@import "@fontsource/jetbrains-mono/latin-700.css";
+/* IBM Plex Serif — display/heading font */
+@import "@fontsource/ibm-plex-serif/latin-600.css";
+@import "@fontsource/ibm-plex-serif/latin-700.css";
+
+/* Inter — body font */
 @import "@fontsource/inter/latin-400.css";
 @import "@fontsource/inter/latin-500.css";
-@import "@fontsource/inter/latin-600.css";
-@import "@fontsource/black-ops-one/latin-400.css";
+
+/* IBM Plex Mono — metadata/code font */
+@import "@fontsource/ibm-plex-mono/latin-400.css";
 
 @tailwind base;
 @tailwind components;
@@ -13,16 +15,16 @@
 
 @layer base {
   :root {
-    --surface:         231 226 219;   /* #E7E2DB — warm institutional beige */
-    --surface-raised:  240 236 230;   /* #F0ECE6 */
-    --surface-overlay: 220 215 208;   /* #DCD7D0 */
-    --text-primary:    28 28 28;      /* #1C1C1C — deep charcoal */
-    --text-secondary:  74 74 74;      /* #4A4A4A */
-    --text-muted:      107 107 107;   /* #6B6B6B — WCAG AA compliant */
-    --border:          200 200 200;   /* #C8C8C8 — secondary structural */
-    --border-strong:   160 160 160;   /* #A0A0A0 */
-    --accent:          138 106 63;    /* #8A6A3F — burnt bronze */
-    --accent-hover:    110 82 48;     /* #6E5230 */
+    --surface:         17 24 39;        /* #111827 — deep graphite */
+    --surface-raised:  51 65 85;        /* #334155 — slate steel */
+    --surface-overlay: 30 41 59;        /* #1E293B */
+    --text-primary:    241 245 249;     /* #F1F5F9 */
+    --text-secondary:  203 213 225;     /* #CBD5E1 */
+    --text-muted:      148 163 184;     /* #94A3B8 */
+    --border:          63 79 70;        /* #3F4F46 — oxidized copper */
+    --border-strong:   100 116 108;     /* #64746C */
+    --accent:          180 83 9;        /* #B45309 — burnt bronze */
+    --accent-hover:    217 119 6;       /* #D97706 */
   }
 
   * {
@@ -39,7 +41,7 @@
   }
 
   ::selection {
-    @apply bg-accent/10;
+    @apply bg-accent/15;
   }
 
   /* Skip-to-content link */
