@@ -1,5 +1,4 @@
 import SEO from "@/components/SEO";
-import ScrollVideo from "@/components/ScrollVideo";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
@@ -22,8 +21,7 @@ export default function Home() {
         modifiedTime="2026-02-16"
         jsonLd={homePageJsonLd()}
       />
-      <ScrollVideo />
-      <div className="relative z-10 -mt-16">
+      <div className="relative z-10">
         <HeroSection />
         <AboutSection />
         <ExperienceSection />

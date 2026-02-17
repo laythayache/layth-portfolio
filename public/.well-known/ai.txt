@@ -12,6 +12,6 @@ LLM-Context: https://laythayache.com/llms.txt
 # Role: AI Systems Architect and Infrastructure Engineer
 # Location: Lebanon
 # Primary website: https://laythayache.com
-# Contact: hello@laythayache.com
+# Contact: laythayache5@gmail.com
 # GitHub: https://github.com/laythayache
 # LinkedIn: https://www.linkedin.com/in/laythayache

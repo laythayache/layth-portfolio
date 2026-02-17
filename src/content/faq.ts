@@ -27,7 +27,7 @@ export const faqItems: FAQItem[] = [
   {
     question: "How can I work with you?",
     answer:
-      "Reach out via email at hello@laythayache.com or connect on LinkedIn. I'm open to consulting engagements, contract work, full-time opportunities, and speaking invitations.",
+      "Reach out via email at laythayache5@gmail.com or connect on LinkedIn. I'm open to consulting engagements, contract work, full-time opportunities, and speaking invitations.",
   },
   {
     question: "What languages do you speak?",

@@ -5,8 +5,8 @@ import { useMediaQuery } from "@/motion/useMediaQuery";
 
 const links = [
   {
-    label: "hello@laythayache.com",
-    href: "mailto:hello@laythayache.com",
+    label: "laythayache5@gmail.com",
+    href: "mailto:laythayache5@gmail.com",
     icon: Mail,
     external: false,
     cursorLabel: "Send Email",

@@ -266,10 +266,10 @@ export default function ProjectDetail() {
                 <p className="font-mono text-xs text-text-muted">
                   Challenge URL not set for this project. Reach out via{" "}
                   <a
-                    href="mailto:hello@laythayache.com"
+                    href="mailto:laythayache5@gmail.com"
                     className="underline underline-offset-2 hover:text-text-secondary"
                   >
-                    hello@laythayache.com
+                    laythayache5@gmail.com
                   </a>{" "}
                   to challenge or critique this work.
                 </p>
