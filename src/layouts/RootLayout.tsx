@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import RouteTransition from "@/motion/RouteTransition";
 import CinematicCursor from "@/components/CinematicCursor";
+import ChatBot from "@/components/ChatBot";
 import LenisProvider, { useLenis } from "@/motion/LenisProvider";
 
 function ScrollToTop() {
@@ -30,6 +31,7 @@ export default function RootLayout() {
       <CinematicCursor />
       <Navbar />
       <RouteTransition />
+      <ChatBot />
     </LenisProvider>
   );
 }

@@ -257,6 +257,36 @@
   .timeline-progress-line {
     box-shadow: 0 0 16px rgb(var(--accent) / 0.25);
   }
+
+  .chatbot-messages {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--border-strong)) transparent;
+  }
+
+  .chatbot-messages::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .chatbot-messages::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .chatbot-messages::-webkit-scrollbar-thumb {
+    background: rgb(var(--border-strong));
+    border-radius: 4px;
+  }
+
+  .chatbot-toggle {
+    box-shadow:
+      0 4px 14px rgb(var(--accent) / 0.3),
+      0 0 0 1px rgb(var(--accent) / 0.1);
+  }
+
+  .chatbot-panel {
+    box-shadow:
+      0 25px 50px -12px rgb(0 0 0 / 0.15),
+      0 0 0 1px rgb(var(--border) / 0.5);
+  }
 }
 
 @keyframes hero-grain-shift {
