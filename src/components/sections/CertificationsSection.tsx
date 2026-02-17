@@ -2,46 +2,38 @@ import { motion, useReducedMotion } from "framer-motion";
 import { GraduationCap, Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { certifications, education } from "@/content/certifications";
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.08 },
-  },
-};
-
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.45, ease: "easeOut" },
-  },
-};
+import { SECTION } from "@/motion/tokens";
+import { useMediaQuery } from "@/motion/useMediaQuery";
 
 export default function CertificationsSection() {
-  const prefersReduced = useReducedMotion();
+  const reduced = useReducedMotion();
+  const coarsePointer = useMediaQuery("(pointer: coarse)");
+  const mobileViewport = useMediaQuery("(max-width: 767px)");
+  const mobileTuned = coarsePointer || mobileViewport;
+
+  const cardHover =
+    reduced || mobileTuned ? undefined : SECTION.cardHover;
 
   return (
-    <section id="certifications" className="bg-surface py-24 px-6">
+    <section id="certifications" className="section-glass px-6 py-24">
       <motion.div
         className="mx-auto max-w-4xl"
-        initial="hidden"
+        initial={reduced ? undefined : "hidden"}
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={prefersReduced ? {} : containerVariants}
+        viewport={SECTION.viewport}
+        variants={SECTION.container}
       >
         <motion.h2
           className="text-center font-serif text-3xl font-bold text-text-primary"
-          variants={prefersReduced ? {} : scaleIn}
+          variants={SECTION.fadeUp}
         >
           Certifications &amp; Education
         </motion.h2>
 
-        {/* Education card */}
         <motion.div
-          className="mt-12 rounded-lg border border-border bg-surface-raised p-8"
-          variants={prefersReduced ? {} : scaleIn}
+          className="mt-12 rounded-lg border border-border bg-surface-raised p-8 transition-colors"
+          variants={SECTION.fadeUp}
+          whileHover={cardHover}
         >
           <div className="flex items-start gap-4">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10">
@@ -66,7 +58,6 @@ export default function CertificationsSection() {
           </div>
         </motion.div>
 
-        {/* Certifications grid */}
         <div
           className={cn(
             "mt-8 grid gap-6",
@@ -76,11 +67,12 @@ export default function CertificationsSection() {
           {certifications.map((cert) => (
             <motion.div
               key={cert.id}
-              className="rounded-lg border border-border bg-surface-raised p-6"
-              variants={prefersReduced ? {} : scaleIn}
+              className="rounded-lg border border-border bg-surface-raised p-6 transition-colors"
+              variants={SECTION.fadeUp}
+              whileHover={cardHover}
             >
               <Award size={20} className="text-accent" />
-              <h3 className="mt-3 font-semibold text-sm text-text-primary">
+              <h3 className="mt-3 text-sm font-semibold text-text-primary">
                 {cert.name}
               </h3>
               <p className="mt-1 text-xs text-text-muted">{cert.issuer}</p>

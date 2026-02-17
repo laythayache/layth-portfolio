@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { SECTION } from "@/motion/tokens";
 
 const LANGUAGES = [
   "Arabic (Native)",
@@ -7,53 +8,41 @@ const LANGUAGES = [
   "English (Professional)",
 ] as const;
 
-// -- animation variants --
-
-const container = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
+const badgePop = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: (i: number) => ({
     opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
-  },
+    scale: 1,
+    transition: {
+      duration: 0.3,
+      delay: 0.04 + i * 0.06,
+      ease: SECTION.ease,
+    },
+  }),
 };
-
-// -- component --
 
 export default function AboutSection() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="about" className="bg-surface-overlay px-6 py-24 sm:py-32">
+    <section id="about" className="section-glass-alt px-6 py-24 sm:py-32">
       <motion.div
         className="mx-auto max-w-2xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={container}
+        viewport={SECTION.viewport}
+        variants={SECTION.container}
       >
-        {/* Section heading */}
         <motion.h2
           className="font-serif text-3xl font-bold text-text-primary"
-          variants={fadeUp}
+          variants={SECTION.fadeUp}
         >
           About Me
         </motion.h2>
 
-        {/* Body text */}
         <motion.p
           className="mt-6 text-base leading-relaxed text-text-secondary"
-          variants={fadeUp}
+          variants={SECTION.fadeUp}
         >
           Computer and Communication Engineer with 2+ years of experience in AI,
           Computer Vision, Network Engineering, and Data Analytics. I design,
@@ -61,40 +50,39 @@ export default function AboutSection() {
           embedded systems, and healthcare domains.
         </motion.p>
 
-        {/* Philosophy callout */}
         <motion.blockquote
           className={cn(
             "mt-8 border-l-4 border-accent bg-surface-raised p-6",
             "text-sm leading-relaxed text-text-primary italic"
           )}
-          variants={fadeUp}
+          variants={SECTION.fadeUp}
         >
           I believe in building systems that work under real constraints — not
           demos for ideal conditions.
         </motion.blockquote>
 
-        {/* Languages */}
-        <motion.div className="mt-10" variants={fadeUp}>
+        <motion.div className="mt-10" variants={SECTION.fadeUp}>
           <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
             Languages
           </h3>
           <div className="flex flex-wrap gap-2">
-            {LANGUAGES.map((lang) => (
-              <span
+            {LANGUAGES.map((lang, i) => (
+              <motion.span
                 key={lang}
                 className={cn(
                   "rounded-full border border-border-strong px-3 py-1",
                   "font-mono text-xs text-text-secondary"
                 )}
+                variants={badgePop}
+                custom={i}
               >
                 {lang}
-              </span>
+              </motion.span>
             ))}
           </div>
         </motion.div>
 
-        {/* Interdisciplinary callout */}
-        <motion.div className="mt-10" variants={fadeUp}>
+        <motion.div className="mt-10" variants={SECTION.fadeUp}>
           <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
             Beyond Engineering
           </h3>

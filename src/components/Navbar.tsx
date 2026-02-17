@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { useLenis } from "@/motion/LenisProvider";
 
 const NAV_SECTIONS = [
   { id: "about", label: "About" },
@@ -62,17 +63,23 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, [isHome]);
 
+  const lenis = useLenis();
+
   const scrollToSection = useCallback(
     (id: string) => {
       setMobileOpen(false);
       if (isHome) {
-        const el = document.getElementById(id);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
+        if (lenis) {
+          lenis.scrollTo(`#${id}`, { offset: -64 });
+        } else {
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }
       } else {
         window.location.href = `/#${id}`;
       }
     },
-    [isHome]
+    [isHome, lenis]
   );
 
   return (
@@ -98,6 +105,8 @@ export default function Navbar() {
           to="/"
           aria-label="Home"
           className="flex items-center"
+          data-magnetic
+          data-cursor-label="Return to Intro"
           onClick={() => {
             if (isHome) window.scrollTo({ top: 0, behavior: "smooth" });
           }}
@@ -123,6 +132,8 @@ export default function Navbar() {
                 key={section.id}
                 type="button"
                 onClick={() => scrollToSection(section.id)}
+                data-magnetic
+                data-cursor-label={`Jump to ${section.label}`}
                 className={cn(
                   "relative pb-1 font-mono text-xs uppercase tracking-widest transition-colors",
                   active

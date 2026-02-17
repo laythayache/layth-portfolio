@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MOTION } from "./tokens";
@@ -34,13 +35,22 @@ export default function RouteTransition() {
     <AnimatePresence mode="wait">
       <motion.main
         key={location.pathname}
+        id="main-content"
         className="min-h-screen pt-16"
         variants={variants}
         initial="initial"
         animate="animate"
         exit="exit"
       >
-        <Outlet />
+        <Suspense
+          fallback={(
+            <div className="flex items-center justify-center py-12">
+              <div className="text-sm text-text-muted">Loading...</div>
+            </div>
+          )}
+        >
+          <Outlet />
+        </Suspense>
       </motion.main>
     </AnimatePresence>
   );

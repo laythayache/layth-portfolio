@@ -3,14 +3,23 @@ import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { faqItems } from "@/content/faq";
+import { SECTION } from "@/motion/tokens";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+const itemReveal = {
+  hidden: { opacity: 0, y: 14 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.45,
+      delay: 0.04 + i * 0.06,
+      ease: SECTION.ease,
+    },
+  }),
 };
 
 export default function FAQSection() {
-  const prefersReduced = useReducedMotion();
+  const reduced = useReducedMotion();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const toggle = (index: number) => {
@@ -18,37 +27,45 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="bg-surface-overlay py-24 px-6">
+    <section id="faq" className="section-glass-alt px-6 py-24">
       <motion.div
         className="mx-auto max-w-2xl"
-        initial="hidden"
+        initial={reduced ? undefined : "hidden"}
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={prefersReduced ? {} : fadeUp}
+        viewport={SECTION.viewport}
       >
-        <h2 className="text-center font-serif text-3xl font-bold text-text-primary">
+        <motion.h2
+          className="text-center font-serif text-3xl font-bold text-text-primary"
+          variants={SECTION.fadeUp}
+        >
           Frequently Asked Questions
-        </h2>
+        </motion.h2>
 
         <div className="mt-12">
           {faqItems.map((item, index) => {
             const isOpen = openIndex === index;
 
             return (
-              <div key={index} className="border-b border-border py-4">
+              <motion.div
+                key={index}
+                className="border-b border-border py-4"
+                variants={itemReveal}
+                custom={index}
+              >
                 <button
                   type="button"
                   onClick={() => toggle(index)}
+                  data-cursor-label={isOpen ? "Collapse" : "Expand"}
                   className={cn(
                     "flex w-full items-center justify-between text-left",
-                    "font-semibold text-sm text-text-primary"
+                    "text-sm font-semibold text-text-primary transition-colors hover:text-accent"
                   )}
                   aria-expanded={isOpen}
                 >
                   <span>{item.question}</span>
                   <motion.span
                     animate={{ rotate: isOpen ? 180 : 0 }}
-                    transition={{ duration: 0.25 }}
+                    transition={{ duration: 0.25, ease: SECTION.ease }}
                     className="ml-4 shrink-0"
                   >
                     <ChevronDown size={16} className="text-text-muted" />
@@ -62,7 +79,7 @@ export default function FAQSection() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      transition={{ duration: 0.3, ease: SECTION.ease }}
                       className="overflow-hidden"
                     >
                       <p className="pt-3 text-sm text-text-secondary">
@@ -71,7 +88,7 @@ export default function FAQSection() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>

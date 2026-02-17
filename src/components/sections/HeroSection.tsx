@@ -10,6 +10,9 @@ import {
 } from "framer-motion";
 import { ArrowDown, Camera, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MOTION } from "@/motion/tokens";
+import { useMediaQuery } from "@/motion/useMediaQuery";
+import { useLenis } from "@/motion/LenisProvider";
 
 const SKILLS = [
   "AI Systems",
@@ -68,6 +71,10 @@ const bounce = {
 export default function HeroSection() {
   const reduced = useReducedMotion();
   const sectionRef = useRef<HTMLElement>(null);
+  const heroMotion = MOTION.homepage.hero;
+  const coarsePointer = useMediaQuery("(pointer: coarse)");
+  const mobileViewport = useMediaQuery("(max-width: 767px)");
+  const mobileTuned = coarsePointer || mobileViewport;
   const [pointerTracking, setPointerTracking] = useState(false);
   const [pointerInside, setPointerInside] = useState(false);
   const pointerX = useMotionValue(0);
@@ -78,37 +85,59 @@ export default function HeroSection() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start start", "end start"],
+    offset: ["start start", "end 20%"],
   });
 
-  // Combined scroll + pointer parallax for the backdrop.
-  const bgScrollY = useTransform(scrollYProgress, [0, 1], [0, 120]);
+  const pointerEnabled = pointerTracking && !reduced && !mobileTuned;
+  const scrollIntensity = mobileTuned ? 0.52 : 1;
+  const headlineScaleTarget = mobileTuned ? 0.985 : heroMotion.headlineScale;
+  const clusterYTarget = heroMotion.clusterY * (mobileTuned ? 0.5 : 1);
+  const backgroundScrollDrift = heroMotion.backgroundScrollDrift * scrollIntensity;
+  const ringScrollDrift = heroMotion.ringScrollDrift * scrollIntensity;
+
+  // Hero scroll choreography.
+  const headlineY = useTransform(scrollYProgress, [0, 1], [0, heroMotion.headlineY * scrollIntensity]);
+  const headlineScale = useTransform(scrollYProgress, [0, 1], [1, headlineScaleTarget]);
+  const clusterY = useTransform(scrollYProgress, [0, 1], [0, clusterYTarget]);
+
+  // Combined scroll + pointer parallax for backdrop and depth elements.
+  const bgScrollY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, backgroundScrollDrift],
+  );
   const bgPointerX = useTransform(smoothX, [-1, 1], [-40, 40]);
   const bgPointerY = useTransform(smoothY, [-1, 1], [-28, 28]);
   const bgY = useTransform([bgScrollY, bgPointerY], ([scrollY, driftY]) => scrollY + driftY);
 
-  // Content depth response.
   const contentX = useTransform(smoothX, [-1, 1], [-14, 14]);
   const contentY = useTransform(smoothY, [-1, 1], [-8, 8]);
   const contentRotateX = useTransform(smoothY, [-1, 1], [4.5, -4.5]);
   const contentRotateY = useTransform(smoothX, [-1, 1], [-5.5, 5.5]);
+  const ringScrollY = useTransform(scrollYProgress, [0, 1], [0, ringScrollDrift]);
   const outerRingRotate = useTransform(smoothX, [-1, 1], [-12, 12]);
+  const outerRingY = useTransform([contentY, ringScrollY], ([pointerDrift, scrollDrift]) => {
+    return pointerDrift + scrollDrift;
+  });
   const innerRingX = useTransform(smoothX, [-1, 1], [10, -10]);
-  const innerRingY = useTransform(smoothY, [-1, 1], [8, -8]);
+  const innerRingPointerY = useTransform(smoothY, [-1, 1], [8, -8]);
+  const innerRingY = useTransform([innerRingPointerY, ringScrollY], ([pointerDrift, scrollDrift]) => {
+    return pointerDrift + scrollDrift * 0.7;
+  });
   const innerRingRotate = useTransform(smoothY, [-1, 1], [8, -8]);
   const portraitRotateX = useTransform(smoothY, [-1, 1], [9, -9]);
   const portraitRotateY = useTransform(smoothX, [-1, 1], [-9, 9]);
   const portraitX = useTransform(smoothX, [-1, 1], [-8, 8]);
   const portraitY = useTransform(smoothY, [-1, 1], [-6, 6]);
 
-  // Spotlight follows pointer for cinematic lighting.
+  // Spotlights follow pointer for cinematic lighting.
   const lightX = useTransform(smoothX, [-1, 1], [26, 74]);
   const lightY = useTransform(smoothY, [-1, 1], [18, 78]);
   const spotlight = useMotionTemplate`radial-gradient(40rem circle at ${lightX}% ${lightY}%, rgb(var(--accent) / 0.22), transparent 62%)`;
   const secondaryGlow = useMotionTemplate`radial-gradient(32rem circle at ${lightY}% ${lightX}%, rgb(15 23 42 / 0.18), transparent 60%)`;
 
   useEffect(() => {
-    if (reduced) {
+    if (reduced || mobileTuned) {
       setPointerTracking(false);
       pointerX.set(0);
       pointerY.set(0);
@@ -130,14 +159,14 @@ export default function HeroSection() {
 
     mediaQuery.addListener(updateTracking);
     return () => mediaQuery.removeListener(updateTracking);
-  }, [pointerX, pointerY, reduced]);
+  }, [mobileTuned, pointerX, pointerY, reduced]);
 
   function clampUnit(value: number) {
     return Math.max(-1, Math.min(1, value));
   }
 
   function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
-    if (!pointerTracking || reduced || !sectionRef.current) {
+    if (!pointerEnabled || !sectionRef.current) {
       return;
     }
 
@@ -156,24 +185,36 @@ export default function HeroSection() {
     setPointerInside(false);
   }
 
+  const lenis = useLenis();
+
   function handleScrollToProjects() {
-    const el = document.getElementById("projects");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+    if (lenis) {
+      lenis.scrollTo("#projects", { offset: -64 });
+    } else {
+      const el = document.getElementById("projects");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
     }
   }
 
   return (
     <section
+      id="hero"
       ref={sectionRef}
-      className="hero-cinematic relative flex min-h-screen items-center justify-center overflow-hidden bg-surface px-6 pt-16"
+      className="hero-cinematic relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-16"
       onPointerMove={handlePointerMove}
       onPointerLeave={resetPointer}
     >
       {/* --- Cinematic scene layers --- */}
       <motion.div
         className="pointer-events-none absolute inset-0"
-        style={reduced ? undefined : { x: bgPointerX, y: bgY }}
+        style={
+          reduced
+            ? undefined
+            : {
+                x: pointerEnabled ? bgPointerX : 0,
+                y: pointerEnabled ? bgY : bgScrollY,
+              }
+        }
         aria-hidden
       >
         <div
@@ -191,13 +232,21 @@ export default function HeroSection() {
 
       <motion.div
         className="pointer-events-none absolute inset-0"
-        style={reduced ? undefined : { backgroundImage: spotlight }}
+        style={
+          reduced || !pointerEnabled
+            ? undefined
+            : { backgroundImage: spotlight }
+        }
         aria-hidden
       />
 
       <motion.div
         className="pointer-events-none absolute inset-0"
-        style={reduced ? undefined : { backgroundImage: secondaryGlow }}
+        style={
+          reduced || !pointerEnabled
+            ? undefined
+            : { backgroundImage: secondaryGlow }
+        }
         aria-hidden
       />
 
@@ -207,8 +256,8 @@ export default function HeroSection() {
           reduced
             ? undefined
             : {
-                x: contentX,
-                y: contentY,
+                x: pointerEnabled ? contentX : 0,
+                y: pointerEnabled ? outerRingY : ringScrollY,
                 rotate: outerRingRotate,
               }
         }
@@ -221,8 +270,8 @@ export default function HeroSection() {
           reduced
             ? undefined
             : {
-                x: innerRingX,
-                y: innerRingY,
+                x: pointerEnabled ? innerRingX : 0,
+                y: pointerEnabled ? innerRingY : ringScrollY,
                 rotate: innerRingRotate,
               }
         }
@@ -235,7 +284,7 @@ export default function HeroSection() {
       <motion.div
         className="relative z-10 flex flex-col items-center text-center [transform-style:preserve-3d]"
         style={
-          reduced || !pointerTracking
+          !pointerEnabled
             ? undefined
             : {
                 x: contentX,
@@ -264,7 +313,17 @@ export default function HeroSection() {
         </motion.div>
 
         {/* Headline with word-reveal */}
-        <h1 className="mt-8 max-w-2xl font-serif text-4xl font-bold leading-tight text-text-primary sm:text-5xl md:text-6xl">
+        <motion.h1
+          className="mt-8 max-w-2xl font-serif text-4xl font-bold leading-tight text-text-primary sm:text-5xl md:text-6xl"
+          style={
+            reduced
+              ? undefined
+              : {
+                  y: headlineY,
+                  scale: headlineScale,
+                }
+          }
+        >
           {/* Line 1 */}
           <span className="flex flex-wrap justify-center gap-x-[0.3em]">
             {HEADLINE_LINE_1.map((word, i) => (
@@ -301,7 +360,7 @@ export default function HeroSection() {
               );
             })}
           </span>
-        </h1>
+        </motion.h1>
 
         {/* Subtext */}
         <motion.p
@@ -326,7 +385,7 @@ export default function HeroSection() {
           custom={0.7}
           variants={fade}
           style={
-            reduced || !pointerTracking
+            !pointerEnabled
               ? undefined
               : {
                   rotateX: portraitRotateX,
@@ -339,55 +398,59 @@ export default function HeroSection() {
           <Camera size={36} className="text-text-muted" />
         </motion.div>
 
-        {/* Skill badges */}
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {SKILLS.map((skill, i) => (
-            <motion.span
-              key={skill}
-              className={cn(
-                "rounded-full border border-border-strong px-3 py-1",
-                "font-mono text-xs text-text-secondary"
-              )}
-              initial={reduced ? undefined : "hidden"}
-              animate="visible"
-              custom={i}
-              variants={badgePop}
-            >
-              {skill}
-            </motion.span>
-          ))}
-        </div>
+        <motion.div style={reduced ? undefined : { y: clusterY }}>
+          {/* Skill badges */}
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            {SKILLS.map((skill, i) => (
+              <motion.span
+                key={skill}
+                className={cn(
+                  "rounded-full border border-border-strong px-3 py-1",
+                  "font-mono text-xs text-text-secondary"
+                )}
+                initial={reduced ? undefined : "hidden"}
+                animate="visible"
+                custom={i}
+                variants={badgePop}
+              >
+                {skill}
+              </motion.span>
+            ))}
+          </div>
 
-        {/* CTA */}
-        <motion.div
-          className="mt-10"
-          initial={reduced ? undefined : "hidden"}
-          animate="visible"
-          custom={1.3}
-          variants={fade}
-        >
-          <button
-            type="button"
-            onClick={handleScrollToProjects}
-            className={cn(
-              "inline-flex items-center gap-2 border border-accent px-6 py-3",
-              "font-mono text-sm uppercase tracking-wider text-accent",
-              "transition-colors hover:bg-accent hover:text-white",
-              "shadow-[0_12px_30px_rgb(37_99_235_/_0.14)]"
-            )}
+          {/* CTA */}
+          <motion.div
+            className="mt-10"
+            initial={reduced ? undefined : "hidden"}
+            animate="visible"
+            custom={1.3}
+            variants={fade}
           >
-            See My Work
-            <ArrowDown size={14} />
-          </button>
+            <button
+              type="button"
+              onClick={handleScrollToProjects}
+              data-magnetic
+              data-cursor-label="Reveal Projects"
+              className={cn(
+                "inline-flex items-center gap-2 border border-accent px-6 py-3",
+                "font-mono text-sm uppercase tracking-wider text-accent",
+                "transition-colors hover:bg-accent hover:text-white",
+                "shadow-[0_12px_30px_rgb(37_99_235_/_0.14)]"
+              )}
+            >
+              See My Work
+              <ArrowDown size={14} />
+            </button>
+          </motion.div>
         </motion.div>
       </motion.div>
 
-      {pointerTracking && !reduced && (
+      {pointerEnabled && (
         <motion.div
           className="pointer-events-none absolute inset-0 border border-accent/25"
           initial={{ opacity: 0 }}
           animate={{ opacity: pointerInside ? 0.48 : 0.22 }}
-          transition={{ duration: 0.35, ease: [0.2, 0, 0.2, 1] }}
+          transition={{ duration: 0.35, ease: heroMotion.transitionEase }}
           aria-hidden
         />
       )}

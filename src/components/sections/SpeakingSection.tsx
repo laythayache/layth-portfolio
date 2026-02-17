@@ -1,41 +1,37 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { speakingEntries } from "@/content/speaking";
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+import { SECTION } from "@/motion/tokens";
+import { useMediaQuery } from "@/motion/useMediaQuery";
 
 export default function SpeakingSection() {
-  const prefersReduced = useReducedMotion();
+  const reduced = useReducedMotion();
+  const coarsePointer = useMediaQuery("(pointer: coarse)");
+  const mobileViewport = useMediaQuery("(max-width: 767px)");
+  const mobileTuned = coarsePointer || mobileViewport;
+
+  const cardHover =
+    reduced || mobileTuned ? undefined : SECTION.cardHover;
 
   return (
-    <section id="speaking" className="bg-surface py-24 px-6">
+    <section id="speaking" className="section-glass px-6 py-24">
       <motion.div
         className="mx-auto max-w-5xl"
-        initial="hidden"
+        initial={reduced ? undefined : "hidden"}
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        variants={prefersReduced ? {} : containerVariants}
+        viewport={SECTION.viewport}
+        variants={SECTION.container}
       >
         <motion.h2
           className="text-center font-serif text-3xl font-bold text-text-primary"
-          variants={prefersReduced ? {} : itemVariants}
+          variants={SECTION.fadeUp}
         >
           Speaking &amp; Community
         </motion.h2>
 
         <motion.p
           className="mx-auto mt-4 max-w-xl text-center text-sm text-text-secondary"
-          variants={prefersReduced ? {} : itemVariants}
+          variants={SECTION.fadeUp}
         >
           Available for speaking engagements on AI systems, automation, and
           building technology in emerging markets.
@@ -50,8 +46,9 @@ export default function SpeakingSection() {
           {speakingEntries.map((entry) => (
             <motion.div
               key={entry.id}
-              className="rounded-lg border border-border bg-surface-raised p-6"
-              variants={prefersReduced ? {} : itemVariants}
+              className="rounded-lg border border-border bg-surface-raised p-6 transition-colors"
+              variants={SECTION.fadeUp}
+              whileHover={cardHover}
             >
               <h3 className="font-semibold text-text-primary">{entry.title}</h3>
               <p className="mt-1 font-mono text-xs text-accent">

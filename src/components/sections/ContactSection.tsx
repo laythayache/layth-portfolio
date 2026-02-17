@@ -1,18 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { Mail, Linkedin, Github } from "lucide-react";
-import { cn } from "@/lib/utils";
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.1 },
-  },
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-};
+import { Mail, Linkedin, Github, ArrowUpRight } from "lucide-react";
+import { SECTION } from "@/motion/tokens";
+import { useMediaQuery } from "@/motion/useMediaQuery";
 
 const links = [
   {
@@ -20,78 +9,107 @@ const links = [
     href: "mailto:hello@laythayache.com",
     icon: Mail,
     external: false,
+    cursorLabel: "Send Email",
   },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/laythayache",
     icon: Linkedin,
     external: true,
+    cursorLabel: "Open LinkedIn",
   },
   {
     label: "GitHub",
     href: "https://github.com/laythayache",
     icon: Github,
     external: true,
+    cursorLabel: "Open GitHub",
   },
 ] as const;
 
+const linkHover = {
+  y: -2,
+  transition: { duration: 0.2, ease: SECTION.ease },
+};
+
 export default function ContactSection() {
-  const prefersReduced = useReducedMotion();
+  const reduced = useReducedMotion();
+  const coarsePointer = useMediaQuery("(pointer: coarse)");
+  const mobileViewport = useMediaQuery("(max-width: 767px)");
+  const mobileTuned = coarsePointer || mobileViewport;
 
   return (
-    <section id="contact" className="bg-surface py-24 px-6">
+    <section id="contact" className="section-glass px-6 py-24 md:py-32">
       <motion.div
         className="mx-auto max-w-2xl text-center"
-        initial="hidden"
+        initial={reduced ? undefined : "hidden"}
         whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={prefersReduced ? {} : containerVariants}
+        viewport={SECTION.viewport}
+        variants={SECTION.container}
       >
-        <motion.h2
-          className="font-serif text-3xl font-bold text-text-primary"
-          variants={prefersReduced ? {} : fadeUp}
+        <motion.p
+          className="font-mono text-xs uppercase tracking-widest text-accent"
+          variants={SECTION.fadeUp}
         >
-          Let's Build Something Together
+          Get in touch
+        </motion.p>
+
+        <motion.h2
+          className="mt-4 font-serif text-3xl font-bold text-text-primary md:text-4xl"
+          variants={SECTION.fadeUp}
+        >
+          Let&rsquo;s Build Something Together
         </motion.h2>
 
         <motion.p
           className="mt-4 text-text-secondary"
-          variants={prefersReduced ? {} : fadeUp}
+          variants={SECTION.fadeUp}
         >
           Open to consulting, contract work, collaboration, and speaking
           opportunities.
         </motion.p>
 
         <motion.div
-          className={cn(
-            "mt-10 flex flex-wrap items-center justify-center gap-6"
-          )}
-          variants={prefersReduced ? {} : fadeUp}
+          className="mt-10 flex flex-wrap items-center justify-center gap-5"
+          variants={SECTION.fadeUp}
         >
           {links.map((link) => {
             const Icon = link.icon;
             return (
-              <a
+              <motion.a
                 key={link.label}
                 href={link.href}
                 {...(link.external
                   ? { target: "_blank", rel: "noopener noreferrer" }
                   : {})}
-                className="inline-flex items-center gap-2 text-sm text-text-secondary transition-colors hover:text-accent"
+                data-magnetic
+                data-cursor-label={link.cursorLabel}
+                className="group inline-flex items-center gap-2 rounded-full border border-border-strong px-5 py-2.5 text-sm text-text-secondary transition-colors hover:border-accent hover:text-accent"
+                whileHover={reduced || mobileTuned ? undefined : linkHover}
               >
                 <Icon size={16} />
                 <span>{link.label}</span>
-              </a>
+                {link.external && (
+                  <ArrowUpRight
+                    size={13}
+                    className="opacity-0 transition-opacity group-hover:opacity-100"
+                  />
+                )}
+              </motion.a>
             );
           })}
         </motion.div>
 
-        <motion.p
-          className="mt-16 font-mono text-xs text-text-muted"
-          variants={prefersReduced ? {} : fadeUp}
+        <motion.div
+          className="mt-16 flex items-center justify-center gap-3"
+          variants={SECTION.fadeUp}
         >
-          &copy; 2026 Layth Ayache
-        </motion.p>
+          <div className="h-px w-12 bg-border-strong" />
+          <p className="font-mono text-xs text-text-muted">
+            &copy; 2026 Layth Ayache
+          </p>
+          <div className="h-px w-12 bg-border-strong" />
+        </motion.div>
       </motion.div>
     </section>
   );
