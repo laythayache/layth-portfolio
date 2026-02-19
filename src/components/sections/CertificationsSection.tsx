@@ -1,88 +1,160 @@
-import { motion, useReducedMotion } from "framer-motion";
-import { GraduationCap, Award } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { certifications, education } from "@/content/certifications";
-import { SECTION } from "@/motion/tokens";
-import { useMediaQuery } from "@/motion/useMediaQuery";
+import { useMemo, useState, type ComponentType } from "react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { Award, ChevronDown, GraduationCap, ShieldCheck } from "lucide-react";
+import {
+  certifications,
+  type CredentialGroup,
+  type Certification,
+} from "@/content/certifications";
+
+const GROUP_META: Record<
+  CredentialGroup,
+  { label: string; icon: ComponentType<{ size?: number; className?: string }> }
+> = {
+  degrees: { label: "Degrees", icon: GraduationCap },
+  professional: { label: "Professional Certificates", icon: ShieldCheck },
+  awards: { label: "Awards and Clinical Credentials", icon: Award },
+};
 
 export default function CertificationsSection() {
   const reduced = useReducedMotion();
-  const coarsePointer = useMediaQuery("(pointer: coarse)");
-  const mobileViewport = useMediaQuery("(max-width: 767px)");
-  const mobileTuned = coarsePointer || mobileViewport;
+  const [expanded, setExpanded] = useState<string | null>(null);
 
-  const cardHover =
-    reduced || mobileTuned ? undefined : SECTION.cardHover;
+  const grouped = useMemo(() => {
+    const byGroup = new Map<CredentialGroup, Certification[]>();
+    for (const cert of certifications) {
+      const list = byGroup.get(cert.group) ?? [];
+      list.push(cert);
+      byGroup.set(cert.group, list);
+    }
+    return byGroup;
+  }, []);
 
   return (
     <section id="certifications" className="section-glass section-shell px-6">
       <motion.div
-        className="mx-auto max-w-5xl"
+        className="mx-auto max-w-6xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
-        viewport={SECTION.viewport}
-        variants={SECTION.container}
+        viewport={{ once: true, margin: "-60px" }}
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.03 } },
+        }}
       >
         <motion.h2
-          className="text-center font-serif text-3xl font-bold text-text-primary md:text-4xl"
-          variants={SECTION.fadeUp}
+          className="type-h2 text-center"
+          variants={{
+            hidden: { opacity: 0, y: 12 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+          }}
         >
-          Certifications &amp; Education
+          Certifications and Education
         </motion.h2>
-
-        <motion.div
-          className="mt-12 rounded-xl border border-border bg-surface-raised p-8 transition-colors"
-          variants={SECTION.fadeUp}
-          whileHover={cardHover}
+        <motion.p
+          className="type-body mx-auto mt-4 max-w-3xl text-center"
+          variants={{
+            hidden: { opacity: 0, y: 12 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+          }}
         >
-          <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/10">
-              <GraduationCap size={20} className="text-accent" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-text-primary">
-                {education.degree}
-              </h3>
-              <p className="mt-1 text-base text-text-secondary">
-                {education.institution} &middot; {education.location}
-              </p>
-              <p className="mt-1 font-mono text-sm text-text-muted">
-                {education.dateRange}
-              </p>
-              {education.accreditation && (
-                <span className="mt-3 inline-block rounded-full border border-accent/30 bg-accent/5 px-3 py-1 font-mono text-xs text-accent">
-                  {education.accreditation}
-                </span>
-              )}
-            </div>
-          </div>
-        </motion.div>
+          Grouped credentials with concise details. Expand any card for context.
+        </motion.p>
 
-        <div
-          className={cn(
-            "mt-8 grid gap-6",
-            "grid-cols-1 md:grid-cols-2"
-          )}
-        >
-          {certifications.map((cert) => (
-            <motion.div
-              key={cert.id}
-              className="rounded-xl border border-border bg-surface-raised p-6 transition-colors"
-              variants={SECTION.fadeUp}
-              whileHover={cardHover}
-            >
-              <Award size={20} className="text-accent" />
-              <h3 className="mt-3 text-base font-semibold text-text-primary">
-                {cert.name}
-              </h3>
-              <p className="mt-1 text-sm text-text-muted">{cert.issuer}</p>
-              {cert.date && (
-                <p className="mt-1 font-mono text-sm text-text-muted">
-                  {cert.date}
-                </p>
-              )}
-            </motion.div>
-          ))}
+        <div className="mt-10 space-y-8">
+          {(Object.keys(GROUP_META) as CredentialGroup[]).map((groupKey) => {
+            const groupItems = grouped.get(groupKey) ?? [];
+            if (groupItems.length === 0) return null;
+            const GroupIcon = GROUP_META[groupKey].icon;
+
+            return (
+              <motion.section
+                key={groupKey}
+                variants={{
+                  hidden: { opacity: 0, y: 10 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+                }}
+              >
+                <div className="mb-4 flex items-center gap-2">
+                  <span className="rounded-md bg-accent/12 p-2 text-accent">
+                    <GroupIcon size={16} aria-hidden />
+                  </span>
+                  <h3 className="type-h3 text-[1.35rem]">
+                    {GROUP_META[groupKey].label}
+                  </h3>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
+                  {groupItems.map((item) => {
+                    const isOpen = expanded === item.id;
+                    return (
+                      <article
+                        key={item.id}
+                        className="rounded-xl border border-border bg-surface-raised p-5"
+                      >
+                        <button
+                          type="button"
+                          className="flex w-full items-start justify-between gap-4 text-left"
+                          onClick={() =>
+                            setExpanded((prev) => (prev === item.id ? null : item.id))
+                          }
+                          aria-expanded={isOpen}
+                          aria-controls={`certification-${item.id}`}
+                        >
+                          <div>
+                            <h4 className="text-lg font-semibold text-text-primary">
+                              {item.name}
+                            </h4>
+                            <p className="mt-1 text-sm text-text-secondary">
+                              {item.issuer}
+                            </p>
+                            {item.date && (
+                              <p className="mt-1 text-sm text-text-muted">{item.date}</p>
+                            )}
+                          </div>
+                          <ChevronDown
+                            size={18}
+                            className={`mt-1 transition-transform ${
+                              isOpen ? "rotate-180" : ""
+                            }`}
+                            aria-hidden
+                          />
+                        </button>
+
+                        <AnimatePresence initial={false}>
+                          {isOpen && (
+                            <motion.div
+                              id={`certification-${item.id}`}
+                              className="overflow-hidden"
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
+                            >
+                              <p className="mt-4 text-base leading-relaxed text-text-secondary">
+                                {item.details}
+                              </p>
+                              {item.credentialUrl && (
+                                <a
+                                  href={item.credentialUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mt-4 inline-flex text-sm font-medium text-accent hover:underline"
+                                  title="Opens in a new tab"
+                                >
+                                  View credential
+                                </a>
+                              )}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </article>
+                    );
+                  })}
+                </div>
+              </motion.section>
+            );
+          })}
         </div>
       </motion.div>
     </section>

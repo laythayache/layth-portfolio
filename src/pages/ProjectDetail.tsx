@@ -93,11 +93,11 @@ export default function ProjectDetail() {
       <ProjectShell project={project}>
         {/* Back link */}
         <Link
-          to="/lab"
+          to="/#projects"
           className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-accent"
         >
           <ArrowLeft size={14} />
-          Back to the lab
+          Back to projects
         </Link>
 
         {/* Expanded diagram modal */}
@@ -156,12 +156,9 @@ export default function ProjectDetail() {
                   {project.kind}
                 </span>
                 <span className="text-text-muted">&middot;</span>
-                <Link
-                  to={`/systems/${project.system}`}
-                  className="font-mono text-xs text-text-muted underline underline-offset-2 hover:text-text-secondary"
-                >
+                <span className="font-mono text-xs text-text-muted">
                   {project.system}
-                </Link>
+                </span>
                 <span className="text-text-muted">&middot;</span>
                 <span className="font-mono text-xs text-text-muted">
                   {project.ui_mode}

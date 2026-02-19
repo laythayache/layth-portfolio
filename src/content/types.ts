@@ -68,6 +68,9 @@ export interface Project {
   links?: ProjectLinks;
   challenge_url?: string;
   friend_project?: boolean;
+  tags?: string[];
+  thumbnail?: string;
+  featured?: boolean;
   sections: ProjectSections;
   card?: CardConfig;
 }

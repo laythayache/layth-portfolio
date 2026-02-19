@@ -4,24 +4,30 @@ export interface SpeakingEntry {
   role: string;
   organization: string;
   description: string;
+  ctaLabel: string;
+  link?: string;
 }
 
 export const speakingEntries: SpeakingEntry[] = [
   {
     id: "ai-club",
-    title: "AI Club President",
-    role: "Organizer & Speaker",
+    title: "AI Club Leadership",
+    role: "Organizer and Speaker",
     organization: "Rafik Hariri University",
     description:
-      "Organized AI workshops and hackathons. Led sessions on Computer Vision, NLP, and Neural Networks. Grew the technical community to 100+ students.",
+      "Led practical AI workshops and community events focused on computer vision, NLP, and real-world deployment mindset.",
+    ctaLabel: "View highlights",
+    link: "https://www.linkedin.com/in/laythayache",
   },
   {
     id: "robotics-tutor",
-    title: "Robotics Tutor",
+    title: "Robotics Outreach",
     role: "Workshop Instructor",
-    organization: "Public Schools & Little Engineer Initiative",
+    organization: "Public Schools and Little Engineer Initiative",
     description:
-      "Conduct robotics workshops teaching Arduino and programming fundamentals to students. Collaborate with the Little Engineer initiative to bring STEM education to underserved communities.",
+      "Designed beginner-friendly robotics sessions in underserved communities with hands-on Arduino and problem-solving labs.",
+    ctaLabel: "Join community",
+    link: "https://www.linkedin.com/in/laythayache",
   },
   {
     id: "zaka-ambassador",
@@ -29,6 +35,8 @@ export const speakingEntries: SpeakingEntry[] = [
     role: "Community Representative",
     organization: "ZAKA",
     description:
-      "Promoted AI solutions and organized AI-related events at the university level. Served as a bridge between ZAKA and the student tech community.",
+      "Organized AI-focused events and connected students with practitioners to bridge research, industry, and mentorship.",
+    ctaLabel: "See updates",
+    link: "https://www.linkedin.com/in/laythayache",
   },
 ];

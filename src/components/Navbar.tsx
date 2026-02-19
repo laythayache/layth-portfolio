@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useLenis } from "@/motion/LenisProvider";
+import useScrollSpy from "@/hooks/useScrollSpy";
 
 const NAV_SECTIONS = [
   { id: "about", label: "About" },
@@ -15,13 +16,19 @@ const NAV_SECTIONS = [
   { id: "faq", label: "FAQ" },
   { id: "contact", label: "Contact" },
 ] as const;
+const NAV_SECTION_IDS = NAV_SECTIONS.map((section) => section.id);
+const SCROLLSPY_THRESHOLDS = [0.2, 0.45, 0.7];
 
 export default function Navbar() {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>("");
+  const activeSection = useScrollSpy(NAV_SECTION_IDS, {
+    rootMargin: "-30% 0px -55% 0px",
+    threshold: SCROLLSPY_THRESHOLDS,
+    initialActive: "about",
+  });
 
   // Scroll progress bar
   const { scrollYProgress } = useScroll();
@@ -33,35 +40,23 @@ export default function Navbar() {
 
   // Scroll detection for background
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 8);
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Intersection Observer scroll spy (homepage only)
+  // Close mobile nav with Escape
   useEffect(() => {
-    if (!isHome) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        }
-      },
-      { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
-    );
-
-    const ids = NAV_SECTIONS.map((s) => s.id);
-    for (const id of ids) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
+    if (!mobileOpen) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+      }
     }
-
-    return () => observer.disconnect();
-  }, [isHome]);
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen]);
 
   const lenis = useLenis();
 
@@ -70,13 +65,13 @@ export default function Navbar() {
       setMobileOpen(false);
       if (isHome) {
         if (lenis) {
-          lenis.scrollTo(`#${id}`, { offset: -64 });
+          lenis.scrollTo(`#${id}`, { offset: -84 });
         } else {
           const el = document.getElementById(id);
           if (el) el.scrollIntoView({ behavior: "smooth" });
         }
       } else {
-        window.location.href = `/#${id}`;
+        window.location.assign(`/#${id}`);
       }
     },
     [isHome, lenis]
@@ -84,11 +79,13 @@ export default function Navbar() {
 
   return (
     <nav
-      aria-label="Primary"
+      aria-label="Navigation"
       className={cn(
         "fixed left-0 right-0 top-0 z-50 transition-colors duration-300",
-        "border-b border-border-strong bg-surface/92 backdrop-blur-md",
-        isHome && !scrolled ? "shadow-none" : "shadow-[0_8px_24px_rgb(15_23_42_/_0.08)]"
+        "border-b border-border-strong bg-surface/94 backdrop-blur-lg",
+        isHome && !scrolled
+          ? "shadow-none"
+          : "shadow-[0_8px_24px_rgb(15_23_42_/_0.08)]"
       )}
     >
       {/* Progress bar */}
@@ -99,7 +96,7 @@ export default function Navbar() {
         />
       )}
 
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+      <div className="mx-auto flex h-[var(--nav-height)] max-w-6xl items-center justify-between px-6">
         {/* Logo / home link */}
         <Link
           to="/"
@@ -128,7 +125,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden items-center gap-5 lg:flex">
+        <div className="hidden items-center gap-2 lg:flex">
           {NAV_SECTIONS.map((section) => {
             const active = isHome && activeSection === section.id;
             return (
@@ -139,17 +136,17 @@ export default function Navbar() {
                 data-magnetic
                 data-cursor-label={`Jump to ${section.label}`}
                 className={cn(
-                  "relative pb-1 font-mono text-sm uppercase tracking-[0.15em] transition-colors",
+                  "relative rounded-md px-3 py-2 text-base font-medium transition-colors",
                   active
-                    ? "text-text-primary"
-                    : "text-text-secondary hover:text-accent"
+                    ? "bg-accent/12 text-text-primary"
+                    : "text-text-secondary hover:bg-surface-overlay hover:text-accent"
                 )}
               >
                 {section.label}
                 {active && (
                   <motion.span
                     layoutId="nav-underline"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent"
+                    className="absolute bottom-0 left-2 right-2 h-0.5 rounded-full bg-accent"
                     transition={{ type: "spring", stiffness: 380, damping: 30 }}
                   />
                 )}
@@ -166,7 +163,7 @@ export default function Navbar() {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
             aria-controls="mobile-navigation"
-            className="rounded-md border border-border-strong bg-surface-raised p-2 text-text-primary transition-colors hover:border-accent hover:text-accent"
+            className="rounded-md border border-border-strong bg-surface-raised p-2.5 text-text-primary transition-colors hover:border-accent hover:text-accent"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -183,7 +180,7 @@ export default function Navbar() {
             transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
             className="overflow-hidden border-b border-border bg-surface lg:hidden"
             id="mobile-navigation"
-            aria-label="Mobile menu"
+            aria-label="Mobile navigation"
           >
             <div className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
               {NAV_SECTIONS.map((section) => {
@@ -194,9 +191,9 @@ export default function Navbar() {
                     type="button"
                     onClick={() => scrollToSection(section.id)}
                     className={cn(
-                      "rounded px-3 py-3 text-left font-mono text-sm uppercase tracking-[0.15em] transition-colors",
+                      "rounded-md px-3 py-3 text-left text-base font-medium transition-colors",
                       active
-                        ? "border-l-2 border-accent bg-accent/5 text-text-primary"
+                        ? "border-l-2 border-accent bg-accent/12 text-text-primary"
                         : "text-text-secondary hover:bg-surface-overlay hover:text-accent"
                     )}
                   >

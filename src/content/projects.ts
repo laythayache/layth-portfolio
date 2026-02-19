@@ -8,51 +8,246 @@ export const projects: Project[] = [
     kind: "infrastructure",
     system: "accessibility",
     ui_mode: "lab",
-    updated_at: "2026-02-01",
+    updated_at: "2026-02-16",
     summary:
-      "Production sign language translation system for Lebanese Sign Language. Real-time on-device CV pipeline with federated learning architecture for privacy preservation.",
+      "AI-powered Lebanese Sign Language translation system with privacy-first on-device inference and real-time interaction.",
     outcome:
-      "Privacy-first sign language translation: 89% alphabet accuracy, <100ms latency, federated learning operational across distributed nodes",
-    role: "Federated Learning Architect (team of 6)",
+      "50,000+ signs collected, 80,000+ processed samples, and strong internal recognition performance for daily-use vocabulary.",
+    role: "AI and ML Lead (Team of 6)",
     stack: "TensorFlow, MediaPipe, React Native, Python, WebRTC",
-    timeframe: "2024 - 2025",
+    timeframe: "2024 - Present",
     architectureDiagram: "/diagrams/omnisign-architecture.svg",
     links: {
       repo: "https://github.com/laythayache/omnisign",
     },
-    challenge_url: "/contact?project=omnisign",
+    challenge_url: "/#contact",
     friend_project: false,
+    tags: ["AI", "Accessibility", "Computer Vision"],
+    thumbnail: "/omnisign-logo.png",
+    featured: true,
     card: {
       accent: "teal",
       size: "lg",
       variant: "featured",
-      tagline: "Privacy-first translation infrastructure",
-      highlight: "89% alphabet accuracy · On-device inference · Federated learning",
+      tagline: "AI translation infrastructure for LSL",
+      highlight: "Community-built dataset · Real-time translation · Privacy-first",
     },
     sections: {
       problem:
-        "Lebanese Sign Language has no digital infrastructure. No standard dataset, no translation system, no unified reference. Deaf communities in Lebanon navigate daily life through a language invisible to technology.",
+        "Lebanese Sign Language lacked usable digital infrastructure, limiting communication support in everyday and high-stakes settings.",
       systemReality:
-        "LSL is not standardized across regions. No public datasets existed. Arabic Sign Language serves as the closest reference. Privacy constraints require on-device processing. Real-time translation demands sub-100ms latency for usable interaction.",
+        "No clean public dataset existed, dialects differed across regions, and the solution had to stay useful under constrained hardware and unstable connectivity.",
       intervention:
-        "Multi-stage CV pipeline architecture: video capture → MediaPipe landmark extraction → classification model → multi-modal output (text + speech). Federated learning framework keeps sign data on-device, eliminating privacy risks of centralized collection. Mobile deployment via React Native + TensorFlow Lite.",
+        "Designed and iterated an end-to-end pipeline from sign capture and dataset curation to model inference and multi-modal output.",
       architecture:
-        "MediaPipe Pose for hand/body landmark extraction. TensorFlow Lite classification models running on-device. Federated learning coordinator managing model updates across contributors without centralizing sign data. React Native cross-platform SDK. WebRTC signaling for real-time video capture. Multi-modal output: text transcription + synthetic speech.",
-      tradeoffs: `**Federated vs Centralized Learning:** Chose federated to preserve privacy, but increased complexity 3x. Centralized would reach production faster but violates core privacy principle and creates institutional dependency.
-
-**Alphabet vs Full Translation:** Started with alphabet recognition (smaller scope, faster validation). Full sentence translation requires 100x more data and grammatical modeling—premature at this stage.
-
-**On-device vs Cloud Inference:** On-device keeps data private and works offline, but constrains model size to <50MB. Cloud inference would enable larger models (500MB+) and better accuracy but creates privacy risk and requires connectivity.`,
+        "MediaPipe landmarks feed TensorFlow sequence models; inference runs on device where possible; outputs are translated to text and speech in real time.",
+      tradeoffs:
+        "Prioritized practical reliability and privacy over broad feature scope. Focused first on high-utility vocabulary and robust capture quality.",
       worked:
-        "First functional LSL dataset created (initial 800 signs). Alphabet-level recognition at 89% accuracy in controlled evaluation. Real-time inference <100ms on mid-range mobile devices (Snapdragon 750G). Federated learning operational across 6 distributed contributors. Cross-platform SDK functional on iOS and Android. Multi-modal output (text + speech synthesis) working.",
+        "Established a real local dataset process, shipped repeatable inference flows, and built strong traction with communities and partners.",
       didnt:
-        "Word/sentence-level translation unsolved. Dataset too small for generalization beyond alphabet (89% accuracy only in controlled studio conditions). Regional LSL variation unaddressed (Northern vs Southern dialect differences). Real-world performance degradation in natural lighting and hand-occlusion scenarios. Grammar modeling not attempted.",
+        "Dialect variance and environment variability still impact robustness, and full conversational translation remains a longer research track.",
       reliability:
-        "On-device processing prevents data leakage. Federated model updates validated before deployment. Graceful fallback to manual input if inference fails. Real-time latency monitoring per-device. Dataset versioning tracks contribution provenance. Error logs sanitized to exclude sign imagery.",
+        "Added strong preprocessing and quality checks for image flows, with defensive fallbacks for low-confidence predictions.",
       unsolved:
-        "Scaling data collection ethically while maintaining federated privacy (incentivizing contributor participation without personal tracking). Community contribution pipeline for dataset expansion (governance, approval workflows, attribution). Handling dialectal variation across LSL regions (Northern/Southern/Bekaa differences). Transition from gesture recognition to conversational translation (requires grammar + semantic models). Sustainable funding model beyond initial development.",
+        "Need broader vocabulary coverage, stronger real-world generalization, and sustainable long-term funding and partnerships.",
       challenges:
-        "Open to critique on: dataset collection methodology (consent and privacy at scale), federated learning necessity vs complexity cost (could simpler approaches work?), model architecture decisions (why MediaPipe over custom pose estimation?), whether translation technology is the right intervention vs LSL education investment in schools, whether centralized infrastructure could serve this better than federated model, and the trade-offs between respecting regional variation and building unified standard.",
+        "How to scale ethically with community trust while preserving quality, privacy, and regional representation.",
+    },
+  },
+  {
+    slug: "license-plate-recognition",
+    title: "License Plate Recognition System",
+    status: "completed",
+    kind: "analysis",
+    system: "security",
+    ui_mode: "lab",
+    updated_at: "2025-11-12",
+    summary:
+      "Real-time license plate detection and OCR pipeline for roadway and parking workflows.",
+    outcome:
+      "Delivered stable detection + text extraction under varied camera angles with post-processing to improve read quality.",
+    role: "Computer Vision Engineer",
+    stack: "YOLOv8, OpenCV, OCR, Python",
+    timeframe: "2025",
+    challenge_url: "/#contact",
+    tags: ["AI", "Security", "Computer Vision"],
+    featured: true,
+    sections: {
+      problem:
+        "Manual plate logging and low-quality camera feeds caused delays and inconsistent records.",
+      systemReality:
+        "Low-light frames, motion blur, and variable plate formatting reduced OCR reliability.",
+      intervention:
+        "Built a two-stage detector + OCR flow with filtering, correction heuristics, and confidence thresholds.",
+      architecture:
+        "YOLOv8 for vehicle/plate localization followed by OCR extraction and post-processing normalization.",
+      tradeoffs:
+        "Balanced speed and precision by tuning detection thresholds and introducing fallback retries.",
+      worked:
+        "Improved operational accuracy for common camera setups and reduced manual correction effort.",
+      didnt:
+        "Extreme blur and severe occlusion still degrade extraction quality.",
+      unsolved:
+        "Future improvements include temporal frame aggregation and stronger multilingual OCR adaptation.",
+      challenges:
+        "How to keep latency low while increasing robustness in unpredictable field conditions.",
+    },
+  },
+  {
+    slug: "face-recognition",
+    title: "Face Recognition System",
+    status: "completed",
+    kind: "analysis",
+    system: "security",
+    ui_mode: "lab",
+    updated_at: "2025-08-20",
+    summary:
+      "Real-time face recognition workflow for identity matching and access scenarios.",
+    outcome:
+      "Shipped a practical recognition pipeline with controllable thresholds and improved false-positive handling.",
+    role: "ML Engineer",
+    stack: "OpenCV, Haar Cascades, Eigenfaces, Python",
+    timeframe: "2025",
+    challenge_url: "/#contact",
+    tags: ["AI", "Security", "Computer Vision"],
+    featured: true,
+    sections: {
+      problem:
+        "Needed a low-overhead face identification system that could run in constrained environments.",
+      systemReality:
+        "Lighting changes, camera quality, and expression variance made matching unstable.",
+      intervention:
+        "Combined face detection, aligned preprocessing, and confidence-based recognition thresholds.",
+      architecture:
+        "OpenCV detection pipeline with feature extraction and identity scoring for real-time matching.",
+      tradeoffs:
+        "Chose lightweight methods for speed and compatibility instead of heavier deep models.",
+      worked:
+        "System performed well in controlled environments and small-to-medium identity sets.",
+      didnt:
+        "Accuracy dropped in poor lighting and with significant angle variance.",
+      unsolved:
+        "Future work includes embedding-based models and adaptive thresholding per environment.",
+      challenges:
+        "Balancing privacy considerations with identity verification requirements.",
+    },
+  },
+  {
+    slug: "breast-cancer-detection",
+    title: "Breast Cancer Detection Model",
+    status: "completed",
+    kind: "analysis",
+    system: "medical-ai",
+    ui_mode: "lab",
+    updated_at: "2025-07-18",
+    summary:
+      "Supervised machine learning classification model for early-stage breast cancer risk detection.",
+    outcome:
+      "Built a reliable baseline classifier with transparent feature engineering and evaluation strategy.",
+    role: "Data Scientist",
+    stack: "TensorFlow, Scikit-learn, Python",
+    timeframe: "2025",
+    challenge_url: "/#contact",
+    tags: ["AI", "Medical", "Predictive Modeling"],
+    featured: true,
+    sections: {
+      problem:
+        "Clinicians needed interpretable predictive support to prioritize follow-up decisions.",
+      systemReality:
+        "Medical datasets were imbalanced and required strict preprocessing to avoid misleading results.",
+      intervention:
+        "Designed a supervised classification pipeline with feature normalization, evaluation guards, and model comparison.",
+      architecture:
+        "Preprocessing and feature engineering feed into ensemble and neural baselines with metric-focused validation.",
+      tradeoffs:
+        "Prioritized interpretability and calibration over marginal metric gains from opaque models.",
+      worked:
+        "Produced stable validation performance and clearer risk stratification than naive baselines.",
+      didnt:
+        "Generalization depends on dataset diversity and external clinical validation.",
+      unsolved:
+        "Needs broader multi-center data and explainability-first deployment pathways.",
+      challenges:
+        "How to operationalize clinical AI safely without overpromising certainty.",
+    },
+  },
+  {
+    slug: "home-security-system",
+    title: "Home Security Embedded System",
+    status: "completed",
+    kind: "intervention",
+    system: "embedded",
+    ui_mode: "lab",
+    updated_at: "2025-06-02",
+    summary:
+      "IoT security system using embedded sensors, Bluetooth presence logic, and app-based controls.",
+    outcome:
+      "Created a modular prototype with responsive alerts and practical rule-based activation.",
+    role: "Embedded Systems Engineer",
+    stack: "Arduino, PIR Sensors, Bluetooth, Mobile App",
+    timeframe: "2024 - 2025",
+    challenge_url: "/#contact",
+    tags: ["Embedded", "Security", "IoT"],
+    featured: true,
+    sections: {
+      problem:
+        "Required a lightweight home monitoring setup that could respond quickly to intrusion events.",
+      systemReality:
+        "False positives from ambient motion and occupancy changes were common failure points.",
+      intervention:
+        "Combined sensor events with Bluetooth device detection to improve arming/disarming logic.",
+      architecture:
+        "Arduino sensor network triggers event rules and transmits alerts to a companion mobile interface.",
+      tradeoffs:
+        "Chose deterministic rule logic for reliability before introducing ML-based anomaly detection.",
+      worked:
+        "Reduced noisy alerts and improved operator trust in event notifications.",
+      didnt:
+        "Complex multi-occupant scenarios still require more advanced context awareness.",
+      unsolved:
+        "Potential next step is hybrid edge inference for richer false-alarm filtering.",
+      challenges:
+        "How to keep the system simple to maintain while increasing intelligence over time.",
+    },
+  },
+  {
+    slug: "network-infrastructure",
+    title: "Network Security Infrastructure",
+    status: "completed",
+    kind: "infrastructure",
+    system: "networking",
+    ui_mode: "lab",
+    updated_at: "2025-05-22",
+    summary:
+      "Enterprise network design with segmented VLAN architecture, hardened perimeter controls, and remote access policies.",
+    outcome:
+      "Delivered a secure baseline architecture with clearer segmentation and improved maintainability.",
+    role: "Network Engineer",
+    stack: "Cisco, VLANs, ASA Firewall, VPN, SSH, DHCP",
+    timeframe: "2024 - 2025",
+    challenge_url: "/#contact",
+    tags: ["Infrastructure", "Security", "Networking"],
+    featured: true,
+    sections: {
+      problem:
+        "Needed a secure and maintainable network layout across mixed operational zones.",
+      systemReality:
+        "Legacy flat-network practices increased blast radius and operational risk.",
+      intervention:
+        "Introduced segmented VLANs, strict ACL patterns, secured remote access, and layered firewall policy.",
+      architecture:
+        "Core switching with segmented VLANs, edge firewall controls, VPN entry points, and controlled DHCP scopes.",
+      tradeoffs:
+        "Accepted additional configuration complexity to gain clearer security boundaries and observability.",
+      worked:
+        "Improved segmentation discipline and reduced cross-zone exposure risk.",
+      didnt:
+        "Legacy hardware constraints limited some policy automation workflows.",
+      unsolved:
+        "Future work includes stronger infrastructure-as-code patterns and richer telemetry.",
+      challenges:
+        "How to evolve security posture without disrupting critical day-to-day operations.",
     },
   },
 ];

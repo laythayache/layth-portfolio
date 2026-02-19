@@ -4,6 +4,26 @@ export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
+      spacing: {
+        18: "4.5rem",
+        22: "5.5rem",
+        26: "6.5rem",
+      },
+      fontSize: {
+        "display-1": [
+          "clamp(2.6rem, 6vw, 4.2rem)",
+          { lineHeight: "1.04", letterSpacing: "-0.02em" },
+        ],
+        "display-2": [
+          "clamp(2rem, 4.2vw, 3.2rem)",
+          { lineHeight: "1.12", letterSpacing: "-0.015em" },
+        ],
+        "heading-3": [
+          "clamp(1.3rem, 2.6vw, 1.8rem)",
+          { lineHeight: "1.2", letterSpacing: "-0.012em" },
+        ],
+        "body-lg": ["1.125rem", { lineHeight: "1.75" }],
+      },
       fontFamily: {
         sans: ['"Inter"', "system-ui", "sans-serif"],
         serif: ['"IBM Plex Serif"', "Georgia", "serif"],

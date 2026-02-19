@@ -36,7 +36,7 @@ export default function RouteTransition() {
       <motion.main
         key={location.pathname}
         id="main-content"
-        className="min-h-screen pt-16"
+        className="min-h-screen pt-[var(--nav-height)]"
         variants={variants}
         initial="initial"
         animate="animate"

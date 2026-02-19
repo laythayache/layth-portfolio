@@ -20,7 +20,6 @@ import {
   features,
   communityQuote,
   communityStory,
-  roadmapItems,
   team,
   faqItems,
   timelineItems,
@@ -31,6 +30,11 @@ import FAQAccordion from "@/components/omnisign/FAQAccordion";
 import HandLandmarks from "@/components/omnisign/HandLandmarks";
 import VisualTimeline from "@/components/omnisign/VisualTimeline";
 import CTACards from "@/components/omnisign/CTACards";
+import {
+  DesktopTOC,
+  MobileTOC,
+  type TocItem,
+} from "@/components/microsite/TableOfContents";
 
 /* ── Animation constants ── */
 const EASE_OUT: [number, number, number, number] = [0, 0, 0.2, 1];
@@ -44,7 +48,41 @@ const regions = [
   "School A — Beirut",
   "School B — Beirut",
 ];
-
+const TOC_ITEMS: TocItem[] = [
+  { id: "origin", label: "How it started" },
+  { id: "dataset", label: "Data collection" },
+  { id: "features", label: "Pipeline" },
+  { id: "team", label: "Team" },
+  { id: "get-involved", label: "Call to action" },
+];
+const DATASET_METRICS = [
+  {
+    num: "50k+",
+    desc: "raw signs collected across campaigns in Lebanon",
+    context:
+      "Represents initial source material before cleaning and augmentation.",
+    bar: "62%",
+    barColor: "bg-teal-600",
+    label: "collection",
+  },
+  {
+    num: "80k+",
+    desc: "processed image flows after preprocessing and augmentation",
+    context:
+      "Includes transformed and quality-filtered samples for model training.",
+    bar: "100%",
+    barColor: "bg-cyan-700",
+    label: "processed",
+  },
+  {
+    num: "30+",
+    desc: "daily words and expressions plus Arabic alphabet support",
+    context: "Current public-facing vocabulary in the MVP stage.",
+    bar: "35%",
+    barColor: "bg-teal-500",
+    label: "vocabulary",
+  },
+];
 const GRAIN = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")`;
 
 export default function OmnisignMicrosite() {
@@ -81,7 +119,6 @@ export default function OmnisignMicrosite() {
     if (!v) return;
     if (v.paused) {
       v.muted = false;
-      v.controls = true;
       v.play();
       setIsPlaying(true);
     } else {
@@ -119,6 +156,9 @@ export default function OmnisignMicrosite() {
         aria-hidden="true"
         style={{ backgroundImage: GRAIN, opacity: 0.035 }}
       />
+      <div className="fixed right-6 top-[calc(var(--nav-height)+1rem)] z-30 hidden w-56 xl:block">
+        <DesktopTOC items={TOC_ITEMS} />
+      </div>
 
       {/* ── Hero ── */}
       <section id="hero" className="relative pb-6 pt-8">
@@ -129,11 +169,11 @@ export default function OmnisignMicrosite() {
         <div className="mx-auto max-w-6xl px-6">
           <motion.div {...section}>
             <Link
-              to="/explore"
+              to="/"
               className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-slate-400 transition-colors hover:text-slate-600"
             >
               <ArrowLeft size={14} />
-              Back to explore
+              Back to homepage
             </Link>
 
             <div className="mb-5 flex items-center gap-5">
@@ -158,18 +198,20 @@ export default function OmnisignMicrosite() {
               {tagline}
             </p>
 
+            <MobileTOC items={TOC_ITEMS} />
+
             <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-emerald-700">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-teal-50 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-teal-700">
+                <span className="h-1.5 w-1.5 rounded-full bg-teal-600" />
                 ongoing
               </span>
-              <span className="inline-flex rounded-full bg-teal-50 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-teal-700">
+              <span className="inline-flex rounded-full border border-teal-200 bg-teal-50 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-teal-700">
                 accessibility
               </span>
-              <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-slate-600">
+              <span className="inline-flex rounded-full border border-slate-200 bg-slate-100 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-slate-600">
                 computer vision
               </span>
-              <span className="inline-flex rounded-full bg-amber-50 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-amber-700">
+              <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-amber-700">
                 self-funded
               </span>
             </div>
@@ -191,13 +233,17 @@ export default function OmnisignMicrosite() {
               <video
                 ref={videoRef}
                 className="h-full w-full object-cover"
-                autoPlay
-                muted
-                loop
                 playsInline
                 preload="metadata"
+                poster="/omnisign-logo.png"
+                controls={isPlaying}
+                title="OmniSign demo video"
+                aria-label="OmniSign Lebanese Sign Language demo video"
+                onPause={() => setIsPlaying(false)}
+                onPlay={() => setIsPlaying(true)}
               >
                 <source src={VIDEO_URL} type="video/mp4" />
+                Your browser does not support HTML video playback.
               </video>
 
               {/* Gradient overlay — bottom fade for depth */}
@@ -406,11 +452,7 @@ export default function OmnisignMicrosite() {
 
           {/* Big number cards with animated progress bars */}
           <div className="mb-16 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
-            {[
-              { num: "50k+", desc: "raw signs collected across Lebanon", bar: "62%", barColor: "bg-teal-500", label: "collection" },
-              { num: "80k+", desc: "processed image flows after augmentation", bar: "100%", barColor: "bg-teal-600", label: "processed" },
-              { num: "30+", desc: "daily words & expressions + full alphabet", bar: "35%", barColor: "bg-teal-400", label: "vocabulary" },
-            ].map((card, i) => (
+            {DATASET_METRICS.map((card, i) => (
               <motion.div
                 key={card.label}
                 className="rounded-2xl border border-slate-100 bg-gradient-to-br from-teal-50/80 via-white to-white p-8 shadow-sm sm:p-10"
@@ -422,6 +464,9 @@ export default function OmnisignMicrosite() {
                 </span>
                 <span className="mt-3 block text-sm leading-relaxed text-slate-500">
                   {card.desc}
+                </span>
+                <span className="mt-2 block text-xs leading-relaxed text-slate-500">
+                  {card.context}
                 </span>
                 <div className="mt-5 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
                   <motion.div
@@ -674,7 +719,7 @@ export default function OmnisignMicrosite() {
         id="get-involved"
         className="relative overflow-hidden"
         style={{
-          background: "linear-gradient(135deg, #0d9488 0%, #0f766e 40%, #134e4a 100%)",
+          background: "linear-gradient(135deg, #0a1326 0%, #0b4f58 45%, #0d6f67 100%)",
         }}
       >
         <div
@@ -717,6 +762,8 @@ export default function OmnisignMicrosite() {
               href="https://medium.com/@laythayache5/building-in-a-country-with-no-infrastructure-3f8595472895"
               target="_blank"
               rel="noopener noreferrer"
+              title="Opens in a new tab"
+              aria-label="Read the story on Medium (opens in a new tab)"
               className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 font-mono text-xs text-slate-700 hover:text-teal-700 hover:border-teal-400 transition"
             >
               <span>Read the story on Medium</span>
@@ -726,6 +773,8 @@ export default function OmnisignMicrosite() {
               href="https://www.linkedin.com/in/laythayache"
               target="_blank"
               rel="noopener noreferrer"
+              title="Opens in a new tab"
+              aria-label="Connect on LinkedIn (opens in a new tab)"
               className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 font-mono text-xs text-slate-700 hover:text-teal-700 hover:border-teal-400 transition"
             >
               <span>Connect on LinkedIn</span>
@@ -735,6 +784,8 @@ export default function OmnisignMicrosite() {
               href="https://github.com/laythayache"
               target="_blank"
               rel="noopener noreferrer"
+              title="Opens in a new tab"
+              aria-label="View GitHub profile (opens in a new tab)"
               className="inline-flex items-center gap-2 rounded-full bg-white border border-slate-200 px-4 py-2 font-mono text-xs text-slate-700 hover:text-teal-700 hover:border-teal-400 transition"
             >
               <span>View GitHub</span>
@@ -755,5 +806,6 @@ export default function OmnisignMicrosite() {
     </article>
   );
 }
+
 
 

@@ -1,17 +1,15 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { ArrowUpRight, Bot, Mic, Users } from "lucide-react";
 import { speakingEntries } from "@/content/speaking";
-import { SECTION } from "@/motion/tokens";
-import { useMediaQuery } from "@/motion/useMediaQuery";
+
+function getEntryIcon(id: string) {
+  if (id.includes("robotics")) return Bot;
+  if (id.includes("ambassador")) return Users;
+  return Mic;
+}
 
 export default function SpeakingSection() {
   const reduced = useReducedMotion();
-  const coarsePointer = useMediaQuery("(pointer: coarse)");
-  const mobileViewport = useMediaQuery("(max-width: 767px)");
-  const mobileTuned = coarsePointer || mobileViewport;
-
-  const cardHover =
-    reduced || mobileTuned ? undefined : SECTION.cardHover;
 
   return (
     <section id="speaking" className="section-glass section-shell px-6">
@@ -19,46 +17,74 @@ export default function SpeakingSection() {
         className="mx-auto max-w-6xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
-        viewport={SECTION.viewport}
-        variants={SECTION.container}
+        viewport={{ once: true, margin: "-60px" }}
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+        }}
       >
         <motion.h2
-          className="text-center font-serif text-3xl font-bold text-text-primary md:text-4xl"
-          variants={SECTION.fadeUp}
+          className="type-h2 text-center"
+          variants={{
+            hidden: { opacity: 0, y: 14 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+          }}
         >
-          Speaking &amp; Community
+          Speaking and Community
         </motion.h2>
-
         <motion.p
-          className="mx-auto mt-4 max-w-2xl text-center text-base text-text-secondary"
-          variants={SECTION.fadeUp}
+          className="type-body mx-auto mt-4 max-w-3xl text-center"
+          variants={{
+            hidden: { opacity: 0, y: 14 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+          }}
         >
-          Available for speaking engagements on AI systems, automation, and
-          building technology in emerging markets.
+          Talks and initiatives focused on practical AI systems, engineering
+          education, and community-first technology.
         </motion.p>
 
-        <div
-          className={cn(
-            "mt-12 grid gap-6",
-            "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-          )}
-        >
-          {speakingEntries.map((entry) => (
-            <motion.div
-              key={entry.id}
-              className="rounded-xl border border-border bg-surface-raised p-6 transition-colors"
-              variants={SECTION.fadeUp}
-              whileHover={cardHover}
-            >
-              <h3 className="text-lg font-semibold text-text-primary">{entry.title}</h3>
-              <p className="mt-1 font-mono text-sm text-accent">
-                {entry.role} &middot; {entry.organization}
-              </p>
-              <p className="mt-3 text-base text-text-secondary">
-                {entry.description}
-              </p>
-            </motion.div>
-          ))}
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {speakingEntries.map((entry) => {
+            const Icon = getEntryIcon(entry.id);
+            return (
+              <motion.article
+                key={entry.id}
+                className="rounded-xl border border-border bg-surface-raised p-6"
+                variants={{
+                  hidden: { opacity: 0, y: 14 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+                }}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="rounded-lg bg-accent/12 p-2 text-accent">
+                    <Icon size={17} aria-hidden />
+                  </span>
+                  <p className="type-caption">{entry.organization}</p>
+                </div>
+                <h3 className="type-h3 mt-4">{entry.title}</h3>
+                <p className="mt-2 text-sm font-medium text-text-primary">
+                  {entry.role}
+                </p>
+                <p className="mt-3 text-base leading-relaxed text-text-secondary">
+                  {entry.description}
+                </p>
+
+                {entry.link && (
+                  <a
+                    href={entry.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-5 inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface px-3 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
+                    aria-label={`${entry.ctaLabel} (opens in a new tab)`}
+                    title="Opens in a new tab"
+                  >
+                    {entry.ctaLabel}
+                    <ArrowUpRight size={14} aria-hidden />
+                  </a>
+                )}
+              </motion.article>
+            );
+          })}
         </div>
       </motion.div>
     </section>

@@ -23,8 +23,18 @@
 - OmniSign Case Study: https://laythayache.com/projects/omnisign
 
 ## Projects
-- [OmniSign](https://laythayache.com/projects/omnisign) | status: ongoing | updated: 2026-02-01
-  Production sign language translation system for Lebanese Sign Language. Real-time on-device CV pipeline with federated learning architecture for privacy preservation.
+- [OmniSign](https://laythayache.com/projects/omnisign) | status: ongoing | updated: 2026-02-16
+  AI-powered Lebanese Sign Language translation system with privacy-first on-device inference and real-time interaction.
+- [License Plate Recognition System](https://laythayache.com/projects/license-plate-recognition) | status: completed | updated: 2025-11-12
+  Real-time license plate detection and OCR pipeline for roadway and parking workflows.
+- [Face Recognition System](https://laythayache.com/projects/face-recognition) | status: completed | updated: 2025-08-20
+  Real-time face recognition workflow for identity matching and access scenarios.
+- [Breast Cancer Detection Model](https://laythayache.com/projects/breast-cancer-detection) | status: completed | updated: 2025-07-18
+  Supervised machine learning classification model for early-stage breast cancer risk detection.
+- [Home Security Embedded System](https://laythayache.com/projects/home-security-system) | status: completed | updated: 2025-06-02
+  IoT security system using embedded sensors, Bluetooth presence logic, and app-based controls.
+- [Network Security Infrastructure](https://laythayache.com/projects/network-infrastructure) | status: completed | updated: 2025-05-22
+  Enterprise network design with segmented VLAN architecture, hardened perimeter controls, and remote access policies.
 
 ## Contact
 - Email: laythayache5@gmail.com

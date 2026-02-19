@@ -1,43 +1,52 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowDownRight, Mail } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
 import { useLenis } from "@/motion/LenisProvider";
 
-const WALL_PATHS = [
-  "M 18 52 L 62 34 L 94 60 L 132 38 L 182 72",
-  "M 22 118 L 66 96 L 104 124 L 144 104 L 196 136",
-  "M 20 184 L 64 162 L 108 194 L 150 170 L 202 206",
-  "M 24 250 L 70 232 L 112 262 L 156 236 L 206 274",
-  "M 16 316 L 58 292 L 98 326 L 142 304 L 192 338",
-] as const;
-
-function NeuralWall({ mirrored = false }: { mirrored?: boolean }) {
+function NeuralCanvas() {
   return (
     <svg
-      viewBox="0 0 220 360"
-      className={cn(
-        "h-full w-full",
-        mirrored ? "-scale-x-100" : ""
-      )}
-      preserveAspectRatio="xMidYMid meet"
-      aria-hidden
+      viewBox="0 0 520 320"
+      className="h-full w-full"
+      role="img"
+      aria-label="Abstract neural network inspired system diagram"
     >
-      {WALL_PATHS.map((path, index) => (
+      <defs>
+        <linearGradient id="hero-line" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="rgb(7 108 100 / 0.75)" />
+          <stop offset="100%" stopColor="rgb(10 19 38 / 0.95)" />
+        </linearGradient>
+      </defs>
+
+      {[
+        "M50 62 L170 98 L282 74 L422 116",
+        "M50 126 L176 152 L302 132 L442 168",
+        "M46 194 L166 214 L290 196 L430 232",
+        "M62 252 L190 248 L304 258 L432 270",
+      ].map((path) => (
         <path
-          key={`wall-path-${index}`}
+          key={path}
           d={path}
-          className="hero-wall-stroke"
+          fill="none"
+          stroke="url(#hero-line)"
+          strokeOpacity="0.85"
+          strokeWidth="2"
+          strokeLinecap="round"
         />
       ))}
-      {[24, 64, 98, 136, 182, 206].map((x, index) => (
-        <circle
-          key={`wall-node-${index}`}
-          cx={x}
-          cy={52 + index * 52}
-          r="2.5"
-          className="hero-wall-node"
-        />
-      ))}
+
+      {[50, 170, 282, 422].map((x) =>
+        [62, 126, 194, 252].map((y) => (
+          <circle
+            key={`${x}-${y}`}
+            cx={x}
+            cy={y}
+            r="5.5"
+            fill="white"
+            stroke="rgb(7 108 100 / 0.7)"
+            strokeWidth="2"
+          />
+        ))
+      )}
     </svg>
   );
 }
@@ -48,10 +57,9 @@ export default function HeroSection() {
 
   function scrollToSection(id: string) {
     if (lenis) {
-      lenis.scrollTo(`#${id}`, { offset: -64 });
+      lenis.scrollTo(`#${id}`, { offset: -84 });
       return;
     }
-
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
@@ -61,105 +69,88 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="hero-accessible section-shell relative overflow-hidden px-6"
+      className="hero-accessible section-shell relative overflow-hidden px-6 pb-20 pt-10 md:pt-14"
       aria-labelledby="hero-title"
     >
-      <div className="hero-blueprint-grid pointer-events-none absolute inset-0 opacity-20" />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,rgb(148_163_184_/_0.24),transparent_60%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgb(7_108_100_/_0.13),transparent_45%),radial-gradient(circle_at_15%_25%,rgb(15_23_42_/_0.06),transparent_40%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_96%,rgb(184_201_214_/_0.26)_100%),linear-gradient(90deg,transparent_96%,rgb(184_201_214_/_0.2)_100%)] bg-[size:38px_38px]" />
 
-      <div className="pointer-events-none absolute left-0 top-1/2 hidden h-[56vh] w-[min(24vw,280px)] -translate-y-1/2 md:block">
-        <NeuralWall />
-      </div>
-      <div className="pointer-events-none absolute right-0 top-1/2 hidden h-[56vh] w-[min(24vw,280px)] -translate-y-1/2 md:block">
-        <NeuralWall mirrored />
-      </div>
-
-      <div className="relative z-10 mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-6xl items-center gap-12 py-12 lg:grid-cols-[1.15fr_0.85fr] lg:py-16">
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.12fr_0.88fr]">
         <motion.div
           initial={reduced ? undefined : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <p className="font-mono text-sm uppercase tracking-[0.22em] text-accent">
-            AI Systems Engineer
-          </p>
-          <h1
-            id="hero-title"
-            className="mt-4 font-serif text-4xl font-bold tracking-tight text-text-primary sm:text-5xl md:text-6xl"
-          >
-            Layth Ayache
+          <p className="type-kicker">AI Systems Engineer · Beirut</p>
+          <h1 id="hero-title" className="type-h1 mt-5 max-w-4xl">
+            I build production AI systems that hold up under real constraints.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary">
-            Technical consultant designing production AI systems, automation
-            workflows, and resilient infrastructure for telecom, finance, and
+          <p className="type-body mt-6 max-w-2xl">
+            Layth Ayache designs and ships AI infrastructure, computer vision
+            pipelines, and workflow automation across telecom, finance, and
             healthcare teams.
           </p>
 
-          <div className="mt-8 flex flex-wrap items-center gap-3">
+          <div className="mt-9 flex flex-wrap gap-3">
             <button
               type="button"
               onClick={() => scrollToSection("projects")}
               data-magnetic
-              data-cursor-label="Enter Portfolio"
-              className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-6 py-3 font-mono text-sm uppercase tracking-wider text-white transition-colors hover:bg-accent-hover"
+              data-cursor-label="View Work"
+              className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
             >
-              Enter Portfolio
-              <ArrowDownRight size={16} />
+              View Work
+              <ArrowRight size={16} aria-hidden />
             </button>
             <button
               type="button"
               onClick={() => scrollToSection("contact")}
               data-magnetic
               data-cursor-label="Contact"
-              className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-6 py-3 font-mono text-sm uppercase tracking-wider text-text-primary transition-colors hover:border-accent hover:text-accent"
+              className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent hover:text-accent"
             >
               Start a Conversation
-              <Mail size={15} />
+              <MessageCircle size={16} aria-hidden />
             </button>
           </div>
 
-          <p className="mt-6 text-base text-text-secondary">
-            Based in Beirut, collaborating globally.
-          </p>
+          <ul className="mt-8 grid gap-2 text-sm text-text-secondary sm:grid-cols-3">
+            <li className="rounded-md border border-border bg-white/70 px-3 py-2">
+              AI consulting and architecture
+            </li>
+            <li className="rounded-md border border-border bg-white/70 px-3 py-2">
+              Computer vision systems
+            </li>
+            <li className="rounded-md border border-border bg-white/70 px-3 py-2">
+              Resilient infrastructure automation
+            </li>
+          </ul>
         </motion.div>
 
         <motion.aside
-          initial={reduced ? undefined : { opacity: 0, y: 18 }}
+          initial={reduced ? undefined : { opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
             duration: 0.45,
             delay: reduced ? 0 : 0.08,
             ease: [0.2, 0.8, 0.2, 1],
           }}
-          className="hero-emblem-card rounded-2xl border border-border-strong bg-surface-raised/90 p-8 shadow-[0_16px_40px_rgb(15_23_42_/_0.1)]"
-          aria-label="Profile summary"
+          className="rounded-2xl border border-border-strong bg-surface-raised/95 p-6 shadow-[0_18px_40px_rgb(10_19_38_/_0.12)]"
+          aria-label="AI systems approach summary"
         >
-          <img
-            src="/logo-mark.svg"
-            alt="Layth Ayache emblem"
-            width={1248}
-            height={832}
-            loading="eager"
-            decoding="async"
-            className="h-24 w-auto opacity-85 sm:h-28"
-          />
-
-          <p className="mt-6 text-base leading-relaxed text-text-secondary">
-            Building systems that remain dependable under real constraints:
-            unstable networks, limited datasets, and strict privacy boundaries.
+          <div className="flex items-center gap-2 text-sm font-medium text-accent">
+            <Sparkles size={14} aria-hidden />
+            Blueprint mindset
+          </div>
+          <div className="mt-4 overflow-hidden rounded-xl border border-border bg-surface p-2">
+            <div className="aspect-[16/10] w-full">
+              <NeuralCanvas />
+            </div>
+          </div>
+          <p className="mt-5 text-base leading-relaxed text-text-secondary">
+            From data collection to deployment, every decision is optimized for
+            reliability, accessibility, and measurable user impact.
           </p>
-
-          <ul className="mt-6 space-y-3 text-sm text-text-primary">
-            <li className="rounded-md border border-border bg-surface px-3 py-2">
-              Production AI pipelines and observability
-            </li>
-            <li className="rounded-md border border-border bg-surface px-3 py-2">
-              Computer vision and multimodal inference
-            </li>
-            <li className="rounded-md border border-border bg-surface px-3 py-2">
-              Infrastructure automation and consulting
-            </li>
-          </ul>
         </motion.aside>
       </div>
     </section>
