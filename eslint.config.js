@@ -28,5 +28,15 @@ export default tseslint.config(
         { argsIgnorePattern: "^_" },
       ],
     },
+  },
+  {
+    files: ["**/*.test.{ts,tsx}", "**/*.a11y.test.{ts,tsx}", "src/test/**/*.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.jest,
+      },
+    },
   }
 );
