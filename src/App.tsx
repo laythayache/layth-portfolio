@@ -6,6 +6,8 @@ import NotFound from "@/pages/NotFound";
 const Home = lazy(() => import("@/pages/Home"));
 const ProjectDetail = lazy(() => import("@/pages/ProjectDetail"));
 const OmnisignMicrosite = lazy(() => import("@/pages/OmnisignMicrosite"));
+const BlogIndex = lazy(() => import("@/pages/BlogIndex"));
+const BlogPost = lazy(() => import("@/pages/BlogPost"));
 
 export default function App() {
   return (
@@ -13,6 +15,8 @@ export default function App() {
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/blog" element={<BlogIndex />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
 
           {/* Project detail routes (preserved for backlinks) */}
           <Route
@@ -27,7 +31,7 @@ export default function App() {
           <Route path="/thinking" element={<Navigate to="/" replace />} />
           <Route path="/systems" element={<Navigate to="/" replace />} />
           <Route path="/explore" element={<Navigate to="/" replace />} />
-          <Route path="/writing" element={<Navigate to="/" replace />} />
+          <Route path="/writing" element={<Navigate to="/blog" replace />} />
           <Route path="/playbook" element={<Navigate to="/" replace />} />
           <Route path="/now" element={<Navigate to="/" replace />} />
           <Route path="/about" element={<Navigate to="/#about" replace />} />

@@ -1,6 +1,7 @@
 import { projects } from "@/content/projects";
 import { faqItems } from "@/content/faq";
 import type { Project } from "@/content/types";
+import type { BlogPost } from "@/content/posts";
 
 export const SITE_URL = "https://laythayache.com";
 export const SITE_NAME = "Layth Ayache";
@@ -247,6 +248,38 @@ export function projectPageJsonLd(project: Project) {
           { name: "Projects", path: "/#projects" },
           { name: project.title, path: `/projects/${project.slug}` },
         ]),
+      },
+    ],
+  };
+}
+
+export function blogPostJsonLd(post: BlogPost) {
+  const postUrl = absoluteUrl(`/blog/${post.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${postUrl}#article`,
+        headline: post.title,
+        description: post.excerpt,
+        datePublished: post.date,
+        dateModified: post.date,
+        author: { "@id": PERSON_ID },
+        publisher: { "@id": ORG_ID },
+        mainEntityOfPage: { "@id": `${postUrl}#webpage` },
+        image: post.coverImage ? absoluteUrl(post.coverImage) : DEFAULT_OG_IMAGE,
+        keywords: post.tags.join(", "),
+        inLanguage: "en",
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${postUrl}#webpage`,
+        url: postUrl,
+        name: `${post.title} | Layth Ayache`,
+        description: post.excerpt,
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": PERSON_ID },
       },
     ],
   };
