@@ -20,7 +20,7 @@ export default function SpeakingSection() {
         viewport={{ once: true, margin: "-60px" }}
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+          visible: { transition: { staggerChildren: 0.03, delayChildren: 0.05 } },
         }}
       >
         <motion.h2
@@ -51,8 +51,8 @@ export default function SpeakingSection() {
                 key={entry.id}
                 className="rounded-xl border border-border bg-surface-raised p-6"
                 variants={{
-                  hidden: { opacity: 0, y: 14 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+                  hidden: { opacity: 0, y: 6 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
                 }}
               >
                 <div className="flex items-center gap-3">

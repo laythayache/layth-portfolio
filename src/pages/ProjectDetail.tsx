@@ -6,6 +6,7 @@ import ProjectShell from "@/layouts/ProjectShell";
 import CollapsibleSection from "@/components/CollapsibleSection";
 import SEO from "@/components/SEO";
 import { DEFAULT_KEYWORDS, projectPageJsonLd } from "@/content/siteSeo";
+import VideoEmbed from "@/components/VideoEmbed";
 import NotFound from "./NotFound";
 
 export default function ProjectDetail() {
@@ -174,6 +175,20 @@ export default function ProjectDetail() {
               </div>
             </div>
 
+            {/* Demo video */}
+            {project.demoVideoUrl && (
+              <div className="mb-10">
+                <h2 className="font-sans text-lg font-semibold text-text-primary mb-4">
+                  Demo
+                </h2>
+                <VideoEmbed
+                  src={project.demoVideoUrl}
+                  poster={project.thumbnail}
+                  title={`${project.title} demo video`}
+                />
+              </div>
+            )}
+
             {/* Collapsible sections */}
             <CollapsibleSection title="Problem" defaultOpen>
               {project.sections.problem}
@@ -198,7 +213,7 @@ export default function ProjectDetail() {
                     >
                       <img
                         src={project.architectureDiagram}
-                        alt={`${project.title} architecture`}
+                        alt={`${project.title} architecture diagram`}
                         loading="lazy"
                         decoding="async"
                         className="w-full cursor-pointer hover:opacity-80 transition-opacity rounded border border-border"
@@ -328,30 +343,33 @@ export default function ProjectDetail() {
                     <a
                       href={project.links.repo}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
+                      aria-label="View on GitHub (opens in new tab)"
                       className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-text-secondary transition-colors"
                     >
-                      GitHub <ArrowUpRight size={12} />
+                      GitHub <ArrowUpRight size={12} aria-hidden />
                     </a>
                   )}
                   {project.links.demo && (
                     <a
                       href={project.links.demo}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
+                      aria-label="View demo (opens in new tab)"
                       className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-text-secondary transition-colors"
                     >
-                      Demo <ArrowUpRight size={12} />
+                      Demo <ArrowUpRight size={12} aria-hidden />
                     </a>
                   )}
                   {project.links.video && (
                     <a
                       href={project.links.video}
                       target="_blank"
-                      rel="noreferrer"
+                      rel="noopener noreferrer"
+                      aria-label="Watch video (opens in new tab)"
                       className="inline-flex items-center gap-2 text-sm text-text-muted hover:text-text-secondary transition-colors"
                     >
-                      Video <ArrowUpRight size={12} />
+                      Video <ArrowUpRight size={12} aria-hidden />
                     </a>
                   )}
                 </div>
@@ -409,30 +427,33 @@ export default function ProjectDetail() {
                 <a
                   href={project.links.repo}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
+                  aria-label="View on GitHub (opens in new tab)"
                   className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-secondary"
                 >
-                  GitHub <ArrowUpRight size={10} />
+                  GitHub <ArrowUpRight size={10} aria-hidden />
                 </a>
               )}
               {project.links.demo && (
                 <a
                   href={project.links.demo}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
+                  aria-label="View demo (opens in new tab)"
                   className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-secondary"
                 >
-                  Demo <ArrowUpRight size={10} />
+                  Demo <ArrowUpRight size={10} aria-hidden />
                 </a>
               )}
               {project.links.video && (
                 <a
                   href={project.links.video}
                   target="_blank"
-                  rel="noreferrer"
+                  rel="noopener noreferrer"
+                  aria-label="Watch video (opens in new tab)"
                   className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text-secondary"
                 >
-                  Video <ArrowUpRight size={10} />
+                  Video <ArrowUpRight size={10} aria-hidden />
                 </a>
               )}
             </div>

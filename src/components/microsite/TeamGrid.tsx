@@ -12,7 +12,7 @@ export default function TeamGrid({ members }: TeamGridProps) {
           <div className="aspect-square w-full overflow-hidden border border-border bg-surface-raised">
             <img
               src={member.image}
-              alt={member.name}
+              alt={`Portrait of ${member.name}, ${member.role}`}
               className="h-full w-full object-cover"
               loading="lazy"
             />

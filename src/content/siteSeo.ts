@@ -259,7 +259,7 @@ export function blogPostJsonLd(post: BlogPost) {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Article",
+        "@type": "BlogPosting",
         "@id": `${postUrl}#article`,
         headline: post.title,
         description: post.excerpt,
@@ -270,6 +270,7 @@ export function blogPostJsonLd(post: BlogPost) {
         mainEntityOfPage: { "@id": `${postUrl}#webpage` },
         image: post.coverImage ? absoluteUrl(post.coverImage) : DEFAULT_OG_IMAGE,
         keywords: post.tags.join(", "),
+        wordCount: Math.round(post.readingTimeMinutes * 220),
         inLanguage: "en",
       },
       {

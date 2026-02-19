@@ -29,7 +29,7 @@ export default function CTA({
 
   if (external) {
     return (
-      <a href={to} target="_blank" rel="noreferrer">
+      <a href={to} target="_blank" rel="noopener noreferrer">
         <motion.span whileHover={{ x: 2 }} className={classes}>
           {children}
           <ArrowRight size={14} />

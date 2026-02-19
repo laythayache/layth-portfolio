@@ -24,6 +24,8 @@ export const SECTION = {
     boxShadow: "0 14px 28px rgb(15 23 42 / 0.1)",
     borderColor: "rgb(var(--accent) / 0.22)",
   },
+  buttonHover: { scale: 1.02 },
+  buttonTap: { scale: 0.98 },
 };
 
 export const MOTION = {

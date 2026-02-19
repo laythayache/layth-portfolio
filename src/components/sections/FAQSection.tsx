@@ -20,7 +20,7 @@ export default function FAQSection() {
         viewport={{ once: true, margin: "-60px" }}
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.05, delayChildren: 0.03 } },
+          visible: { transition: { staggerChildren: 0.03, delayChildren: 0.03 } },
         }}
       >
         <motion.h2
@@ -50,8 +50,8 @@ export default function FAQSection() {
                 key={item.question}
                 className="rounded-xl border border-border bg-surface-raised"
                 variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.28 } },
+                  hidden: { opacity: 0, y: 4 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.22 } },
                 }}
               >
                 <h3>

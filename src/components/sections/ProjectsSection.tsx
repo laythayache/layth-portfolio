@@ -171,22 +171,24 @@ export default function ProjectsSection() {
               <p className="type-caption">Swipe or use arrow keys</p>
               {totalSlides > 1 && (
                 <div className="flex items-center gap-2">
-                  <button
+                  <motion.button
                     type="button"
                     onClick={() => goToSlide(activeIndex - 1)}
+                    whileTap={{ scale: 0.92 }}
                     aria-label="Previous project"
                     className="rounded-md border border-border-strong bg-surface-raised p-2 text-text-primary transition-colors hover:border-accent hover:text-accent"
                   >
                     <ArrowLeft size={16} />
-                  </button>
-                  <button
+                  </motion.button>
+                  <motion.button
                     type="button"
                     onClick={() => goToSlide(activeIndex + 1)}
+                    whileTap={{ scale: 0.92 }}
                     aria-label="Next project"
                     className="rounded-md border border-border-strong bg-surface-raised p-2 text-text-primary transition-colors hover:border-accent hover:text-accent"
                   >
                     <ArrowRight size={16} />
-                  </button>
+                  </motion.button>
                 </div>
               )}
             </div>

@@ -73,6 +73,7 @@ export interface Project {
   featured?: boolean;
   sections: ProjectSections;
   card?: CardConfig;
+  demoVideoUrl?: string;
 }
 
 export interface ProjectFilters {

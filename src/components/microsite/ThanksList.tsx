@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import type { ThankItem } from "@/content/omnisign";
 
 interface ThanksListProps {
@@ -14,10 +15,12 @@ export default function ThanksList({ items }: ThanksListProps) {
               <a
                 href={item.link}
                 target="_blank"
-                rel="noreferrer"
-                className="underline underline-offset-2 hover:text-text-secondary"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 underline underline-offset-2 hover:text-text-secondary"
+                aria-label={`${item.name} (opens in new tab)`}
               >
                 {item.name}
+                <ArrowUpRight size={12} aria-hidden className="inline-block" />
               </a>
             ) : (
               item.name

@@ -1,6 +1,6 @@
 import { useMemo, useState, type ComponentType } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { Award, ChevronDown, GraduationCap, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, Award, ChevronDown, GraduationCap, ShieldCheck } from "lucide-react";
 import {
   certifications,
   type CredentialGroup,
@@ -39,7 +39,7 @@ export default function CertificationsSection() {
         viewport={{ once: true, margin: "-60px" }}
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.03 } },
+          visible: { transition: { staggerChildren: 0.03, delayChildren: 0.03 } },
         }}
       >
         <motion.h2
@@ -71,8 +71,8 @@ export default function CertificationsSection() {
               <motion.section
                 key={groupKey}
                 variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+                  hidden: { opacity: 0, y: 4 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
                 }}
               >
                 <div className="mb-4 flex items-center gap-2">
@@ -90,11 +90,11 @@ export default function CertificationsSection() {
                     return (
                       <article
                         key={item.id}
-                        className="rounded-xl border border-border bg-surface-raised p-5"
+                        className="rounded-xl border border-border bg-surface-raised"
                       >
                         <button
                           type="button"
-                          className="flex w-full items-start justify-between gap-4 text-left"
+                          className="flex w-full min-h-[44px] items-start justify-between gap-4 px-5 py-4 text-left"
                           onClick={() =>
                             setExpanded((prev) => (prev === item.id ? null : item.id))
                           }
@@ -131,20 +131,23 @@ export default function CertificationsSection() {
                               exit={{ height: 0, opacity: 0 }}
                               transition={{ duration: 0.25, ease: [0.2, 0.8, 0.2, 1] }}
                             >
-                              <p className="mt-4 text-base leading-relaxed text-text-secondary">
-                                {item.details}
-                              </p>
-                              {item.credentialUrl && (
-                                <a
-                                  href={item.credentialUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="mt-4 inline-flex text-sm font-medium text-accent hover:underline"
-                                  title="Opens in a new tab"
-                                >
-                                  View credential
-                                </a>
-                              )}
+                              <div className="px-5 pb-5">
+                                <p className="text-base leading-relaxed text-text-secondary">
+                                  {item.details}
+                                </p>
+                                {item.credentialUrl && (
+                                  <a
+                                    href={item.credentialUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent hover:underline"
+                                    aria-label="View credential (opens in new tab)"
+                                  >
+                                    View credential
+                                    <ArrowUpRight size={12} aria-hidden />
+                                  </a>
+                                )}
+                              </div>
                             </motion.div>
                           )}
                         </AnimatePresence>

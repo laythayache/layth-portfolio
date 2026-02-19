@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
 import { useLenis } from "@/motion/LenisProvider";
+import { SECTION } from "@/motion/tokens";
 
 function NeuralCanvas() {
   return (
@@ -92,26 +93,30 @@ export default function HeroSection() {
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">
-            <button
+            <motion.button
               type="button"
               onClick={() => scrollToSection("projects")}
+              whileHover={reduced ? undefined : SECTION.buttonHover}
+              whileTap={reduced ? undefined : SECTION.buttonTap}
               data-magnetic
               data-cursor-label="View Work"
               className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
             >
               View Work
               <ArrowRight size={16} aria-hidden />
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               onClick={() => scrollToSection("contact")}
+              whileHover={reduced ? undefined : SECTION.buttonHover}
+              whileTap={reduced ? undefined : SECTION.buttonTap}
               data-magnetic
               data-cursor-label="Contact"
               className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent hover:text-accent"
             >
               Start a Conversation
               <MessageCircle size={16} aria-hidden />
-            </button>
+            </motion.button>
           </div>
 
           <ul className="mt-8 grid gap-2 text-sm text-text-secondary sm:grid-cols-3">

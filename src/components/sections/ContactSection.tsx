@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
+import { SECTION } from "@/motion/tokens";
 
 interface FormState {
   name: string;
@@ -8,6 +9,7 @@ interface FormState {
   company: string;
   subject: string;
   message: string;
+  _honeypot: string;
 }
 
 type FeedbackState =
@@ -21,6 +23,7 @@ const INITIAL_FORM: FormState = {
   company: "",
   subject: "",
   message: "",
+  _honeypot: "",
 };
 
 const SOCIAL_LINKS = [
@@ -47,8 +50,9 @@ export default function ContactSection() {
     kind: "idle",
     message: "",
   });
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!form.name.trim() || !form.email.trim() || !form.message.trim()) {
@@ -75,25 +79,49 @@ export default function ContactSection() {
       return;
     }
 
-    const subject = form.subject.trim() || `Portfolio inquiry from ${form.name.trim()}`;
-    const body = [
-      `Name: ${form.name.trim()}`,
-      `Email: ${form.email.trim()}`,
-      form.company.trim() ? `Company: ${form.company.trim()}` : null,
-      "",
-      form.message.trim(),
-    ]
-      .filter(Boolean)
-      .join("\n");
-    const params = new URLSearchParams({ subject, body });
+    // Honeypot check — bots fill hidden fields
+    if (form._honeypot) return;
 
-    window.location.href = `mailto:laythayache5@gmail.com?${params.toString()}`;
-    setForm(INITIAL_FORM);
-    setFeedback({
-      kind: "success",
-      message:
-        "Your email app should open now. If it does not, email laythayache5@gmail.com directly.",
-    });
+    setSubmitting(true);
+    setFeedback({ kind: "idle", message: "" });
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          name: form.name.trim(),
+          email: form.email.trim(),
+          company: form.company.trim() || undefined,
+          subject:
+            form.subject.trim() ||
+            `Portfolio inquiry from ${form.name.trim()}`,
+          message: form.message.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setForm(INITIAL_FORM);
+        setFeedback({
+          kind: "success",
+          message:
+            "Message sent successfully. I will get back to you soon.",
+        });
+      } else {
+        throw new Error(data.message || "Submission failed");
+      }
+    } catch {
+      setFeedback({
+        kind: "error",
+        message:
+          "Something went wrong. Please try again or email laythayache5@gmail.com directly.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
@@ -109,7 +137,7 @@ export default function ContactSection() {
         viewport={{ once: true, margin: "-60px" }}
         variants={{
           hidden: {},
-          visible: { transition: { staggerChildren: 0.06, delayChildren: 0.03 } },
+          visible: { transition: { staggerChildren: 0.03, delayChildren: 0.03 } },
         }}
       >
         <motion.p
@@ -133,7 +161,7 @@ export default function ContactSection() {
         <motion.p
           className="type-body mt-4 max-w-2xl"
           variants={{
-            hidden: { opacity: 0, y: 10 },
+            hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
@@ -144,8 +172,10 @@ export default function ContactSection() {
         <motion.a
           href="mailto:laythayache5@gmail.com"
           className="mt-7 inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-5 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
+          whileHover={reduced ? undefined : SECTION.buttonHover}
+          whileTap={reduced ? undefined : SECTION.buttonTap}
           variants={{
-            hidden: { opacity: 0, y: 10 },
+            hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
@@ -156,12 +186,24 @@ export default function ContactSection() {
         <motion.form
           className="mt-9 rounded-2xl border border-border-strong bg-surface-raised p-6 shadow-sm md:p-8"
           variants={{
-            hidden: { opacity: 0, y: 10 },
+            hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
           onSubmit={handleSubmit}
           noValidate
         >
+          {/* Honeypot — hidden from real users, traps bots */}
+          <div className="hidden" aria-hidden="true">
+            <input
+              type="text"
+              name="_honeypot"
+              tabIndex={-1}
+              autoComplete="off"
+              value={form._honeypot}
+              onChange={(event) => updateField("_honeypot", event.target.value)}
+            />
+          </div>
+
           <div className="grid gap-5 md:grid-cols-2">
             <div>
               <label
@@ -271,24 +313,27 @@ export default function ContactSection() {
             </p>
           )}
 
-          <button
+          <motion.button
             type="submit"
-            className="mt-6 inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
+            disabled={submitting}
+            whileHover={reduced ? undefined : SECTION.buttonHover}
+            whileTap={reduced ? undefined : SECTION.buttonTap}
+            className="mt-6 inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Send Message
+            {submitting ? "Sending..." : "Send Message"}
             <ArrowUpRight size={15} aria-hidden />
-          </button>
+          </motion.button>
 
           <p className="mt-4 text-xs text-text-muted">
-            Privacy note: your message is sent through your local email client,
-            and no form data is stored on this website.
+            Privacy note: your message is sent securely and is not stored
+            publicly. No tracking or third-party data sharing.
           </p>
         </motion.form>
 
         <motion.div
           className="mt-8 flex flex-wrap gap-3"
           variants={{
-            hidden: { opacity: 0, y: 10 },
+            hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
@@ -301,7 +346,7 @@ export default function ContactSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-4 py-2.5 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
-                title="Opens in a new tab"
+                aria-label={`${link.label} (opens in new tab)`}
               >
                 <Icon size={16} aria-hidden />
                 {link.label}
@@ -313,12 +358,12 @@ export default function ContactSection() {
         <motion.div
           className="mt-12 flex items-center gap-3"
           variants={{
-            hidden: { opacity: 0, y: 10 },
+            hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
           <div className="h-px w-12 bg-border-strong" />
-          <p className="text-sm text-text-muted">© 2026 Layth Ayache</p>
+          <p className="text-sm text-text-muted">&copy; 2026 Layth Ayache</p>
           <div className="h-px w-12 bg-border-strong" />
         </motion.div>
       </motion.div>

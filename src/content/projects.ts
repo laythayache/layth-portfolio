@@ -25,6 +25,8 @@ export const projects: Project[] = [
     tags: ["AI", "Accessibility", "Computer Vision"],
     thumbnail: "/omnisign-logo.png",
     featured: true,
+    demoVideoUrl:
+      "https://pub-f6654749f9534ed48b99cc5f4b614b9b.r2.dev/WhatsApp%20Video%202025-11-29%20at%2012.43.10%20PM.mp4",
     card: {
       accent: "teal",
       size: "lg",
