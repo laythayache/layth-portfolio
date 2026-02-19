@@ -275,7 +275,11 @@ export default function ChatBot() {
             <div className="flex shrink-0 items-center gap-3 border-b border-border px-5 py-4">
               <img
                 src="/logo-mark.svg"
-                alt=""
+                alt="LBV assistant avatar"
+                width={1248}
+                height={832}
+                loading="eager"
+                decoding="async"
                 className="h-9 w-9 rounded-full border border-border bg-surface-overlay p-1.5"
               />
               <div>
@@ -295,6 +299,10 @@ export default function ChatBot() {
                   <img
                     src="/logo-mark.svg"
                     alt="LBV"
+                    width={1248}
+                    height={832}
+                    loading="lazy"
+                    decoding="async"
                     className="h-14 w-14 rounded-full border border-border bg-surface-overlay p-2 opacity-60"
                   />
                   <div>

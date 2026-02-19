@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { FileText, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -18,31 +19,33 @@ const arrowNudge = {
 
 export default function BlogSection() {
   const reduced = useReducedMotion();
+  const [visibleCount, setVisibleCount] = useState(3);
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const mobileViewport = useMediaQuery("(max-width: 767px)");
   const mobileTuned = coarsePointer || mobileViewport;
+  const visibleArticles = articles.slice(0, visibleCount);
 
   const cardHover =
     reduced || mobileTuned ? undefined : SECTION.cardHover;
 
   return (
-    <section id="blog" className="section-glass-alt px-6 py-24">
+    <section id="blog" className="section-glass-alt section-shell px-6">
       <motion.div
-        className="mx-auto max-w-4xl"
+        className="mx-auto max-w-5xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
         viewport={SECTION.viewport}
         variants={SECTION.container}
       >
         <motion.h2
-          className="text-center font-serif text-3xl font-bold text-text-primary"
+          className="text-center font-serif text-3xl font-bold text-text-primary md:text-4xl"
           variants={SECTION.fadeUp}
         >
           Writing &amp; Insights
         </motion.h2>
 
         <div className="mt-12 flex flex-col gap-6">
-          {articles.map((article) => (
+          {visibleArticles.map((article) => (
             <motion.div
               key={article.slug}
               className={cn(
@@ -57,11 +60,11 @@ export default function BlogSection() {
               </div>
 
               <div className="flex flex-col gap-2 p-6">
-                <h3 className="font-semibold text-text-primary">
+                <h3 className="text-xl font-semibold text-text-primary">
                   {article.title}
                 </h3>
-                <p className="text-sm text-text-secondary">{article.summary}</p>
-                <p className="font-mono text-xs text-text-muted">
+                <p className="text-base text-text-secondary">{article.summary}</p>
+                <p className="font-mono text-sm text-text-muted">
                   {article.date}
                 </p>
 
@@ -101,6 +104,18 @@ export default function BlogSection() {
             </motion.div>
           ))}
         </div>
+
+        {visibleCount < articles.length && (
+          <motion.div className="mt-8 flex justify-center" variants={SECTION.fadeUp}>
+            <button
+              type="button"
+              onClick={() => setVisibleCount((previous) => previous + 3)}
+              className="rounded-md border border-border-strong bg-surface-raised px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-text-secondary transition-colors hover:border-accent hover:text-accent"
+            >
+              Load More Articles
+            </button>
+          </motion.div>
+        )}
       </motion.div>
     </section>
   );

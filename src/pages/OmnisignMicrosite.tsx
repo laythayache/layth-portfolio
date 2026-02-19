@@ -139,7 +139,11 @@ export default function OmnisignMicrosite() {
             <div className="mb-5 flex items-center gap-5">
               <img
                 src="/omnisign-logo.png"
-                alt="OmniSign logo — AI-powered Lebanese Sign Language translation"
+                alt="OmniSign logo - AI-powered Lebanese Sign Language translation"
+                width={512}
+                height={512}
+                loading="eager"
+                decoding="async"
                 className="h-14 w-14 object-contain"
               />
               <h1 className="font-sans text-4xl font-bold tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
@@ -751,3 +755,5 @@ export default function OmnisignMicrosite() {
     </article>
   );
 }
+
+

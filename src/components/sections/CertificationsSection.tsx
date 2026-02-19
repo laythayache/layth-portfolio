@@ -15,23 +15,23 @@ export default function CertificationsSection() {
     reduced || mobileTuned ? undefined : SECTION.cardHover;
 
   return (
-    <section id="certifications" className="section-glass px-6 py-24">
+    <section id="certifications" className="section-glass section-shell px-6">
       <motion.div
-        className="mx-auto max-w-4xl"
+        className="mx-auto max-w-5xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
         viewport={SECTION.viewport}
         variants={SECTION.container}
       >
         <motion.h2
-          className="text-center font-serif text-3xl font-bold text-text-primary"
+          className="text-center font-serif text-3xl font-bold text-text-primary md:text-4xl"
           variants={SECTION.fadeUp}
         >
           Certifications &amp; Education
         </motion.h2>
 
         <motion.div
-          className="mt-12 rounded-lg border border-border bg-surface-raised p-8 transition-colors"
+          className="mt-12 rounded-xl border border-border bg-surface-raised p-8 transition-colors"
           variants={SECTION.fadeUp}
           whileHover={cardHover}
         >
@@ -43,10 +43,10 @@ export default function CertificationsSection() {
               <h3 className="font-semibold text-text-primary">
                 {education.degree}
               </h3>
-              <p className="mt-1 text-sm text-text-secondary">
+              <p className="mt-1 text-base text-text-secondary">
                 {education.institution} &middot; {education.location}
               </p>
-              <p className="mt-1 font-mono text-xs text-text-muted">
+              <p className="mt-1 font-mono text-sm text-text-muted">
                 {education.dateRange}
               </p>
               {education.accreditation && (
@@ -67,17 +67,17 @@ export default function CertificationsSection() {
           {certifications.map((cert) => (
             <motion.div
               key={cert.id}
-              className="rounded-lg border border-border bg-surface-raised p-6 transition-colors"
+              className="rounded-xl border border-border bg-surface-raised p-6 transition-colors"
               variants={SECTION.fadeUp}
               whileHover={cardHover}
             >
               <Award size={20} className="text-accent" />
-              <h3 className="mt-3 text-sm font-semibold text-text-primary">
+              <h3 className="mt-3 text-base font-semibold text-text-primary">
                 {cert.name}
               </h3>
-              <p className="mt-1 text-xs text-text-muted">{cert.issuer}</p>
+              <p className="mt-1 text-sm text-text-muted">{cert.issuer}</p>
               {cert.date && (
-                <p className="mt-1 font-mono text-xs text-text-muted">
+                <p className="mt-1 font-mono text-sm text-text-muted">
                   {cert.date}
                 </p>
               )}

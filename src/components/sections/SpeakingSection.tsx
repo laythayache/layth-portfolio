@@ -14,23 +14,23 @@ export default function SpeakingSection() {
     reduced || mobileTuned ? undefined : SECTION.cardHover;
 
   return (
-    <section id="speaking" className="section-glass px-6 py-24">
+    <section id="speaking" className="section-glass section-shell px-6">
       <motion.div
-        className="mx-auto max-w-5xl"
+        className="mx-auto max-w-6xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
         viewport={SECTION.viewport}
         variants={SECTION.container}
       >
         <motion.h2
-          className="text-center font-serif text-3xl font-bold text-text-primary"
+          className="text-center font-serif text-3xl font-bold text-text-primary md:text-4xl"
           variants={SECTION.fadeUp}
         >
           Speaking &amp; Community
         </motion.h2>
 
         <motion.p
-          className="mx-auto mt-4 max-w-xl text-center text-sm text-text-secondary"
+          className="mx-auto mt-4 max-w-2xl text-center text-base text-text-secondary"
           variants={SECTION.fadeUp}
         >
           Available for speaking engagements on AI systems, automation, and
@@ -40,21 +40,21 @@ export default function SpeakingSection() {
         <div
           className={cn(
             "mt-12 grid gap-6",
-            "grid-cols-1 md:grid-cols-3"
+            "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
           )}
         >
           {speakingEntries.map((entry) => (
             <motion.div
               key={entry.id}
-              className="rounded-lg border border-border bg-surface-raised p-6 transition-colors"
+              className="rounded-xl border border-border bg-surface-raised p-6 transition-colors"
               variants={SECTION.fadeUp}
               whileHover={cardHover}
             >
-              <h3 className="font-semibold text-text-primary">{entry.title}</h3>
-              <p className="mt-1 font-mono text-xs text-accent">
+              <h3 className="text-lg font-semibold text-text-primary">{entry.title}</h3>
+              <p className="mt-1 font-mono text-sm text-accent">
                 {entry.role} &middot; {entry.organization}
               </p>
-              <p className="mt-3 text-sm text-text-secondary">
+              <p className="mt-3 text-base text-text-secondary">
                 {entry.description}
               </p>
             </motion.div>

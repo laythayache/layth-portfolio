@@ -1,39 +1,16 @@
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type KeyboardEvent,
+} from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { projects } from "@/content/projects";
+import { ArrowLeft, ArrowRight, Code } from "lucide-react";
 import { Link } from "react-router-dom";
-import { ArrowRight, Code } from "lucide-react";
-import { MOTION } from "@/motion/tokens";
+import { projects } from "@/content/projects";
+import { cn } from "@/lib/utils";
 import { useMediaQuery } from "@/motion/useMediaQuery";
-
-const projectMotion = MOTION.homepage.projects;
-const MotionLink = motion(Link);
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.54, ease: projectMotion.transitionEase },
-  },
-};
-
-const gridItem = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.46, ease: projectMotion.transitionEase },
-  },
-};
-
-const arrowNudge = {
-  rest: { x: 0 },
-  hover: {
-    x: projectMotion.arrowNudge,
-    transition: { duration: 0.24, ease: projectMotion.transitionEase },
-  },
-};
 
 interface MiniProject {
   title: string;
@@ -79,134 +56,192 @@ export default function ProjectsSection() {
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const mobileViewport = useMediaQuery("(max-width: 767px)");
   const mobileTuned = coarsePointer || mobileViewport;
-  const omnisign = projects.find((p) => p.slug === "omnisign") ?? projects[0];
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const totalSlides = miniProjects.length;
+  const omnisign = projects.find((project) => project.slug === "omnisign") ?? projects[0];
 
-  const featuredHover =
-    reduced || mobileTuned
-      ? undefined
-      : {
-          y: projectMotion.featuredHoverY,
-          boxShadow: "0 26px 52px rgb(15 23 42 / 0.14)",
-          borderColor: "rgb(var(--accent) / 0.3)",
-        };
+  const goToSlide = useCallback((index: number) => {
+    const track = trackRef.current;
+    if (!track) return;
 
-  const cardTap =
-    reduced || mobileTuned
-      ? undefined
-      : { scale: projectMotion.cardTapScale };
+    const bounded = ((index % totalSlides) + totalSlides) % totalSlides;
+    const slideWidth = track.clientWidth;
+    setActiveIndex(bounded);
+    track.scrollTo({
+      left: bounded * slideWidth,
+      behavior: "smooth",
+    });
+  }, [totalSlides]);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    function handleScroll() {
+      const current = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      setActiveIndex((previous) => (previous === current ? previous : current));
+    }
+
+    track.addEventListener("scroll", handleScroll, { passive: true });
+    return () => track.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  function handleCarouselKeyDown(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+      goToSlide(activeIndex + 1);
+    }
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+      goToSlide(activeIndex - 1);
+    }
+  }
 
   return (
-    <section id="projects" className="section-glass-alt px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-5xl">
+    <section id="projects" className="section-glass-alt section-shell px-6">
+      <div className="mx-auto max-w-6xl">
         <motion.h2
-          className="text-center font-serif text-3xl font-bold text-text-primary"
+          className="text-center font-serif text-3xl font-bold text-text-primary md:text-4xl"
           initial={reduced ? undefined : { opacity: 0, y: 8 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.4, ease: [0, 0, 0.2, 1] }}
+          transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
         >
           Projects
         </motion.h2>
 
-        {/* Featured project - OmniSign */}
-        <motion.div
-          className="project-card-surface mt-16 overflow-hidden rounded-lg border border-border bg-surface-raised"
-          initial={reduced ? undefined : "hidden"}
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={fadeUp}
-          whileHover={featuredHover}
-          whileTap={cardTap}
+        <motion.article
+          className="project-card-surface mt-14 overflow-hidden rounded-xl border border-border bg-surface-raised"
+          initial={reduced ? undefined : { opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-40px" }}
+          transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
         >
           <div className="flex flex-col md:flex-row">
-            {/* Image placeholder */}
-            <div className="flex w-full shrink-0 items-center justify-center bg-surface-overlay p-12 md:w-[300px]">
-              <Code className="h-16 w-16 text-text-muted" strokeWidth={1} />
+            <div className="flex w-full shrink-0 items-center justify-center bg-surface-overlay p-12 md:w-[320px]">
+              <Code className="h-16 w-16 text-text-muted" strokeWidth={1} aria-hidden />
             </div>
-
-            {/* Content */}
             <div className="flex flex-col justify-center p-6 md:p-8">
-              <h3 className="font-serif text-xl font-semibold text-text-primary md:text-2xl">
-                OmniSign &mdash; Lebanese Sign Language Translator
+              <h3 className="font-serif text-2xl font-semibold text-text-primary">
+                OmniSign - Lebanese Sign Language Translator
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              <p className="mt-3 text-base leading-relaxed text-text-secondary">
                 {omnisign.summary}
               </p>
 
-              {/* Tech tags */}
               {omnisign.stack && (
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {omnisign.stack.split(", ").map((tech) => (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {omnisign.stack.split(", ").map((technology) => (
                     <span
-                      key={tech}
-                      className="rounded bg-accent/10 px-2 py-0.5 font-mono text-xs text-accent transition-colors hover:bg-accent/15"
+                      key={technology}
+                      className="rounded bg-accent/10 px-2.5 py-1 font-mono text-xs text-accent"
                     >
-                      {tech}
+                      {technology}
                     </span>
                   ))}
                 </div>
               )}
 
-              <MotionLink
+              <Link
                 to="/projects/omnisign"
                 data-magnetic
                 data-cursor-label="Open Case Study"
-                className="group mt-6 inline-flex items-center gap-2 font-mono text-sm text-accent transition-colors hover:text-accent/80 focus-visible:text-accent/80"
-                initial="rest"
-                animate="rest"
-                whileHover={reduced || mobileTuned ? undefined : "hover"}
-                whileFocus={reduced ? undefined : "hover"}
+                className="mt-6 inline-flex w-fit items-center gap-2 rounded-md border border-accent px-4 py-2 font-mono text-sm uppercase tracking-[0.12em] text-accent transition-colors hover:bg-accent hover:text-white"
               >
                 View Case Study
-                <motion.span variants={arrowNudge}>
-                  <ArrowRight size={14} />
-                </motion.span>
-              </MotionLink>
+                <ArrowRight size={14} />
+              </Link>
             </div>
           </div>
-        </motion.div>
+        </motion.article>
 
-        {/* Project grid */}
-        <motion.div
-          className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-60px" }}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: { staggerChildren: 0.08 },
-            },
-          }}
-        >
-          {miniProjects.map((project) => (
-            <motion.div
-              key={project.title}
-              className={cn(
-                "project-card-surface rounded-lg border border-border bg-surface-raised p-6",
-                "transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
-              )}
-              variants={reduced ? undefined : gridItem}
-            >
-              <h4 className="font-semibold text-text-primary">
-                {project.title}
-              </h4>
-              <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-                {project.description}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded bg-accent/10 px-2 py-0.5 font-mono text-xs text-accent transition-colors hover:bg-accent/15"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </motion.div>
+        <div className="mt-12" role="region" aria-label="Projects carousel">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <p className="font-mono text-sm uppercase tracking-[0.16em] text-text-muted">
+              More Projects
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => goToSlide(activeIndex - 1)}
+                aria-label="Previous project"
+                className="rounded-md border border-border-strong bg-surface-raised p-2 text-text-primary transition-colors hover:border-accent hover:text-accent"
+              >
+                <ArrowLeft size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => goToSlide(activeIndex + 1)}
+                aria-label="Next project"
+                className="rounded-md border border-border-strong bg-surface-raised p-2 text-text-primary transition-colors hover:border-accent hover:text-accent"
+              >
+                <ArrowRight size={16} />
+              </button>
+            </div>
+          </div>
+
+          <div
+            ref={trackRef}
+            onKeyDown={handleCarouselKeyDown}
+            tabIndex={0}
+            className={cn(
+              "carousel-track flex snap-x snap-mandatory overflow-x-auto rounded-xl",
+              "border border-border bg-surface-raised",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/50"
+            )}
+            aria-label="Use left and right arrow keys to browse projects"
+          >
+            {miniProjects.map((project, index) => (
+              <article
+                key={project.title}
+                className="w-full shrink-0 snap-center p-6 sm:p-8"
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`Project ${index + 1} of ${totalSlides}`}
+              >
+                <h3 className="text-xl font-semibold text-text-primary">{project.title}</h3>
+                <p className="mt-3 text-base leading-relaxed text-text-secondary">
+                  {project.description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded bg-accent/10 px-2.5 py-1 font-mono text-xs text-accent"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-4 flex items-center justify-center gap-2" aria-label="Carousel pagination">
+            {miniProjects.map((project, index) => (
+              <button
+                key={`dot-${project.title}`}
+                type="button"
+                onClick={() => goToSlide(index)}
+                aria-label={`Go to project ${index + 1}`}
+                aria-current={activeIndex === index}
+                className={cn(
+                  "h-2.5 w-2.5 rounded-full transition-all",
+                  activeIndex === index
+                    ? "w-6 bg-accent"
+                    : "bg-border-strong hover:bg-accent/65"
+                )}
+              />
+            ))}
+          </div>
+
+          {!mobileTuned && (
+            <p className="mt-3 text-center text-sm text-text-muted">
+              Tip: use arrow keys to navigate this carousel.
+            </p>
+          )}
+        </div>
       </div>
     </section>
   );

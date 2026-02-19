@@ -84,11 +84,11 @@ export default function Navbar() {
 
   return (
     <nav
+      aria-label="Primary"
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-colors duration-300",
-        isHome && !scrolled
-          ? "bg-transparent"
-          : "border-b border-border bg-surface/95 backdrop-blur-sm"
+        "fixed left-0 right-0 top-0 z-50 transition-colors duration-300",
+        "border-b border-border-strong bg-surface/92 backdrop-blur-md",
+        isHome && !scrolled ? "shadow-none" : "shadow-[0_8px_24px_rgb(15_23_42_/_0.08)]"
       )}
     >
       {/* Progress bar */}
@@ -99,7 +99,7 @@ export default function Navbar() {
         />
       )}
 
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         {/* Logo / home link */}
         <Link
           to="/"
@@ -114,17 +114,21 @@ export default function Navbar() {
           <img
             src="/logo-mark.svg"
             alt="Layth Ayache"
+            width={1248}
+            height={832}
+            loading="eager"
+            decoding="async"
             className={cn(
-              "h-8 w-auto transition-opacity",
+              "h-9 w-auto transition-opacity",
               isHome && !scrolled
-                ? "pointer-events-none opacity-0"
-                : "opacity-50 hover:opacity-70"
+                ? "opacity-90"
+                : "opacity-90 hover:opacity-100"
             )}
           />
         </Link>
 
         {/* Desktop nav links */}
-        <div className="hidden items-center gap-6 lg:flex">
+        <div className="hidden items-center gap-5 lg:flex">
           {NAV_SECTIONS.map((section) => {
             const active = isHome && activeSection === section.id;
             return (
@@ -135,10 +139,10 @@ export default function Navbar() {
                 data-magnetic
                 data-cursor-label={`Jump to ${section.label}`}
                 className={cn(
-                  "relative pb-1 font-mono text-xs uppercase tracking-widest transition-colors",
+                  "relative pb-1 font-mono text-sm uppercase tracking-[0.15em] transition-colors",
                   active
                     ? "text-text-primary"
-                    : "text-text-muted hover:text-accent"
+                    : "text-text-secondary hover:text-accent"
                 )}
               >
                 {section.label}
@@ -157,10 +161,12 @@ export default function Navbar() {
         {/* Mobile hamburger */}
         <div className="flex items-center lg:hidden">
           <button
+            type="button"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
-            className="p-2 text-text-primary transition-colors"
+            aria-controls="mobile-navigation"
+            className="rounded-md border border-border-strong bg-surface-raised p-2 text-text-primary transition-colors hover:border-accent hover:text-accent"
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -176,8 +182,10 @@ export default function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
             className="overflow-hidden border-b border-border bg-surface lg:hidden"
+            id="mobile-navigation"
+            aria-label="Mobile menu"
           >
-            <div className="mx-auto flex max-w-5xl flex-col gap-1 px-6 py-4">
+            <div className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
               {NAV_SECTIONS.map((section) => {
                 const active = isHome && activeSection === section.id;
                 return (
@@ -186,10 +194,10 @@ export default function Navbar() {
                     type="button"
                     onClick={() => scrollToSection(section.id)}
                     className={cn(
-                      "px-3 py-2.5 text-left font-mono text-sm uppercase tracking-widest transition-colors",
+                      "rounded px-3 py-3 text-left font-mono text-sm uppercase tracking-[0.15em] transition-colors",
                       active
-                        ? "border-l-2 border-accent text-text-primary"
-                        : "text-text-muted hover:text-accent"
+                        ? "border-l-2 border-accent bg-accent/5 text-text-primary"
+                        : "text-text-secondary hover:bg-surface-overlay hover:text-accent"
                     )}
                   >
                     {section.label}

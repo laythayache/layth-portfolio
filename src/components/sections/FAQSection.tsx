@@ -27,15 +27,15 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="section-glass-alt px-6 py-24">
+    <section id="faq" className="section-glass-alt section-shell px-6">
       <motion.div
-        className="mx-auto max-w-2xl"
+        className="mx-auto max-w-3xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
         viewport={SECTION.viewport}
       >
         <motion.h2
-          className="text-center font-serif text-3xl font-bold text-text-primary"
+          className="text-center font-serif text-3xl font-bold text-text-primary md:text-4xl"
           variants={SECTION.fadeUp}
         >
           Frequently Asked Questions
@@ -58,9 +58,10 @@ export default function FAQSection() {
                   data-cursor-label={isOpen ? "Collapse" : "Expand"}
                   className={cn(
                     "flex w-full items-center justify-between text-left",
-                    "text-sm font-semibold text-text-primary transition-colors hover:text-accent"
+                    "text-base font-semibold text-text-primary transition-colors hover:text-accent"
                   )}
                   aria-expanded={isOpen}
+                  aria-controls={`faq-answer-${index}`}
                 >
                   <span>{item.question}</span>
                   <motion.span
@@ -75,6 +76,7 @@ export default function FAQSection() {
                 <AnimatePresence initial={false}>
                   {isOpen && (
                     <motion.div
+                      id={`faq-answer-${index}`}
                       key="answer"
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
@@ -82,7 +84,7 @@ export default function FAQSection() {
                       transition={{ duration: 0.3, ease: SECTION.ease }}
                       className="overflow-hidden"
                     >
-                      <p className="pt-3 text-sm text-text-secondary">
+                      <p className="pt-3 text-base text-text-secondary">
                         {item.answer}
                       </p>
                     </motion.div>

@@ -124,7 +124,9 @@ export default function ProjectDetail() {
               </button>
               <img
                 src={expandedDiagram}
-                alt="Architecture diagram"
+                alt={`${project.title} architecture diagram`}
+                loading="eager"
+                decoding="async"
                 className="w-full h-auto"
               />
             </div>
@@ -201,6 +203,7 @@ export default function ProjectDetail() {
                         src={project.architectureDiagram}
                         alt={`${project.title} architecture`}
                         loading="lazy"
+                        decoding="async"
                         className="w-full cursor-pointer hover:opacity-80 transition-opacity rounded border border-border"
                       />
                       <span className="absolute bottom-2 right-2 rounded bg-text-primary/70 px-2 py-1 font-mono text-[10px] text-surface opacity-0 transition-opacity group-hover:opacity-100">
