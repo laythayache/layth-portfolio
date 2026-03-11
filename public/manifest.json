@@ -1,7 +1,7 @@
 {
-  "name": "Layth Ayache - Technical Architect",
+  "name": "Layth Ayache - Systems Engineer & Technical Consultant",
   "short_name": "Layth Ayache",
-  "description": "Technical architect building production-grade infrastructure for public information systems",
+  "description": "Systems engineer and technical consultant specializing in workflow automation, system reliability, CRM administration, and SaaS platform management.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -42,10 +42,10 @@
   ],
   "shortcuts": [
     {
-      "name": "Systems",
-      "short_name": "Systems",
-      "description": "View production systems and projects",
-      "url": "/systems",
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read articles on systems engineering and automation",
+      "url": "/blog",
       "icons": [
         {
           "src": "/favicon-48.png",
@@ -58,7 +58,7 @@
       "name": "About",
       "short_name": "About",
       "description": "Learn about my work and approach",
-      "url": "/about",
+      "url": "/#about",
       "icons": [
         {
           "src": "/favicon-48.png",

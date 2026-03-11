@@ -14,7 +14,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "aligned-tech",
     company: "Aligned Tech",
-    role: "AI Systems Engineer & Technical Consultant",
+    role: "Systems Engineer & Technical Consultant",
     type: "Full-time",
     location: "Hazmieh, Lebanon",
     dateStart: "Nov 2025",

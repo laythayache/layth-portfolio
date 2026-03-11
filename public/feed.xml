@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Layth Ayache — Blog</title>
+    <link>https://laythayache.com/blog</link>
+    <description>Systems engineering, workflow automation, and technical consulting insights.</description>
+    <language>en</language>
+    <lastBuildDate>Wed, 11 Mar 2026 20:37:51 GMT</lastBuildDate>
+    <atom:link href="https://laythayache.com/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Building in a Country with No Infrastructure</title>
+      <link>https://laythayache.com/blog/building-in-a-country-with-no-infrastructure</link>
+      <guid isPermaLink="true">https://laythayache.com/blog/building-in-a-country-with-no-infrastructure</guid>
+      <pubDate>Sun, 15 Feb 2026 00:00:00 GMT</pubDate>
+      <description>How infrastructure fragility becomes an engineering variable when production systems cannot assume perfect conditions.</description>
+      <category>Infrastructure</category>
+      <category>AI</category>
+      <category>Lebanon</category>
+    </item>
+    <item>
+      <title>Designing AI Systems for Unstable Networks</title>
+      <link>https://laythayache.com/blog/designing-ai-for-unstable-networks</link>
+      <guid isPermaLink="true">https://laythayache.com/blog/designing-ai-for-unstable-networks</guid>
+      <pubDate>Thu, 22 Jan 2026 00:00:00 GMT</pubDate>
+      <description>Practical patterns for keeping AI products usable when connectivity and latency are unreliable.</description>
+      <category>AI</category>
+      <category>Networking</category>
+      <category>Reliability</category>
+    </item>
+    <item>
+      <title>From Computer Vision Prototype to Production</title>
+      <link>https://laythayache.com/blog/from-cv-prototype-to-production</link>
+      <guid isPermaLink="true">https://laythayache.com/blog/from-cv-prototype-to-production</guid>
+      <pubDate>Wed, 10 Dec 2025 00:00:00 GMT</pubDate>
+      <description>The engineering checklist I use to move computer vision projects from demos to dependable products.</description>
+      <category>Computer Vision</category>
+      <category>Production</category>
+      <category>Engineering</category>
+    </item>
+    <item>
+      <title>Lessons from Telecom Engineering to AI Systems</title>
+      <link>https://laythayache.com/blog/lessons-from-telecom-to-ai</link>
+      <guid isPermaLink="true">https://laythayache.com/blog/lessons-from-telecom-to-ai</guid>
+      <pubDate>Wed, 05 Nov 2025 00:00:00 GMT</pubDate>
+      <description>Working on telecom infrastructure changed how I approach reliability, monitoring, and risk in AI products.</description>
+      <category>Infrastructure</category>
+      <category>Telecom</category>
+      <category>AI</category>
+    </item>
+  </channel>
+</rss>

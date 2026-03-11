@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getAllPosts } from "@/content/posts";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 export default function BlogSection() {
   const reduced = useReducedMotion();
@@ -106,6 +107,16 @@ export default function BlogSection() {
             View all articles
             <ArrowRight size={14} aria-hidden />
           </Link>
+        </motion.div>
+
+        <motion.div
+          className="mx-auto mt-8 max-w-md"
+          variants={{
+            hidden: { opacity: 0, y: 10 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+          }}
+        >
+          <NewsletterSignup />
         </motion.div>
       </motion.div>
     </section>

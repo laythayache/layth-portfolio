@@ -7,6 +7,7 @@ import {
   getAllPostTags,
 } from "@/content/posts";
 import { DEFAULT_KEYWORDS } from "@/content/siteSeo";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 const POSTS_PER_PAGE = 3;
 
@@ -160,6 +161,10 @@ export default function BlogIndex() {
             >
               Next
             </button>
+          </div>
+
+          <div className="mx-auto mt-12 max-w-md">
+            <NewsletterSignup />
           </div>
         </div>
       </section>

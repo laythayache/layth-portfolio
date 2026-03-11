@@ -82,14 +82,13 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <p className="type-kicker">AI Systems Engineer · Beirut</p>
+          <p className="type-kicker">Systems Engineer & Technical Consultant · Beirut</p>
           <h1 id="hero-title" className="type-h1 mt-5 max-w-4xl">
-            I build production AI systems that hold up under real constraints.
+            I build reliable systems, automate workflows, and keep technology running so teams can focus on what matters.
           </h1>
           <p className="type-body mt-6 max-w-2xl">
-            Layth Ayache designs and ships AI infrastructure, computer vision
-            pipelines, and workflow automation across telecom, finance, and
-            healthcare teams.
+            Layth Ayache manages tech stacks, builds automations, and ensures
+            system reliability across SaaS platforms, CRMs, and internal tools.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">

@@ -9,16 +9,26 @@ import CertificationsSection from "@/components/sections/CertificationsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import ContactSection from "@/components/sections/ContactSection";
 import { DEFAULT_KEYWORDS, homePageJsonLd } from "@/content/siteSeo";
+import { projects } from "@/content/projects";
+import { getAllPosts } from "@/content/posts";
+import { BRAND } from "@/content/brand";
+
+const latestModified = [
+  ...projects.map((p) => p.updated_at),
+  ...getAllPosts().map((p) => p.date),
+]
+  .sort()
+  .pop();
 
 export default function Home() {
   return (
     <>
       <SEO
-        title="Layth Ayache | AI Systems Engineer & Technical Consultant"
-        description="AI systems engineer and technical consultant building AI infrastructure, automating workflows, and consulting for companies across telecom, finance, and healthcare. Based in Beirut."
+        title={`${BRAND.name} | ${BRAND.title}`}
+        description={BRAND.description}
         canonical="https://laythayache.com/"
         keywords={DEFAULT_KEYWORDS}
-        modifiedTime="2026-02-16"
+        modifiedTime={latestModified}
         jsonLd={homePageJsonLd()}
       />
       <div className="relative z-10">

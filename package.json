@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "seo:generate": "node scripts/generate-seo-artifacts.mjs",
-    "build": "npm run seo:generate && vite build",
+    "og:generate": "node scripts/generate-og-image.mjs",
+    "build": "npm run seo:generate && npm run og:generate && vite build && node scripts/inject-meta.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest run",

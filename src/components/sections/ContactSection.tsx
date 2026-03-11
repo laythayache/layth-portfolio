@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { SECTION } from "@/motion/tokens";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 interface FormState {
   name: string;
@@ -329,6 +330,16 @@ export default function ContactSection() {
             publicly. No tracking or third-party data sharing.
           </p>
         </motion.form>
+
+        <motion.div
+          className="mt-10 max-w-md"
+          variants={{
+            hidden: { opacity: 0, y: 5 },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+          }}
+        >
+          <NewsletterSignup />
+        </motion.div>
 
         <motion.div
           className="mt-8 flex flex-wrap gap-3"

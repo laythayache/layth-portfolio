@@ -6,6 +6,11 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://laythayache.com/blog</loc>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://laythayache.com/projects/omnisign</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
@@ -38,6 +43,30 @@
     <loc>https://laythayache.com/projects/network-infrastructure</loc>
     <lastmod>2025-05-22</lastmod>
     <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://laythayache.com/blog/building-in-a-country-with-no-infrastructure</loc>
+    <lastmod>2026-02-15</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://laythayache.com/blog/designing-ai-for-unstable-networks</loc>
+    <lastmod>2026-01-22</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://laythayache.com/blog/from-cv-prototype-to-production</loc>
+    <lastmod>2025-12-10</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
+    <loc>https://laythayache.com/blog/lessons-from-telecom-to-ai</loc>
+    <lastmod>2025-11-05</lastmod>
+    <priority>0.6</priority>
     <changefreq>monthly</changefreq>
   </url>
 </urlset>
