@@ -1,13 +1,14 @@
 export const BRAND = {
   name: "Layth Ayache",
-  title: "Senior AI & Infrastructure Architect | Full-Stack Systems Engineer | Technical Consultant",
+  title: "AI Systems Engineer & Technology Consultant | Infrastructure Architect | Technology Leader",
   tagline:
-    "I architect production-grade AI systems, national-scale infrastructure, and secure automation platforms — from embedded hardware to cloud-deployed services.",
+    "Leading AI systems architecture, cross-functional engineering, and technology strategy — driving end-to-end AI infrastructure and engineering operations from data pipeline architecture to production deployment.",
   description:
-    "Senior AI systems architect and full-stack infrastructure engineer specializing in computer vision, NLP, web scraping, medical AI, cybersecurity systems, data pipeline engineering, and large-scale automation. Building toward nationwide digital infrastructure for Lebanon.",
+    "AI systems architect and technology leader specializing in computer vision, NLP, privacy-preserving AI, web scraping, medical AI, cybersecurity, data pipeline engineering, and national-scale digital infrastructure. Building production-grade systems and leading engineering operations at Aligned Tech.",
   url: "https://laythayache.com",
   github: "https://github.com/laythayache",
   linkedin: "https://www.linkedin.com/in/laythayache",
+  medium: "https://medium.com/@laythayache5",
   email: "laythayache5@gmail.com",
   calendly: "https://calendly.com/laythayache5/30min",
   location: "Beirut, Lebanon",

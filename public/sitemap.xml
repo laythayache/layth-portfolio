@@ -16,6 +16,12 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://laythayache.com/projects/privacy-guard</loc>
+    <lastmod>2026-02-16</lastmod>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://laythayache.com/projects/license-plate-recognition</loc>
     <lastmod>2025-11-12</lastmod>
     <priority>0.7</priority>

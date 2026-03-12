@@ -8,6 +8,7 @@ const ProjectMicrosite = lazy(() => import("@/pages/ProjectMicrosite"));
 const OmnisignMicrosite = lazy(() => import("@/pages/OmnisignMicrosite"));
 const BlogIndex = lazy(() => import("@/pages/BlogIndex"));
 const BlogPost = lazy(() => import("@/pages/BlogPost"));
+const BeyondTech = lazy(() => import("@/pages/BeyondTech"));
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/beyond-tech" element={<BeyondTech />} />
 
           {/* Project detail routes (preserved for backlinks) */}
           <Route

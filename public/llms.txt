@@ -24,6 +24,8 @@
 - OmniSign Case Study: https://laythayache.com/projects/omnisign
 
 ## Projects
+- [PrivacyGuard](https://laythayache.com/projects/privacy-guard) | status: ongoing | updated: 2026-02-16
+  Production-grade, open-source privacy de-identification pipeline for real-time anonymization of sensitive regions in video streams. Runs on edge devices at 25-30 FPS with zero cloud dependency.
 - [OmniSign](https://laythayache.com/projects/omnisign) | status: ongoing | updated: 2026-02-16
   AI-powered Lebanese Sign Language translation system with privacy-first on-device inference and real-time interaction.
 - [Social Listening Data Pipeline](https://laythayache.com/projects/social-listening-pipeline) | status: completed | updated: 2026-01-15

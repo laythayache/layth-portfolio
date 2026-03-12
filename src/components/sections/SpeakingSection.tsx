@@ -2,7 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, ArrowUpRight, Bot, Mic, Users } from "lucide-react";
 import { speakingEntries } from "@/content/speaking";
 
-const EXPERIENCE_CROSS_IDS = new Set(["ai-club", "civil-defense-community", "physics-astronomy", "zaka-ambassador"]);
+const EXPERIENCE_CROSS_IDS = new Set(["ai-club"]);
 
 function getEntryIcon(id: string) {
   if (id.includes("robotics")) return Bot;

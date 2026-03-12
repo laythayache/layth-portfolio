@@ -2,6 +2,58 @@ import type { Project, ProjectFilters } from "./types";
 
 export const projects: Project[] = [
   {
+    slug: "privacy-guard",
+    title: "PrivacyGuard",
+    status: "ongoing",
+    kind: "infrastructure",
+    system: "security",
+    ui_mode: "lab",
+    updated_at: "2026-02-16",
+    summary:
+      "Production-grade, open-source privacy de-identification pipeline for real-time anonymization of sensitive regions in video streams. Runs on edge devices at 25-30 FPS with zero cloud dependency.",
+    outcome:
+      "Enterprise-ready Python library with GDPR/CCPA compliance documentation, Middle Eastern market support (Arabic license plates), and three masking modes — deployed on Raspberry Pi 4 with full audit logging.",
+    role: "Creator & Lead Developer",
+    stack: "Python 3.9+, YOLOv8-nano, ONNX Runtime, OpenCV, NumPy",
+    timeframe: "2025 - Present",
+    links: {
+      repo: "https://github.com/laythayache/PrivacyGuard",
+    },
+    challenge_url: "/#contact",
+    friend_project: false,
+    tags: ["AI", "Privacy", "Computer Vision", "Edge AI", "Open Source"],
+    featured: true,
+    card: {
+      accent: "violet",
+      size: "lg",
+      variant: "featured",
+      tagline: "Privacy-first video de-identification at the edge",
+      highlight: "Open source · GDPR/CCPA · 25-30 FPS on Raspberry Pi",
+    },
+    sections: {
+      problem:
+        "Organizations handling video surveillance, dashcam footage, and public-facing cameras need to comply with GDPR, CCPA, and regional privacy regulations. Existing solutions require cloud connectivity, are proprietary, and charge per-frame fees — making them impractical for edge deployments, developing markets, and privacy-sensitive environments.",
+      systemReality:
+        "Edge devices like Raspberry Pi have limited compute. Network connectivity in Lebanon and similar markets is unreliable. Privacy regulations demand that sensitive data never leaves the device. Arabic license plate formats and bilingual documents require specialized detection models.",
+      intervention:
+        "Designed a zero-cloud privacy pipeline that detects and anonymizes faces, license plates, and persons entirely on-device using YOLOv8-nano with ONNX Runtime optimization. Built three masking modes (Gaussian blur, pixelation, solid fill), comprehensive audit logging, batch processing, and compliance watermarking — all permanently free and open-source.",
+      architecture:
+        "YOLOv8-nano models optimized via ONNX Runtime for CPU inference. OpenCV handles frame capture from webcam, video files, and RTSP streams. A modular detector pipeline applies region-specific masking with configurable confidence thresholds. Audit logger writes per-frame detection metadata for compliance verification. Regional detectors handle Arabic license plate recognition and bilingual document processing.",
+      tradeoffs:
+        "Chose YOLOv8-nano over larger models to maintain 25-30 FPS on Raspberry Pi 4. Sacrificed some detection accuracy on edge cases in favor of real-time throughput. Used ONNX Runtime over native PyTorch to eliminate GPU dependency and reduce binary size.",
+      worked:
+        "Achieved real-time inference on consumer hardware with no cloud dependency. GDPR and CCPA compliance documentation enables enterprise adoption. MIT license and permanent free commitment removed adoption barriers. Regional detectors successfully handle Middle Eastern market requirements.",
+      didnt:
+        "Very small faces at distance and heavily occluded license plates still challenge the nano model. Multi-camera stream orchestration requires additional infrastructure beyond the core library.",
+      reliability:
+        "Confidence thresholds filter low-quality detections. Audit logging provides full traceability for compliance audits. Batch processing mode handles large video archives with automated error recovery and progress tracking.",
+      unsolved:
+        "Multi-camera orchestration, GPU acceleration path for high-throughput deployments, and expanding regional detector coverage beyond Arabic markets.",
+      challenges:
+        "How to maintain sub-frame latency while expanding detection categories and regional format support without compromising the edge deployment constraint.",
+    },
+  },
+  {
     slug: "omnisign",
     title: "OmniSign",
     status: "ongoing",
