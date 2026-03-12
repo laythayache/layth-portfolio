@@ -4,7 +4,12 @@ export type ProjectKind =
   | "mapping"
   | "intervention"
   | "analysis"
-  | "infrastructure";
+  | "infrastructure"
+  | "automation"
+  | "pipeline"
+  | "web"
+  | "embedded-hardware"
+  | "cloud";
 
 export type UIMode = "bureaucratic" | "fragmented" | "conversational" | "lab";
 

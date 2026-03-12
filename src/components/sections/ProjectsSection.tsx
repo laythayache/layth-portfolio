@@ -14,45 +14,56 @@ import {
   Cpu,
   ShieldCheck,
   Stethoscope,
+  Globe,
+  Cloud,
+  Database,
+  Workflow,
+  type LucideIcon,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { projects } from "@/content/projects";
 import { cn } from "@/lib/utils";
 
-type FilterKey = "all" | "ai" | "embedded" | "medical" | "security";
-
-interface FilterOption {
-  key: FilterKey;
-  label: string;
+/** Derive unique tags from all featured projects, sorted by frequency */
+function buildFilters() {
+  const featured = projects.filter((p) => p.featured);
+  const tagCounts = new Map<string, number>();
+  for (const p of featured) {
+    for (const tag of p.tags ?? []) {
+      tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+    }
+  }
+  const sorted = [...tagCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([tag]) => tag);
+  return ["All", ...sorted];
 }
 
-const FILTERS: FilterOption[] = [
-  { key: "all", label: "All" },
-  { key: "ai", label: "AI" },
-  { key: "embedded", label: "Embedded" },
-  { key: "medical", label: "Medical" },
-  { key: "security", label: "Security" },
-];
+const FILTER_LABELS = buildFilters();
 
-function matchesFilter(projectTags: string[] | undefined, filter: FilterKey) {
-  const tags = (projectTags ?? []).map((tag) => tag.toLowerCase());
-  if (filter === "all") return true;
-  if (filter === "ai") return tags.some((tag) => tag.includes("ai"));
-  if (filter === "embedded") {
-    return tags.some((tag) => tag.includes("embedded") || tag.includes("iot"));
-  }
-  if (filter === "medical") {
-    return tags.some((tag) => tag.includes("medical"));
-  }
-  return tags.some((tag) => tag.includes("security"));
+function matchesFilter(projectTags: string[] | undefined, filter: string) {
+  if (filter === "All") return true;
+  return (projectTags ?? []).includes(filter);
 }
 
-function getProjectIcon(projectTags: string[] | undefined) {
-  const tags = (projectTags ?? []).map((tag) => tag.toLowerCase());
-  if (tags.some((tag) => tag.includes("medical"))) return Stethoscope;
-  if (tags.some((tag) => tag.includes("embedded") || tag.includes("iot")))
-    return Cpu;
-  if (tags.some((tag) => tag.includes("security"))) return ShieldCheck;
+const TAG_ICON_MAP: Record<string, LucideIcon> = {
+  Medical: Stethoscope,
+  Embedded: Cpu,
+  IoT: Cpu,
+  Security: ShieldCheck,
+  "Web Development": Globe,
+  Cloud: Cloud,
+  "Data Pipelines": Database,
+  Automation: Workflow,
+  "E-Commerce": Globe,
+  Hardware: Cpu,
+  Electronics: Cpu,
+};
+
+function getProjectIcon(projectTags: string[] | undefined): LucideIcon {
+  for (const tag of projectTags ?? []) {
+    if (TAG_ICON_MAP[tag]) return TAG_ICON_MAP[tag];
+  }
   return Brain;
 }
 
@@ -60,7 +71,7 @@ export default function ProjectsSection() {
   const reduced = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
+  const [activeFilter, setActiveFilter] = useState("All");
   const featured = useMemo(
     () => projects.filter((project) => project.featured),
     []
@@ -143,20 +154,20 @@ export default function ProjectsSection() {
         </motion.p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {FILTERS.map((filter) => (
+          {FILTER_LABELS.map((label) => (
             <button
-              key={filter.key}
+              key={label}
               type="button"
-              onClick={() => setActiveFilter(filter.key)}
+              onClick={() => setActiveFilter(label)}
               className={cn(
                 "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
-                activeFilter === filter.key
+                activeFilter === label
                   ? "border-accent bg-accent text-white"
                   : "border-border-strong bg-surface-raised text-text-secondary hover:border-accent hover:text-accent"
               )}
-              aria-pressed={activeFilter === filter.key}
+              aria-pressed={activeFilter === label}
             >
-              {filter.label}
+              {label}
             </button>
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useScrollSpy from "@/hooks/useScrollSpy";
@@ -24,9 +24,9 @@ export function DesktopTOC({ items }: TableOfContentsProps) {
   return (
     <nav
       aria-label="Table of contents"
-      className="hidden rounded-xl border border-slate-200 bg-white/90 p-4 shadow-sm backdrop-blur lg:block"
+      className="hidden rounded-xl border border-border bg-surface-raised/90 p-4 shadow-sm backdrop-blur lg:block"
     >
-      <p className="mb-3 font-mono text-[11px] uppercase tracking-wider text-slate-500">
+      <p className="mb-3 font-mono text-[11px] uppercase tracking-wider text-text-muted">
         On this page
       </p>
       <ul className="space-y-1.5">
@@ -37,8 +37,8 @@ export function DesktopTOC({ items }: TableOfContentsProps) {
               className={cn(
                 "block rounded border-l-2 py-1 pl-3 text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-accent/30",
                 active === item.id
-                  ? "border-accent bg-slate-50 text-slate-900"
-                  : "border-transparent text-slate-600 hover:text-slate-900"
+                  ? "border-accent bg-surface-overlay text-text-primary"
+                  : "border-transparent text-text-muted hover:text-text-primary"
               )}
             >
               {item.label}
@@ -52,14 +52,15 @@ export function DesktopTOC({ items }: TableOfContentsProps) {
 
 export function MobileTOC({ items }: TableOfContentsProps) {
   const [open, setOpen] = useState(false);
+  const panelId = useId();
 
   return (
     <nav aria-label="Table of contents" className="mb-8 lg:hidden">
       <button
         onClick={() => setOpen((previous) => !previous)}
-        className="flex w-full items-center justify-between rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:text-slate-900"
+        className="flex w-full items-center justify-between rounded-lg border border-border bg-surface-raised px-4 py-3 text-sm font-medium text-text-secondary transition-colors hover:text-text-primary"
         aria-expanded={open}
-        aria-controls="omnisign-mobile-toc"
+        aria-controls={panelId}
       >
         Table of contents
         <ChevronDown
@@ -69,15 +70,15 @@ export function MobileTOC({ items }: TableOfContentsProps) {
       </button>
       {open && (
         <ul
-          id="omnisign-mobile-toc"
-          className="mt-1 overflow-hidden rounded-lg border border-slate-200 bg-white"
+          id={panelId}
+          className="mt-1 overflow-hidden rounded-lg border border-border bg-surface-raised"
         >
           {items.map((item) => (
             <li key={item.id}>
               <a
                 href={`#${item.id}`}
                 onClick={() => setOpen(false)}
-                className="block px-4 py-2.5 text-sm text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900 focus:outline-none focus:bg-slate-50"
+                className="block px-4 py-2.5 text-sm text-text-secondary transition-colors hover:bg-surface-overlay hover:text-text-primary focus:outline-none focus:bg-surface-overlay"
               >
                 {item.label}
               </a>

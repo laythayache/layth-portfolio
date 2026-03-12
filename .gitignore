@@ -3,6 +3,7 @@ out
 dist
 .env
 .env.local
+.dev.vars
 *.mp4
 .DS_Store
 Thumbs.db

@@ -1,21 +1,21 @@
 # Layth Ayache
 
-> Systems engineer and technical consultant specializing in workflow automation, system reliability, CRM administration, and internal tech support across SaaS platforms.
+> AI systems and automation engineer specializing in workflow automation, system reliability, CRM administration, data pipelines, and technical consulting across SaaS platforms.
 
 ## Canonical Identity
 - Name: Layth Ayache
-- Role: Systems Engineer & Technical Consultant
+- Role: AI Systems & Automation Engineer | Technical Consultant
 - Location: Beirut, Lebanon
 - Website: https://laythayache.com
 - GitHub: https://github.com/laythayache
 - LinkedIn: https://www.linkedin.com/in/laythayache
 
 ## Focus Areas
-- Systems administration and platform management
-- Workflow automation and integration
-- CRM administration and data reliability
-- Internal technical support and troubleshooting
 - AI systems design and deployment
+- Workflow automation and integration engineering
+- CRM administration and SaaS platform management
+- Data pipeline engineering and ETL systems
+- Computer vision and NLP applications
 - Technical consulting for startups and enterprises
 
 ## Key Pages
@@ -26,16 +26,46 @@
 ## Projects
 - [OmniSign](https://laythayache.com/projects/omnisign) | status: ongoing | updated: 2026-02-16
   AI-powered Lebanese Sign Language translation system with privacy-first on-device inference and real-time interaction.
+- [Social Listening Data Pipeline](https://laythayache.com/projects/social-listening-pipeline) | status: completed | updated: 2026-01-15
+  Automated ETL pipeline ingesting social data from Meta, LinkedIn, and TikTok APIs using Python and scheduled cron jobs.
+- [Intelligent Document Processing System](https://laythayache.com/projects/document-processing-system) | status: completed | updated: 2025-12-10
+  Automated document-processing pipeline combining OCR and transformer-based NLP to extract structured information from financial documents.
+- [Conversational Knowledge Assistant](https://laythayache.com/projects/knowledge-assistant) | status: completed | updated: 2025-11-20
+  RAG-based conversational system using transformer embeddings and vector databases for querying enterprise knowledge bases.
 - [License Plate Recognition System](https://laythayache.com/projects/license-plate-recognition) | status: completed | updated: 2025-11-12
   Real-time license plate detection and OCR pipeline for roadway and parking workflows.
+- [Enterprise Vision Analytics Platform](https://laythayache.com/projects/enterprise-vision-analytics) | status: completed | updated: 2025-10-20
+  Production computer vision platform using YOLOv8 for real-time object detection with automated model retraining, A/B deployment, and monitoring dashboards processing 2M+ frames daily.
+- [Real-Time Data Analytics Dashboard](https://laythayache.com/projects/analytics-dashboard) | status: completed | updated: 2025-10-05
+  Interactive analytics platform using React.js and Python pipelines to visualize operational metrics and AI outputs in real time.
+- [Autonomous Anomaly Detection System](https://laythayache.com/projects/anomaly-detection) | status: completed | updated: 2025-09-15
+  Real-time anomaly detection system using deep learning and time-series analytics to detect operational irregularities.
+- [Cloud Image Classification Service](https://laythayache.com/projects/cloud-image-classification) | status: completed | updated: 2025-09-01
+  Serverless image classification API built on AWS with auto-scaling inference, model versioning, and comprehensive monitoring for production ML workloads.
+- [Scalable AI Deployment Pipeline](https://laythayache.com/projects/ml-deployment-pipeline) | status: completed | updated: 2025-08-25
+  End-to-end ML pipeline integrating PySpark preprocessing, TensorFlow model training, and containerized deployment with CI/CD automation.
 - [Face Recognition System](https://laythayache.com/projects/face-recognition) | status: completed | updated: 2025-08-20
   Real-time face recognition workflow for identity matching and access scenarios.
+- [Arabic Legal Document Search](https://laythayache.com/projects/arabic-legal-search) | status: completed | updated: 2025-07-30
+  Semantic document search system using fine-tuned Arabic BERT and Elasticsearch, achieving 87% top-3 hit rate with sub-300ms latency.
 - [Breast Cancer Detection Model](https://laythayache.com/projects/breast-cancer-detection) | status: completed | updated: 2025-07-18
   Supervised machine learning classification model for early-stage breast cancer risk detection.
+- [Multi-Domain Sentiment Analysis Engine](https://laythayache.com/projects/sentiment-analysis-engine) | status: completed | updated: 2025-06-15
+  Production NLP pipeline for real-time sentiment classification across restaurant reviews, combining fine-tuned transformer models with custom preprocessing for Arabic-English code-switched text.
 - [Home Security Embedded System](https://laythayache.com/projects/home-security-system) | status: completed | updated: 2025-06-02
   IoT security system using embedded sensors, Bluetooth presence logic, and app-based controls.
 - [Network Security Infrastructure](https://laythayache.com/projects/network-infrastructure) | status: completed | updated: 2025-05-22
   Enterprise network design with segmented VLAN architecture, hardened perimeter controls, and remote access policies.
+- [Dynamic Data Visualization Platform](https://laythayache.com/projects/dynamic-data-visualization) | status: completed | updated: 2025-05-10
+  Interactive web application for real-time data exploration with dynamic chart generation, CSV/JSON ingestion, and collaborative filtering across multi-dimensional datasets.
+- [Vinyl Record E-Commerce Platform](https://laythayache.com/projects/vinyl-ecommerce) | status: completed | updated: 2025-04-20
+  Full-stack e-commerce platform for vinyl record sales with inventory management, Stripe payment integration, and recommendation engine based on listening history.
+- [SQL Database Management System](https://laythayache.com/projects/sql-database-management) | status: completed | updated: 2025-03-15
+  Relational database design and administration system implementing normalized schemas, stored procedures, query optimization, and automated backup strategies for multi-tenant SaaS data.
+- [Autonomous Line-Tracking Robot](https://laythayache.com/projects/line-tracking-robot) | status: completed | updated: 2024-12-10
+  PID-controlled autonomous robot with IR sensor array, real-time obstacle avoidance, and wireless telemetry for industrial line-following applications.
+- [FM/AM Radio Transceiver PCB](https://laythayache.com/projects/fm-am-radio-pcb) | status: completed | updated: 2024-11-05
+  Custom-designed FM/AM radio transceiver with full PCB layout in KiCad, impedance-matched antenna design, and multi-stage filtering for signal clarity.
 
 ## Articles
 - [Building in a Country with No Infrastructure](https://laythayache.com/blog/building-in-a-country-with-no-infrastructure) | 2026-02-15
@@ -56,4 +86,4 @@
 - Blog RSS feed: https://laythayache.com/feed.xml
 - Cross-check with sitemap: https://laythayache.com/sitemap.xml
 
-Last updated: 2026-03-11
+Last updated: 2026-03-12

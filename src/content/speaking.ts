@@ -11,12 +11,22 @@ export interface SpeakingEntry {
 export const speakingEntries: SpeakingEntry[] = [
   {
     id: "ai-club",
-    title: "AI Club Leadership",
-    role: "Organizer and Speaker",
+    title: "AI Club President",
+    role: "Founder and Speaker",
     organization: "Rafik Hariri University",
     description:
-      "Led practical AI workshops and community events focused on computer vision, NLP, and real-world deployment mindset.",
+      "Founded and led the university AI club. Organized workshops and hackathons, mentoring 100+ students in computer vision, NLP, and ML deployment.",
     ctaLabel: "View highlights",
+    link: "https://www.linkedin.com/in/laythayache",
+  },
+  {
+    id: "physics-astronomy",
+    title: "Physics & Astronomy Club",
+    role: "Vice President",
+    organization: "Rafik Hariri University",
+    description:
+      "Organized stargazing events, physics lectures, and science outreach activities to promote STEM engagement across the university community.",
+    ctaLabel: "Learn more",
     link: "https://www.linkedin.com/in/laythayache",
   },
   {
@@ -37,6 +47,26 @@ export const speakingEntries: SpeakingEntry[] = [
     description:
       "Organized AI-focused events and connected students with practitioners to bridge research, industry, and mentorship.",
     ctaLabel: "See updates",
+    link: "https://www.linkedin.com/in/laythayache",
+  },
+  {
+    id: "civil-defense-community",
+    title: "Emergency Medical Volunteer",
+    role: "EMT & Mentor",
+    organization: "Lebanese Civil Defense",
+    description:
+      "Deliver on-site emergency medical care, execute BLS protocols, coordinate patient transport, and mentor new EMT volunteers.",
+    ctaLabel: "Learn more",
+    link: "https://www.linkedin.com/in/laythayache",
+  },
+  {
+    id: "jarrah-scouts",
+    title: "Jarrah Scouts",
+    role: "Active Member",
+    organization: "Jarrah Scouts Lebanon",
+    description:
+      "Long-standing member contributing to community service projects, leadership development, and outdoor education programs.",
+    ctaLabel: "Learn more",
     link: "https://www.linkedin.com/in/laythayache",
   },
 ];

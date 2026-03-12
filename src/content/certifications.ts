@@ -39,6 +39,15 @@ export const certifications: Certification[] = [
     group: "professional",
   },
   {
+    id: "network-security",
+    name: "Network Security Certificate",
+    issuer: "Cisco Networking Academy",
+    date: "2024",
+    details:
+      "Firewall configuration, VPN deployment, intrusion detection, and enterprise network hardening techniques.",
+    group: "professional",
+  },
+  {
     id: "bls",
     name: "Basic Life Support (BLS)",
     issuer: "NAEMT",

@@ -4,7 +4,7 @@ import RootLayout from "@/layouts/RootLayout";
 import NotFound from "@/pages/NotFound";
 
 const Home = lazy(() => import("@/pages/Home"));
-const ProjectDetail = lazy(() => import("@/pages/ProjectDetail"));
+const ProjectMicrosite = lazy(() => import("@/pages/ProjectMicrosite"));
 const OmnisignMicrosite = lazy(() => import("@/pages/OmnisignMicrosite"));
 const BlogIndex = lazy(() => import("@/pages/BlogIndex"));
 const BlogPost = lazy(() => import("@/pages/BlogPost"));
@@ -23,7 +23,7 @@ export default function App() {
             path="/projects/omnisign"
             element={<OmnisignMicrosite />}
           />
-          <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="/projects/:slug" element={<ProjectMicrosite />} />
 
           {/* Backward compatibility redirects → homepage */}
           <Route path="/lab" element={<Navigate to="/" replace />} />

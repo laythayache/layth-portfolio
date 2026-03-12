@@ -179,22 +179,22 @@ function buildLlms(projects, posts) {
 
   return `# Layth Ayache
 
-> Systems engineer and technical consultant specializing in workflow automation, system reliability, CRM administration, and internal tech support across SaaS platforms.
+> AI systems and automation engineer specializing in workflow automation, system reliability, CRM administration, data pipelines, and technical consulting across SaaS platforms.
 
 ## Canonical Identity
 - Name: Layth Ayache
-- Role: Systems Engineer & Technical Consultant
+- Role: AI Systems & Automation Engineer | Technical Consultant
 - Location: Beirut, Lebanon
 - Website: ${BASE_URL}
 - GitHub: https://github.com/laythayache
 - LinkedIn: https://www.linkedin.com/in/laythayache
 
 ## Focus Areas
-- Systems administration and platform management
-- Workflow automation and integration
-- CRM administration and data reliability
-- Internal technical support and troubleshooting
 - AI systems design and deployment
+- Workflow automation and integration engineering
+- CRM administration and SaaS platform management
+- Data pipeline engineering and ETL systems
+- Computer vision and NLP applications
 - Technical consulting for startups and enterprises
 
 ## Key Pages

@@ -44,10 +44,23 @@ export default function AboutSection() {
           className="mt-6 text-lg leading-relaxed text-text-secondary"
           variants={SECTION.fadeUp}
         >
-          Computer and Communication Engineer with 2+ years of experience in AI,
-          computer vision, network engineering, and data analytics. I design,
-          deploy, and optimize AI-driven systems across telecom, finance,
-          embedded systems, and healthcare domains.
+          AI Systems &amp; Automation Engineer with hands-on experience
+          across AI, computer vision, NLP, data pipelines, network
+          engineering, and CRM administration. I architect internal software
+          systems, build automated workflows, and deploy production AI
+          solutions across telecom, finance, embedded systems, and
+          enterprise SaaS platforms.
+        </motion.p>
+
+        <motion.p
+          className="mt-4 text-base leading-relaxed text-text-secondary"
+          variants={SECTION.fadeUp}
+        >
+          B.E. in Computer and Communication Engineering (ABET-accredited)
+          from Rafik Hariri University. Certified in Cisco enterprise
+          networking and OpenCV computer vision. I work across the full
+          stack — from embedded hardware and PCB design to cloud
+          infrastructure and API integrations.
         </motion.p>
 
         <motion.blockquote
@@ -57,8 +70,8 @@ export default function AboutSection() {
           )}
           variants={SECTION.fadeUp}
         >
-          I build systems that work under real constraints, not demos for ideal
-          conditions.
+          I build systems that work under real constraints, not demos for
+          ideal conditions.
         </motion.blockquote>
 
         <motion.div className="mt-10" variants={SECTION.fadeUp}>
@@ -87,8 +100,9 @@ export default function AboutSection() {
             Beyond Engineering
           </h3>
           <p className="font-mono text-base leading-relaxed text-text-muted">
-            7 years pianist (Lebanese Conservatory) / EMT volunteer / Jarrah
-            Scouts member
+            7 years pianist (Lebanese Conservatory) / EMT volunteer
+            (Civil Defense) / Jarrah Scouts member / Physics &amp;
+            Astronomy Club VP
           </p>
         </motion.div>
       </motion.div>

@@ -5,24 +5,29 @@ export interface FAQItem {
 
 export const faqItems: FAQItem[] = [
   {
-    question: "What kind of AI systems do you build?",
+    question: "What kind of systems do you build?",
     answer:
-      "I build predictive analytics models, OCR and document processing pipelines, NLP automation systems, computer vision applications, and real-time data dashboards. My work spans from prototype to production deployment.",
+      "I build AI-powered automation systems, data pipelines, CRM integrations, computer vision platforms, NLP applications, and real-time analytics dashboards. My work spans from embedded hardware to cloud-deployed production services.",
   },
   {
-    question: "What industries do you consult for?",
+    question: "What industries have you worked in?",
     answer:
-      "I've worked across telecom (OGERO), finance (Organizer/MEA), healthcare, and accessibility technology (OmniSign). I'm open to consulting in any industry where AI and automation can drive real impact.",
+      "Telecom (OGERO — network engineering and data analytics), finance (Organizer/MEA — document processing and anomaly detection), marketing technology (Aligned Tech — CRM and API integrations), healthcare, and accessibility (OmniSign — sign language AI).",
   },
   {
     question: "What's your tech stack?",
     answer:
-      "Python, TensorFlow, OpenCV, YOLOv8, Scikit-learn for AI/ML. React.js, .NET, Node.js for web. Docker, AWS, GCP for deployment. Cisco, Linux for networking. I pick the right tool for the problem.",
+      "Python, TensorFlow, YOLOv8, OpenCV, Scikit-learn for AI/ML. React.js, TypeScript, Node.js for web. PostgreSQL, MongoDB for data. Docker, AWS, GCP for infrastructure. Cisco, Linux for networking. HubSpot, Zapier for CRM/automation.",
   },
   {
-    question: "Do you offer consulting for startups?",
+    question: "Do you work with CRMs and SaaS platforms?",
     answer:
-      "Yes. I help startups with AI system design, automation workflow architecture, and technical strategy. Whether you need a prototype or a production pipeline, I can help scope and build it.",
+      "Yes. I manage CRM administration, build API integrations with platforms like HubSpot, and design automated workflows connecting SaaS tools. I also structure databases and data schemas for internal analytics platforms.",
+  },
+  {
+    question: "Do you offer technical consulting?",
+    answer:
+      "Yes. I help organizations with AI system design, workflow automation architecture, CRM optimization, and technical strategy. Whether you need a prototype, a production pipeline, or internal systems support, I can help scope and build it.",
   },
   {
     question: "How can I work with you?",
@@ -32,6 +37,6 @@ export const faqItems: FAQItem[] = [
   {
     question: "What languages do you speak?",
     answer:
-      "Arabic (native), French (B2 – DELF certified), and English (full professional proficiency). I work comfortably in multilingual environments.",
+      "Arabic (native), French (B2 — DELF certified), and English (full professional proficiency). I work comfortably in multilingual environments.",
   },
 ];

@@ -82,7 +82,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <p className="type-kicker">Systems Engineer & Technical Consultant · Beirut</p>
+          <p className="type-kicker">AI Systems & Automation Engineer | Technical Consultant · Beirut</p>
           <h1 id="hero-title" className="type-h1 mt-5 max-w-4xl">
             I build reliable systems, automate workflows, and keep technology running so teams can focus on what matters.
           </h1>
@@ -120,13 +120,13 @@ export default function HeroSection() {
 
           <ul className="mt-8 grid gap-2 text-sm text-text-secondary sm:grid-cols-3">
             <li className="rounded-md border border-border bg-white/70 px-3 py-2">
-              AI consulting and architecture
+              CRM & SaaS platform management
             </li>
             <li className="rounded-md border border-border bg-white/70 px-3 py-2">
-              Computer vision systems
+              Workflow automation & integrations
             </li>
             <li className="rounded-md border border-border bg-white/70 px-3 py-2">
-              Resilient infrastructure automation
+              Data pipelines & system reliability
             </li>
           </ul>
         </motion.div>
@@ -144,7 +144,7 @@ export default function HeroSection() {
         >
           <div className="flex items-center gap-2 text-sm font-medium text-accent">
             <Sparkles size={14} aria-hidden />
-            Blueprint mindset
+            Systems mindset
           </div>
           <div className="mt-4 overflow-hidden rounded-xl border border-border bg-surface p-2">
             <div className="aspect-[16/10] w-full">
@@ -152,8 +152,8 @@ export default function HeroSection() {
             </div>
           </div>
           <p className="mt-5 text-base leading-relaxed text-text-secondary">
-            From data collection to deployment, every decision is optimized for
-            reliability, accessibility, and measurable user impact.
+            From CRM architecture to API integrations, every system is built for
+            reliability, data accuracy, and operational efficiency.
           </p>
         </motion.aside>
       </div>

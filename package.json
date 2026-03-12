@@ -10,6 +10,7 @@
     "build": "npm run seo:generate && npm run og:generate && vite build && node scripts/inject-meta.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
+    "dev:full": "npx wrangler pages dev --port 5174 -- npm run dev",
     "test": "vitest run",
     "test:watch": "vitest"
   },
