@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
+import { ArrowUpRight, Calendar, Github, Linkedin, Mail } from "lucide-react";
 import { SECTION } from "@/motion/tokens";
+import { BRAND } from "@/content/brand";
 import NewsletterSignup from "@/components/NewsletterSignup";
 
 interface FormState {
@@ -170,19 +171,34 @@ export default function ContactSection() {
           automation, and resilient infrastructure.
         </motion.p>
 
-        <motion.a
-          href="mailto:laythayache5@gmail.com"
-          className="mt-7 inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-5 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
-          whileHover={reduced ? undefined : SECTION.buttonHover}
-          whileTap={reduced ? undefined : SECTION.buttonTap}
+        <motion.div
+          className="mt-7 flex flex-wrap gap-3"
           variants={{
             hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
-          <Mail size={17} aria-hidden />
-          Email laythayache5@gmail.com
-        </motion.a>
+          <motion.a
+            href="mailto:laythayache5@gmail.com"
+            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-5 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
+            whileHover={reduced ? undefined : SECTION.buttonHover}
+            whileTap={reduced ? undefined : SECTION.buttonTap}
+          >
+            <Mail size={17} aria-hidden />
+            Email Me
+          </motion.a>
+          <motion.a
+            href={BRAND.calendly}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-5 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent hover:text-accent"
+            whileHover={reduced ? undefined : SECTION.buttonHover}
+            whileTap={reduced ? undefined : SECTION.buttonTap}
+          >
+            <Calendar size={17} aria-hidden />
+            Schedule a Call
+          </motion.a>
+        </motion.div>
 
         <motion.form
           className="mt-9 rounded-2xl border border-border-strong bg-surface-raised p-6 shadow-sm md:p-8"

@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowUpRight, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Calendar, X } from "lucide-react";
+import { BRAND } from "@/content/brand";
 import { useState, useEffect, useRef } from "react";
 import { getProjectBySlug } from "@/content/projects";
 import SEO from "@/components/SEO";
@@ -424,13 +425,24 @@ export default function ProjectMicrosite() {
             <p className="mb-6 text-sm text-text-secondary">
               If you&rsquo;d like to discuss this work, have feedback, or want something similar built — reach out.
             </p>
-            <a
-              href="mailto:laythayache5@gmail.com"
-              className="inline-flex items-center gap-2 rounded-lg border border-accent bg-accent px-6 py-3 font-mono text-sm text-white transition-colors hover:bg-accent-hover"
-            >
-              laythayache5@gmail.com
-              <ArrowUpRight size={14} />
-            </a>
+            <div className="flex flex-wrap justify-center gap-3">
+              <a
+                href="mailto:laythayache5@gmail.com"
+                className="inline-flex items-center gap-2 rounded-lg border border-accent bg-accent px-6 py-3 font-mono text-sm text-white transition-colors hover:bg-accent-hover"
+              >
+                laythayache5@gmail.com
+                <ArrowUpRight size={14} />
+              </a>
+              <a
+                href={BRAND.calendly}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-border-strong bg-surface-raised px-6 py-3 font-mono text-sm text-text-primary transition-colors hover:border-accent hover:text-accent"
+              >
+                <Calendar size={14} aria-hidden />
+                Schedule a Call
+              </a>
+            </div>
           </motion.section>
 
           {/* Back to projects */}

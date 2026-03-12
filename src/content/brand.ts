@@ -9,5 +9,6 @@ export const BRAND = {
   github: "https://github.com/laythayache",
   linkedin: "https://www.linkedin.com/in/laythayache",
   email: "laythayache5@gmail.com",
+  calendly: "https://calendly.com/laythayache5/30min",
   location: "Beirut, Lebanon",
 } as const;
