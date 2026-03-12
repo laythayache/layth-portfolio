@@ -9,7 +9,7 @@ describe("FAQSection", () => {
     render(<FAQSection />);
 
     const firstButton = screen.getByRole("button", {
-      name: /What kind of systems do you build\?/i,
+      name: /What kind of systems do you architect\?/i,
     });
 
     expect(firstButton).toHaveAttribute("aria-expanded", "true");

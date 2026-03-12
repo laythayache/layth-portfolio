@@ -12,7 +12,7 @@ import {
   MobileTOC,
 } from "@/components/microsite/TableOfContents";
 import { buildTocItems } from "@/lib/microsite-sections";
-import { cn } from "@/lib/utils";
+import { cn, statusColor } from "@/lib/utils";
 import NotFound from "./NotFound";
 
 /* ── Animation helpers ── */
@@ -54,20 +54,6 @@ function NarrativeSection({
       </div>
     </motion.section>
   );
-}
-
-/* ── Status dot color ── */
-function statusColor(status: string) {
-  switch (status) {
-    case "completed":
-      return "bg-emerald-500";
-    case "ongoing":
-      return "bg-amber-500";
-    case "paused":
-      return "bg-slate-400";
-    default:
-      return "bg-slate-300";
-  }
 }
 
 /* ── Main component ── */

@@ -1,10 +1,10 @@
 export const BRAND = {
   name: "Layth Ayache",
-  title: "AI Systems & Automation Engineer | Technical Consultant",
+  title: "Senior AI & Infrastructure Architect | Full-Stack Systems Engineer | Technical Consultant",
   tagline:
-    "I build reliable systems, automate workflows, and keep technology running so teams can focus on what matters.",
+    "I architect production-grade AI systems, national-scale infrastructure, and secure automation platforms — from embedded hardware to cloud-deployed services.",
   description:
-    "AI systems and automation engineer specializing in workflow automation, system reliability, CRM administration, data pipelines, and technical consulting across SaaS platforms.",
+    "Senior AI systems architect and full-stack infrastructure engineer specializing in computer vision, NLP, web scraping, medical AI, cybersecurity systems, data pipeline engineering, and large-scale automation. Building toward nationwide digital infrastructure for Lebanon.",
   url: "https://laythayache.com",
   github: "https://github.com/laythayache",
   linkedin: "https://www.linkedin.com/in/laythayache",

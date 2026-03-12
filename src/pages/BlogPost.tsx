@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -5,20 +6,35 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import SEO from "@/components/SEO";
 import { getPostBySlug } from "@/content/posts";
 import { blogPostJsonLd, DEFAULT_KEYWORDS } from "@/content/siteSeo";
+import { extractTocFromMarkdown, slugify } from "@/lib/blog-toc";
+import {
+  DesktopTOC,
+  MobileTOC,
+} from "@/components/microsite/TableOfContents";
+import ShareBar from "@/components/ShareBar";
+import { cn } from "@/lib/utils";
 import NotFound from "./NotFound";
 
 export default function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
   const post = slug ? getPostBySlug(slug) : undefined;
 
+  const tocItems = useMemo(
+    () => (post ? extractTocFromMarkdown(post.content) : []),
+    [post]
+  );
+  const showToc = tocItems.length >= 2;
+
   if (!post) return <NotFound />;
+
+  const postUrl = `https://laythayache.com/blog/${post.slug}`;
 
   return (
     <>
       <SEO
         title={`${post.title} | Layth Ayache`}
         description={post.excerpt}
-        canonical={`https://laythayache.com/blog/${post.slug}`}
+        canonical={postUrl}
         keywords={[...DEFAULT_KEYWORDS, ...post.tags]}
         publishedTime={post.date}
         modifiedTime={post.date}
@@ -27,8 +43,14 @@ export default function BlogPost() {
         jsonLd={blogPostJsonLd(post)}
       />
 
-      <article className="section-shell px-6">
-        <div className="mx-auto max-w-3xl">
+      <article className="relative section-shell px-6">
+        {showToc && (
+          <div className="fixed right-8 top-28 z-30 hidden w-48 lg:block">
+            <DesktopTOC items={tocItems} />
+          </div>
+        )}
+
+        <div className={cn("mx-auto max-w-3xl", showToc && "lg:mr-64")}>
           <Link
             to="/blog"
             className="inline-flex items-center gap-2 text-sm font-medium text-text-secondary hover:text-accent"
@@ -55,6 +77,11 @@ export default function BlogPost() {
                 </span>
               ))}
             </div>
+            {showToc && (
+              <div className="mt-6">
+                <MobileTOC items={tocItems} />
+              </div>
+            )}
           </header>
 
           {post.coverImage && (
@@ -69,7 +96,20 @@ export default function BlogPost() {
           )}
 
           <div className="blog-markdown mt-8 max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                h2: ({ children }) => {
+                  const text = String(children);
+                  const id = slugify(text);
+                  return (
+                    <h2 id={id} className="scroll-mt-24">
+                      {children}
+                    </h2>
+                  );
+                },
+              }}
+            >
               {post.content}
             </ReactMarkdown>
           </div>
@@ -86,6 +126,8 @@ export default function BlogPost() {
               <ArrowUpRight size={14} aria-hidden />
             </a>
           )}
+
+          <ShareBar url={postUrl} title={post.title} />
         </div>
       </article>
     </>

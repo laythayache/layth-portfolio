@@ -1,6 +1,8 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Bot, Mic, Users } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Bot, Mic, Users } from "lucide-react";
 import { speakingEntries } from "@/content/speaking";
+
+const EXPERIENCE_CROSS_IDS = new Set(["ai-club", "civil-defense-community", "physics-astronomy", "zaka-ambassador"]);
 
 function getEntryIcon(id: string) {
   if (id.includes("robotics")) return Bot;
@@ -69,19 +71,30 @@ export default function SpeakingSection() {
                   {entry.description}
                 </p>
 
-                {entry.link && (
-                  <a
-                    href={entry.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-5 inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface px-3 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
-                    aria-label={`${entry.ctaLabel} (opens in a new tab)`}
-                    title="Opens in a new tab"
-                  >
-                    {entry.ctaLabel}
-                    <ArrowUpRight size={14} aria-hidden />
-                  </a>
-                )}
+                <div className="mt-5 flex flex-wrap items-center gap-3">
+                  {entry.link && (
+                    <a
+                      href={entry.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface px-3 py-2 text-sm font-medium text-text-primary transition-colors hover:border-accent hover:text-accent"
+                      aria-label={`${entry.ctaLabel} (opens in a new tab)`}
+                      title="Opens in a new tab"
+                    >
+                      {entry.ctaLabel}
+                      <ArrowUpRight size={14} aria-hidden />
+                    </a>
+                  )}
+                  {EXPERIENCE_CROSS_IDS.has(entry.id) && (
+                    <a
+                      href="#experience"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-text-muted transition-colors hover:text-accent"
+                    >
+                      See in Experience Timeline
+                      <ArrowRight size={11} aria-hidden />
+                    </a>
+                  )}
+                </div>
               </motion.article>
             );
           })}

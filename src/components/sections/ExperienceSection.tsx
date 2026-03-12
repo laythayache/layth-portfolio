@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
+  ArrowRight,
   BriefcaseBusiness,
   ChevronDown,
   HeartPulse,
@@ -8,6 +9,8 @@ import {
   Users,
 } from "lucide-react";
 import { experience, type ExperienceEntry } from "@/content/experience";
+
+const SPEAKING_CROSS_IDS = new Set(["rhu", "civil-defense", "physics-astronomy", "zaka"]);
 
 function getYear(value: string) {
   const match = value.match(/\b(20\d{2})\b/);
@@ -195,6 +198,16 @@ export default function ExperienceSection() {
                                   </span>
                                 ))}
                               </div>
+
+                              {SPEAKING_CROSS_IDS.has(entry.id) && (
+                                <a
+                                  href="#speaking"
+                                  className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-text-muted transition-colors hover:text-accent"
+                                >
+                                  Also in Speaking & Community
+                                  <ArrowRight size={11} aria-hidden />
+                                </a>
+                              )}
                             </article>
                           );
                         })}

@@ -10,8 +10,10 @@ import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowLeft,
   ArrowRight,
+  ArrowUpRight,
   Brain,
   Cpu,
+  Github,
   ShieldCheck,
   Stethoscope,
   Globe,
@@ -22,7 +24,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { projects } from "@/content/projects";
-import { cn } from "@/lib/utils";
+import { cn, statusColor } from "@/lib/utils";
 
 /** Derive unique tags from all featured projects, sorted by frequency */
 function buildFilters() {
@@ -71,7 +73,10 @@ export default function ProjectsSection() {
   const reduced = useReducedMotion();
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeFilter, setActiveFilter] = useState("All");
+  const [activeFilter, setActiveFilter] = useState(() => {
+    const stored = sessionStorage.getItem("projectFilter");
+    return stored && FILTER_LABELS.includes(stored) ? stored : "All";
+  });
   const featured = useMemo(
     () => projects.filter((project) => project.featured),
     []
@@ -158,7 +163,10 @@ export default function ProjectsSection() {
             <button
               key={label}
               type="button"
-              onClick={() => setActiveFilter(label)}
+              onClick={() => {
+                setActiveFilter(label);
+                sessionStorage.setItem("projectFilter", label);
+              }}
               className={cn(
                 "rounded-full border px-4 py-2 text-sm font-medium transition-colors",
                 activeFilter === label
@@ -249,7 +257,13 @@ export default function ProjectsSection() {
                       </div>
 
                       <div className="flex flex-col">
-                        <h3 className="type-h3">{project.title}</h3>
+                        <div className="flex items-center gap-3">
+                          <h3 className="type-h3">{project.title}</h3>
+                          <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-0.5 font-mono text-[11px] text-text-muted">
+                            <span className={cn("h-1.5 w-1.5 rounded-full", statusColor(project.status))} />
+                            {project.status}
+                          </span>
+                        </div>
                         <p className="mt-3 text-base leading-relaxed text-text-secondary">
                           {project.summary}
                         </p>
@@ -277,15 +291,29 @@ export default function ProjectsSection() {
                           ))}
                         </div>
 
-                        <Link
-                          to={`/projects/${project.slug}`}
-                          data-magnetic
-                          data-cursor-label="Open project"
-                          className="mt-7 inline-flex w-fit items-center gap-2 rounded-md border border-accent px-4 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-white"
-                        >
-                          Open Case Study
-                          <ArrowRight size={14} aria-hidden />
-                        </Link>
+                        <div className="mt-7 flex flex-wrap items-center gap-3">
+                          <Link
+                            to={`/projects/${project.slug}`}
+                            data-magnetic
+                            data-cursor-label="Open project"
+                            className="inline-flex w-fit items-center gap-2 rounded-md border border-accent px-4 py-2.5 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-white"
+                          >
+                            Open Case Study
+                            <ArrowRight size={14} aria-hidden />
+                          </Link>
+                          {project.links?.repo && (
+                            <a
+                              href={project.links.repo}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 rounded-md border border-border-strong px-4 py-2.5 text-sm font-medium text-text-secondary transition-colors hover:border-accent hover:text-accent"
+                            >
+                              <Github size={14} aria-hidden />
+                              View Code
+                              <ArrowUpRight size={12} aria-hidden />
+                            </a>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </article>
