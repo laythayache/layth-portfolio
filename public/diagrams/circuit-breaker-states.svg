@@ -1,0 +1,65 @@
+<svg viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .box { fill: #f2ede8; stroke: #1a1a1a; stroke-width: 2; }
+      .box-open { fill: #f7e0d8; stroke: #1a1a1a; stroke-width: 2; }
+      .box-half { fill: #e8f0e8; stroke: #1a1a1a; stroke-width: 2; }
+      .title { font-family: sans-serif; font-size: 15px; font-weight: bold; fill: #1a1a1a; }
+      .label { font-family: monospace; font-size: 11px; fill: #1a1a1a; }
+      .edge-label { font-family: monospace; font-size: 10px; fill: #1a1a1a; opacity: 0.7; }
+      .arrow { stroke: #1a1a1a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .section-label { font-family: monospace; font-size: 10px; fill: #1a1a1a; opacity: 0.5; text-transform: uppercase; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#1a1a1a" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="38" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1a1a1a">Circuit Breaker State Machine — AI Inference Client</text>
+
+  <!-- CLOSED state (left) -->
+  <rect x="60" y="180" width="200" height="140" rx="8" class="box" />
+  <text x="160" y="210" text-anchor="middle" class="title">CLOSED</text>
+  <text x="160" y="232" text-anchor="middle" class="label">Normal operation</text>
+  <text x="160" y="250" text-anchor="middle" class="label">Requests pass through</text>
+  <text x="160" y="270" text-anchor="middle" class="label">Failure counter active</text>
+  <text x="160" y="290" text-anchor="middle" class="label">threshold: 3 fails / 10s</text>
+
+  <!-- OPEN state (right) -->
+  <rect x="740" y="180" width="200" height="140" rx="8" class="box-open" />
+  <text x="840" y="210" text-anchor="middle" class="title">OPEN</text>
+  <text x="840" y="232" text-anchor="middle" class="label">Requests blocked</text>
+  <text x="840" y="250" text-anchor="middle" class="label">Degraded mode active</text>
+  <text x="840" y="270" text-anchor="middle" class="label">User sees: "offline mode"</text>
+  <text x="840" y="290" text-anchor="middle" class="label">reset_timeout: 30s</text>
+
+  <!-- HALF-OPEN state (center bottom) -->
+  <rect x="390" y="360" width="220" height="120" rx="8" class="box-half" />
+  <text x="500" y="392" text-anchor="middle" class="title">HALF-OPEN</text>
+  <text x="500" y="414" text-anchor="middle" class="label">Single probe request</text>
+  <text x="500" y="432" text-anchor="middle" class="label">Success → CLOSED</text>
+  <text x="500" y="452" text-anchor="middle" class="label">Failure → OPEN again</text>
+
+  <!-- CLOSED → OPEN arrow (top) -->
+  <path class="arrow" d="M 260 230 Q 500 120 740 230" />
+  <text x="500" y="155" text-anchor="middle" class="edge-label">3 consecutive failures</text>
+  <text x="500" y="170" text-anchor="middle" class="edge-label">within 10s window</text>
+
+  <!-- OPEN → HALF-OPEN arrow (right to bottom) -->
+  <path class="arrow" d="M 840 320 Q 840 420 610 400" />
+  <text x="780" y="385" text-anchor="middle" class="edge-label">reset_timeout</text>
+  <text x="780" y="400" text-anchor="middle" class="edge-label">expires (30s)</text>
+
+  <!-- HALF-OPEN → CLOSED arrow (bottom to left) -->
+  <path class="arrow" d="M 390 400 Q 200 420 160 320" />
+  <text x="230" y="415" text-anchor="middle" class="edge-label">probe succeeds</text>
+
+  <!-- HALF-OPEN → OPEN arrow (bottom to right) -->
+  <path class="arrow" d="M 610 420 Q 760 460 840 320" stroke-dasharray="5,5" />
+  <text x="740" y="462" text-anchor="middle" class="edge-label">probe fails</text>
+
+  <!-- Design decisions footer -->
+  <rect x="40" y="490" width="920" height="18" rx="2" fill="none" />
+  <text x="50" y="503" class="section-label">Design decisions: failure counter resets on success · degraded mode uses last-known-good state · user informed after 2s in OPEN state</text>
+</svg>

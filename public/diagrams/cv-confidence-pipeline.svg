@@ -1,0 +1,115 @@
+<svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .box { fill: #f2ede8; stroke: #1a1a1a; stroke-width: 2; }
+      .box-accept { fill: #e8f0e8; stroke: #1a1a1a; stroke-width: 2; }
+      .box-warn { fill: #f5f0e0; stroke: #1a1a1a; stroke-width: 2; }
+      .box-reject { fill: #f7e0d8; stroke: #1a1a1a; stroke-width: 2; }
+      .title { font-family: sans-serif; font-size: 14px; font-weight: bold; fill: #1a1a1a; }
+      .label { font-family: monospace; font-size: 11px; fill: #1a1a1a; }
+      .arrow { stroke: #1a1a1a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .section-label { font-family: monospace; font-size: 10px; fill: #1a1a1a; opacity: 0.5; text-transform: uppercase; }
+      .edge-label { font-family: monospace; font-size: 10px; fill: #1a1a1a; opacity: 0.75; }
+      .score-high { font-family: monospace; font-size: 13px; font-weight: bold; fill: #2a6a2a; }
+      .score-mid { font-family: monospace; font-size: 13px; font-weight: bold; fill: #7a6a10; }
+      .score-low { font-family: monospace; font-size: 13px; font-weight: bold; fill: #8a2a1a; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#1a1a1a" />
+    </marker>
+  </defs>
+
+  <text x="500" y="32" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1a1a1a">CV Confidence Pipeline — Two-Tier Threshold Decision</text>
+
+  <!-- Step 1: Input Frame -->
+  <rect x="30" y="60" width="140" height="80" rx="4" class="box" />
+  <text x="100" y="90" text-anchor="middle" class="title">Input Frame</text>
+  <text x="100" y="108" text-anchor="middle" class="label">640×480 video</text>
+  <text x="100" y="124" text-anchor="middle" class="label">or image crop</text>
+
+  <!-- Step 2: YOLOv8 Detector -->
+  <rect x="220" y="60" width="150" height="80" rx="4" class="box" />
+  <text x="295" y="88" text-anchor="middle" class="title">YOLOv8-nano</text>
+  <text x="295" y="106" text-anchor="middle" class="label">3.2M params</text>
+  <text x="295" y="122" text-anchor="middle" class="label">ONNX Runtime</text>
+
+  <!-- Step 3: Raw Confidence Score -->
+  <rect x="420" y="60" width="160" height="80" rx="4" class="box" />
+  <text x="500" y="88" text-anchor="middle" class="title">Raw Score</text>
+  <text x="500" y="108" text-anchor="middle" class="label">0.0 – 1.0 float</text>
+  <text x="500" y="124" text-anchor="middle" class="label">uncalibrated</text>
+
+  <!-- Step 4: Calibration -->
+  <rect x="630" y="60" width="160" height="80" rx="4" class="box" />
+  <text x="710" y="88" text-anchor="middle" class="title">Calibration</text>
+  <text x="710" y="106" text-anchor="middle" class="label">Platt scaling on</text>
+  <text x="710" y="122" text-anchor="middle" class="label">deployment data</text>
+
+  <!-- Step 5: Threshold Decision -->
+  <rect x="420" y="210" width="160" height="100" rx="4" class="box" />
+  <text x="500" y="238" text-anchor="middle" class="title">Threshold</text>
+  <text x="500" y="256" text-anchor="middle" class="title">Decision</text>
+  <text x="500" y="278" text-anchor="middle" class="label">low &lt; 0.55</text>
+  <text x="500" y="294" text-anchor="middle" class="label">mid: 0.55 – 0.75</text>
+  <text x="500" y="311" text-anchor="middle" class="label">high &gt; 0.75</text>
+
+  <!-- Outcome: REJECT -->
+  <rect x="100" y="390" width="160" height="90" rx="4" class="box-reject" />
+  <text x="180" y="420" text-anchor="middle" class="title">REJECT</text>
+  <text x="180" y="440" text-anchor="middle" class="label">Score &lt; 0.55</text>
+  <text x="180" y="458" text-anchor="middle" class="label">Prompt retry</text>
+  <text x="180" y="474" text-anchor="middle" class="label">Log detection</text>
+
+  <!-- Outcome: WARN -->
+  <rect x="420" y="390" width="160" height="90" rx="4" class="box-warn" />
+  <text x="500" y="420" text-anchor="middle" class="title">ACCEPT (LOW)</text>
+  <text x="500" y="440" text-anchor="middle" class="label">Score 0.55 – 0.75</text>
+  <text x="500" y="458" text-anchor="middle" class="label">Show ⚠ indicator</text>
+  <text x="500" y="474" text-anchor="middle" class="label">Log + audit trail</text>
+
+  <!-- Outcome: ACCEPT -->
+  <rect x="730" y="390" width="160" height="90" rx="4" class="box-accept" />
+  <text x="810" y="420" text-anchor="middle" class="title">ACCEPT</text>
+  <text x="810" y="440" text-anchor="middle" class="label">Score &gt; 0.75</text>
+  <text x="810" y="458" text-anchor="middle" class="label">Full confidence</text>
+  <text x="810" y="474" text-anchor="middle" class="label">Log + audit trail</text>
+
+  <!-- Arrows — pipeline -->
+  <path class="arrow" d="M 170 100 L 220 100" />
+  <path class="arrow" d="M 370 100 L 420 100" />
+  <path class="arrow" d="M 580 100 L 630 100" />
+  <!-- Calibration down to decision -->
+  <path class="arrow" d="M 710 140 Q 710 260 580 260" />
+  <text x="690" y="200" text-anchor="middle" class="edge-label">calibrated</text>
+  <text x="690" y="215" text-anchor="middle" class="edge-label">score</text>
+
+  <!-- Decision to outcomes -->
+  <path class="arrow" d="M 450 310 Q 300 350 260 390" />
+  <text x="330" y="358" text-anchor="middle" class="edge-label">&lt; 0.55</text>
+
+  <path class="arrow" d="M 500 310 L 500 390" />
+  <text x="515" y="358" text-anchor="middle" class="edge-label">0.55–0.75</text>
+
+  <path class="arrow" d="M 550 310 Q 680 350 730 390" />
+  <text x="680" y="358" text-anchor="middle" class="edge-label">&gt; 0.75</text>
+
+  <!-- Score legend -->
+  <rect x="30" y="210" width="280" height="130" rx="4" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="5,4" />
+  <text x="50" y="232" class="section-label">Calibration effect (license plate ALPR)</text>
+  <text x="50" y="254" class="label">Raw model output:</text>
+  <text x="200" y="254" text-anchor="middle" class="score-high">0.82</text>
+  <text x="270" y="254" class="label">→ cal.</text>
+  <text x="50" y="274" class="label">Deployment data:</text>
+  <text x="200" y="274" text-anchor="middle" class="score-mid">0.68</text>
+  <text x="270" y="274" class="label">actual</text>
+  <text x="50" y="294" class="label">Night / rain footage:</text>
+  <text x="200" y="294" text-anchor="middle" class="score-low">0.49</text>
+  <text x="270" y="294" class="label">→ reject</text>
+  <text x="50" y="316" class="label">Without calibration, all three</text>
+  <text x="50" y="330" class="label">would pass a naive 0.5 threshold.</text>
+
+  <!-- Footer -->
+  <rect x="30" y="500" width="940" height="42" rx="4" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="5,4" />
+  <text x="50" y="517" class="section-label">Production invariants</text>
+  <text x="50" y="534" class="label">✓ Every detection logged regardless of accept/reject · ✓ Thresholds tuned per deployment environment, not globally · ✓ Calibration re-run when distribution shifts &gt;5%</text>
+</svg>

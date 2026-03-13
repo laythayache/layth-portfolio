@@ -1,0 +1,104 @@
+<svg viewBox="0 0 1000 580" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .box { fill: #f2ede8; stroke: #1a1a1a; stroke-width: 2; }
+      .box-queue { fill: #e8edf0; stroke: #1a1a1a; stroke-width: 2; }
+      .box-server { fill: #e8f0e8; stroke: #1a1a1a; stroke-width: 2; }
+      .box-offline { fill: #f7e0d8; stroke: #1a1a1a; stroke-width: 1; stroke-dasharray: 5,3; }
+      .title { font-family: sans-serif; font-size: 14px; font-weight: bold; fill: #1a1a1a; }
+      .label { font-family: monospace; font-size: 11px; fill: #1a1a1a; }
+      .arrow { stroke: #1a1a1a; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .arrow-dashed { stroke: #1a1a1a; stroke-width: 1.5; fill: none; stroke-dasharray: 5,4; marker-end: url(#arrowhead); }
+      .section-label { font-family: monospace; font-size: 10px; fill: #1a1a1a; opacity: 0.5; text-transform: uppercase; }
+      .edge-label { font-family: monospace; font-size: 10px; fill: #1a1a1a; opacity: 0.7; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#1a1a1a" />
+    </marker>
+  </defs>
+
+  <text x="500" y="35" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#1a1a1a">Local-First Data Architecture — Unstable Network Environment</text>
+
+  <!-- Section backgrounds -->
+  <g opacity="0.04">
+    <rect x="20" y="55" width="280" height="460" fill="#1a1a1a" />
+    <rect x="360" y="55" width="260" height="460" fill="#1a1a1a" />
+    <rect x="680" y="55" width="300" height="460" fill="#1a1a1a" />
+  </g>
+
+  <text x="160" y="75" text-anchor="middle" class="section-label">Client (On-Device)</text>
+  <text x="490" y="75" text-anchor="middle" class="section-label">Sync Layer</text>
+  <text x="830" y="75" text-anchor="middle" class="section-label">Server</text>
+
+  <!-- User Action -->
+  <rect x="40" y="95" width="200" height="60" rx="4" class="box" />
+  <text x="140" y="120" text-anchor="middle" class="title">User Action</text>
+  <text x="140" y="138" text-anchor="middle" class="label">Returns immediately</text>
+
+  <!-- Local Store -->
+  <rect x="40" y="195" width="200" height="70" rx="4" class="box" />
+  <text x="140" y="222" text-anchor="middle" class="title">Local Store</text>
+  <text x="140" y="240" text-anchor="middle" class="label">Writes succeed offline</text>
+  <text x="140" y="256" text-anchor="middle" class="label">Source of truth for UI</text>
+
+  <!-- Offline indicator -->
+  <rect x="40" y="310" width="200" height="60" rx="4" class="box-offline" />
+  <text x="140" y="336" text-anchor="middle" class="title">Sync Status UI</text>
+  <text x="140" y="354" text-anchor="middle" class="label">"Sync paused" / "Synced"</text>
+
+  <!-- Sync Queue -->
+  <rect x="380" y="140" width="220" height="80" rx="4" class="box-queue" />
+  <text x="490" y="168" text-anchor="middle" class="title">Outbound Queue</text>
+  <text x="490" y="186" text-anchor="middle" class="label">Persisted to disk</text>
+  <text x="490" y="204" text-anchor="middle" class="label">Survives process restart</text>
+
+  <!-- Connectivity checker -->
+  <rect x="380" y="270" width="220" height="80" rx="4" class="box-queue" />
+  <text x="490" y="300" text-anchor="middle" class="title">Connectivity Watcher</text>
+  <text x="490" y="318" text-anchor="middle" class="label">Polls every 5s</text>
+  <text x="490" y="336" text-anchor="middle" class="label">Triggers drain on restore</text>
+
+  <!-- Retry engine -->
+  <rect x="380" y="395" width="220" height="80" rx="4" class="box-queue" />
+  <text x="490" y="422" text-anchor="middle" class="title">Retry Engine</text>
+  <text x="490" y="440" text-anchor="middle" class="label">Exponential backoff</text>
+  <text x="490" y="458" text-anchor="middle" class="label">Max 5 attempts / item</text>
+
+  <!-- Server API -->
+  <rect x="700" y="140" width="240" height="80" rx="4" class="box-server" />
+  <text x="820" y="168" text-anchor="middle" class="title">Server API</text>
+  <text x="820" y="186" text-anchor="middle" class="label">Idempotent endpoints</text>
+  <text x="820" y="204" text-anchor="middle" class="label">Accepts replay safely</text>
+
+  <!-- Conflict resolver -->
+  <rect x="700" y="270" width="240" height="80" rx="4" class="box-server" />
+  <text x="820" y="300" text-anchor="middle" class="title">Conflict Resolver</text>
+  <text x="820" y="318" text-anchor="middle" class="label">Last-write-wins (default)</text>
+  <text x="820" y="336" text-anchor="middle" class="label">Merge log for audits</text>
+
+  <!-- Arrows -->
+  <path class="arrow" d="M 140 155 L 140 195" />
+  <path class="arrow" d="M 240 220 L 380 180" />
+  <text x="305" y="193" text-anchor="middle" class="edge-label">enqueue write</text>
+
+  <path class="arrow-dashed" d="M 490 220 L 490 270" />
+  <path class="arrow" d="M 600 180 L 700 180" />
+  <text x="648" y="170" text-anchor="middle" class="edge-label">flush when online</text>
+
+  <path class="arrow" d="M 490 350 L 490 395" />
+  <path class="arrow-dashed" d="M 380 310 L 240 340" />
+  <text x="295" y="315" text-anchor="middle" class="edge-label">update UI state</text>
+
+  <path class="arrow" d="M 820 220 L 820 270" />
+  <path class="arrow-dashed" d="M 700 310 L 600 310" />
+  <text x="648" y="302" text-anchor="middle" class="edge-label">ack / reject</text>
+
+  <!-- Power cut annotation -->
+  <rect x="40" y="430" width="200" height="70" rx="4" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="4,3" />
+  <text x="140" y="455" text-anchor="middle" class="section-label">Power Cut Scenario</text>
+  <text x="140" y="473" text-anchor="middle" class="label">Queue survives restart</text>
+  <text x="140" y="489" text-anchor="middle" class="label">Drains on reconnect</text>
+
+  <!-- Footer -->
+  <text x="50" y="540" class="section-label">key invariant: user-facing operations never block on network · sync state is always visible · idempotent writes prevent double-submission on retry</text>
+</svg>

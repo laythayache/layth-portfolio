@@ -69,4 +69,14 @@ export const speakingEntries: SpeakingEntry[] = [
     ctaLabel: "Learn more",
     link: "https://www.linkedin.com/in/laythayache",
   },
+  {
+    id: "sessionize-speaker",
+    title: "Speaker Profile",
+    role: "Conference Speaker",
+    organization: "Sessionize",
+    description:
+      "Public speaker profile for tech conferences and developer events. Available for talks on AI systems, edge deployment, and building production software in resource-constrained environments.",
+    ctaLabel: "View speaker profile",
+    link: "https://sessionize.com/layth-ayache",
+  },
 ];

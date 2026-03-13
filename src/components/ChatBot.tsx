@@ -1,19 +1,225 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, X, Send, Loader2 } from "lucide-react";
+import {
+  MessageSquare,
+  X,
+  Send,
+  Loader2,
+  Calendar,
+  Mail,
+  ChevronDown,
+  ChevronUp,
+  CheckCircle2,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  showActionCard?: boolean;
 }
+
+interface ContactFormState {
+  name: string;
+  email: string;
+  note: string;
+}
+
+const INITIAL_FORM: ContactFormState = { name: "", email: "", note: "" };
 
 const SUGGESTIONS = [
   "What has Layth built?",
-  "Tell me about OmniSign",
-  "Can he help with automation?",
+  "What can Layth build for me?",
+  "I want to collaborate",
   "How do I reach him?",
 ];
+
+const ACTION_TOKEN = "[ACTION:contact]";
+const CALENDLY_URL = "https://calendly.com/laythayache5/30min";
+const EMAIL = "laythayache5@gmail.com";
+
+/** Strip [ACTION:contact] token and detect if it was present */
+function parseMessage(content: string): { text: string; hasAction: boolean } {
+  const hasAction = content.includes(ACTION_TOKEN);
+  const text = content.replace(ACTION_TOKEN, "").trim();
+  return { text, hasAction };
+}
+
+/** Render markdown-style links [text](url) as anchor tags */
+function renderLinks(text: string) {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
+  return parts.map((part, i) => {
+    const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (match) {
+      return (
+        <a
+          key={i}
+          href={match[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-2 hover:text-accent transition-colors"
+        >
+          {match[1]}
+        </a>
+      );
+    }
+    return <span key={i}>{part}</span>;
+  });
+}
+
+function ContactCard() {
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState<ContactFormState>(INITIAL_FORM);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim() || !form.note.trim()) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    setError("");
+    setSubmitting(true);
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          name: form.name,
+          email: form.email,
+          message: `[LBV Chatbot] ${form.note}`,
+          subject: `Chat inquiry from ${form.name}`,
+        }),
+      });
+      if (res.ok) {
+        setSubmitted(true);
+        setForm(INITIAL_FORM);
+      } else {
+        setError("Something went wrong. Try emailing directly.");
+      }
+    } catch {
+      setError("Something went wrong. Try emailing directly.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <div className="mt-2 rounded-xl border border-border bg-surface px-4 py-3 text-sm">
+      {/* Quick action buttons */}
+      <div className="flex flex-wrap gap-2">
+        <a
+          href={CALENDLY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-lg border border-accent/40",
+            "bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent",
+            "transition-colors hover:bg-accent hover:text-white",
+          )}
+        >
+          <Calendar size={12} aria-hidden />
+          Schedule a Call
+        </a>
+        <a
+          href={`mailto:${EMAIL}`}
+          className={cn(
+            "inline-flex items-center gap-1.5 rounded-lg border border-border-strong",
+            "bg-surface-overlay px-3 py-1.5 text-xs font-medium text-text-secondary",
+            "transition-colors hover:border-accent hover:text-accent",
+          )}
+        >
+          <Mail size={12} aria-hidden />
+          Email Layth
+        </a>
+      </div>
+
+      {/* Divider + form toggle */}
+      <button
+        type="button"
+        onClick={() => setShowForm((v) => !v)}
+        className="mt-3 flex w-full items-center gap-2 text-xs text-text-muted transition-colors hover:text-text-secondary"
+      >
+        <span className="flex-1 border-t border-border" />
+        <span>or leave a message</span>
+        {showForm ? <ChevronUp size={11} /> : <ChevronDown size={11} />}
+        <span className="flex-1 border-t border-border" />
+      </button>
+
+      {/* Inline form */}
+      <AnimatePresence>
+        {showForm && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            {submitted ? (
+              <div className="flex items-center gap-2 pt-3 text-xs text-emerald-500">
+                <CheckCircle2 size={14} />
+                Got it — Layth will follow up shortly.
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-3 space-y-2">
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  value={form.name}
+                  onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                  className={cn(
+                    "w-full rounded-lg border border-border bg-surface-overlay px-3 py-2",
+                    "text-xs text-text-primary placeholder:text-text-muted",
+                    "outline-none transition-colors focus:border-accent/50",
+                  )}
+                />
+                <input
+                  type="email"
+                  placeholder="Your email"
+                  value={form.email}
+                  onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                  className={cn(
+                    "w-full rounded-lg border border-border bg-surface-overlay px-3 py-2",
+                    "text-xs text-text-primary placeholder:text-text-muted",
+                    "outline-none transition-colors focus:border-accent/50",
+                  )}
+                />
+                <textarea
+                  placeholder="What's on your mind?"
+                  value={form.note}
+                  onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
+                  rows={2}
+                  className={cn(
+                    "w-full resize-none rounded-lg border border-border bg-surface-overlay px-3 py-2",
+                    "text-xs text-text-primary placeholder:text-text-muted",
+                    "outline-none transition-colors focus:border-accent/50",
+                  )}
+                />
+                {error && (
+                  <p className="text-xs text-red-400">{error}</p>
+                )}
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={cn(
+                    "w-full rounded-lg bg-accent py-2 text-xs font-medium text-white",
+                    "transition-colors hover:bg-accent-hover disabled:opacity-50",
+                  )}
+                >
+                  {submitting ? "Sending…" : "Send Message"}
+                </button>
+              </form>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function ChatBot() {
   const [open, setOpen] = useState(false);
@@ -58,13 +264,8 @@ export default function ChatBot() {
         }),
       });
 
-      if (response.status === 429) {
-        throw new Error("rate-limited");
-      }
-
-      if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
-      }
+      if (response.status === 429) throw new Error("rate-limited");
+      if (!response.ok) throw new Error(`API error: ${response.status}`);
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
@@ -76,25 +277,27 @@ export default function ChatBot() {
           if (done) break;
 
           const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split("\n").filter((line) => line.trim() !== "");
+          const lines = chunk.split("\n").filter((l) => l.trim() !== "");
 
           for (const line of lines) {
             if (line === "data: [DONE]") continue;
             if (!line.startsWith("data: ")) continue;
-
             try {
               const json = JSON.parse(line.slice(6));
               const delta = json.choices?.[0]?.delta?.content;
               if (delta) {
                 accumulated += delta;
+                const { text: displayText, hasAction } = parseMessage(accumulated);
                 setMessages((prev) => {
                   const updated = [...prev];
                   updated[updated.length - 1] = {
                     role: "assistant",
                     content: accumulated,
+                    showActionCard: hasAction,
                   };
                   return updated;
                 });
+                void displayText; // used via showActionCard
               }
             } catch {
               // skip malformed chunks
@@ -111,7 +314,7 @@ export default function ChatBot() {
           role: "assistant",
           content: isRateLimited
             ? "Too many questions — try again in a bit."
-            : "Sorry, I couldn't process that request. Please try again.",
+            : "Sorry, I couldn't process that. Please try again.",
         };
         return updated;
       });
@@ -172,11 +375,11 @@ export default function ChatBot() {
           <motion.div
             className={cn(
               "chatbot-panel fixed bottom-24 right-6 z-50 flex flex-col",
-              "w-[360px] max-w-[calc(100vw-2rem)] rounded-2xl border border-border",
+              "w-[380px] max-w-[calc(100vw-2rem)] rounded-2xl border border-border",
               "bg-surface-raised shadow-2xl",
               "overflow-hidden",
             )}
-            style={{ height: "min(520px, calc(100vh - 8rem))" }}
+            style={{ height: "min(560px, calc(100vh - 8rem))" }}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -194,9 +397,7 @@ export default function ChatBot() {
                 className="h-9 w-9 rounded-full border border-border bg-surface-overlay p-1.5"
               />
               <div>
-                <p className="text-sm font-semibold text-text-primary">
-                  LBV
-                </p>
+                <p className="text-sm font-semibold text-text-primary">LBV</p>
                 <p className="text-xs text-text-muted">
                   Layth&rsquo;s AI &middot; ask me anything
                 </p>
@@ -221,7 +422,7 @@ export default function ChatBot() {
                       Hey, I&rsquo;m LBV.
                     </p>
                     <p className="mt-1 text-xs text-text-muted">
-                      Ask me anything — about Layth, his work, or just whatever&rsquo;s on your mind.
+                      Ask me anything — about Layth, his work, or how he can help you.
                     </p>
                   </div>
                   <div className="mt-2 flex flex-wrap justify-center gap-2">
@@ -242,29 +443,40 @@ export default function ChatBot() {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {messages.map((msg, i) => (
-                    <div
-                      key={i}
-                      className={cn(
-                        "flex",
-                        msg.role === "user" ? "justify-end" : "justify-start",
-                      )}
-                    >
-                      <div
-                        className={cn(
-                          "max-w-[85%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
-                          msg.role === "user"
-                            ? "rounded-br-md bg-accent text-white"
-                            : "rounded-bl-md border border-border bg-surface-overlay text-text-primary",
-                        )}
-                      >
-                        {msg.content || (
-                          <Loader2 size={14} className="animate-spin text-text-muted" />
-                        )}
+                <div className="space-y-3">
+                  {messages.map((msg, i) => {
+                    const { text, hasAction } = parseMessage(msg.content);
+                    return (
+                      <div key={i}>
+                        <div
+                          className={cn(
+                            "flex",
+                            msg.role === "user" ? "justify-end" : "justify-start",
+                          )}
+                        >
+                          <div
+                            className={cn(
+                              "max-w-[88%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
+                              msg.role === "user"
+                                ? "rounded-br-md bg-accent text-white"
+                                : "rounded-bl-md border border-border bg-surface-overlay text-text-primary",
+                            )}
+                          >
+                            {text ? (
+                              renderLinks(text)
+                            ) : (
+                              <Loader2 size={14} className="animate-spin text-text-muted" />
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Action card — shown when bot signals [ACTION:contact] */}
+                        {msg.role === "assistant" &&
+                          (hasAction || msg.showActionCard) &&
+                          text && <ContactCard />}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                   <div ref={messagesEndRef} />
                 </div>
               )}
@@ -280,7 +492,7 @@ export default function ChatBot() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask LBV anything..."
+                placeholder="Ask LBV anything…"
                 disabled={streaming}
                 className={cn(
                   "flex-1 rounded-xl border border-border bg-surface px-4 py-2.5",

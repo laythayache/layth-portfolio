@@ -5,8 +5,20 @@
     <link>https://laythayache.com/blog</link>
     <description>Systems engineering, workflow automation, and technical consulting insights.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 13 Mar 2026 00:20:28 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Mar 2026 14:05:35 GMT</lastBuildDate>
     <atom:link href="https://laythayache.com/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Real-Time Video Anonymization at 30 FPS on a $35 Computer</title>
+      <link>https://laythayache.com/blog/real-time-privacy-pipeline-on-raspberry-pi</link>
+      <guid isPermaLink="true">https://laythayache.com/blog/real-time-privacy-pipeline-on-raspberry-pi</guid>
+      <pubDate>Fri, 13 Mar 2026 00:00:00 GMT</pubDate>
+      <description>How I built PrivacyGuard — a zero-cloud, GDPR-compliant video de-identification pipeline running on Raspberry Pi 4 using YOLOv8-nano and ONNX Runtime.</description>
+      <category>Privacy</category>
+      <category>Edge AI</category>
+      <category>Computer Vision</category>
+      <category>Open Source</category>
+      <category>GDPR</category>
+    </item>
     <item>
       <title>Building in a Country with No Infrastructure</title>
       <link>https://laythayache.com/blog/building-in-a-country-with-no-infrastructure</link>
@@ -26,16 +38,6 @@
       <category>AI</category>
       <category>Networking</category>
       <category>Reliability</category>
-    </item>
-    <item>
-      <title>From Computer Vision Prototype to Production</title>
-      <link>https://laythayache.com/blog/from-cv-prototype-to-production</link>
-      <guid isPermaLink="true">https://laythayache.com/blog/from-cv-prototype-to-production</guid>
-      <pubDate>Wed, 10 Dec 2025 00:00:00 GMT</pubDate>
-      <description>The engineering checklist I use to move computer vision projects from demos to dependable products.</description>
-      <category>Computer Vision</category>
-      <category>Production</category>
-      <category>Engineering</category>
     </item>
     <item>
       <title>Lessons from Telecom Engineering to AI Systems</title>
