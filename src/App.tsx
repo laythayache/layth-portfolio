@@ -1,7 +1,15 @@
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RootLayout from "@/layouts/RootLayout";
 import NotFound from "@/pages/NotFound";
+
+/** Remove the static JSON-LD injected by inject-meta.mjs once React hydrates,
+ *  so the dynamic React Helmet version becomes the single source of truth. */
+function useRemoveStaticJsonLd() {
+  useEffect(() => {
+    document.getElementById("static-jsonld")?.remove();
+  }, []);
+}
 
 const Home = lazy(() => import("@/pages/Home"));
 const ProjectMicrosite = lazy(() => import("@/pages/ProjectMicrosite"));
@@ -11,6 +19,7 @@ const BlogPost = lazy(() => import("@/pages/BlogPost"));
 const BeyondTech = lazy(() => import("@/pages/BeyondTech"));
 
 export default function App() {
+  useRemoveStaticJsonLd();
   return (
     <BrowserRouter>
       <Routes>

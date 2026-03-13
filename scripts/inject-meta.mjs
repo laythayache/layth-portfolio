@@ -1,9 +1,11 @@
 /**
  * Post-build script: injects per-route <title>, <meta>, and JSON-LD into
  * static HTML files so that link unfurlers (Twitter, LinkedIn, Slack, Discord)
- * see correct metadata without executing JavaScript.
+ * and search engines see correct metadata without executing JavaScript.
  *
  * Reads the built index.html as a template and writes route-specific copies.
+ * JSON-LD generators here are lean mirrors of src/content/siteSeo.ts —
+ * the React Helmet versions are canonical; these serve non-JS crawlers.
  */
 import {
   readFileSync,
@@ -20,18 +22,257 @@ const OG_IMAGE = `${BASE_URL}/og-default.jpg`;
 
 const PROJECTS_SOURCE = "src/content/projects.ts";
 const POSTS_DIR = "src/content/posts";
+const FAQ_SOURCE = "src/content/faq.ts";
 
-/* ── Parsers (duplicated from generate-seo-artifacts for independence) ── */
+/* ── Shared JSON-LD fragments ─────────────────────────────────────── */
+
+const PERSON_ID = `${BASE_URL}/#person`;
+const WEBSITE_ID = `${BASE_URL}/#website`;
+const ORG_ID = `${BASE_URL}/#organization`;
+
+function personFragment() {
+  return {
+    "@type": "Person",
+    "@id": PERSON_ID,
+    name: "Layth Ayache",
+    givenName: "Layth",
+    familyName: "Ayache",
+    url: BASE_URL,
+    image: `${BASE_URL}/apple-touch-icon.png`,
+    birthDate: "2003",
+    gender: "Male",
+    jobTitle: [
+      "AI Systems Engineer & Technology Consultant",
+      "Senior AI Systems Architect",
+      "Infrastructure Architect",
+    ],
+    description:
+      "Layth Ayache is a 22-year-old AI systems architect and technology leader from Lebanon. He leads AI systems architecture, cross-functional engineering, and technology strategy at Aligned Tech, driving end-to-end AI infrastructure and engineering operations. At 22, he has architected production systems processing millions of data points, deployed computer vision at 95% accuracy, built PrivacyGuard (open-source privacy pipeline), maintained 99.9% uptime at OGERO, and mentored 100+ students in AI.",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "LB",
+      addressLocality: "Beirut",
+    },
+    nationality: { "@type": "Country", name: "Lebanon" },
+    alumniOf: [
+      {
+        "@type": "CollegeOrUniversity",
+        name: "Rafik Hariri University",
+        url: "https://www.rhu.edu.lb",
+      },
+      {
+        "@type": "EducationalOrganization",
+        name: "Conservatoire de Musique du Liban",
+      },
+    ],
+    worksFor: {
+      "@type": "Organization",
+      name: "Aligned Tech",
+    },
+    knowsAbout: [
+      "AI Systems Architecture",
+      "Computer Vision",
+      "Natural Language Processing",
+      "Data Pipeline Engineering",
+      "Privacy-Preserving AI",
+      "Edge AI Deployment",
+      "Telecom Infrastructure",
+      "Cybersecurity Engineering",
+      "Python",
+      "TypeScript",
+    ],
+    sameAs: [
+      "https://github.com/laythayache",
+      "https://www.linkedin.com/in/laythayache",
+      "https://medium.com/@laythayache5",
+    ],
+  };
+}
+
+function websiteFragment() {
+  return {
+    "@type": "WebSite",
+    "@id": WEBSITE_ID,
+    url: BASE_URL,
+    name: "Layth Ayache",
+    description:
+      "Senior AI systems architect and technology leader from Lebanon, building production-grade AI systems and national-scale digital infrastructure.",
+  };
+}
+
+function organizationFragment() {
+  return {
+    "@type": "Organization",
+    "@id": ORG_ID,
+    name: "Layth Ayache",
+    url: BASE_URL,
+    logo: `${BASE_URL}/logo-mark.svg`,
+    founder: { "@id": PERSON_ID },
+  };
+}
+
+function breadcrumb(items) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: `${BASE_URL}${item.path}`,
+    })),
+  };
+}
+
+/* ── JSON-LD generators per route type ────────────────────────────── */
+
+function homeJsonLd(faqItems) {
+  const graph = [
+    websiteFragment(),
+    organizationFragment(),
+    personFragment(),
+    {
+      "@type": "ProfilePage",
+      "@id": `${BASE_URL}/#profile`,
+      url: BASE_URL,
+      name: "Layth Ayache | AI Systems Architect & Technology Leader",
+      isPartOf: { "@id": WEBSITE_ID },
+      mainEntity: { "@id": PERSON_ID },
+      inLanguage: "en",
+      breadcrumb: breadcrumb([{ name: "Home", path: "/" }]),
+    },
+  ];
+
+  if (faqItems && faqItems.length > 0) {
+    graph.push({
+      "@type": "FAQPage",
+      "@id": `${BASE_URL}/#faq`,
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: { "@type": "Answer", text: item.answer },
+      })),
+    });
+  }
+
+  return { "@context": "https://schema.org", "@graph": graph };
+}
+
+function projectJsonLd(project) {
+  const url = `${BASE_URL}/projects/${project.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": ["SoftwareSourceCode", "TechArticle"],
+        "@id": `${url}#project`,
+        url,
+        name: `${project.title} | Layth Ayache`,
+        headline: project.title,
+        description: project.summary,
+        ...(project.updatedAt ? { dateModified: project.updatedAt } : {}),
+        author: { "@id": PERSON_ID },
+        inLanguage: "en",
+        isPartOf: { "@id": WEBSITE_ID },
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: `${project.title} | Layth Ayache`,
+        description: project.summary,
+        mainEntity: { "@id": `${url}#project` },
+        inLanguage: "en",
+        isPartOf: { "@id": WEBSITE_ID },
+        breadcrumb: breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "Projects", path: "/#projects" },
+          { name: project.title, path: `/projects/${project.slug}` },
+        ]),
+      },
+    ],
+  };
+}
+
+function blogPostJsonLd(post) {
+  const url = `${BASE_URL}/blog/${post.slug}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}#article`,
+        headline: post.title,
+        description: post.excerpt,
+        ...(post.date
+          ? { datePublished: post.date, dateModified: post.date }
+          : {}),
+        author: { "@id": PERSON_ID },
+        publisher: { "@id": ORG_ID },
+        mainEntityOfPage: { "@id": `${url}#webpage` },
+        image: OG_IMAGE,
+        inLanguage: "en",
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: `${post.title} | Layth Ayache`,
+        description: post.excerpt,
+        isPartOf: { "@id": WEBSITE_ID },
+        breadcrumb: breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+          { name: post.title, path: `/blog/${post.slug}` },
+        ]),
+      },
+    ],
+  };
+}
+
+function genericPageJsonLd(route) {
+  const url = `${BASE_URL}${route.path}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: route.title,
+        description: route.description,
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": PERSON_ID },
+        inLanguage: "en",
+        breadcrumb: breadcrumb([
+          { name: "Home", path: "/" },
+          { name: route.title.split(" | ")[0], path: route.path },
+        ]),
+      },
+    ],
+  };
+}
+
+/* ── Parsers ──────────────────────────────────────────────────────── */
 
 function parseProjects() {
   const source = readFileSync(PROJECTS_SOURCE, "utf8");
   const pattern =
     /slug:\s*"([^"]+)"[\s\S]*?title:\s*"([^"]+)"[\s\S]*?summary:\s*"([^"]+)"/g;
-  return [...source.matchAll(pattern)].map((m) => ({
-    slug: m[1],
-    title: m[2],
-    summary: m[3].replace(/\s+/g, " ").trim(),
-  }));
+  return [...source.matchAll(pattern)].map((m) => {
+    const slug = m[1];
+    const title = m[2];
+    const summary = m[3].replace(/\s+/g, " ").trim();
+    // Extract updated_at near this slug
+    const slugIdx = source.indexOf(`slug: "${slug}"`);
+    const chunk = source.substring(slugIdx, slugIdx + 800);
+    const dateMatch = chunk.match(/updated_at:\s*"([^"]+)"/);
+    return {
+      slug,
+      title,
+      summary,
+      updatedAt: dateMatch ? dateMatch[1] : undefined,
+    };
+  });
 }
 
 function parseBlogPosts() {
@@ -47,9 +288,33 @@ function parseBlogPosts() {
         const m = meta.match(new RegExp(`^${key}:\\s*(.+)$`, "m"));
         return m ? m[1].replace(/^["']|["']$/g, "").trim() : "";
       };
-      return { slug, title: get("title"), excerpt: get("excerpt") };
+      return {
+        slug,
+        title: get("title"),
+        excerpt: get("excerpt"),
+        date: get("date"),
+      };
     })
     .filter(Boolean);
+}
+
+function parseFaqItems() {
+  if (!existsSync(FAQ_SOURCE)) return [];
+  const source = readFileSync(FAQ_SOURCE, "utf8");
+  const items = [];
+  const qPattern = /question:\s*"([^"]+)"/g;
+  let qMatch;
+  while ((qMatch = qPattern.exec(source)) !== null) {
+    const afterQ = source.substring(qMatch.index);
+    const aMatch = afterQ.match(/answer:\s*\n?\s*"([\s\S]*?)(?:"\s*[,}])/);
+    if (aMatch) {
+      items.push({
+        question: qMatch[1],
+        answer: aMatch[1].replace(/\s+/g, " ").trim(),
+      });
+    }
+  }
+  return items;
 }
 
 /* ── Route definitions ─────────────────────────────────────────────── */
@@ -63,15 +328,27 @@ function getRoutes() {
       path: "/blog",
       title: "Writing and Insights | Layth Ayache",
       description:
-        "Articles on systems engineering, workflow automation, and technical consulting.",
+        "Articles on AI systems engineering, infrastructure architecture, and building technology in Lebanon.",
+    },
+    {
+      path: "/beyond-tech",
+      title: "Beyond Tech | Layth Ayache",
+      description:
+        "Community leadership, emergency response, music, and initiatives beyond the technical domain.",
     },
   ];
+
+  // Attach JSON-LD to static routes
+  for (const route of routes) {
+    route.jsonLd = genericPageJsonLd(route);
+  }
 
   for (const project of projects) {
     routes.push({
       path: `/projects/${project.slug}`,
       title: `${project.title} | Layth Ayache`,
       description: project.summary,
+      jsonLd: projectJsonLd(project),
     });
   }
 
@@ -81,6 +358,7 @@ function getRoutes() {
       title: `${post.title} | Layth Ayache`,
       description: post.excerpt,
       ogType: "article",
+      jsonLd: blogPostJsonLd(post),
     });
   }
 
@@ -148,6 +426,12 @@ function injectMeta(template, route) {
     `<link rel="canonical" href="${BASE_URL}${route.path}"`
   );
 
+  // Inject JSON-LD (replace placeholder)
+  if (route.jsonLd) {
+    const jsonLdScript = `<script id="static-jsonld" type="application/ld+json">\n${JSON.stringify(route.jsonLd, null, 2)}\n    </script>`;
+    html = html.replace("<!-- jsonld -->", jsonLdScript);
+  }
+
   return html;
 }
 
@@ -173,8 +457,21 @@ function main() {
 
   const template = readFileSync(templatePath, "utf8");
   const routes = getRoutes();
+  const faqItems = parseFaqItems();
   let count = 0;
 
+  // Patch homepage with its own JSON-LD
+  const homeRoute = {
+    path: "/",
+    title: "Layth Ayache | AI Systems Architect & Technology Leader",
+    description:
+      "Senior AI systems architect and technology leader from Lebanon. Building production-grade computer vision, NLP, data pipelines, and national-scale digital infrastructure at Aligned Tech.",
+    jsonLd: homeJsonLd(faqItems),
+  };
+  writeFileSync(templatePath, injectMeta(template, homeRoute), "utf8");
+  count++;
+
+  // Write sub-routes
   for (const route of routes) {
     const outPath = `${OUT_DIR}${route.path}/index.html`;
     const dir = dirname(outPath);

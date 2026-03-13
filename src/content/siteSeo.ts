@@ -245,12 +245,6 @@ export function personJsonLd() {
       "AI Systems Engineer & Technology Consultant",
       "Senior AI Systems Architect",
       "Infrastructure Architect",
-      "Technology Leader",
-      "Full-Stack Systems Engineer",
-      "Head of AI & Infrastructure",
-      "Cybersecurity Engineer",
-      "Medical AI Engineer",
-      "Open Source Developer",
     ],
     description:
       "Layth Ayache is a 22-year-old AI systems architect and technology leader from Lebanon. He leads AI systems architecture, cross-functional engineering, and technology strategy at Aligned Tech, driving end-to-end AI infrastructure and engineering operations. At 22, he has already architected production systems processing millions of data points, deployed computer vision at 95% accuracy, built enterprise-grade open-source privacy tools (PrivacyGuard), maintained 99.9% network uptime at OGERO, and mentored 100+ students in AI. One of Lebanon's top emerging AI engineers and infrastructure architects under 30.",

@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet-async";
 interface SEOProps {
   title: string;
   description: string;
+  /** @deprecated Google ignores meta keywords. Kept for API compat but not rendered. */
   keywords?: string | string[];
   canonical: string;
   ogType?: string;
@@ -45,9 +46,6 @@ export default function SEO({
   noIndex = false,
   jsonLd,
 }: SEOProps) {
-  const resolvedKeywords = Array.isArray(keywords)
-    ? keywords.join(", ")
-    : keywords;
   const robotsContent = noIndex ? "noindex, nofollow" : robots;
   const jsonLdArray = jsonLd
     ? Array.isArray(jsonLd)
@@ -59,7 +57,6 @@ export default function SEO({
     <Helmet>
       <title>{title}</title>
       <meta name="description" content={description} />
-      {resolvedKeywords && <meta name="keywords" content={resolvedKeywords} />}
       <meta name="robots" content={robotsContent} />
       <meta name="googlebot" content={robotsContent} />
       <meta name="author" content={author} />

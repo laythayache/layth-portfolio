@@ -1,0 +1,18 @@
+# 301 redirects for old routes
+/lab            /           301
+/experiments    /           301
+/thinking       /           301
+/systems        /           301
+/explore        /           301
+/writing        /blog       301
+/playbook       /           301
+/now            /           301
+/about          /           301
+/contact        /           301
+/submit         /           301
+/completed      /           301
+/ongoing        /           301
+/friends        /           301
+
+# SPA catch-all (must be last)
+/*              /index.html 200

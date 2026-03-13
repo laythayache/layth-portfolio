@@ -1,6 +1,6 @@
 export const BRAND = {
   name: "Layth Ayache",
-  title: "AI Systems Engineer & Technology Consultant | Infrastructure Architect | Technology Leader",
+  title: "AI Systems Architect & Technology Leader",
   tagline:
     "Leading AI systems architecture, cross-functional engineering, and technology strategy — driving end-to-end AI infrastructure and engineering operations from data pipeline architecture to production deployment.",
   description:
