@@ -38,17 +38,25 @@ This changes how you answer every architectural question.
 
 **What happens when the connection drops?** If your system's failure mode under network loss is "everything stops," you have designed a system that fails regularly in the environments where it matters most. The answer has to be local processing that continues regardless of network state, with sync or reporting that resumes when connectivity returns.
 
+## The deployment architecture: RTSP in, anonymized frames out.
+
+The supermarket's cameras fed RTSP streams to a central recording system. PrivacyGuard was inserted into this pipeline as a processing layer between the cameras and the storage system — consuming the raw RTSP stream, running detection and anonymization on each frame, and writing the anonymized output to disk. No frame containing identifiable information was ever written to storage. No frame containing identifiable information ever touched a network interface.
+
+The edge device receiving the RTSP stream was a Raspberry Pi 4. The processing pipeline: YOLOv8-nano via ONNX Runtime, running detection and applying Gaussian blur masking in a single pass per frame, at 25–30 FPS on CPU-only hardware. The device cost $35. The only network traffic the device produced was the RTSP ingest from the local camera network — all of which stayed on-premises.
+
+This architecture means there is no point in the data flow where a network request could expose identifiable information to an external party. Not by accident. By construction.
+
 ## Local-first inference is not a compromise — it is the correct architecture for privacy.
 
 The common framing of edge AI emphasizes latency and cost. For privacy applications, the constraint is more fundamental.
 
 A cloud API call with a frame of video is a data egress event. The sensitive content has left the premises. Anonymization that happens in the cloud does not satisfy "data never leaves the premises" — it satisfies "data leaves the premises and is then anonymized somewhere else." Those are legally and architecturally different.
 
-PrivacyGuard eliminates the egress event entirely. Detection and anonymization run on the edge device. The output — anonymized video — is the only thing that ever exists outside the camera sensor. There is no frame that contains identifiable information that ever touches a network.
+PrivacyGuard eliminates the egress event entirely. Detection and anonymization run on the edge device. The anonymized output stream is the only artifact that ever exists beyond the camera sensor. There is no frame containing identifiable information that ever touches a network.
 
 This required accepting model size constraints. YOLOv8-nano rather than a larger server-side model. Acceptable recall at standard operating distances, documented miss rates at extreme distances or occlusion. The tradeoff was explicit and designed, not discovered in production.
 
-The result was a system that achieved 25–30 FPS on $35 hardware with no GPU, running continuously in the store during operational hours. The government compliance review passed. The system worked through every power fluctuation and connectivity interruption during the deployment period, because it had no dependency on either.
+The result: continuous operation through every power fluctuation and connectivity interruption during the deployment period, because the anonymization pipeline had no dependency on either.
 
 ## Handling infrastructure interruptions gracefully.
 
@@ -60,7 +68,7 @@ Three patterns address this:
 
 **Checkpoint-based batch processing.** For overnight batch anonymization of recorded footage, the pipeline writes checkpoints after every completed segment. A power interruption mid-batch resumes from the last checkpoint, not from the beginning. Without this, a twelve-hour batch run is a twelve-hour restart risk.
 
-**Startup validation.** Services that restart after unclean shutdown validate their state before resuming. The audit log is checked for consistency. The model file is verified against a stored hash. Only after validation does the pipeline begin processing new frames.
+**Startup validation.** Services that restart after unclean shutdown validate their state before resuming. The audit log is checked for consistency. The model file is verified against a stored hash. Only after validation does the pipeline begin processing new frames. This matters for compliance: a restart that silently resumes on a corrupted model file could produce frames where identifiable information was not actually masked, with an audit log showing it was. Startup validation prevents that class of silent compliance failure.
 
 ## For AI systems that do produce outbound data: the async sync pattern.
 
@@ -150,6 +158,6 @@ Users and compliance reviewers can work with honest system state. They cannot wo
 
 **Sync lag as a monitored metric.** For systems that do produce outbound data, queue length tells you how much is pending but not how old it is. An item that has been in the queue for six hours is more urgent than ten items that are each five minutes old. Queue age at the p95 percentile is the metric I'd add to any monitoring stack for async sync systems.
 
-**Formal compliance documentation as a system output.** The government compliance review for the Côte d'Ivoire deployment required producing evidence of the privacy architecture — that no identifiable data leaves the device, that audit logs exist, that the anonymization pipeline was applied consistently. I assembled this manually from system documentation and log samples. In a system designed for repeated compliance reviews, this evidence should be generated automatically as a pipeline output, not assembled by hand each time.
+**Formal compliance documentation as a system output.** The government compliance review required producing a structured evidence package: a data flow diagram demonstrating zero egress, per-frame audit log samples showing consistent masking application, and a written architecture description confirming on-device processing. I assembled this manually from system documentation and audit log exports. In a system designed for repeated compliance reviews — or deployment across multiple sites — this evidence should be generated automatically as a pipeline output: a compliance report generated on demand from the audit logs, not assembled by hand each time. The audit logs contain all the necessary data. The only missing component is a reporting layer on top of them.
 
 The constraint of building for unreliable infrastructure forces better architecture discipline. Systems that run on edge hardware in West Africa, with no stable internet and real compliance requirements, have no room for architectural assumptions that only hold in ideal conditions. The discipline transfers to every deployment context.

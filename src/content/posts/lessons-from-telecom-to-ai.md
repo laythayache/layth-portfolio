@@ -14,125 +14,74 @@ Before I could build anything, I had to understand what the data actually meant.
 
 That project, building a predictive maintenance AI for OGERO's telephone line infrastructure, taught me more about AI reliability than any benchmark paper I've read since.
 
+## The architecture: what the system actually does.
+
+The final system has four components that feed into each other.
+
+**Feature pipeline.** Each telephone line record is enriched with six feature categories before it enters the model: line age, cable type, cable length, geographic area, weather correlation data for that region, and historical damage patterns for similar lines in the same zone. The weather correlation was not in the original dataset at all — it had to be joined in from external sources, which meant the data problem was not just about cleaning what existed but about identifying what was missing.
+
+**Batch prediction engine.** A gradient boosting classifier runs on a fixed schedule against the full enriched line database. The output is a risk score per line, bucketed into tiers: high-risk (expected failure within days), elevated (expected failure within weeks), and nominal. The batch approach was a deliberate choice. Real-time prediction for a static infrastructure dataset adds complexity without adding value — telephone lines do not change their risk profile between minutes.
+
+**LLM translation layer.** Raw risk scores are not useful to the executives and operational supervisors who act on this system. The prediction outputs are translated into natural language summaries using a locally-hosted Ollama instance: "Lines in the northern Beirut corridor are showing elevated failure probability over the next 10–14 days, concentrated in sectors with cable age above 18 years. Recommend prioritizing service dispatch to zones 4 and 7 before Thursday."
+
+The LLM is self-hosted, on-premises, air-gapped from external APIs. This was not a cost decision. OGERO's infrastructure data — fault histories, geographic coverage maps, line-level technical specifications — is national telecom infrastructure data. Sending it to a commercial API endpoint is not an option that a serious security posture permits. The architectural choice to run Ollama locally was made before we wrote a line of model code.
+
+**Analytics dashboard.** The chatbot and summary outputs surface through a dashboard that tracks operational KPIs alongside the model outputs. Executives use this for budget allocation and infrastructure planning decisions. Operational supervisors use it to schedule field technician dispatch.
+
+The system is currently in active testing. OGERO supervisors retain final authority on all dispatch decisions — the AI informs, it does not decide. That human-in-the-loop constraint was a design requirement, not a limitation.
+
 ## The data problem is always a reliability problem.
 
 In telecom, a fault prediction system is only as reliable as the fault history it was trained on. If the historical data is inconsistent — and ours was, deeply — the model learns to reproduce the inconsistencies, not the underlying physics of cable degradation.
 
 This is not a "data cleaning" problem. It is a reliability engineering problem. Garbage in doesn't just mean garbage out — it means outputs that look plausible but predict the wrong things, in the wrong directions, for the wrong reasons.
 
-The cleaning process took weeks. Every reassigned fault code had to be traced and relabeled. Every technician-reported field that overlapped with a database field had to be reconciled. Records where the reported outcome contradicted the infrastructure data required direct verification — hence the phone calls.
+Every reassigned fault code had to be traced and relabeled. Every technician-reported field that overlapped with a database field had to be reconciled. Records where the reported outcome contradicted the infrastructure data required direct verification — hence the phone calls. The process took weeks and produced a dataset that bore little resemblance to what we started with.
 
-The lesson: ground truth requires going to ground. No amount of statistical imputation fixes records that are simply wrong. At some scale, you have to verify against reality.
+The lesson: ground truth requires going to ground. No amount of statistical imputation fixes records that are simply wrong.
 
-## Observability needs to reach the thing that matters, not just the infrastructure around it.
+## Observability has to reach what executives actually act on.
 
-After the data was cleaned, we built the predictive maintenance model — a gradient boosting classifier trained on line characteristics, fault history, and infrastructure metadata. Then we built the monitoring layer.
+After the model was built, the initial monitoring instinct was standard: track model performance, log predictions, alert on errors. This monitors the right things at the wrong layer.
 
-The initial instinct was standard: track model performance, log predictions, alert on errors. This is the right list, but it monitors the wrong layer.
-
-What mattered to the team at OGERO wasn't whether the model was running. It was whether the model's predictions were leading to the right interventions — whether lines flagged as high-risk were being serviced before they failed, and whether the predictions were accurate enough to trust as a scheduling input.
-
-That required a different monitoring surface. We built an analytics dashboard tracking:
+What mattered to OGERO's supervisors wasn't whether the model was running. It was whether the model's predictions were leading to the right field interventions — whether lines flagged as high-risk were being serviced before they failed, and whether the predictions were accurate enough to use as a budget planning input.
 
 | Metric | What it measures | Why it matters |
 |---|---|---|
-| Lines flagged high-risk this week | Model output | Is the model producing actionable predictions? |
+| Lines flagged high-risk this week | Model output volume | Is the model producing actionable predictions? |
 | Flagged lines serviced within 7 days | Operational follow-through | Are predictions being acted on? |
 | Flagged lines that failed before service | Miss rate | Is the prediction window long enough? |
 | Unflagged lines that failed (surprise failures) | False negative rate | What is the model missing? |
-| Prediction confidence distribution | Model calibration | Is the model drifting? |
+| Prediction confidence distribution by region | Model calibration drift | Is geographic distribution shifting? |
 
-The surprise failure rate — lines that went down without being flagged — was the metric that actually told us whether the system was working. Not accuracy on a held-out test set. The rate of surprises in production.
+The surprise failure rate — lines that went down without being flagged — was the metric that actually told us whether the system was working. Not accuracy on a held-out test set. The rate of surprises in production, measured in real infrastructure impact.
 
-By the end of the engagement, we had predicted a meaningful number of line failures before they occurred — lines that were serviced before going down because the model flagged them. That's the metric that justified the system. Not the F1 score.
+## The self-hosted LLM decision is an architecture decision, not a feature.
 
-## A chatbot that knows what's about to break is a different product than one that reports what already broke.
+The choice to run Ollama locally rather than call an external LLM API deserves more explanation, because it is the most consequential architectural decision in the stack and the one most likely to be skipped over.
 
-Alongside the dashboard, we built a chatbot interface that connected to the predictive model and the KPI layer.
+National telecom infrastructure data has a specific risk profile. Fault histories reveal where the physical network is degraded. Geographic coverage data reveals where service is being allocated and where it isn't. Line-level technical specifications can reveal infrastructure investment patterns. This data, in aggregate, constitutes a detailed picture of Lebanon's telecommunications backbone.
 
-The difference between a reporting chatbot and a predictive chatbot is the temporal direction of the data. Most operational chatbots answer questions about past state: what failed last month, which lines had the most incidents, which technicians had the highest call-backs. Useful, but reactive.
+Sending this to any external API — regardless of the vendor's privacy policy — creates a data flow that exits the OGERO security perimeter. That flow is not acceptable.
 
-The predictive chatbot we built answered questions about future state: which lines are currently in the top risk tier, which regions have the highest concentration of degraded lines, what the expected failure rate is for the next two weeks if current service rates hold.
+The performance cost of running Ollama locally on the dashboard server is real. The response latency for natural language summaries is higher than a cloud API call. The model quality ceiling is lower than what GPT-4 would produce. Both of these tradeoffs were accepted explicitly, because the alternative was an architecture that could not be deployed.
 
-That temporal direction change made the product qualitatively different. A maintenance team can act on future state. It can only document past state.
+This is what architect-level security thinking looks like in practice: not "which LLM produces the best summaries," but "which LLMs can we legally and operationally use given the data classification."
 
-The architecture requirement this creates: the model's predictions have to be fresh enough to be actionable. A prediction that is three weeks stale is worse than no prediction — it creates false confidence in a state that may have already changed. Freshness is a first-class reliability property for predictive systems, not an afterthought.
+## Freshness is a first-class reliability property.
 
-## Circuit breakers: preventing cascade failures in AI pipelines.
+The batch prediction schedule creates a freshness constraint that becomes a reliability property of the system. A prediction that is three weeks stale is worse than no prediction — it creates false confidence in a risk assessment that may no longer reflect current conditions. Infrastructure changes between runs: new cables get laid, old cables get repaired, weather events shift regional risk profiles.
 
-One pattern that came out of the data pipeline work — not specific to the OGERO project, but validated by it — is the circuit breaker applied to AI inference clients.
+This means the batch schedule is not a performance parameter. It is a product contract with the executives who use the system. If a supervisor makes a budget allocation decision based on a two-week-old risk snapshot, and a line fails in the interval, the system failed them — not because the model was wrong, but because the prediction was stale.
 
-When a data pipeline depends on an upstream source that has uneven availability (APIs, external data feeds, infrastructure systems that go offline during maintenance), the default failure mode is retry cascade: the pipeline keeps hammering the unavailable source, which delays other work and sometimes makes the outage worse.
-
-A circuit breaker prevents this:
-
-```python
-import time
-from enum import Enum
-
-class State(Enum):
-    CLOSED = "closed"        # normal: requests pass through
-    OPEN = "open"            # failing: requests blocked
-    HALF_OPEN = "half_open"  # probing: one test request allowed
-
-class CircuitBreaker:
-    def __init__(self, failure_threshold=3, reset_timeout=30):
-        self.state = State.CLOSED
-        self.failure_count = 0
-        self.failure_threshold = failure_threshold
-        self.reset_timeout = reset_timeout
-        self._opened_at = None
-
-    def call(self, fn, *args, **kwargs):
-        if self.state == State.OPEN:
-            if time.time() - self._opened_at >= self.reset_timeout:
-                self.state = State.HALF_OPEN
-            else:
-                raise RuntimeError("Circuit open — using cached state")
-
-        try:
-            result = fn(*args, **kwargs)
-            self._on_success()
-            return result
-        except Exception as e:
-            self._on_failure()
-            raise e
-
-    def _on_success(self):
-        self.failure_count = 0
-        self.state = State.CLOSED
-
-    def _on_failure(self):
-        self.failure_count += 1
-        if self.failure_count >= self.failure_threshold:
-            self.state = State.OPEN
-            self._opened_at = time.time()
-```
-
-![Circuit breaker state machine](/diagrams/circuit-breaker-states.svg)
-
-Three states, two transition conditions. The circuit opens after three consecutive failures, blocks requests for thirty seconds, then allows a single probe. This prevents cascade while keeping the failure mode legible — the pipeline knows it is operating on cached or degraded data, rather than silently degrading without knowing.
-
-## Recovery speed matters more than failure prevention.
-
-The counter-intuitive lesson from telecom operations: past a certain threshold of reliability engineering, additional investment in failure prevention has diminishing returns. Investment in recovery speed compounds better.
-
-If your AI system has fifteen components, each at 99.9% availability, the probability all fifteen are available simultaneously is 99.9%^15 ≈ 98.5%. You can add nines to individual components indefinitely and still have meaningful multi-component outages several times per year.
-
-Halving your mean time to recovery — through practiced rollback, clearer alerting, better runbooks — halves the user-visible impact of every future incident. That math scales better than trying to prevent failures that statistical reality makes inevitable.
-
-For the predictive maintenance system, the practical version of this was: can we retrain and redeploy the model quickly when the data distribution shifts? Telephone line infrastructure changes — new cables, retired equipment, different technician populations. A model trained on 2022 data may need retraining in 2024. Having a repeatable training pipeline with tracked experiments meant retraining was measured in hours, not days.
+The practical consequence: retraining cadence and prediction freshness are SLA parameters that belong in the product specification, not in the model documentation.
 
 ## What I'd do differently.
 
-The phone call verification process — close to a thousand calls to validate records — was the most valuable and least automated part of the engagement. It was also the bottleneck.
+**Automate the ground truth capture from day one.** The phone call verification process — close to a thousand calls — was the most valuable and least automated part of the engagement. Every verified record was knowledge that should have been stored as labeled data with provenance metadata, not used to patch a field and then discarded. A proper data collection layer with explicit confidence scores per record would have turned the verification effort into a training asset.
 
-If I were building this again, I would front-load data quality tooling before modeling begins:
+**Schema contract between ingestion and training.** The feature pipeline and the training pipeline were built iteratively, which meant schema changes in ingestion required manual updates in training. A formal schema contract with validation at the boundary — Pydantic, Great Expectations, or even structured assertions — would have caught integration failures immediately rather than letting them produce silent training errors.
 
-- **Automated anomaly detection on ingestion**: flag records where fault codes, dates, or outcome fields fall outside expected distributions before they enter the training set
-- **Confidence scoring per record**: track how many fields were imputed vs. directly verified, and weight training samples accordingly
-- **Versioned ground truth**: every manual verification call was knowledge that should have been stored as labeled data, not just used to clean a single field in a single record
+**Separate the LLM summary cadence from the prediction cadence.** Currently, summaries are generated as part of the batch prediction run. For a use case where executives check the dashboard weekly, generating summaries daily is wasted compute. For a use case where field dispatchers check daily, weekly summaries are stale. These are different cadences with different freshness requirements and they should be decoupled.
 
-The phone calls generated more signal than the original data. Capturing that signal systematically would have been worth more than the cleaned dataset alone.
-
-Telecom engineering taught me that the hardest reliability problems are rarely in the model. They are in the data, the monitoring, and the decision of what to measure in the first place.
+The hardest reliability problems in AI systems are rarely in the model. They are in the data, the monitoring, and the decision of what to measure in the first place. OGERO's telephone lines taught me all three.
