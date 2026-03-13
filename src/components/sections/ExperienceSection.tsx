@@ -322,7 +322,7 @@ function CardContent({
 
   return (
     <motion.article
-      className="group relative rounded-xl border border-border bg-surface-raised p-5 transition-colors hover:border-accent/40"
+      className="card-lift group relative rounded-xl border border-border bg-surface-raised p-5"
       initial={reduced ? undefined : { opacity: 0, x: slideX }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-30px" }}
@@ -341,7 +341,7 @@ function CardContent({
       />
 
       <div className="flex items-start gap-3">
-        <span className="mt-0.5 rounded-lg bg-accent/12 p-2 text-accent">
+        <span className="mt-0.5 rounded-lg bg-surface-overlay p-2 text-accent">
           <Icon size={16} aria-hidden />
         </span>
         <div className="min-w-0 flex-1">

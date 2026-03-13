@@ -33,13 +33,21 @@ export default function Home() {
       />
       <div className="relative z-10">
         <HeroSection />
+        <div className="section-divider" aria-hidden="true" />
         <AboutSection />
+        <div className="section-divider" aria-hidden="true" />
         <ExperienceSection />
+        <div className="section-divider" aria-hidden="true" />
         <ProjectsSection />
+        <div className="section-divider" aria-hidden="true" />
         <SpeakingSection />
+        <div className="section-divider" aria-hidden="true" />
         <BlogSection />
+        <div className="section-divider" aria-hidden="true" />
         <CertificationsSection />
+        <div className="section-divider" aria-hidden="true" />
         <FAQSection />
+        <div className="section-divider" aria-hidden="true" />
         <ContactSection />
       </div>
     </>

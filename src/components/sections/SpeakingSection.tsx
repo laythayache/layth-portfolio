@@ -51,14 +51,14 @@ export default function SpeakingSection() {
             return (
               <motion.article
                 key={entry.id}
-                className="rounded-xl border border-border bg-surface-raised p-6"
+                className="card-lift rounded-xl border border-border bg-surface-raised p-6"
                 variants={{
                   hidden: { opacity: 0, y: 6 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
                 }}
               >
                 <div className="flex items-center gap-3">
-                  <span className="rounded-lg bg-accent/12 p-2 text-accent">
+                  <span className="rounded-lg bg-surface-overlay p-2 text-accent">
                     <Icon size={17} aria-hidden />
                   </span>
                   <p className="type-caption">{entry.organization}</p>

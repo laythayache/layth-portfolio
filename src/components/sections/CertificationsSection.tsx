@@ -76,7 +76,7 @@ export default function CertificationsSection() {
                 }}
               >
                 <div className="mb-4 flex items-center gap-2">
-                  <span className="rounded-md bg-accent/12 p-2 text-accent">
+                  <span className="rounded-md bg-surface-overlay p-2 text-accent">
                     <GroupIcon size={16} aria-hidden />
                   </span>
                   <h3 className="type-h3 text-[1.35rem]">

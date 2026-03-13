@@ -474,10 +474,26 @@
   }
 
   .blog-markdown h2 {
-    margin-top: 1.9rem;
+    margin-top: 2.2rem;
     margin-bottom: 0.7rem;
     font-size: 1.7rem;
     line-height: 1.2;
+  }
+
+  .blog-markdown h3 {
+    margin-top: 1.8rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+    line-height: 1.3;
+    color: rgb(var(--text-primary));
+  }
+
+  .blog-markdown h4 {
+    margin-top: 1.4rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: rgb(var(--text-primary));
   }
 
   .blog-markdown p {
@@ -486,11 +502,24 @@
     line-height: 1.8;
   }
 
+  .blog-markdown strong {
+    color: rgb(var(--text-primary));
+    font-weight: 600;
+  }
+
   .blog-markdown ul,
   .blog-markdown ol {
     margin-top: 1rem;
     margin-left: 1.35rem;
     color: rgb(var(--text-secondary));
+  }
+
+  .blog-markdown ol {
+    list-style-type: decimal;
+  }
+
+  .blog-markdown ul {
+    list-style-type: disc;
   }
 
   .blog-markdown li {
@@ -503,5 +532,140 @@
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
+  }
+
+  .blog-markdown a:hover {
+    color: rgb(var(--accent-hover));
+  }
+
+  .blog-markdown hr {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border: none;
+    border-top: 1px solid rgb(var(--border));
+  }
+
+  .blog-markdown blockquote {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid rgb(var(--accent));
+    background: rgb(var(--surface-overlay));
+    border-radius: 0 0.5rem 0.5rem 0;
+    color: rgb(var(--text-secondary));
+    font-style: italic;
+  }
+
+  .blog-markdown blockquote p {
+    margin-top: 0;
+  }
+
+  /* Code — inline */
+  .blog-markdown code {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.875em;
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    background: rgb(var(--surface-overlay));
+    color: rgb(var(--accent));
+  }
+
+  /* Code — blocks */
+  .blog-markdown pre {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgb(var(--border));
+    background: rgb(15 23 42);
+    overflow-x: auto;
+  }
+
+  .blog-markdown pre code {
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: rgb(203 213 225);
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+
+  /* Tables */
+  .blog-markdown table {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .blog-markdown thead {
+    border-bottom: 2px solid rgb(var(--border-strong));
+  }
+
+  .blog-markdown th {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: rgb(var(--text-primary));
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .blog-markdown td {
+    padding: 0.75rem 1rem;
+    color: rgb(var(--text-secondary));
+    border-bottom: 1px solid rgb(var(--border));
+  }
+
+  .blog-markdown tbody tr:hover {
+    background: rgb(var(--surface-overlay));
+  }
+
+  /* Images */
+  .blog-markdown img {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgb(var(--border));
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Card hover lift — reusable across sections */
+  .card-lift {
+    transition:
+      transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgb(15 23 42 / 0.10);
+  }
+
+  /* Section divider — subtle gradient fade line */
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgb(var(--border-strong)) 20%,
+      rgb(var(--border-strong)) 80%,
+      transparent 100%
+    );
+    margin-inline: auto;
+    max-width: 80rem;
+  }
+
+  /* Scroll indicator bounce */
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateY(0); opacity: 0.6; }
+    50%      { transform: translateY(8px); opacity: 1; }
+  }
+
+  .scroll-indicator {
+    animation: scroll-bounce 2s ease-in-out infinite;
   }
 }

@@ -17,6 +17,7 @@ const OmnisignMicrosite = lazy(() => import("@/pages/OmnisignMicrosite"));
 const BlogIndex = lazy(() => import("@/pages/BlogIndex"));
 const BlogPost = lazy(() => import("@/pages/BlogPost"));
 const BeyondTech = lazy(() => import("@/pages/BeyondTech"));
+const ProjectsIndex = lazy(() => import("@/pages/ProjectsIndex"));
 
 export default function App() {
   useRemoveStaticJsonLd();
@@ -29,7 +30,8 @@ export default function App() {
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/beyond-tech" element={<BeyondTech />} />
 
-          {/* Project detail routes (preserved for backlinks) */}
+          {/* Projects listing + detail routes */}
+          <Route path="/projects" element={<ProjectsIndex />} />
           <Route
             path="/projects/omnisign"
             element={<OmnisignMicrosite />}

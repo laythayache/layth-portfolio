@@ -44,22 +44,20 @@ export default function BlogSection() {
           {posts.map((post) => (
             <motion.article
               key={post.slug}
-              className="overflow-hidden rounded-xl border border-border bg-surface-raised"
+              className="card-lift overflow-hidden rounded-xl border border-border bg-surface-raised"
               variants={{
                 hidden: { opacity: 0, y: 10 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
               }}
             >
-              {post.coverImage && (
-                <div className="aspect-[16/9] overflow-hidden border-b border-border bg-surface-overlay">
-                  <img
-                    src={post.coverImage}
-                    alt={`${post.title} cover image`}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              )}
+              <div className="aspect-[16/9] overflow-hidden border-b border-border bg-surface-overlay">
+                <img
+                  src={post.coverImage || "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=500&q=80"}
+                  alt={`${post.title} cover image`}
+                  className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
               <div className="p-5">
                 <p className="text-sm text-text-muted">
                   {post.date} · {post.readingTimeMinutes} min read

@@ -142,42 +142,44 @@ export default function ContactSection() {
           visible: { transition: { staggerChildren: 0.03, delayChildren: 0.03 } },
         }}
       >
-        <motion.p
-          className="type-kicker"
-          variants={{
-            hidden: { opacity: 0, y: 10 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
-          Contact
-        </motion.p>
-        <motion.h2
-          className="type-h2 mt-4"
-          variants={{
-            hidden: { opacity: 0, y: 10 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
-          Let&apos;s Build The Future Together
-        </motion.h2>
-        <motion.p
-          className="type-body mt-4 max-w-2xl"
-          variants={{
-            hidden: { opacity: 0, y: 5 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
-          Open to consulting, partnerships, and technical collaboration on AI,
-          automation, and resilient infrastructure.
-        </motion.p>
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.8fr]">
+          <div>
+            <motion.p
+              className="type-kicker"
+              variants={{
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+              }}
+            >
+              Contact
+            </motion.p>
+            <motion.h2
+              className="type-h2 mt-4"
+              variants={{
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+              }}
+            >
+              Let&apos;s Build The Future Together
+            </motion.h2>
+            <motion.p
+              className="type-body mt-4"
+              variants={{
+                hidden: { opacity: 0, y: 5 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+              }}
+            >
+              Open to consulting, partnerships, and technical collaboration on AI,
+              automation, and resilient infrastructure.
+            </motion.p>
 
-        <motion.div
-          className="mt-7 flex flex-wrap gap-3"
-          variants={{
-            hidden: { opacity: 0, y: 5 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
+            <motion.div
+              className="mt-7 flex flex-wrap gap-3"
+              variants={{
+                hidden: { opacity: 0, y: 5 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
+              }}
+            >
           <motion.a
             href="mailto:laythayache5@gmail.com"
             className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-5 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
@@ -198,7 +200,24 @@ export default function ContactSection() {
             <Calendar size={17} aria-hidden />
             Schedule a Call
           </motion.a>
-        </motion.div>
+            </motion.div>
+          </div>
+
+          <motion.div
+            className="hidden lg:block"
+            variants={{
+              hidden: { opacity: 0, scale: 0.95 },
+              visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
+            }}
+          >
+            <img
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=80"
+              alt="Team collaboration"
+              className="w-full rounded-2xl border border-border object-cover shadow-[0_12px_32px_rgb(15_23_42_/_0.08)]"
+              loading="lazy"
+            />
+          </motion.div>
+        </div>
 
         <motion.form
           className="mt-9 rounded-2xl border border-border-strong bg-surface-raised p-6 shadow-sm md:p-8"

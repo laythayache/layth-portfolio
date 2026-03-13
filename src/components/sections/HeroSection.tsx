@@ -1,56 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronDown, MessageCircle } from "lucide-react";
 import { useLenis } from "@/motion/LenisProvider";
 import { SECTION } from "@/motion/tokens";
-
-function NeuralCanvas() {
-  return (
-    <svg
-      viewBox="0 0 520 320"
-      className="h-full w-full"
-      role="img"
-      aria-label="Abstract neural network inspired system diagram"
-    >
-      <defs>
-        <linearGradient id="hero-line" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="rgb(7 108 100 / 0.75)" />
-          <stop offset="100%" stopColor="rgb(10 19 38 / 0.95)" />
-        </linearGradient>
-      </defs>
-
-      {[
-        "M50 62 L170 98 L282 74 L422 116",
-        "M50 126 L176 152 L302 132 L442 168",
-        "M46 194 L166 214 L290 196 L430 232",
-        "M62 252 L190 248 L304 258 L432 270",
-      ].map((path) => (
-        <path
-          key={path}
-          d={path}
-          fill="none"
-          stroke="url(#hero-line)"
-          strokeOpacity="0.85"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
-      ))}
-
-      {[50, 170, 282, 422].map((x) =>
-        [62, 126, 194, 252].map((y) => (
-          <circle
-            key={`${x}-${y}`}
-            cx={x}
-            cy={y}
-            r="5.5"
-            fill="white"
-            stroke="rgb(7 108 100 / 0.7)"
-            strokeWidth="2"
-          />
-        ))
-      )}
-    </svg>
-  );
-}
 
 export default function HeroSection() {
   const reduced = useReducedMotion();
@@ -70,25 +21,31 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="hero-accessible section-shell relative overflow-hidden px-6 pb-20 pt-10 md:pt-14"
+      className="hero-accessible relative flex min-h-[calc(100vh-var(--nav-height))] flex-col overflow-hidden px-6"
       aria-labelledby="hero-title"
     >
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgb(7_108_100_/_0.13),transparent_45%),radial-gradient(circle_at_15%_25%,rgb(15_23_42_/_0.06),transparent_40%)]" />
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_96%,rgb(184_201_214_/_0.26)_100%),linear-gradient(90deg,transparent_96%,rgb(184_201_214_/_0.2)_100%)] bg-[size:38px_38px]" />
+      {/* Background accents */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_10%,rgb(7_108_100_/_0.07),transparent_45%),radial-gradient(circle_at_15%_85%,rgb(15_23_42_/_0.04),transparent_40%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_96%,rgb(184_201_214_/_0.18)_100%),linear-gradient(90deg,transparent_96%,rgb(184_201_214_/_0.14)_100%)] bg-[size:42px_42px]" />
 
-      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-[1.12fr_0.88fr]">
+      {/* Main content — vertically centered */}
+      <div className="relative z-10 mx-auto my-auto grid w-full max-w-6xl items-center gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+        {/* Text column */}
         <motion.div
           initial={reduced ? undefined : { opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+          transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <p className="type-kicker">AI Systems & Automation Engineer | Technical Consultant · Beirut</p>
-          <h1 id="hero-title" className="type-h1 mt-5 max-w-4xl">
-            I build reliable systems, automate workflows, and keep technology running so teams can focus on what matters.
+          <p className="type-kicker">
+            AI Systems & Automation Engineer · Beirut
+          </p>
+          <h1 id="hero-title" className="type-h1 mt-5 max-w-xl">
+            I build reliable systems so teams can focus on what matters.
           </h1>
-          <p className="type-body mt-6 max-w-2xl">
-            Layth Ayache manages tech stacks, builds automations, and ensures
-            system reliability across SaaS platforms, CRMs, and internal tools.
+          <p className="type-body mt-6 max-w-lg">
+            Technical consultant managing tech stacks, building automations, and
+            ensuring system reliability across SaaS platforms, CRMs, and
+            internal tools.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">
@@ -120,43 +77,56 @@ export default function HeroSection() {
 
           <ul className="mt-8 grid gap-2 text-sm text-text-secondary sm:grid-cols-3">
             <li className="rounded-md border border-border bg-white/70 px-3 py-2">
-              CRM & SaaS platform management
+              CRM & SaaS management
             </li>
             <li className="rounded-md border border-border bg-white/70 px-3 py-2">
-              Workflow automation & integrations
+              Workflow automation
             </li>
             <li className="rounded-md border border-border bg-white/70 px-3 py-2">
-              Data pipelines & system reliability
+              Data pipelines & reliability
             </li>
           </ul>
         </motion.div>
 
-        <motion.aside
-          initial={reduced ? undefined : { opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
+        {/* Image column — professional headshot placeholder */}
+        <motion.div
+          initial={reduced ? undefined : { opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
           transition={{
-            duration: 0.45,
-            delay: reduced ? 0 : 0.08,
+            duration: 0.5,
+            delay: reduced ? 0 : 0.1,
             ease: [0.2, 0.8, 0.2, 1],
           }}
-          className="rounded-2xl border border-border-strong bg-surface-raised/95 p-6 shadow-[0_18px_40px_rgb(10_19_38_/_0.12)]"
-          aria-label="AI systems approach summary"
+          className="flex justify-center lg:justify-end"
         >
-          <div className="flex items-center gap-2 text-sm font-medium text-accent">
-            <Sparkles size={14} aria-hidden />
-            Systems mindset
+          <div className="relative">
+            {/* Decorative ring behind image */}
+            <div className="absolute -inset-3 rounded-2xl border border-border-strong opacity-50" />
+            <img
+              src="/layth-ayache.jpeg"
+              alt="Layth Ayache — AI Systems Engineer"
+              className="relative h-[340px] w-[340px] rounded-2xl border border-border-strong object-cover shadow-[0_18px_40px_rgb(15_23_42_/_0.10)] sm:h-[400px] sm:w-[400px]"
+              loading="eager"
+            />
           </div>
-          <div className="mt-4 overflow-hidden rounded-xl border border-border bg-surface p-2">
-            <div className="aspect-[16/10] w-full">
-              <NeuralCanvas />
-            </div>
-          </div>
-          <p className="mt-5 text-base leading-relaxed text-text-secondary">
-            From CRM architecture to API integrations, every system is built for
-            reliability, data accuracy, and operational efficiency.
-          </p>
-        </motion.aside>
+        </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.button
+        type="button"
+        onClick={() => scrollToSection("about")}
+        initial={reduced ? undefined : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.5 }}
+        className="scroll-indicator relative z-10 mx-auto mb-6 flex flex-col items-center gap-1 text-text-muted"
+        aria-label="Scroll to about section"
+      >
+        <span className="text-xs font-medium uppercase tracking-widest">
+          Scroll
+        </span>
+        <ChevronDown size={18} aria-hidden />
+      </motion.button>
     </section>
   );
 }
