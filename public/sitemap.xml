@@ -147,6 +147,12 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
+    <loc>https://laythayache.com/blog/real-time-privacy-pipeline-on-raspberry-pi</loc>
+    <lastmod>2026-03-13</lastmod>
+    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://laythayache.com/blog/building-in-a-country-with-no-infrastructure</loc>
     <lastmod>2026-02-15</lastmod>
     <priority>0.6</priority>
