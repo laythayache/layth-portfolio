@@ -124,7 +124,7 @@ export default function ExperienceSection() {
         </div>
 
         {/* Timeline */}
-        <div className="relative mt-14">
+        <div className="relative mt-14 overflow-x-clip">
           {/* Center vertical line */}
           <div
             className="absolute left-4 top-0 bottom-0 w-px bg-gradient-to-b from-accent/60 via-accent/30 to-transparent lg:left-1/2 lg:-translate-x-px"
@@ -322,7 +322,7 @@ function CardContent({
 
   return (
     <motion.article
-      className="card-lift group relative rounded-xl border border-border bg-surface-raised p-5"
+      className="card-lift group relative rounded-xl border border-border bg-surface-raised p-4 sm:p-5"
       initial={reduced ? undefined : { opacity: 0, x: slideX }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-30px" }}

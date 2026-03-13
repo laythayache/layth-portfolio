@@ -330,6 +330,24 @@
   }
 }
 
+@media (max-width: 479px) {
+  body {
+    font-size: 16px;
+  }
+
+  .blog-markdown pre {
+    padding: 0.85rem;
+    font-size: 0.8rem;
+    border-radius: 0.5rem;
+  }
+
+  .blog-markdown table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .cinematic-cursor-halo,
   .cinematic-cursor-frame,

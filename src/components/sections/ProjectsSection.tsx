@@ -122,9 +122,9 @@ export default function ProjectsSection() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <div className="flex items-center gap-3">
-                    <h3 className="type-h3 text-[1.15rem]">
+                <div className="p-4 sm:p-6">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="type-h3 text-[1.05rem] sm:text-[1.15rem]">
                       {project.title}
                     </h3>
                     <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-0.5 font-mono text-[11px] text-text-muted">

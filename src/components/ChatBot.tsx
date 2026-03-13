@@ -374,12 +374,11 @@ export default function ChatBot() {
         {open && (
           <motion.div
             className={cn(
-              "chatbot-panel fixed bottom-24 right-6 z-50 flex flex-col",
-              "w-[380px] max-w-[calc(100vw-2rem)] rounded-2xl border border-border",
-              "bg-surface-raised shadow-2xl",
-              "overflow-hidden",
+              "chatbot-panel fixed z-50 flex flex-col",
+              "border border-border bg-surface-raised shadow-2xl overflow-hidden",
+              "inset-0 h-[100dvh] rounded-none",
+              "sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[min(560px,calc(100vh-8rem))] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl",
             )}
-            style={{ height: "min(560px, calc(100vh - 8rem))" }}
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}

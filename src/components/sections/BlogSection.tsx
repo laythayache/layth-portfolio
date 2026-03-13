@@ -40,7 +40,7 @@ export default function BlogSection() {
           engineering decisions.
         </motion.p>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <motion.article
               key={post.slug}

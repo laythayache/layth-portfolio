@@ -182,7 +182,7 @@ export default function ContactSection() {
             >
           <motion.a
             href="mailto:laythayache5@gmail.com"
-            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-5 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
+            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:px-5 sm:py-3 sm:text-base"
             whileHover={reduced ? undefined : SECTION.buttonHover}
             whileTap={reduced ? undefined : SECTION.buttonTap}
           >
@@ -193,7 +193,7 @@ export default function ContactSection() {
             href={BRAND.calendly}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-5 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent hover:text-accent"
+            className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-4 py-2.5 text-sm font-semibold text-text-primary transition-colors hover:border-accent hover:text-accent sm:px-5 sm:py-3 sm:text-base"
             whileHover={reduced ? undefined : SECTION.buttonHover}
             whileTap={reduced ? undefined : SECTION.buttonTap}
           >
@@ -220,7 +220,7 @@ export default function ContactSection() {
         </div>
 
         <motion.form
-          className="mt-9 rounded-2xl border border-border-strong bg-surface-raised p-6 shadow-sm md:p-8"
+          className="mt-9 rounded-2xl border border-border-strong bg-surface-raised p-4 shadow-sm sm:p-6 md:p-8"
           variants={{
             hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },

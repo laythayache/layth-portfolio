@@ -29,7 +29,7 @@ export default function HeroSection() {
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(transparent_96%,rgb(184_201_214_/_0.18)_100%),linear-gradient(90deg,transparent_96%,rgb(184_201_214_/_0.14)_100%)] bg-[size:42px_42px]" />
 
       {/* Main content — vertically centered */}
-      <div className="relative z-10 mx-auto my-auto grid w-full max-w-6xl items-center gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
+      <div className="relative z-10 mx-auto my-auto grid w-full max-w-6xl items-center gap-8 py-10 sm:gap-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
         {/* Text column */}
         <motion.div
           initial={reduced ? undefined : { opacity: 0, y: 18 }}
@@ -56,7 +56,7 @@ export default function HeroSection() {
               whileTap={reduced ? undefined : SECTION.buttonTap}
               data-magnetic
               data-cursor-label="View Work"
-              className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover"
+              className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:px-6 sm:py-3 sm:text-base"
             >
               View Work
               <ArrowRight size={16} aria-hidden />
@@ -68,9 +68,9 @@ export default function HeroSection() {
               whileTap={reduced ? undefined : SECTION.buttonTap}
               data-magnetic
               data-cursor-label="Contact"
-              className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent hover:text-accent"
+              className="inline-flex items-center gap-2 rounded-md border border-border-strong bg-surface-raised px-5 py-2.5 text-sm font-semibold text-text-primary transition-colors hover:border-accent hover:text-accent sm:px-6 sm:py-3 sm:text-base"
             >
-              Start a Conversation
+              Let&apos;s Talk
               <MessageCircle size={16} aria-hidden />
             </motion.button>
           </div>
@@ -105,7 +105,7 @@ export default function HeroSection() {
             <img
               src="/layth-ayache.jpeg"
               alt="Layth Ayache — AI Systems Engineer"
-              className="relative h-[340px] w-[340px] rounded-2xl border border-border-strong object-cover shadow-[0_18px_40px_rgb(15_23_42_/_0.10)] sm:h-[400px] sm:w-[400px]"
+              className="relative h-[280px] w-[280px] rounded-2xl border border-border-strong object-cover shadow-[0_18px_40px_rgb(15_23_42_/_0.10)] sm:h-[340px] sm:w-[340px] md:h-[400px] md:w-[400px]"
               loading="eager"
             />
           </div>

@@ -186,7 +186,7 @@ export default function OmnisignMicrosite() {
                 decoding="async"
                 className="h-14 w-14 object-contain"
               />
-              <h1 className="font-sans text-4xl font-bold tracking-tight text-slate-900 md:text-5xl lg:text-6xl">
+              <h1 className="font-sans text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl md:text-5xl lg:text-6xl">
                 OmniSign
                 <span className="sr-only">
                   {" "}— AI-Powered Lebanese Sign Language Translation
@@ -317,7 +317,7 @@ export default function OmnisignMicrosite() {
 
           {/* Big hook — slides from left, dramatic size */}
           <motion.h2
-            className="mb-14 max-w-4xl font-sans text-4xl font-bold leading-[1.1] text-slate-900 md:text-5xl lg:text-7xl"
+            className="mb-14 max-w-4xl font-sans text-2xl font-bold leading-[1.1] text-slate-900 sm:text-4xl md:text-5xl lg:text-7xl"
             initial={{ opacity: 0, x: reduced ? 0 : -24 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
@@ -455,11 +455,11 @@ export default function OmnisignMicrosite() {
             {DATASET_METRICS.map((card, i) => (
               <motion.div
                 key={card.label}
-                className="rounded-2xl border border-slate-100 bg-gradient-to-br from-teal-50/80 via-white to-white p-8 shadow-sm sm:p-10"
+                className="rounded-2xl border border-slate-100 bg-gradient-to-br from-teal-50/80 via-white to-white p-5 shadow-sm sm:p-8 md:p-10"
                 {...stagger(i)}
                 whileHover={lift}
               >
-                <span className="block font-sans text-5xl font-extrabold tracking-tight text-teal-600 md:text-6xl">
+                <span className="block font-sans text-3xl font-extrabold tracking-tight text-teal-600 sm:text-5xl md:text-6xl">
                   {card.num}
                 </span>
                 <span className="mt-3 block text-sm leading-relaxed text-slate-500">
@@ -565,7 +565,7 @@ export default function OmnisignMicrosite() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: reduced ? 0.15 : 0.7, ease: EASE_OUT }}
           >
-            <p className="max-w-4xl font-sans text-3xl font-bold leading-tight text-white md:text-4xl lg:text-6xl">
+            <p className="max-w-4xl font-sans text-2xl font-bold leading-tight text-white sm:text-3xl md:text-4xl lg:text-6xl">
               &ldquo;{communityQuote}&rdquo;
             </p>
           </motion.blockquote>

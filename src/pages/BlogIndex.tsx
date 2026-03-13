@@ -113,7 +113,7 @@ export default function BlogIndex() {
                   <p className="text-sm text-text-muted">
                     {post.date} · {post.readingTimeMinutes} min read
                   </p>
-                  <h2 className="mt-2 text-2xl font-semibold text-text-primary">
+                  <h2 className="mt-2 text-xl font-semibold text-text-primary sm:text-2xl">
                     {post.title}
                   </h2>
                   <p className="mt-3 text-base leading-relaxed text-text-secondary">
