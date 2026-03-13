@@ -11,6 +11,11 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://laythayache.com/beyond-tech</loc>
+    <priority>0.7</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  <url>
     <loc>https://laythayache.com/projects/omnisign</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
