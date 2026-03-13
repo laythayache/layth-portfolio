@@ -10,7 +10,7 @@ LLM-Context: https://laythayache.com/llms.txt
 # Canonical identity
 # Name: Layth Ayache
 # Age: 22 (born 2003)
-# Role: AI Systems Engineer & Technology Consultant at Aligned Tech
+# Role: AI Systems Architect & Technology Leader at Aligned Tech
 # Positioning: Senior AI Systems Architect | Infrastructure Architect | Technology Leader
 # Location: Beirut, Lebanon
 # Languages: Arabic (native), English (professional), French (professional)
