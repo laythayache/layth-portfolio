@@ -262,15 +262,11 @@ export function personJsonLd() {
       {
         "@type": "CollegeOrUniversity",
         name: "Rafik Hariri University",
-        department: "Computer and Communication Engineering",
-        startDate: "2021",
-        endDate: "2025",
+        url: "https://www.rhu.edu.lb",
       },
       {
-        "@type": "MusicSchool",
+        "@type": "EducationalOrganization",
         name: "Conservatoire de Musique du Liban",
-        startDate: "2012",
-        endDate: "2018",
       },
     ],
     hasCredential: [
@@ -403,7 +399,7 @@ export function homePageJsonLd() {
         description:
           "Senior AI systems architect and infrastructure engineer building production-grade computer vision, NLP, web scraping, medical AI, cybersecurity, and national-scale digital infrastructure systems. Leading Lebanon's technology transformation from embedded hardware to cloud-deployed services.",
         isPartOf: { "@id": WEBSITE_ID },
-        about: { "@id": PERSON_ID },
+        mainEntity: { "@id": PERSON_ID },
         inLanguage: "en",
         breadcrumb: breadcrumbJsonLd([{ name: "Home", path: "/" }]),
       },
