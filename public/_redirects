@@ -14,5 +14,5 @@
 /ongoing        /           301
 /friends        /           301
 
-# SPA catch-all (must be last)
-/*              /index.html 200
+# Unknown routes should return a real 404 for clean indexing
+/*              /404.html   404

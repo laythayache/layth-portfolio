@@ -412,6 +412,8 @@ function injectMeta(template, route) {
   const routeOgType = route.ogType || "website";
   const routeOgImage = absoluteUrl(route.ogImage || OG_IMAGE);
   const routeOgImageAlt = route.ogImageAlt || DEFAULT_OG_ALT;
+  const hasImageWidth = Number.isFinite(route.ogImageWidth);
+  const hasImageHeight = Number.isFinite(route.ogImageHeight);
 
   // Replace <title>
   html = html.replace(
@@ -466,6 +468,22 @@ function injectMeta(template, route) {
     /<meta property="og:image:alt" content="[^"]*"/,
     `<meta property="og:image:alt" content="${escapeAttr(routeOgImageAlt)}"`
   );
+  if (hasImageWidth) {
+    html = html.replace(
+      /<meta property="og:image:width" content="[^"]*"\s*\/>/,
+      `<meta property="og:image:width" content="${route.ogImageWidth}" />`
+    );
+  } else {
+    html = html.replace(/^\s*<meta property="og:image:width" content="[^"]*"\s*\/>\s*\r?\n?/m, "");
+  }
+  if (hasImageHeight) {
+    html = html.replace(
+      /<meta property="og:image:height" content="[^"]*"\s*\/>/,
+      `<meta property="og:image:height" content="${route.ogImageHeight}" />`
+    );
+  } else {
+    html = html.replace(/^\s*<meta property="og:image:height" content="[^"]*"\s*\/>\s*\r?\n?/m, "");
+  }
 
   // Replace twitter:title
   html = html.replace(
@@ -536,6 +554,8 @@ function main() {
       "Senior AI systems architect and technology leader from Lebanon. Building production-grade computer vision, NLP, data pipelines, and national-scale digital infrastructure at Aligned Tech.",
     ogImage: OG_IMAGE,
     ogImageAlt: "Layth Ayache AI systems portfolio preview",
+    ogImageWidth: 1200,
+    ogImageHeight: 630,
     jsonLd: homeJsonLd(faqItems),
   };
   writeFileSync(templatePath, injectMeta(template, homeRoute), "utf8");
