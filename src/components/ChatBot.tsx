@@ -49,12 +49,25 @@ function parseMessage(content: string): { text: string; hasAction: boolean } {
   return { text, hasAction };
 }
 
+/** Only allow safe URL protocols */
+function isAllowedUrl(url: string): boolean {
+  try {
+    const parsed = new URL(url, window.location.origin);
+    return ["http:", "https:", "mailto:"].includes(parsed.protocol);
+  } catch {
+    return false;
+  }
+}
+
 /** Render markdown-style links [text](url) as anchor tags */
 function renderLinks(text: string) {
   const parts = text.split(/(\[[^\]]+\]\([^)]+\))/g);
   return parts.map((part, i) => {
     const match = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
     if (match) {
+      if (!isAllowedUrl(match[2])) {
+        return <span key={i}>{match[1]}</span>;
+      }
       return (
         <a
           key={i}
@@ -255,7 +268,7 @@ function speak(text: string) {
 }
 
 export default function ChatBot() {
-  const { isOpen: open, isVoiceMode, toggleChat, closeChat } = useChat();
+  const { isOpen: open, isVoiceMode, toggleChat } = useChat();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
@@ -264,6 +277,7 @@ export default function ChatBot() {
   const inputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const voiceAutoStarted = useRef(false);
+  const abortRef = useRef<AbortController | null>(null);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -279,6 +293,13 @@ export default function ChatBot() {
     }
   }, [open, isVoiceMode]);
 
+  // Cancel in-flight requests on unmount
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
   // Auto-start listening when opened in voice mode
   useEffect(() => {
     if (open && isVoiceMode && !voiceAutoStarted.current) {
@@ -288,6 +309,9 @@ export default function ChatBot() {
     if (!open) {
       voiceAutoStarted.current = false;
     }
+    return () => {
+      recognitionRef.current?.abort();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, isVoiceMode]);
 
@@ -328,6 +352,10 @@ export default function ChatBot() {
     const assistantMessage: Message = { id: crypto.randomUUID(), role: "assistant", content: "" };
     setMessages([...newMessages, assistantMessage]);
 
+    const controller = new AbortController();
+    abortRef.current = controller;
+    let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -335,12 +363,13 @@ export default function ChatBot() {
         body: JSON.stringify({
           messages: newMessages.map((m) => ({ role: m.role, content: m.content })),
         }),
+        signal: controller.signal,
       });
 
       if (response.status === 429) throw new Error("rate-limited");
       if (!response.ok) throw new Error(`API error: ${response.status}`);
 
-      const reader = response.body?.getReader();
+      reader = response.body?.getReader();
       const decoder = new TextDecoder();
       let accumulated = "";
 
@@ -385,6 +414,7 @@ export default function ChatBot() {
         if (spokenText) speak(spokenText);
       }
     } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
       const isRateLimited =
         error instanceof Error && error.message === "rate-limited";
       const errorMsg = isRateLimited
@@ -401,6 +431,8 @@ export default function ChatBot() {
       if (isVoiceMode) speak(errorMsg);
       if (!isRateLimited) console.error("Chat error:", error);
     } finally {
+      reader?.cancel().catch(() => {});
+      abortRef.current = null;
       setStreaming(false);
     }
   }

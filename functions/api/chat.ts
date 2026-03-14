@@ -33,28 +33,35 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   // Cap conversation length to prevent abuse
   const messages = body.messages.slice(-20);
 
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini",
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...messages,
-      ],
-      stream: true,
-      max_tokens: 300,
-      temperature: 0.7,
-    }),
-  });
+  let response: Response;
+  try {
+    response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...messages,
+        ],
+        stream: true,
+        max_tokens: 300,
+        temperature: 0.7,
+      }),
+    });
+  } catch {
+    return new Response(
+      JSON.stringify({ error: "AI service unavailable." }),
+      { status: 502, headers: { "Content-Type": "application/json" } }
+    );
+  }
 
   if (!response.ok) {
-    const text = await response.text();
     return new Response(
-      JSON.stringify({ error: "AI service error.", detail: text }),
+      JSON.stringify({ error: "AI service error." }),
       { status: 502, headers: { "Content-Type": "application/json" } }
     );
   }
