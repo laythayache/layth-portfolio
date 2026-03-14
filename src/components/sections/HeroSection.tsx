@@ -114,7 +114,7 @@ export default function HeroSection() {
             src="/logo-mark.svg"
             alt=""
             aria-hidden
-            className="absolute left-1/2 top-1/2 z-[2] w-[300px] -translate-x-1/2 -translate-y-1/2 opacity-[0.12] sm:w-[350px] md:w-[400px]"
+            className="absolute left-1/2 top-1/2 z-[2] w-[500px] -translate-x-1/2 -translate-y-1/2 opacity-[0.12] sm:w-[550px] md:w-[600px]"
           />
 
           {/* Pulsating rings — 4 rings radiating outward */}
