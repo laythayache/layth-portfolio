@@ -38,12 +38,28 @@ export default function Navbar() {
     restDelta: 0.001,
   });
 
-  // Scroll detection for background
+  // Start hidden on homepage (hero visible), show after scrolling past hero
+  const [pastHero, setPastHero] = useState(!isHome);
+
+  // Scroll detection for background + hero visibility
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 8);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 8);
+      // Hide navbar while in the hero section
+      const heroEl = document.getElementById("hero");
+      if (heroEl && heroEl.offsetHeight > 100) {
+        setPastHero(window.scrollY > heroEl.offsetHeight - 80);
+      } else if (!heroEl) {
+        setPastHero(true);
+      }
+    };
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    // Small delay so hero is fully laid out before we measure it
+    const timer = setTimeout(() => handleScroll(), 100);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   // Close mobile nav with Escape
@@ -81,8 +97,11 @@ export default function Navbar() {
     <nav
       aria-label="Navigation"
       className={cn(
-        "fixed left-0 right-0 top-0 z-50 transition-colors duration-300",
+        "fixed left-0 right-0 top-0 z-50 transition-all duration-300",
         "border-b border-border-strong bg-surface/94 backdrop-blur-lg",
+        isHome && !pastHero
+          ? "-translate-y-full opacity-0 pointer-events-none"
+          : "translate-y-0 opacity-100",
         isHome && !scrolled
           ? "shadow-none"
           : "shadow-[0_8px_24px_rgb(15_23_42_/_0.08)]"

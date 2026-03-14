@@ -7,11 +7,14 @@ import {
   Loader2,
   Calendar,
   Mail,
+  Mic,
+  MicOff,
   ChevronDown,
   ChevronUp,
   CheckCircle2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useChat } from "@/context/ChatContext";
 
 interface Message {
   role: "user" | "assistant";
@@ -221,13 +224,42 @@ function ContactCard() {
   );
 }
 
+// --- Voice helpers ---
+type SpeechRecognitionInstance = InstanceType<typeof SpeechRecognition>;
+
+function getSpeechRecognition(): SpeechRecognitionInstance | null {
+  const SR =
+    typeof window !== "undefined"
+      ? (window as unknown as Record<string, unknown>).SpeechRecognition ??
+        (window as unknown as Record<string, unknown>).webkitSpeechRecognition
+      : null;
+  if (!SR) return null;
+  const instance = new (SR as new () => SpeechRecognitionInstance)();
+  instance.continuous = false;
+  instance.interimResults = false;
+  instance.lang = "en-US";
+  return instance;
+}
+
+function speak(text: string) {
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  window.speechSynthesis.speak(utterance);
+}
+
 export default function ChatBot() {
-  const [open, setOpen] = useState(false);
+  const { isOpen: open, isVoiceMode, toggleChat, closeChat } = useChat();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
+  const voiceAutoStarted = useRef(false);
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -238,10 +270,47 @@ export default function ChatBot() {
   }, [messages, scrollToBottom]);
 
   useEffect(() => {
-    if (open && inputRef.current) {
+    if (open && inputRef.current && !isVoiceMode) {
       inputRef.current.focus();
     }
-  }, [open]);
+  }, [open, isVoiceMode]);
+
+  // Auto-start listening when opened in voice mode
+  useEffect(() => {
+    if (open && isVoiceMode && !voiceAutoStarted.current) {
+      voiceAutoStarted.current = true;
+      startListening();
+    }
+    if (!open) {
+      voiceAutoStarted.current = false;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, isVoiceMode]);
+
+  function startListening() {
+    const recognition = getSpeechRecognition();
+    if (!recognition) return;
+    recognitionRef.current = recognition;
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const transcript = event.results[0]?.[0]?.transcript;
+      if (transcript) sendMessage(transcript);
+      setIsListening(false);
+    };
+    recognition.onerror = () => setIsListening(false);
+    recognition.onend = () => setIsListening(false);
+    recognition.start();
+    setIsListening(true);
+  }
+
+  function stopListening() {
+    recognitionRef.current?.stop();
+    setIsListening(false);
+  }
+
+  function toggleListening() {
+    if (isListening) stopListening();
+    else startListening();
+  }
 
   async function sendMessage(text: string) {
     if (!text.trim() || streaming) return;
@@ -305,19 +374,27 @@ export default function ChatBot() {
           }
         }
       }
+
+      // Speak the final response in voice mode
+      if (isVoiceMode && accumulated) {
+        const { text: spokenText } = parseMessage(accumulated);
+        if (spokenText) speak(spokenText);
+      }
     } catch (error) {
       const isRateLimited =
         error instanceof Error && error.message === "rate-limited";
+      const errorMsg = isRateLimited
+        ? "Too many questions — try again in a bit."
+        : "Sorry, I couldn't process that. Please try again.";
       setMessages((prev) => {
         const updated = [...prev];
         updated[updated.length - 1] = {
           role: "assistant",
-          content: isRateLimited
-            ? "Too many questions — try again in a bit."
-            : "Sorry, I couldn't process that. Please try again.",
+          content: errorMsg,
         };
         return updated;
       });
+      if (isVoiceMode) speak(errorMsg);
       if (!isRateLimited) console.error("Chat error:", error);
     } finally {
       setStreaming(false);
@@ -334,7 +411,7 @@ export default function ChatBot() {
       {/* Floating toggle button */}
       <motion.button
         type="button"
-        onClick={() => setOpen((prev) => !prev)}
+        onClick={toggleChat}
         className={cn(
           "chatbot-toggle fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center",
           "rounded-full border border-accent/30 bg-accent text-white shadow-lg",
@@ -481,6 +558,21 @@ export default function ChatBot() {
               )}
             </div>
 
+            {/* Voice listening indicator */}
+            {isListening && (
+              <div className="flex items-center gap-2 border-t border-border px-4 py-2">
+                <span className="animate-mic-pulse inline-block h-3 w-3 rounded-full bg-red-500" />
+                <span className="text-xs text-text-muted">Listening...</span>
+                <button
+                  type="button"
+                  onClick={stopListening}
+                  className="ml-auto text-xs text-text-muted hover:text-accent"
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
+
             {/* Input area */}
             <form
               onSubmit={handleSubmit}
@@ -492,7 +584,7 @@ export default function ChatBot() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask LBV anything…"
-                disabled={streaming}
+                disabled={streaming || isListening}
                 className={cn(
                   "flex-1 rounded-xl border border-border bg-surface px-4 py-2.5",
                   "text-sm text-text-primary placeholder:text-text-muted",
@@ -500,6 +592,22 @@ export default function ChatBot() {
                   "disabled:opacity-50",
                 )}
               />
+              <button
+                type="button"
+                onClick={toggleListening}
+                disabled={streaming}
+                className={cn(
+                  "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
+                  "border transition-colors",
+                  isListening
+                    ? "animate-mic-pulse border-red-400 bg-red-50 text-red-500"
+                    : "border-border-strong bg-surface-overlay text-text-muted hover:border-accent hover:text-accent",
+                  "disabled:opacity-40",
+                )}
+                aria-label={isListening ? "Stop listening" : "Start voice input"}
+              >
+                {isListening ? <MicOff size={16} /> : <Mic size={16} />}
+              </button>
               <button
                 type="submit"
                 disabled={streaming || !input.trim()}

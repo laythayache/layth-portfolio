@@ -5,6 +5,7 @@ import RouteTransition from "@/motion/RouteTransition";
 import CinematicCursor from "@/components/CinematicCursor";
 import ChatBot from "@/components/ChatBot";
 import LenisProvider, { useLenis } from "@/motion/LenisProvider";
+import { ChatProvider } from "@/context/ChatContext";
 
 function ScrollToTop() {
   const location = useLocation();
@@ -42,14 +43,16 @@ export default function RootLayout() {
 
   return (
     <LenisProvider>
-      <a href="#main-content" className="skip-to-content">
-        Skip to content
-      </a>
-      <ScrollToTop />
-      {mountNonCritical && <CinematicCursor />}
-      <Navbar />
-      <RouteTransition />
-      {mountNonCritical && <ChatBot />}
+      <ChatProvider>
+        <a href="#main-content" className="skip-to-content">
+          Skip to content
+        </a>
+        <ScrollToTop />
+        {mountNonCritical && <CinematicCursor />}
+        <Navbar />
+        <RouteTransition />
+        {mountNonCritical && <ChatBot />}
+      </ChatProvider>
     </LenisProvider>
   );
 }

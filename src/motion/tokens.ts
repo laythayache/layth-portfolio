@@ -28,6 +28,22 @@ export const SECTION = {
   buttonTap: { scale: 0.98 },
 };
 
+export const HERO = {
+  entranceDuration: 0.6,
+  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  stagger: {
+    photo: 0,
+    name: 0.7,
+    title: 0.9,
+    hook: 1.1,
+    cta: 1.4,
+    periphery: 1.5,
+    scroll: 1.7,
+  },
+  hookInterval: 4000,
+  hookTransition: 0.5,
+};
+
 export const MOTION = {
   route: {
     duration: 0.4,
