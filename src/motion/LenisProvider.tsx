@@ -2,7 +2,7 @@ import {
   createContext,
   useContext,
   useEffect,
-  useRef,
+  useState,
   type ReactNode,
 } from "react";
 import Lenis from "lenis";
@@ -14,32 +14,34 @@ export function useLenis(): Lenis | null {
 }
 
 export default function LenisProvider({ children }: { children: ReactNode }) {
-  const lenisRef = useRef<Lenis | null>(null);
+  const [lenis, setLenis] = useState<Lenis | null>(null);
 
   useEffect(() => {
-    const lenis = new Lenis({
+    const instance = new Lenis({
       duration: 1.08,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       touchMultiplier: 1.5,
     });
 
-    lenisRef.current = lenis;
+    setLenis(instance);
 
+    let rafId: number;
     function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
+      instance.raf(time);
+      rafId = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
 
     return () => {
-      lenis.destroy();
-      lenisRef.current = null;
+      cancelAnimationFrame(rafId);
+      instance.destroy();
+      setLenis(null);
     };
   }, []);
 
   return (
-    <LenisContext.Provider value={lenisRef.current}>
+    <LenisContext.Provider value={lenis}>
       {children}
     </LenisContext.Provider>
   );

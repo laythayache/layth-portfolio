@@ -168,7 +168,7 @@ export default function HeroSection() {
           className="mt-1 font-mono text-xs uppercase tracking-[0.25em] text-text-muted sm:text-sm"
           {...fade(HERO.stagger.title)}
         >
-          Technical Architect
+          AI Systems Architect
         </motion.p>
 
         {/* Rotating question hooks */}

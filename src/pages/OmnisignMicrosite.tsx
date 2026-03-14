@@ -131,7 +131,7 @@ export default function OmnisignMicrosite() {
     <article className="relative min-h-screen bg-white">
       <SEO
         title="OmniSign | AI Sign Language Translation for Lebanese Sign Language"
-        description="OmniSign is an AI-powered Lebanese Sign Language (LSL) translation system built by Layth Ayache, Tayseer Laz, Rami Kronbi, Noor El Hariri, Abu Baker El Khatib, and Dr. Oussama Mustapha at Rafik Hariri University. Partnered with SignWithNaila. 50,000+ signs, 98% accuracy, self-funded."
+        description="OmniSign is an AI-powered Lebanese Sign Language translation system — 50,000+ signs, 98% accuracy, privacy-first on-device inference. Built at Rafik Hariri University."
         keywords={[
           ...DEFAULT_KEYWORDS,
           "OmniSign",

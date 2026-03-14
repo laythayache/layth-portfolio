@@ -29,8 +29,8 @@ export const omnisignJsonLd = {
           {
             "@type": "ListItem",
             position: 2,
-            name: "Explore",
-            item: `${BASE}/explore`,
+            name: "Projects",
+            item: `${BASE}/projects`,
           },
           { "@type": "ListItem", position: 3, name: "OmniSign", item: PAGE },
         ],

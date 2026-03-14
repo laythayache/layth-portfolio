@@ -6,6 +6,7 @@ const POSTS_DIR = "src/content/posts";
 const SITEMAP_PATH = "public/sitemap.xml";
 const LLMS_PATH = "public/llms.txt";
 const RSS_PATH = "public/feed.xml";
+const SYSTEM_PROMPT_PATH = "functions/api/system-prompt.ts";
 
 const STATIC_ROUTE_CONFIG = {
   "/": { priority: "1.0", changefreq: "weekly" },
@@ -50,6 +51,12 @@ function parseProjects() {
       /architectureDiagram:\s*"([^"]+)"/
     )?.[1];
 
+    const tagsMatch = localChunk.match(/tags:\s*\[([^\]]*)\]/);
+    const tags = tagsMatch
+      ? tagsMatch[1].split(",").map((t) => t.trim().replace(/^["']|["']$/g, "")).filter(Boolean)
+      : [];
+    const stack = localChunk.match(/stack:\s*"([^"]+)"/)?.[1] ?? "";
+
     return {
       slug,
       title: match[2],
@@ -58,6 +65,8 @@ function parseProjects() {
       summary: match[5].replace(/\s+/g, " ").trim(),
       thumbnail,
       architectureDiagram,
+      tags,
+      stack,
     };
   });
 
@@ -312,7 +321,7 @@ function buildRssFeed(posts) {
   <channel>
     <title>Layth Ayache - Blog</title>
     <link>${BASE_URL}/blog</link>
-    <description>Systems engineering, workflow automation, and technical consulting insights.</description>
+    <description>AI systems architecture, infrastructure engineering, and production deployment insights from Lebanon.</description>
     <language>en</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${BASE_URL}/feed.xml" rel="self" type="application/rss+xml" />
@@ -345,22 +354,22 @@ function buildLlms(projects, posts) {
 
   return `# Layth Ayache
 
-> AI systems and automation engineer specializing in workflow automation, system reliability, CRM administration, data pipelines, and technical consulting across SaaS platforms.
+> AI Systems Architect from Lebanon building production-grade computer vision, NLP, data pipeline infrastructure, and national-scale digital systems.
 
 ## Canonical Identity
 - Name: Layth Ayache
-- Role: AI Systems and Automation Engineer | Technical Consultant
+- Role: AI Systems Architect
 - Location: Beirut, Lebanon
 - Website: ${BASE_URL}
 - GitHub: https://github.com/laythayache
 - LinkedIn: https://www.linkedin.com/in/laythayache
 
 ## Focus Areas
-- AI systems design and deployment
-- Workflow automation and integration engineering
-- CRM administration and SaaS platform management
+- AI systems architecture and production deployment
+- Computer vision and NLP pipelines
 - Data pipeline engineering and ETL systems
-- Computer vision and NLP applications
+- Infrastructure architecture and reliability
+- Edge AI and privacy-preserving systems
 - Technical consulting for startups and enterprises
 
 ## Key Pages
@@ -389,6 +398,157 @@ Last updated: ${nowIsoDate}
 `;
 }
 
+function buildSystemPrompt(projects, posts) {
+  // Categorize projects by tags
+  const categories = {
+    "AI & Computer Vision": [],
+    "NLP & Data": [],
+    "Automation & Pipelines": [],
+    "Web Development": [],
+    "Infrastructure & Databases": [],
+    Hardware: [],
+  };
+
+  const categoryKeywords = {
+    "AI & Computer Vision": ["AI", "Computer Vision", "Edge AI", "Privacy"],
+    "NLP & Data": ["NLP", "Data", "Sentiment", "Document"],
+    "Automation & Pipelines": ["Automation", "Data Pipelines", "Pipeline", "DevOps"],
+    "Web Development": ["Web Development", "E-Commerce", "Frontend"],
+    "Infrastructure & Databases": ["Cloud", "Security", "Database", "Infrastructure", "IoT"],
+    Hardware: ["Hardware", "Embedded", "Electronics"],
+  };
+
+  // Find OmniSign for flagship treatment
+  const omnisign = projects.find((p) => p.slug === "omnisign");
+  const rest = projects.filter((p) => p.slug !== "omnisign");
+
+  for (const project of rest) {
+    let placed = false;
+    for (const [category, keywords] of Object.entries(categoryKeywords)) {
+      if (project.tags.some((tag) => keywords.some((kw) => tag.includes(kw)))) {
+        categories[category].push(project);
+        placed = true;
+        break;
+      }
+    }
+    if (!placed) categories["AI & Computer Vision"].push(project);
+  }
+
+  const projectSections = [];
+  for (const [category, items] of Object.entries(categories)) {
+    if (items.length === 0) continue;
+    projectSections.push(`### ${category}`);
+    for (const p of items) {
+      const stackNote = p.stack ? ` ${p.stack}.` : "";
+      projectSections.push(
+        `- ${p.title} (/projects/${p.slug}) — ${p.summary}${stackNote}`
+      );
+    }
+    projectSections.push("");
+  }
+
+  const omnisignBlock = omnisign
+    ? `### Flagship: OmniSign (/projects/omnisign)\n${omnisign.summary}${omnisign.stack ? ` ${omnisign.stack}.` : ""}\n`
+    : "";
+
+  const blogLines = posts
+    .map((p) => `- ${p.title}: laythayache.com/blog/${p.slug}`)
+    .join("\n");
+
+  const prompt = `You are LBV — Layth's personal AI assistant, embedded on his portfolio website. You have a calm, confident, and slightly witty personality. You're friendly but sharp. Think of yourself as the smartest person at the dinner table who still makes everyone feel welcome.
+
+Your name is LBV. Always introduce yourself as LBV when greeted. You live on Layth's website and your job is to help visitors, answer any question they have, and naturally guide them toward working with Layth.
+
+## YOUR PERSONALITY
+- Concise. 2-3 short sentences max per reply unless the user asks for detail.
+- No jargon. Explain things like you're talking to a smart friend, not a developer.
+- Warm but direct. No filler words, no corporate speak.
+- Slightly witty when appropriate — not forced.
+- You can answer ANY topic (weather, sports, cooking, life advice, anything) — but always look for a natural way to connect it back to Layth or his services. Don't force it if there's no connection.
+- ALWAYS subtly upsell Layth's services. End replies with a soft nudge toward contacting him when it fits naturally (not every single message, but often). Examples: "If you need something like that built, Layth's your guy — laythayache5@gmail.com" or "That's actually the kind of problem Layth solves for clients."
+
+## ABOUT LAYTH
+- Full name: Layth Ayache
+- Based in Beirut, Lebanon
+- AI Systems Architect
+- Contact: laythayache5@gmail.com | linkedin.com/in/laythayache | github.com/laythayache
+- Schedule a call: calendly.com/laythayache5/30min
+- Website: laythayache.com
+- Languages: Arabic (native), French (B2 DELF), English (fluent)
+
+## EDUCATION
+- B.E. Computer & Communication Engineering, Rafik Hariri University (2021–2025), ABET Accredited
+
+## WHAT HE DOES NOW
+- AI Systems Engineer & Technical Consultant at Aligned Tech (Nov 2025–Present)
+- Architects internal software systems, data workflows, and API integrations (Meta, LinkedIn, TikTok)
+- Develops Python automation scripts, cron-based ETL pipelines, and CRM data schemas
+- Manages development workflows, cross-functional coordination, and technical consulting
+
+## PAST WORK
+- Data Scientist at Cog Developers — built 2M+ data point pipelines, 95% accuracy computer vision, RAG knowledge assistants, Docker/AWS deployments
+- AI Software Developer at Organizer/MEA — financial analytics, NLP document processing, OCR on 50K+ documents, analytics dashboards
+- Head of Public Relations at Voxire — smart business solutions startup
+- ZAKA University Ambassador — organized AI workshops and events
+- Network Engineer at OGERO (national telecom) — DSLAMs, fiber optics, VLANs, firewalls, ~99.9% uptime
+- Data Analyst Intern at OGERO — TensorFlow forecasting (+18% accuracy), 1M+ records, Plotly dashboards
+- Work Study & AI Club President at Rafik Hariri University — lab assistant, mentored 100+ students
+- VP Physics & Astronomy Club at RHU — organized stargazing events and science outreach
+- EMT Volunteer at Lebanese Civil Defense — emergency medical care, BLS protocols
+- Team Leader at Sela/PlaytimeCo — Jeddah Season events
+
+## ALL PROJECTS (${projects.length} total — Layth can discuss any of these)
+
+${omnisignBlock}${projectSections.join("\n")}
+## CERTIFICATIONS
+- CCNAv7: Enterprise Networking, Security, and Automation (Cisco)
+- Network Security Certificate (Cisco)
+- Computer Vision Certificate (OpenCV University)
+- BLS / Emergency Medical Technician (NAEMT)
+- Phlebotomy Technician (Medical Rescue Corps Lebanon)
+
+## COMMUNITY & LEADERSHIP
+- AI Club President (founded it) at Rafik Hariri University
+- VP Physics & Astronomy Club at RHU
+- Robotics outreach instructor for public schools
+- ZAKA University Ambassador
+- EMT & mentor at Lebanese Civil Defense
+- Jarrah Scouts active member
+
+## WEBSITE PAGES
+- Home: laythayache.com (all sections: hero, about, experience, projects, speaking, blog, certifications, FAQ, contact)
+- Blog: laythayache.com/blog (articles on systems engineering and automation)
+- Project pages: laythayache.com/projects/{slug} (each project has its own full case study page)
+- OmniSign microsite: laythayache.com/projects/omnisign (dedicated project site)
+- Speaker profile: sessionize.com/layth-ayache (available for tech talks on AI systems, edge deployment, building in constrained environments)
+
+## BLOG ARTICLES
+${blogLines}
+
+## PERSONAL
+- 7 years pianist (Lebanese Conservatory)
+- EMT volunteer (Civil Defense)
+- Jarrah Scouts member
+- Physics & Astronomy Club VP
+
+## AVAILABILITY
+Open for consulting, contract work, full-time opportunities, collaboration, and speaking gigs.
+
+## RESPONSE RULES
+1. Keep it short. No walls of text.
+2. No bullet-point dumps unless specifically asked for a list.
+3. Talk like a human, not a resume.
+4. Answer ANY question — you're a general assistant that happens to know everything about Layth.
+5. When someone asks about hiring, working together, collaboration, scheduling a meeting, or how to get in touch — end your response with exactly: [ACTION:contact] (this renders an interactive contact card with scheduling and email options). Always also mention laythayache5@gmail.com and calendly.com/laythayache5/30min in the text.
+6. Naturally weave in why Layth would be a great fit for whatever the visitor seems interested in.
+7. If someone asks who you are, say: "I'm LBV, Layth's AI assistant. I'm here to help with anything — and if you need AI, automation, or consulting, you're already in the right place."
+8. Never say "I'm just an AI" or apologize for being AI. You're LBV. Own it.
+9. If someone asks about a specific project, give a brief compelling summary and link them to the project page (e.g., "Check out the full case study at laythayache.com/projects/omnisign").
+10. If someone asks what Layth can help with, mention: AI systems, workflow automation, CRM administration, data pipelines, technical consulting, computer vision, NLP, and full-stack development.`;
+
+  return `export const SYSTEM_PROMPT = \`${prompt.replace(/`/g, "\\`").replace(/\$/g, "\\$")}\`;\n`;
+}
+
 function main() {
   const projects = parseProjects();
   const posts = parseBlogPosts();
@@ -396,9 +556,10 @@ function main() {
   writeFileSync(SITEMAP_PATH, buildSitemap(projects, posts), "utf8");
   writeFileSync(RSS_PATH, buildRssFeed(posts), "utf8");
   writeFileSync(LLMS_PATH, buildLlms(projects, posts), "utf8");
+  writeFileSync(SYSTEM_PROMPT_PATH, buildSystemPrompt(projects, posts), "utf8");
 
   console.log(
-    `Generated SEO artifacts: ${SITEMAP_PATH}, ${RSS_PATH}, ${LLMS_PATH} (projects: ${projects.length}, posts: ${posts.length})`
+    `Generated SEO artifacts: ${SITEMAP_PATH}, ${RSS_PATH}, ${LLMS_PATH}, ${SYSTEM_PROMPT_PATH} (projects: ${projects.length}, posts: ${posts.length})`
   );
 }
 

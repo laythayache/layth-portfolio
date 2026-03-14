@@ -4,34 +4,7 @@ interface Env {
   OPENAI_API_KEY: string;
 }
 
-// IP-based rate limiting: 20 requests per hour
-const rateLimitMap = new Map<string, number[]>();
-const RATE_LIMIT = 20;
-const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const timestamps = rateLimitMap.get(ip) ?? [];
-  const recent = timestamps.filter((t) => now - t < RATE_WINDOW_MS);
-  rateLimitMap.set(ip, recent);
-  if (recent.length >= RATE_LIMIT) return true;
-  recent.push(now);
-  return false;
-}
-
 export const onRequestPost: PagesFunction<Env> = async (context) => {
-  const ip =
-    context.request.headers.get("cf-connecting-ip") ??
-    context.request.headers.get("x-forwarded-for") ??
-    "unknown";
-
-  if (isRateLimited(ip)) {
-    return new Response(
-      JSON.stringify({ error: "Rate limited. Try again in a bit." }),
-      { status: 429, headers: { "Content-Type": "application/json" } }
-    );
-  }
-
   const apiKey = context.env.OPENAI_API_KEY;
   if (!apiKey) {
     return new Response(

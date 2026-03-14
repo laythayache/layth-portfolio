@@ -39,6 +39,7 @@ const WEBSITE_ID = `${BASE_URL}/#website`;
 const ORG_ID = `${BASE_URL}/#organization`;
 
 function personFragment() {
+  const age = new Date().getFullYear() - 2003;
   return {
     "@type": "Person",
     "@id": PERSON_ID,
@@ -50,12 +51,11 @@ function personFragment() {
     birthDate: "2003",
     gender: "Male",
     jobTitle: [
-      "AI Systems Engineer & Technology Consultant",
-      "Senior AI Systems Architect",
+      "AI Systems Architect",
       "Infrastructure Architect",
     ],
     description:
-      "Layth Ayache is a 22-year-old AI systems architect and technology leader from Lebanon. He leads AI systems architecture, cross-functional engineering, and technology strategy at Aligned Tech, driving end-to-end AI infrastructure and engineering operations. At 22, he has architected production systems processing millions of data points, deployed computer vision at 95% accuracy, built PrivacyGuard (open-source privacy pipeline), maintained 99.9% uptime at OGERO, and mentored 100+ students in AI.",
+      `Layth Ayache is a ${age}-year-old AI systems architect and technology leader from Lebanon. He leads AI systems architecture, cross-functional engineering, and technology strategy at Aligned Tech, driving end-to-end AI infrastructure and engineering operations. At ${age}, he has architected production systems processing millions of data points, deployed computer vision at 95% accuracy, built PrivacyGuard (open-source privacy pipeline), maintained 99.9% uptime at OGERO, and mentored 100+ students in AI.`,
     address: {
       "@type": "PostalAddress",
       addressCountry: "LB",
@@ -349,7 +349,7 @@ function getRoutes() {
       path: "/blog",
       title: "Writing and Insights | Layth Ayache",
       description:
-        "Articles on AI systems engineering, infrastructure architecture, and building technology in Lebanon.",
+        "Articles on AI systems engineering, infrastructure architecture, and applied technical strategy. Practical insights from building production systems in Lebanon.",
       ogImage: latestPost?.coverImage || OG_IMAGE,
       ogImageAlt: latestPost?.coverImageAlt || "Layth Ayache blog preview",
     },
@@ -357,7 +357,7 @@ function getRoutes() {
       path: "/projects",
       title: "Projects | Layth Ayache",
       description:
-        "Browse all projects: production systems, research prototypes, and engineering case studies.",
+        "Browse all projects by Layth Ayache — production AI systems, computer vision pipelines, NLP engines, and engineering case studies with architecture deep dives.",
       ogImage: omnisign?.thumbnail || OG_IMAGE,
       ogImageAlt: "Layth Ayache projects and case studies",
     },
@@ -365,7 +365,7 @@ function getRoutes() {
       path: "/beyond-tech",
       title: "Beyond Tech | Layth Ayache",
       description:
-        "Community leadership, emergency response, music, and initiatives beyond the technical domain.",
+        "Community leadership, emergency medical response, music, and initiatives beyond engineering. Layth Ayache's volunteer work, scouting, and outreach in Lebanon.",
       ogImage: "/landing-page-portrait.png",
       ogImageAlt: "Layth Ayache beyond technology and community work",
     },

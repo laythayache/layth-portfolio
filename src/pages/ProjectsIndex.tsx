@@ -79,7 +79,7 @@ export default function ProjectsIndex() {
     <>
       <SEO
         title="Projects | Layth Ayache"
-        description="Browse all projects — production systems, research prototypes, and engineering case studies."
+        description="Browse all projects by Layth Ayache — production AI systems, computer vision pipelines, NLP engines, and engineering case studies with architecture deep dives."
         canonical="https://laythayache.com/projects"
         keywords={[...DEFAULT_KEYWORDS, "projects", "case studies", "portfolio"]}
       />

@@ -1,6 +1,7 @@
 import { lazy, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RootLayout from "@/layouts/RootLayout";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import NotFound from "@/pages/NotFound";
 
 /** Remove the static JSON-LD injected by inject-meta.mjs once React hydrates,
@@ -23,6 +24,7 @@ export default function App() {
   useRemoveStaticJsonLd();
   return (
     <BrowserRouter>
+      <ErrorBoundary>
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
@@ -59,6 +61,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }

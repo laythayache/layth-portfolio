@@ -1,21 +1,21 @@
 # Layth Ayache
 
-> AI systems and automation engineer specializing in workflow automation, system reliability, CRM administration, data pipelines, and technical consulting across SaaS platforms.
+> AI Systems Architect from Lebanon building production-grade computer vision, NLP, data pipeline infrastructure, and national-scale digital systems.
 
 ## Canonical Identity
 - Name: Layth Ayache
-- Role: AI Systems and Automation Engineer | Technical Consultant
+- Role: AI Systems Architect
 - Location: Beirut, Lebanon
 - Website: https://laythayache.com
 - GitHub: https://github.com/laythayache
 - LinkedIn: https://www.linkedin.com/in/laythayache
 
 ## Focus Areas
-- AI systems design and deployment
-- Workflow automation and integration engineering
-- CRM administration and SaaS platform management
+- AI systems architecture and production deployment
+- Computer vision and NLP pipelines
 - Data pipeline engineering and ETL systems
-- Computer vision and NLP applications
+- Infrastructure architecture and reliability
+- Edge AI and privacy-preserving systems
 - Technical consulting for startups and enterprises
 
 ## Key Pages

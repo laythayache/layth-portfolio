@@ -53,8 +53,10 @@ export default function TextReveal({
           animate: "visible" as const,
         };
 
+  const MotionTag = motion[Tag];
+
   return (
-    <motion.div
+    <MotionTag
       variants={containerVariants}
       {...motionProps}
       className={className}
@@ -74,6 +76,6 @@ export default function TextReveal({
           )}
         </span>
       ))}
-    </motion.div>
+    </MotionTag>
   );
 }

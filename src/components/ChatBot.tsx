@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useChat } from "@/context/ChatContext";
 
 interface Message {
+  id: string;
   role: "user" | "assistant";
   content: string;
   showActionCard?: boolean;
@@ -174,6 +175,7 @@ function ContactCard() {
                   placeholder="Your name"
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                  aria-label="Your name"
                   className={cn(
                     "w-full rounded-lg border border-border bg-surface-overlay px-3 py-2",
                     "text-xs text-text-primary placeholder:text-text-muted",
@@ -185,6 +187,7 @@ function ContactCard() {
                   placeholder="Your email"
                   value={form.email}
                   onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
+                  aria-label="Your email"
                   className={cn(
                     "w-full rounded-lg border border-border bg-surface-overlay px-3 py-2",
                     "text-xs text-text-primary placeholder:text-text-muted",
@@ -196,6 +199,7 @@ function ContactCard() {
                   value={form.note}
                   onChange={(e) => setForm((f) => ({ ...f, note: e.target.value }))}
                   rows={2}
+                  aria-label="Message"
                   className={cn(
                     "w-full resize-none rounded-lg border border-border bg-surface-overlay px-3 py-2",
                     "text-xs text-text-primary placeholder:text-text-muted",
@@ -315,13 +319,13 @@ export default function ChatBot() {
   async function sendMessage(text: string) {
     if (!text.trim() || streaming) return;
 
-    const userMessage: Message = { role: "user", content: text.trim() };
+    const userMessage: Message = { id: crypto.randomUUID(), role: "user", content: text.trim() };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInput("");
     setStreaming(true);
 
-    const assistantMessage: Message = { role: "assistant", content: "" };
+    const assistantMessage: Message = { id: crypto.randomUUID(), role: "assistant", content: "" };
     setMessages([...newMessages, assistantMessage]);
 
     try {
@@ -520,10 +524,10 @@ export default function ChatBot() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {messages.map((msg, i) => {
+                  {messages.map((msg) => {
                     const { text, hasAction } = parseMessage(msg.content);
                     return (
-                      <div key={i}>
+                      <div key={msg.id}>
                         <div
                           className={cn(
                             "flex",
@@ -585,6 +589,7 @@ export default function ChatBot() {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask LBV anything…"
                 disabled={streaming || isListening}
+                aria-label="Message to LBV"
                 className={cn(
                   "flex-1 rounded-xl border border-border bg-surface px-4 py-2.5",
                   "text-sm text-text-primary placeholder:text-text-muted",

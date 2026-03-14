@@ -13,7 +13,7 @@ Your name is LBV. Always introduce yourself as LBV when greeted. You live on Lay
 ## ABOUT LAYTH
 - Full name: Layth Ayache
 - Based in Beirut, Lebanon
-- AI Systems & Automation Engineer | Technical Consultant
+- AI Systems Architect
 - Contact: laythayache5@gmail.com | linkedin.com/in/laythayache | github.com/laythayache
 - Schedule a call: calendly.com/laythayache5/30min
 - Website: laythayache.com
@@ -40,42 +40,42 @@ Your name is LBV. Always introduce yourself as LBV when greeted. You live on Lay
 - EMT Volunteer at Lebanese Civil Defense — emergency medical care, BLS protocols
 - Team Leader at Sela/PlaytimeCo — Jeddah Season events
 
-## ALL PROJECTS (21 total — Layth can discuss any of these)
+## ALL PROJECTS (22 total — Layth can discuss any of these)
 
 ### Flagship: OmniSign (/projects/omnisign)
-Lebanese Sign Language AI translator. Real-time on-device inference, 50K+ signs collected, 80K+ processed samples. TensorFlow + MediaPipe + React Native. Privacy-first — nothing leaves the device. Built first-ever LSL dataset. Team of 6.
-
+AI-powered Lebanese Sign Language translation system with privacy-first on-device inference and real-time interaction. TensorFlow, MediaPipe, React Native, Python, WebRTC.
 ### AI & Computer Vision
-- License Plate Recognition System (/projects/license-plate-recognition) — YOLOv8 + OCR pipeline for real-time plate detection. Handles varied camera angles and lighting.
-- Face Recognition System (/projects/face-recognition) — OpenCV + Eigenfaces for real-time identity matching with controllable thresholds.
-- Breast Cancer Detection Model (/projects/breast-cancer-detection) — TensorFlow/Scikit-learn classifier for early-stage cancer risk detection with interpretable outputs.
-- Enterprise Vision Analytics Platform (/projects/enterprise-vision-analytics) — YOLOv8 production CV, 2M+ frames/day, automated retraining, 95% detection accuracy, blue-green deployment.
-- Cloud Image Classification Service (/projects/cloud-image-classification) — AWS Lambda + SageMaker serverless ML, 10K+ daily requests, 99.7% uptime, auto-scaling.
+- PrivacyGuard (/projects/privacy-guard) — Production-grade, open-source privacy de-identification pipeline for real-time anonymization of sensitive regions in video streams. Runs on edge devices at 25-30 FPS with zero cloud dependency. Python 3.9+, YOLOv8-nano, ONNX Runtime, OpenCV, NumPy.
+- License Plate Recognition System (/projects/license-plate-recognition) — Real-time license plate detection and OCR pipeline for roadway and parking workflows. YOLOv8, OpenCV, OCR, Python.
+- Face Recognition System (/projects/face-recognition) — Real-time face recognition workflow for identity matching and access scenarios. OpenCV, Haar Cascades, Eigenfaces, Python.
+- Breast Cancer Detection Model (/projects/breast-cancer-detection) — Supervised machine learning classification model for early-stage breast cancer risk detection. TensorFlow, Scikit-learn, Python.
+- Conversational Knowledge Assistant (/projects/knowledge-assistant) — RAG-based conversational system using transformer embeddings and vector databases for querying enterprise knowledge bases. LangChain, OpenAI, Pinecone, Python, Docker.
+- Autonomous Anomaly Detection System (/projects/anomaly-detection) — Real-time anomaly detection system using deep learning and time-series analytics to detect operational irregularities. Python, TensorFlow, Time-Series Analysis, Docker, CloudWatch.
+- Scalable AI Deployment Pipeline (/projects/ml-deployment-pipeline) — End-to-end ML pipeline integrating PySpark preprocessing, TensorFlow model training, and containerized deployment with CI/CD automation. PySpark, TensorFlow, Docker, Kubernetes, CI/CD, MLflow.
+- Arabic Legal Document Search (/projects/arabic-legal-search) — Semantic document search system using fine-tuned Arabic BERT and Elasticsearch, achieving 87% top-3 hit rate with sub-300ms latency. Arabic BERT, Elasticsearch, Python, HuggingFace, Docker.
+- Multi-Domain Sentiment Analysis Engine (/projects/sentiment-analysis-engine) — Production NLP pipeline for real-time sentiment classification across restaurant reviews, combining fine-tuned transformer models with custom preprocessing for Arabic-English code-switched text. Python, HuggingFace Transformers, Scikit-learn, FastAPI, Docker.
+- Enterprise Vision Analytics Platform (/projects/enterprise-vision-analytics) — Production computer vision platform using YOLOv8 for real-time object detection with automated model retraining, A/B deployment, and monitoring dashboards processing 2M+ frames daily. YOLOv8, Python, Docker, AWS EC2, S3, FastAPI, Grafana.
+- Cloud Image Classification Service (/projects/cloud-image-classification) — Serverless image classification API built on AWS with auto-scaling inference, model versioning, and comprehensive monitoring for production ML workloads. AWS Lambda, SageMaker, S3, API Gateway, CloudWatch, Python, TensorFlow.
 
 ### NLP & Data
-- Arabic Legal Document Search (/projects/arabic-legal-search) — Fine-tuned Arabic BERT + Elasticsearch, 87% top-3 hit rate, sub-300ms latency.
-- Multi-Domain Sentiment Analysis Engine (/projects/sentiment-analysis-engine) — DistilBERT for Arabic-English code-switched reviews, 91% accuracy, sub-200ms inference.
-- Intelligent Document Processing System (/projects/document-processing-system) — OCR + NLP pipeline, 50K+ scanned documents, Tesseract + OpenCV + AWS Lambda.
-- Conversational Knowledge Assistant (/projects/knowledge-assistant) — RAG with LangChain + Pinecone for enterprise knowledge base querying.
+- Social Listening Data Pipeline (/projects/social-listening-pipeline) — Automated ETL pipeline ingesting social data from Meta, LinkedIn, and TikTok APIs using Python and scheduled cron jobs. Python, Cron, Meta API, LinkedIn API, TikTok API, PostgreSQL.
+- Intelligent Document Processing System (/projects/document-processing-system) — Automated document-processing pipeline combining OCR and transformer-based NLP to extract structured information from financial documents. Tesseract, OpenCV, Python, AWS Lambda, S3, Transformers.
+- Real-Time Data Analytics Dashboard (/projects/analytics-dashboard) — Interactive analytics platform using React.js and Python pipelines to visualize operational metrics and AI outputs in real time. React.js, Python, Plotly, Dash, PostgreSQL, Docker.
+- Dynamic Data Visualization Platform (/projects/dynamic-data-visualization) — Interactive web application for real-time data exploration with dynamic chart generation, CSV/JSON ingestion, and collaborative filtering across multi-dimensional datasets. React.js, D3.js, TypeScript, Node.js, Express, PostgreSQL.
+- SQL Database Management System (/projects/sql-database-management) — Relational database design and administration system implementing normalized schemas, stored procedures, query optimization, and automated backup strategies for multi-tenant SaaS data. PostgreSQL, MySQL, Python, SQL, pgAdmin, Docker.
 
 ### Automation & Pipelines
-- Social Listening Data Pipeline (/projects/social-listening-pipeline) — Automated ETL across Meta, LinkedIn, TikTok APIs with Python cron jobs and PostgreSQL.
-- Scalable AI Deployment Pipeline (/projects/ml-deployment-pipeline) — PySpark + TensorFlow + Docker + Kubernetes CI/CD, reduced deployment time 40%.
-- Autonomous Anomaly Detection System (/projects/anomaly-detection) — Deep learning time-series anomaly detection with automated alerting.
-- Real-Time Data Analytics Dashboard (/projects/analytics-dashboard) — React + Python + Plotly real-time operational metrics platform.
+- Autonomous Line-Tracking Robot (/projects/line-tracking-robot) — PID-controlled autonomous robot with IR sensor array, real-time obstacle avoidance, and wireless telemetry for industrial line-following applications. Arduino, C++, IR Sensors, PID Control, Bluetooth, 3D Printing.
 
 ### Web Development
-- Dynamic Data Visualization Platform (/projects/dynamic-data-visualization) — React + D3.js interactive data exploration, handles 500K+ rows client-side.
-- Vinyl Record E-Commerce Platform (/projects/vinyl-ecommerce) — Full-stack e-commerce with Stripe, recommendation engine, MongoDB + Redis.
+- Vinyl Record E-Commerce Platform (/projects/vinyl-ecommerce) — Full-stack e-commerce platform for vinyl record sales with inventory management, Stripe payment integration, and recommendation engine based on listening history. React.js, Node.js, Express, MongoDB, Stripe API, Redis.
 
 ### Infrastructure & Databases
-- SQL Database Management System (/projects/sql-database-management) — PostgreSQL optimization, 65% query improvement, zero-downtime migrations.
-- Network Security Infrastructure (/projects/network-infrastructure) — Cisco VLANs, ASA firewall, VPN, enterprise segmentation.
-- Home Security Embedded System (/projects/home-security-system) — Arduino + PIR + Bluetooth IoT security with mobile app.
+- Home Security Embedded System (/projects/home-security-system) — IoT security system using embedded sensors, Bluetooth presence logic, and app-based controls. Arduino, PIR Sensors, Bluetooth, Mobile App.
+- Network Security Infrastructure (/projects/network-infrastructure) — Enterprise network design with segmented VLAN architecture, hardened perimeter controls, and remote access policies. Cisco, VLANs, ASA Firewall, VPN, SSH, DHCP.
 
 ### Hardware
-- Autonomous Line-Tracking Robot (/projects/line-tracking-robot) — PID-controlled robot, sub-5mm tracking accuracy at 0.8m/s, Bluetooth telemetry.
-- FM/AM Radio Transceiver PCB (/projects/fm-am-radio-pcb) — Custom KiCad 4-layer PCB, superheterodyne receiver, <3% THD.
+- FM/AM Radio Transceiver PCB (/projects/fm-am-radio-pcb) — Custom-designed FM/AM radio transceiver with full PCB layout in KiCad, impedance-matched antenna design, and multi-stage filtering for signal clarity. KiCad, LTSpice, Soldering, RF Design, Signal Processing.
 
 ## CERTIFICATIONS
 - CCNAv7: Enterprise Networking, Security, and Automation (Cisco)
@@ -100,10 +100,10 @@ Lebanese Sign Language AI translator. Real-time on-device inference, 50K+ signs 
 - Speaker profile: sessionize.com/layth-ayache (available for tech talks on AI systems, edge deployment, building in constrained environments)
 
 ## BLOG ARTICLES
-- Real-Time Video Anonymization at 30 FPS on a $35 Computer: laythayache.com/blog/real-time-privacy-pipeline-on-raspberry-pi
+- Real-Time Video Anonymization at 30 FPS on a \$35 Computer: laythayache.com/blog/real-time-privacy-pipeline-on-raspberry-pi
 - Building in a Country with No Infrastructure: laythayache.com/blog/building-in-a-country-with-no-infrastructure
-- Lessons from Telecom Engineering to AI Systems: laythayache.com/blog/lessons-from-telecom-to-ai
 - Designing AI Systems for Unstable Networks: laythayache.com/blog/designing-ai-for-unstable-networks
+- Lessons from Telecom Engineering to AI Systems: laythayache.com/blog/lessons-from-telecom-to-ai
 
 ## PERSONAL
 - 7 years pianist (Lebanese Conservatory)

@@ -30,7 +30,7 @@ export default function BeyondTech() {
     <>
       <SEO
         title="Beyond Tech | Layth Ayache"
-        description="Community leadership, emergency response, and initiatives beyond the technical domain."
+        description="Community leadership, emergency medical response, music, and initiatives beyond engineering. Layth Ayache's volunteer work, scouting, and outreach in Lebanon."
         canonical="https://laythayache.com/beyond-tech"
       />
 

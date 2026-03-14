@@ -67,6 +67,7 @@ export default function NewsletterSignup() {
             if (status === "error") setStatus("idle");
           }}
           required
+          aria-label="Email address"
           className="min-w-0 flex-1 rounded-md border border-border-strong bg-white px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
         />
         <motion.button

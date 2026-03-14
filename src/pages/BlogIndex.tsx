@@ -43,7 +43,7 @@ export default function BlogIndex() {
     <>
       <SEO
         title="Writing and Insights | Layth Ayache"
-        description="Articles on AI systems engineering, infrastructure reliability, and applied technical strategy."
+        description="Articles on AI systems engineering, infrastructure architecture, and applied technical strategy. Practical insights from building production systems in Lebanon."
         canonical="https://laythayache.com/blog"
         keywords={[...DEFAULT_KEYWORDS, "blog", "articles", "ai insights"]}
         modifiedTime={allPosts[0]?.date}

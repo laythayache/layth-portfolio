@@ -47,12 +47,11 @@ export default function AboutSection() {
               className="mt-6 text-lg leading-relaxed text-text-secondary"
               variants={SECTION.fadeUp}
             >
-              AI Systems &amp; Automation Engineer with hands-on experience
-              across AI, computer vision, NLP, data pipelines, network
-              engineering, and CRM administration. I architect internal software
-              systems, build automated workflows, and deploy production AI
-              solutions across telecom, finance, embedded systems, and
-              enterprise SaaS platforms.
+              AI Systems Architect with hands-on experience across computer
+              vision, NLP, data pipelines, network engineering, and production
+              infrastructure. I architect internal software systems, build
+              automated workflows, and deploy production AI solutions across
+              telecom, finance, embedded systems, and enterprise platforms.
             </motion.p>
 
             <motion.p

@@ -3,9 +3,9 @@
   <channel>
     <title>Layth Ayache - Blog</title>
     <link>https://laythayache.com/blog</link>
-    <description>Systems engineering, workflow automation, and technical consulting insights.</description>
+    <description>AI systems architecture, infrastructure engineering, and production deployment insights from Lebanon.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 14 Mar 2026 18:28:46 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 14 Mar 2026 19:26:45 GMT</lastBuildDate>
     <atom:link href="https://laythayache.com/feed.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Real-Time Video Anonymization at 30 FPS on a $35 Computer</title>

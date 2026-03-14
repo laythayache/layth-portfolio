@@ -14,21 +14,6 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --surface:         248 250 252;     /* #F8FAFC — slate-50 */
-    --surface-raised:  255 255 255;     /* #FFFFFF — white cards */
-    --surface-overlay: 241 245 249;     /* #F1F5F9 — slate-100 */
-    --text-primary:     15  23  42;     /* #0F172A — slate-900 */
-    --text-secondary:   51  65  85;     /* #334155 - slate-700 */
-    --text-muted:      100 116 139;     /* #64748B - slate-500 */
-    --border:          226 232 240;     /* #E2E8F0 — slate-200 */
-    --border-strong:   203 213 225;     /* #CBD5E1 — slate-300 */
-    --accent:           37  99 235;     /* #2563EB — blue-600 */
-    --accent-hover:     29  78 216;     /* #1D4ED8 — blue-700 */
-    --section-space-y: clamp(4rem, 7vw, 5.75rem);
-    --section-space-y-lg: clamp(5rem, 9vw, 7rem);
-  }
-
   * {
     border-color: rgb(var(--border));
   }
