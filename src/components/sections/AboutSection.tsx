@@ -104,8 +104,8 @@ export default function AboutSection() {
               </h3>
               <p className="font-mono text-base leading-relaxed text-text-muted">
                 7 years pianist (Lebanese Conservatory) / EMT volunteer
-                (Civil Defense) / Jarrah Scouts member / Physics &amp;
-                Astronomy Club VP
+                (Civil Defense) / Jarrah Scouts member / AI Club
+                President / Zaka AI Student Ambassador
               </p>
             </motion.div>
           </div>

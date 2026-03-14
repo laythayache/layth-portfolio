@@ -63,7 +63,7 @@ export default function TextReveal({
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          className="inline-block overflow-hidden"
+          className="inline-block overflow-hidden pb-[0.15em]"
           aria-hidden
         >
           <motion.span className="inline-block" variants={wordVariants}>
