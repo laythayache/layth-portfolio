@@ -24,15 +24,15 @@
   ],
   "screenshots": [
     {
-      "src": "/portrait.webp",
-      "sizes": "540x720",
-      "type": "image/webp",
+      "src": "/landing-page-portrait.png",
+      "sizes": "1024x1536",
+      "type": "image/png",
       "form_factor": "narrow"
     },
     {
-      "src": "/portrait-800w.webp",
-      "sizes": "800x600",
-      "type": "image/webp",
+      "src": "/og-default.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
       "form_factor": "wide"
     }
   ],

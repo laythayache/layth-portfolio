@@ -53,7 +53,10 @@ export default function BlogSection() {
               <div className="aspect-[16/9] overflow-hidden border-b border-border bg-surface-overlay">
                 <img
                   src={post.coverImage || "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=500&q=80"}
-                  alt={`${post.title} cover image`}
+                  alt={
+                    post.coverImageAlt ??
+                    `${post.title} cover image`
+                  }
                   className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                   loading="lazy"
                 />

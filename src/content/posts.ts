@@ -5,6 +5,7 @@ export interface BlogPost {
   excerpt: string;
   tags: string[];
   coverImage?: string;
+  coverImageAlt?: string;
   externalCanonical?: string;
   content: string;
   readingTimeMinutes: number;
@@ -16,6 +17,7 @@ interface Frontmatter {
   excerpt?: string;
   tags?: string[];
   coverImage?: string;
+  coverImageAlt?: string;
   externalCanonical?: string;
 }
 
@@ -55,6 +57,7 @@ function parseFrontmatter(raw: string): { frontmatter: Frontmatter; body: string
     if (key === "date") frontmatter.date = cleaned;
     if (key === "excerpt") frontmatter.excerpt = cleaned;
     if (key === "coverImage") frontmatter.coverImage = cleaned;
+    if (key === "coverImageAlt") frontmatter.coverImageAlt = cleaned;
     if (key === "externalCanonical") frontmatter.externalCanonical = cleaned;
   }
 
@@ -83,6 +86,7 @@ const allPosts: BlogPost[] = Object.entries(rawPosts)
       excerpt: frontmatter.excerpt ?? "",
       tags: frontmatter.tags ?? [],
       coverImage: frontmatter.coverImage,
+      coverImageAlt: frontmatter.coverImageAlt,
       externalCanonical: frontmatter.externalCanonical,
       content: body,
       readingTimeMinutes: readingTimeMinutes(body),

@@ -103,7 +103,7 @@ export default function BlogIndex() {
                   <div className="aspect-[16/9] w-full overflow-hidden border-b border-border bg-surface-overlay">
                     <img
                       src={post.coverImage}
-                      alt={`${post.title} cover image`}
+                      alt={post.coverImageAlt ?? `${post.title} cover image`}
                       className="h-full w-full object-cover"
                       loading="lazy"
                     />

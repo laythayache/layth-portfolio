@@ -117,7 +117,7 @@ export default function AboutSection() {
           >
             <img
               src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80"
-              alt="Engineering workspace"
+              alt="Software engineering workspace with laptop and code editor"
               className="w-full max-w-md rounded-2xl border border-border object-cover shadow-[0_12px_32px_rgb(15_23_42_/_0.08)]"
               loading="lazy"
             />

@@ -1,168 +1,343 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://laythayache.com/</loc>
+    <lastmod>2026-03-13</lastmod>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Layth Ayache portfolio</image:title>
+      <image:caption>Open Graph image for laythayache.com</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://laythayache.com/landing-page-portrait.png</image:loc>
+      <image:title>Layth Ayache portrait</image:title>
+      <image:caption>Homepage portrait of Layth Ayache</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/blog</loc>
+    <lastmod>2026-03-13</lastmod>
     <priority>0.8</priority>
     <changefreq>weekly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Latest blog cover image</image:title>
+      <image:caption>Image used by latest blog post</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://laythayache.com/projects</loc>
+    <lastmod>2026-02-16</lastmod>
+    <priority>0.8</priority>
+    <changefreq>weekly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/omnisign-logo.png</image:loc>
+      <image:title>Projects overview</image:title>
+      <image:caption>Projects and case studies by Layth Ayache</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/omnisign</loc>
+    <lastmod>2026-02-16</lastmod>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/omnisign-logo.png</image:loc>
+      <image:title>OmniSign logo</image:title>
+      <image:caption>AI sign language translation project</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://laythayache.com/diagrams/omnisign-architecture.svg</image:loc>
+      <image:title>OmniSign architecture diagram</image:title>
+      <image:caption>OmniSign system architecture</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://laythayache.com/beyond-tech</loc>
+    <lastmod>2026-03-13</lastmod>
+    <priority>0.5</priority>
+    <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Beyond Tech</image:title>
+      <image:caption>Community and leadership page</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/privacy-guard</loc>
     <lastmod>2026-02-16</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>PrivacyGuard social image</image:title>
+      <image:caption>PrivacyGuard on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/license-plate-recognition</loc>
     <lastmod>2025-11-12</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>License Plate Recognition System social image</image:title>
+      <image:caption>License Plate Recognition System on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/face-recognition</loc>
     <lastmod>2025-08-20</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Face Recognition System social image</image:title>
+      <image:caption>Face Recognition System on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/breast-cancer-detection</loc>
     <lastmod>2025-07-18</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Breast Cancer Detection Model social image</image:title>
+      <image:caption>Breast Cancer Detection Model on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/home-security-system</loc>
     <lastmod>2025-06-02</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Home Security Embedded System social image</image:title>
+      <image:caption>Home Security Embedded System on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/network-infrastructure</loc>
     <lastmod>2025-05-22</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Network Security Infrastructure social image</image:title>
+      <image:caption>Network Security Infrastructure on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/social-listening-pipeline</loc>
     <lastmod>2026-01-15</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Social Listening Data Pipeline social image</image:title>
+      <image:caption>Social Listening Data Pipeline on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/document-processing-system</loc>
     <lastmod>2025-12-10</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Intelligent Document Processing System social image</image:title>
+      <image:caption>Intelligent Document Processing System on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/knowledge-assistant</loc>
     <lastmod>2025-11-20</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Conversational Knowledge Assistant social image</image:title>
+      <image:caption>Conversational Knowledge Assistant on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/analytics-dashboard</loc>
     <lastmod>2025-10-05</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Real-Time Data Analytics Dashboard social image</image:title>
+      <image:caption>Real-Time Data Analytics Dashboard on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/anomaly-detection</loc>
     <lastmod>2025-09-15</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Autonomous Anomaly Detection System social image</image:title>
+      <image:caption>Autonomous Anomaly Detection System on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/ml-deployment-pipeline</loc>
     <lastmod>2025-08-25</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Scalable AI Deployment Pipeline social image</image:title>
+      <image:caption>Scalable AI Deployment Pipeline on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/arabic-legal-search</loc>
     <lastmod>2025-07-30</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Arabic Legal Document Search social image</image:title>
+      <image:caption>Arabic Legal Document Search on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/sentiment-analysis-engine</loc>
     <lastmod>2025-06-15</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Multi-Domain Sentiment Analysis Engine social image</image:title>
+      <image:caption>Multi-Domain Sentiment Analysis Engine on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/dynamic-data-visualization</loc>
     <lastmod>2025-05-10</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Dynamic Data Visualization Platform social image</image:title>
+      <image:caption>Dynamic Data Visualization Platform on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/vinyl-ecommerce</loc>
     <lastmod>2025-04-20</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Vinyl Record E-Commerce Platform social image</image:title>
+      <image:caption>Vinyl Record E-Commerce Platform on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/sql-database-management</loc>
     <lastmod>2025-03-15</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>SQL Database Management System social image</image:title>
+      <image:caption>SQL Database Management System on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/line-tracking-robot</loc>
     <lastmod>2024-12-10</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Autonomous Line-Tracking Robot social image</image:title>
+      <image:caption>Autonomous Line-Tracking Robot on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/fm-am-radio-pcb</loc>
     <lastmod>2024-11-05</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>FM/AM Radio Transceiver PCB social image</image:title>
+      <image:caption>FM/AM Radio Transceiver PCB on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/enterprise-vision-analytics</loc>
     <lastmod>2025-10-20</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Enterprise Vision Analytics Platform social image</image:title>
+      <image:caption>Enterprise Vision Analytics Platform on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/projects/cloud-image-classification</loc>
     <lastmod>2025-09-01</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Cloud Image Classification Service social image</image:title>
+      <image:caption>Cloud Image Classification Service on laythayache.com</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/blog/real-time-privacy-pipeline-on-raspberry-pi</loc>
     <lastmod>2026-03-13</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/og-default.jpg</image:loc>
+      <image:title>Real-Time Video Anonymization at 30 FPS on a $35 Computer cover image</image:title>
+      <image:caption>Open Graph image for Layth Ayache AI systems portfolio</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/blog/building-in-a-country-with-no-infrastructure</loc>
     <lastmod>2026-02-15</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/omnisign-logo.png</image:loc>
+      <image:title>Building in a Country with No Infrastructure cover image</image:title>
+      <image:caption>OmniSign logo for Lebanese Sign Language translation</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/blog/designing-ai-for-unstable-networks</loc>
     <lastmod>2026-01-22</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/diagrams/omnisign-architecture.svg</image:loc>
+      <image:title>Designing AI Systems for Unstable Networks cover image</image:title>
+      <image:caption>OmniSign local-first architecture diagram for unstable networks</image:caption>
+    </image:image>
   </url>
   <url>
     <loc>https://laythayache.com/blog/lessons-from-telecom-to-ai</loc>
     <lastmod>2025-11-05</lastmod>
     <priority>0.6</priority>
     <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/diagrams/pub-info-architecture.svg</image:loc>
+      <image:title>Lessons from Telecom Engineering to AI Systems cover image</image:title>
+      <image:caption>Telecom public information architecture diagram</image:caption>
+    </image:image>
   </url>
 </urlset>

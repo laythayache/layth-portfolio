@@ -4,6 +4,7 @@ date: 2026-03-13
 excerpt: How I built PrivacyGuard — a zero-cloud, GDPR-compliant video de-identification pipeline running on Raspberry Pi 4 using YOLOv8-nano and ONNX Runtime.
 tags: [Privacy, Edge AI, Computer Vision, Open Source, GDPR]
 coverImage: /og-default.jpg
+coverImageAlt: Open Graph image for Layth Ayache AI systems portfolio
 ---
 
 Most privacy pipelines I encountered before building PrivacyGuard shared the same assumption: you have a server.

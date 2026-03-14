@@ -30,7 +30,7 @@ export default function SEO({
   keywords,
   canonical,
   ogType = "website",
-  ogImage = "https://laythayache.com/apple-touch-icon.png",
+  ogImage = "https://laythayache.com/og-default.jpg",
   ogImageAlt = "Layth Ayache",
   ogImageWidth = 1200,
   ogImageHeight = 630,
@@ -68,6 +68,7 @@ export default function SEO({
       <meta property="og:description" content={description} />
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={canonical} />
+      <meta property="og:image:url" content={ogImage} />
       <meta property="og:image" content={ogImage} />
       <meta property="og:image:secure_url" content={ogImage} />
       <meta property="og:image:alt" content={ogImageAlt} />
@@ -87,6 +88,7 @@ export default function SEO({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={ogImage} />
+      <meta name="twitter:image:alt" content={ogImageAlt} />
       {twitterSite && <meta name="twitter:site" content={twitterSite} />}
       {twitterCreator && (
         <meta name="twitter:creator" content={twitterCreator} />

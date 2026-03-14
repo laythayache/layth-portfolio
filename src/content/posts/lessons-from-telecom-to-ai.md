@@ -4,6 +4,7 @@ date: 2025-11-05
 excerpt: Working on telecom infrastructure changed how I approach reliability, monitoring, and risk in AI products.
 tags: [Infrastructure, Telecom, AI]
 coverImage: /diagrams/pub-info-architecture.svg
+coverImageAlt: Telecom public information architecture diagram
 ---
 
 The data I was given to build a predictive maintenance system for Lebanon's telephone lines was written on notepads.

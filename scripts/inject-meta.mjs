@@ -19,10 +19,18 @@ import { dirname } from "node:path";
 const OUT_DIR = "out";
 const BASE_URL = "https://laythayache.com";
 const OG_IMAGE = `${BASE_URL}/og-default.jpg`;
+const DEFAULT_OG_ALT = "Layth Ayache AI systems portfolio preview";
 
 const PROJECTS_SOURCE = "src/content/projects.ts";
 const POSTS_DIR = "src/content/posts";
 const FAQ_SOURCE = "src/content/faq.ts";
+
+function absoluteUrl(pathOrUrl) {
+  if (!pathOrUrl) return OG_IMAGE;
+  if (/^https?:\/\//.test(pathOrUrl)) return pathOrUrl;
+  const normalized = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
+  return `${BASE_URL}${normalized}`;
+}
 
 /* ── Shared JSON-LD fragments ─────────────────────────────────────── */
 
@@ -132,9 +140,11 @@ function homeJsonLd(faqItems) {
     personFragment(),
     {
       "@type": "ProfilePage",
-      "@id": `${BASE_URL}/#profile`,
+      "@id": `${BASE_URL}/#profilepage`,
       url: BASE_URL,
       name: "Layth Ayache | AI Systems Architect & Technology Leader",
+      description:
+        "AI systems architect and technology leader specializing in computer vision, NLP, privacy-preserving AI, web scraping, medical AI, cybersecurity, data pipeline engineering, and national-scale digital infrastructure. Building production-grade systems and leading engineering operations at Aligned Tech.",
       isPartOf: { "@id": WEBSITE_ID },
       mainEntity: { "@id": PERSON_ID },
       inLanguage: "en",
@@ -195,6 +205,7 @@ function projectJsonLd(project) {
 
 function blogPostJsonLd(post) {
   const url = `${BASE_URL}/blog/${post.slug}`;
+  const image = post.coverImage ? absoluteUrl(post.coverImage) : OG_IMAGE;
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -209,7 +220,7 @@ function blogPostJsonLd(post) {
         author: { "@id": PERSON_ID },
         publisher: { "@id": ORG_ID },
         mainEntityOfPage: { "@id": `${url}#webpage` },
-        image: OG_IMAGE,
+        image,
         inLanguage: "en",
       },
       {
@@ -264,13 +275,17 @@ function parseProjects() {
     const summary = m[3].replace(/\s+/g, " ").trim();
     // Extract updated_at near this slug
     const slugIdx = source.indexOf(`slug: "${slug}"`);
-    const chunk = source.substring(slugIdx, slugIdx + 800);
+    const chunk = source.substring(slugIdx, slugIdx + 1600);
     const dateMatch = chunk.match(/updated_at:\s*"([^"]+)"/);
+    const thumbnailMatch = chunk.match(/thumbnail:\s*"([^"]+)"/);
+    const architectureMatch = chunk.match(/architectureDiagram:\s*"([^"]+)"/);
     return {
       slug,
       title,
       summary,
       updatedAt: dateMatch ? dateMatch[1] : undefined,
+      thumbnail: thumbnailMatch ? thumbnailMatch[1] : undefined,
+      architectureDiagram: architectureMatch ? architectureMatch[1] : undefined,
     };
   });
 }
@@ -293,6 +308,8 @@ function parseBlogPosts() {
         title: get("title"),
         excerpt: get("excerpt"),
         date: get("date"),
+        coverImage: get("coverImage"),
+        coverImageAlt: get("coverImageAlt"),
       };
     })
     .filter(Boolean);
@@ -322,6 +339,10 @@ function parseFaqItems() {
 function getRoutes() {
   const projects = parseProjects();
   const posts = parseBlogPosts();
+  const latestPost = posts
+    .filter((post) => post.date)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
+  const omnisign = projects.find((project) => project.slug === "omnisign");
 
   const routes = [
     {
@@ -329,12 +350,24 @@ function getRoutes() {
       title: "Writing and Insights | Layth Ayache",
       description:
         "Articles on AI systems engineering, infrastructure architecture, and building technology in Lebanon.",
+      ogImage: latestPost?.coverImage || OG_IMAGE,
+      ogImageAlt: latestPost?.coverImageAlt || "Layth Ayache blog preview",
+    },
+    {
+      path: "/projects",
+      title: "Projects | Layth Ayache",
+      description:
+        "Browse all projects: production systems, research prototypes, and engineering case studies.",
+      ogImage: omnisign?.thumbnail || OG_IMAGE,
+      ogImageAlt: "Layth Ayache projects and case studies",
     },
     {
       path: "/beyond-tech",
       title: "Beyond Tech | Layth Ayache",
       description:
         "Community leadership, emergency response, music, and initiatives beyond the technical domain.",
+      ogImage: "/landing-page-portrait.png",
+      ogImageAlt: "Layth Ayache beyond technology and community work",
     },
   ];
 
@@ -344,10 +377,14 @@ function getRoutes() {
   }
 
   for (const project of projects) {
+    const projectImage =
+      project.thumbnail || project.architectureDiagram || OG_IMAGE;
     routes.push({
       path: `/projects/${project.slug}`,
       title: `${project.title} | Layth Ayache`,
       description: project.summary,
+      ogImage: projectImage,
+      ogImageAlt: `${project.title} case study preview`,
       jsonLd: projectJsonLd(project),
     });
   }
@@ -358,6 +395,8 @@ function getRoutes() {
       title: `${post.title} | Layth Ayache`,
       description: post.excerpt,
       ogType: "article",
+      ogImage: post.coverImage || OG_IMAGE,
+      ogImageAlt: post.coverImageAlt || `${post.title} cover image`,
       jsonLd: blogPostJsonLd(post),
     });
   }
@@ -369,6 +408,10 @@ function getRoutes() {
 
 function injectMeta(template, route) {
   let html = template;
+  const routeUrl = `${BASE_URL}${route.path}`;
+  const routeOgType = route.ogType || "website";
+  const routeOgImage = absoluteUrl(route.ogImage || OG_IMAGE);
+  const routeOgImageAlt = route.ogImageAlt || DEFAULT_OG_ALT;
 
   // Replace <title>
   html = html.replace(
@@ -397,16 +440,32 @@ function injectMeta(template, route) {
   // Replace og:url
   html = html.replace(
     /<meta property="og:url" content="[^"]*"/,
-    `<meta property="og:url" content="${BASE_URL}${route.path}"`
+    `<meta property="og:url" content="${routeUrl}"`
   );
 
-  // Replace og:type if article
-  if (route.ogType) {
-    html = html.replace(
-      /<meta property="og:type" content="[^"]*"/,
-      `<meta property="og:type" content="${route.ogType}"`
-    );
-  }
+  // Replace og:type
+  html = html.replace(
+    /<meta property="og:type" content="[^"]*"/,
+    `<meta property="og:type" content="${routeOgType}"`
+  );
+
+  // Replace Open Graph image tags
+  html = html.replace(
+    /<meta property="og:image:url" content="[^"]*"/,
+    `<meta property="og:image:url" content="${routeOgImage}"`
+  );
+  html = html.replace(
+    /<meta property="og:image" content="[^"]*"/,
+    `<meta property="og:image" content="${routeOgImage}"`
+  );
+  html = html.replace(
+    /<meta property="og:image:secure_url" content="[^"]*"/,
+    `<meta property="og:image:secure_url" content="${routeOgImage}"`
+  );
+  html = html.replace(
+    /<meta property="og:image:alt" content="[^"]*"/,
+    `<meta property="og:image:alt" content="${escapeAttr(routeOgImageAlt)}"`
+  );
 
   // Replace twitter:title
   html = html.replace(
@@ -420,10 +479,19 @@ function injectMeta(template, route) {
     `<meta name="twitter:description" content="${escapeAttr(route.description)}"`
   );
 
+  html = html.replace(
+    /<meta name="twitter:image" content="[^"]*"/,
+    `<meta name="twitter:image" content="${routeOgImage}"`
+  );
+  html = html.replace(
+    /<meta name="twitter:image:alt" content="[^"]*"/,
+    `<meta name="twitter:image:alt" content="${escapeAttr(routeOgImageAlt)}"`
+  );
+
   // Replace canonical
   html = html.replace(
     /<link rel="canonical" href="[^"]*"/,
-    `<link rel="canonical" href="${BASE_URL}${route.path}"`
+    `<link rel="canonical" href="${routeUrl}"`
   );
 
   // Inject JSON-LD (replace placeholder)
@@ -466,6 +534,8 @@ function main() {
     title: "Layth Ayache | AI Systems Architect & Technology Leader",
     description:
       "Senior AI systems architect and technology leader from Lebanon. Building production-grade computer vision, NLP, data pipelines, and national-scale digital infrastructure at Aligned Tech.",
+    ogImage: OG_IMAGE,
+    ogImageAlt: "Layth Ayache AI systems portfolio preview",
     jsonLd: homeJsonLd(faqItems),
   };
   writeFileSync(templatePath, injectMeta(template, homeRoute), "utf8");

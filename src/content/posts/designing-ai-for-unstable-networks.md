@@ -4,6 +4,7 @@ date: 2026-01-22
 excerpt: Practical patterns for keeping AI products usable when connectivity and latency are unreliable.
 tags: [AI, Networking, Reliability]
 coverImage: /diagrams/omnisign-architecture.svg
+coverImageAlt: OmniSign local-first architecture diagram for unstable networks
 ---
 
 The supermarket in Côte d'Ivoire had cameras, an intermittent internet connection, and a government privacy compliance requirement.

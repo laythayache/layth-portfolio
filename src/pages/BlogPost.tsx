@@ -40,6 +40,7 @@ export default function BlogPost() {
         modifiedTime={post.date}
         ogType="article"
         ogImage={post.coverImage ? `https://laythayache.com${post.coverImage}` : undefined}
+        ogImageAlt={post.coverImageAlt ?? `${post.title} cover image`}
         jsonLd={blogPostJsonLd(post)}
       />
 
@@ -88,7 +89,7 @@ export default function BlogPost() {
             <div className="mt-8 overflow-hidden rounded-xl border border-border bg-surface-overlay">
               <img
                 src={post.coverImage}
-                alt={`${post.title} hero image`}
+                alt={post.coverImageAlt ?? `${post.title} hero image`}
                 className="h-full w-full object-cover"
                 loading="lazy"
               />

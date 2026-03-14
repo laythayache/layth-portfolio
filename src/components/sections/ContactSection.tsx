@@ -212,7 +212,7 @@ export default function ContactSection() {
           >
             <img
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=80"
-              alt="Team collaboration"
+              alt="Engineering team collaborating at a shared workspace"
               className="w-full rounded-2xl border border-border object-cover shadow-[0_12px_32px_rgb(15_23_42_/_0.08)]"
               loading="lazy"
             />

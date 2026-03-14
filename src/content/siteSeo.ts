@@ -387,11 +387,11 @@ export function homePageJsonLd() {
       faqJsonLd(),
       {
         "@type": "ProfilePage",
-        "@id": `${SITE_URL}/#profile`,
+        "@id": `${SITE_URL}/#profilepage`,
         url: SITE_URL,
-        name: "Layth Ayache | Senior AI & Infrastructure Architect | Full-Stack Systems Engineer",
+        name: "Layth Ayache | AI Systems Architect & Technology Leader",
         description:
-          "Senior AI systems architect and infrastructure engineer building production-grade computer vision, NLP, web scraping, medical AI, cybersecurity, and national-scale digital infrastructure systems. Leading Lebanon's technology transformation from embedded hardware to cloud-deployed services.",
+          "AI systems architect and technology leader specializing in computer vision, NLP, privacy-preserving AI, web scraping, medical AI, cybersecurity, data pipeline engineering, and national-scale digital infrastructure. Building production-grade systems and leading engineering operations at Aligned Tech.",
         isPartOf: { "@id": WEBSITE_ID },
         mainEntity: { "@id": PERSON_ID },
         inLanguage: "en",
@@ -467,6 +467,15 @@ export function projectPageJsonLd(project: Project) {
 
 export function blogPostJsonLd(post: BlogPost) {
   const postUrl = absoluteUrl(`/blog/${post.slug}`);
+  const imageUrl = post.coverImage ? absoluteUrl(post.coverImage) : DEFAULT_OG_IMAGE;
+  const image = post.coverImageAlt
+    ? {
+        "@type": "ImageObject",
+        url: imageUrl,
+        caption: post.coverImageAlt,
+      }
+    : imageUrl;
+
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -480,7 +489,7 @@ export function blogPostJsonLd(post: BlogPost) {
         author: { "@id": PERSON_ID },
         publisher: { "@id": ORG_ID },
         mainEntityOfPage: { "@id": `${postUrl}#webpage` },
-        image: post.coverImage ? absoluteUrl(post.coverImage) : DEFAULT_OG_IMAGE,
+        image,
         keywords: post.tags.join(", "),
         wordCount: Math.round(post.readingTimeMinutes * 220),
         inLanguage: "en",
