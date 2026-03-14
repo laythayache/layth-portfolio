@@ -1,4 +1,6 @@
+import { useEffect } from "react";
 import SEO from "@/components/SEO";
+import { useLenis } from "@/motion/LenisProvider";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
@@ -21,6 +23,22 @@ const latestModified = [
   .pop();
 
 export default function Home() {
+  const lenis = useLenis();
+
+  // Scroll to hash target after lazy-load mount (e.g. /#about, /#contact)
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (!hash) return;
+    const timer = setTimeout(() => {
+      if (lenis) {
+        lenis.scrollTo(`#${hash}`, { offset: -84 });
+      } else {
+        document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [lenis]);
+
   return (
     <>
       <SEO

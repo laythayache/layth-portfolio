@@ -227,6 +227,7 @@ export default function ContactSection() {
           }}
           onSubmit={handleSubmit}
           noValidate
+          aria-describedby="contact-feedback"
         >
           {/* Honeypot — hidden from real users, traps bots */}
           <div className="hidden" aria-hidden="true">
@@ -338,6 +339,7 @@ export default function ContactSection() {
 
           {feedback.kind !== "idle" && (
             <p
+              id="contact-feedback"
               role={feedback.kind === "error" ? "alert" : "status"}
               className={
                 feedback.kind === "error"

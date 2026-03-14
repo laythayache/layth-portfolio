@@ -168,7 +168,7 @@
     letter-spacing: 0.08em;
     text-transform: uppercase;
     border-radius: 4px;
-    box-shadow: 0 10px 24px rgb(15 23 42 / 0.1);
+    box-shadow: 0 10px 24px rgb(var(--shadow-dark) / 0.1);
     white-space: nowrap;
     backdrop-filter: blur(2px);
     will-change: opacity, transform;
@@ -334,6 +334,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  .scroll-indicator {
+    animation: none;
+  }
+
   .cinematic-cursor-halo,
   .cinematic-cursor-frame,
   .cinematic-cursor-core,
@@ -379,6 +387,9 @@
     --border-strong: 184 201 214;
     --accent: 7 108 100;
     --accent-hover: 6 88 82;
+    --code-bg: 15 23 42;
+    --code-text: 203 213 225;
+    --shadow-dark: 15 23 42;
     --nav-height: 4.5rem;
     --space-1: 0.5rem;
     --space-2: 1rem;
@@ -580,7 +591,7 @@
     padding: 1.25rem;
     border-radius: 0.75rem;
     border: 1px solid rgb(var(--border));
-    background: rgb(15 23 42);
+    background: rgb(var(--code-bg));
     overflow-x: auto;
   }
 
@@ -588,7 +599,7 @@
     padding: 0;
     border-radius: 0;
     background: transparent;
-    color: rgb(203 213 225);
+    color: rgb(var(--code-text));
     font-size: 0.85rem;
     line-height: 1.7;
   }
@@ -645,7 +656,7 @@
 
   .card-lift:hover {
     transform: translateY(-4px);
-    box-shadow: 0 14px 32px rgb(15 23 42 / 0.10);
+    box-shadow: 0 14px 32px rgb(var(--shadow-dark) / 0.10);
   }
 
   /* Section divider — subtle gradient fade line */

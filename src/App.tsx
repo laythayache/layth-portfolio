@@ -23,8 +23,8 @@ const ProjectsIndex = lazy(() => import("@/pages/ProjectsIndex"));
 export default function App() {
   useRemoveStaticJsonLd();
   return (
-    <BrowserRouter>
-      <ErrorBoundary>
+    <ErrorBoundary>
+      <BrowserRouter>
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
@@ -61,7 +61,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
-      </ErrorBoundary>
-    </BrowserRouter>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 }

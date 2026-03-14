@@ -429,7 +429,6 @@ export default function ChatBot() {
         return updated;
       });
       if (isVoiceMode) speak(errorMsg);
-      if (!isRateLimited) console.error("Chat error:", error);
     } finally {
       reader?.cancel().catch(() => {});
       abortRef.current = null;
