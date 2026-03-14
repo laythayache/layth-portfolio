@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -X POST \"https://laythayache.com/api/chat\" -H \"Content-Type: application/json\" -d '{\"\"\"\"messages\"\"\"\":[{\"\"\"\"role\"\"\"\":\"\"\"\"user\"\"\"\",\"\"\"\"content\"\"\"\":\"\"\"\"What can Layth build for me?\"\"\"\"}]}' --max-time 20)",
+      "Bash(node -e \":*)",
+      "Bash(curl -s -X POST \"https://laythayache.com/api/chat\" -H \"Content-Type: application/json\" -d '{\"\"\"\"messages\"\"\"\":[{\"\"\"\"role\"\"\"\":\"\"\"\"user\"\"\"\",\"\"\"\"content\"\"\"\":\"\"\"\"I want to collaborate\"\"\"\"}]}' --max-time 20)"
+    ]
+  }
+}
