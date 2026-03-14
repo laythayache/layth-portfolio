@@ -114,7 +114,7 @@ export default function HeroSection() {
             src="/logo-mark.svg"
             alt=""
             aria-hidden
-            className="absolute left-1/2 top-1/2 z-[2] w-[600px] -translate-x-1/2 -translate-y-1/2 opacity-[0.14] sm:w-[700px] md:w-[800px]"
+            className="absolute left-1/2 top-1/2 z-[2] w-[300px] -translate-x-1/2 -translate-y-1/2 opacity-[0.12] sm:w-[350px] md:w-[400px]"
           />
 
           {/* Pulsating rings — 4 rings radiating outward */}
@@ -125,7 +125,7 @@ export default function HeroSection() {
 
           {/* Circular photo — object-position lower to show full face */}
           <img
-            src="/Landing page portrait.png"
+            src="/landing-page-portrait.png"
             alt="Layth Ayache — Technical Architect"
             className="relative z-10 h-[150px] w-[150px] rounded-full border-[3px] border-accent/40 object-cover object-top shadow-[0_8px_30px_rgb(7_108_100_/_0.2),0_18px_40px_rgb(15_23_42_/_0.12)] sm:h-[175px] sm:w-[175px] md:h-[200px] md:w-[200px]"
             loading="eager"
