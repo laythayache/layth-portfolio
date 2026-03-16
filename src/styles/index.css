@@ -730,6 +730,22 @@
   .animate-mic-pulse {
     animation: mic-pulse 1.5s ease-in-out infinite;
   }
+
+  /* About — dual-layer reveal (mobile auto-sweep) */
+  @keyframes about-reveal-sweep {
+    0%   { -webkit-mask-position: -40% 50%; mask-position: -40% 50%; }
+    40%  { -webkit-mask-position: 140% 50%; mask-position: 140% 50%; }
+    60%  { -webkit-mask-position: 140% 50%; mask-position: 140% 50%; }
+    100% { -webkit-mask-position: -40% 50%; mask-position: -40% 50%; }
+  }
+
+  .about-reveal-auto-sweep > img:last-of-type {
+    -webkit-mask-image: radial-gradient(circle 120px, transparent 0%, transparent 44%, black 72%);
+    mask-image: radial-gradient(circle 120px, transparent 0%, transparent 44%, black 72%);
+    -webkit-mask-size: 300% 300%;
+    mask-size: 300% 300%;
+    animation: about-reveal-sweep 6s ease-in-out infinite;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -739,5 +755,11 @@
   .animate-hero-pulse-fourth,
   .animate-mic-pulse {
     animation: none;
+  }
+
+  .about-reveal-auto-sweep > img:last-of-type {
+    animation: none;
+    -webkit-mask-image: none;
+    mask-image: none;
   }
 }

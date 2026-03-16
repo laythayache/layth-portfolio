@@ -279,6 +279,18 @@ export default function ChatBot() {
   const voiceAutoStarted = useRef(false);
   const abortRef = useRef<AbortController | null>(null);
 
+  /* Track breakpoint for slide direction (up on mobile, right on desktop) */
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.innerWidth >= 640,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 640px)");
+    const handler = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+    mq.addEventListener("change", handler);
+    setIsDesktop(mq.matches);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -443,58 +455,61 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* Floating toggle button */}
-      <motion.button
-        type="button"
-        onClick={toggleChat}
-        className={cn(
-          "chatbot-toggle fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center",
-          "rounded-full border border-accent/30 bg-accent text-white shadow-lg",
-          "transition-colors hover:bg-accent-hover",
+      {/* Floating toggle button — hidden when panel is open */}
+      <AnimatePresence>
+        {!open && (
+          <motion.button
+            type="button"
+            onClick={toggleChat}
+            className={cn(
+              "chatbot-toggle fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center",
+              "rounded-full border border-accent/30 bg-accent text-white shadow-lg",
+              "transition-colors hover:bg-accent-hover",
+            )}
+            initial={{ scale: 0.5, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.5, opacity: 0 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Chat with AI assistant"
+          >
+            <MessageSquare size={22} />
+          </motion.button>
         )}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        aria-label={open ? "Close chat" : "Chat with AI assistant"}
-      >
-        <AnimatePresence mode="wait" initial={false}>
-          {open ? (
-            <motion.span
-              key="close"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <X size={22} />
-            </motion.span>
-          ) : (
-            <motion.span
-              key="open"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <MessageSquare size={22} />
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </motion.button>
+      </AnimatePresence>
 
-      {/* Chat panel */}
+      {/* Backdrop — mobile only */}
+      <AnimatePresence>
+        {open && !isDesktop && (
+          <motion.div
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={toggleChat}
+            aria-hidden
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Chat panel — slides up on mobile, slides in from right on desktop */}
       <AnimatePresence>
         {open && (
           <motion.div
             className={cn(
               "chatbot-panel fixed z-50 flex flex-col",
-              "border border-border bg-surface-raised shadow-2xl overflow-hidden",
-              "inset-0 h-[100dvh] rounded-none",
-              "sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[min(560px,calc(100vh-8rem))] sm:w-[380px] sm:max-w-[calc(100vw-2rem)] sm:rounded-2xl",
+              "border-border bg-surface-raised shadow-2xl overflow-hidden",
+              /* Mobile: bottom sheet, 85% height */
+              "inset-x-0 bottom-0 h-[85dvh] rounded-t-2xl border-t",
+              /* Desktop: right drawer, full height */
+              "sm:inset-y-0 sm:left-auto sm:right-0 sm:h-screen sm:w-[400px] sm:rounded-none sm:rounded-l-2xl sm:border-l sm:border-t-0",
             )}
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            initial={isDesktop ? { x: "100%" } : { y: "100%" }}
+            animate={isDesktop ? { x: 0 } : { y: 0 }}
+            exit={isDesktop ? { x: "100%" } : { y: "100%" }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
           >
             {/* Header */}
             <div className="flex shrink-0 items-center gap-3 border-b border-border px-5 py-4">
@@ -507,16 +522,28 @@ export default function ChatBot() {
                 decoding="async"
                 className="h-9 w-9 rounded-full border border-border bg-surface-overlay p-1.5"
               />
-              <div>
+              <div className="flex-1">
                 <p className="text-sm font-semibold text-text-primary">LBV</p>
                 <p className="text-xs text-text-muted">
                   Layth&rsquo;s AI &middot; ask me anything
                 </p>
               </div>
+              <button
+                type="button"
+                onClick={toggleChat}
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-surface-overlay hover:text-text-primary"
+                aria-label="Close chat"
+              >
+                <X size={18} />
+              </button>
             </div>
 
             {/* Messages area */}
-            <div className="chatbot-messages flex-1 overflow-y-auto px-4 py-4">
+            <div
+              className="chatbot-messages flex-1 overflow-y-auto px-4 py-4"
+              data-lenis-prevent
+              style={{ overscrollBehavior: "contain" }}
+            >
               {messages.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
                   <img
