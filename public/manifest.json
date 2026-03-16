@@ -10,13 +10,13 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/favicon-48.png",
+      "src": "/favicons/favicon-48.png",
       "sizes": "48x48",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/apple-touch-icon.png",
+      "src": "/favicons/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
@@ -24,13 +24,13 @@
   ],
   "screenshots": [
     {
-      "src": "/landing-page-portrait.png",
+      "src": "/images/brand/landing-page-portrait.png",
       "sizes": "1024x1536",
       "type": "image/png",
       "form_factor": "narrow"
     },
     {
-      "src": "/og-default.jpg",
+      "src": "/images/brand/og-default.jpg",
       "sizes": "1200x630",
       "type": "image/jpeg",
       "form_factor": "wide"
@@ -48,7 +48,7 @@
       "url": "/blog",
       "icons": [
         {
-          "src": "/favicon-48.png",
+          "src": "/favicons/favicon-48.png",
           "sizes": "48x48",
           "type": "image/png"
         }
@@ -61,7 +61,7 @@
       "url": "/#about",
       "icons": [
         {
-          "src": "/favicon-48.png",
+          "src": "/favicons/favicon-48.png",
           "sizes": "48x48",
           "type": "image/png"
         }

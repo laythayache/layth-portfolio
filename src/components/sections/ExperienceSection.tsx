@@ -1,11 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import {
-  ArrowRight,
-  BriefcaseBusiness,
-  RadioTower,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { experience, type ExperienceEntry } from "@/content/experience";
 
 const SPEAKING_CROSS_IDS = new Set(["rhu"]);
@@ -15,10 +11,6 @@ function getYear(value: string) {
   return match ? Number(match[1]) : 0;
 }
 
-function getRoleIcon(entry: ExperienceEntry) {
-  if (entry.role.toLowerCase().includes("network")) return RadioTower;
-  return BriefcaseBusiness;
-}
 
 interface TimelineItem {
   type: "year";
@@ -234,7 +226,6 @@ function TimelineCard({
   reduced: boolean | null;
   index: number;
 }) {
-  const Icon = getRoleIcon(entry);
   const isLeft = side === "left";
 
   return (
@@ -248,7 +239,6 @@ function TimelineCard({
         {isLeft ? (
           <CardContent
             entry={entry}
-            Icon={Icon}
             side="left"
             reduced={reduced}
             index={index}
@@ -279,7 +269,6 @@ function TimelineCard({
         <div className="lg:hidden">
           <CardContent
             entry={entry}
-            Icon={Icon}
             side="right"
             reduced={reduced}
             index={index}
@@ -290,7 +279,6 @@ function TimelineCard({
           {!isLeft ? (
             <CardContent
               entry={entry}
-              Icon={Icon}
               side="right"
               reduced={reduced}
               index={index}
@@ -307,13 +295,11 @@ function TimelineCard({
 /* ── The actual card content ── */
 function CardContent({
   entry,
-  Icon,
   side,
   reduced,
   index,
 }: {
   entry: ExperienceEntry;
-  Icon: typeof BriefcaseBusiness;
   side: "left" | "right";
   reduced: boolean | null;
   index: number;
@@ -341,9 +327,17 @@ function CardContent({
       />
 
       <div className="flex items-start gap-3">
-        <span className="mt-0.5 rounded-lg bg-surface-overlay p-2 text-accent">
-          <Icon size={16} aria-hidden />
-        </span>
+        {entry.logo ? (
+          <img
+            src={entry.logo}
+            alt={`${entry.company} logo`}
+            className="mt-0.5 h-11 w-11 shrink-0 rounded-lg border border-border bg-[#1a1a1a] object-contain p-1.5"
+          />
+        ) : (
+          <span className="mt-0.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-border bg-surface-overlay text-xs font-bold text-accent">
+            {entry.company.slice(0, 2).toUpperCase()}
+          </span>
+        )}
         <div className="min-w-0 flex-1">
           <h3 className="type-h3 text-[1.1rem] leading-snug">{entry.role}</h3>
           <p className="mt-1 text-sm font-medium text-text-primary">

@@ -30,7 +30,7 @@ export default function SEO({
   keywords,
   canonical,
   ogType = "website",
-  ogImage = "https://laythayache.com/og-default.jpg",
+  ogImage = "https://laythayache.com/images/brand/og-default.jpg",
   ogImageAlt = "Layth Ayache",
   ogImageWidth,
   ogImageHeight,

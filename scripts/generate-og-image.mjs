@@ -1,7 +1,7 @@
 import sharp from "sharp";
 import { readFileSync } from "node:fs";
 
-const OUTPUT = "public/og-default.jpg";
+const OUTPUT = "public/images/brand/og-default.jpg";
 const WIDTH = 1200;
 const HEIGHT = 630;
 
@@ -14,7 +14,7 @@ const name = "Layth Ayache";
 const title = "AI Systems &amp; Automation Engineer | Technical Consultant";
 
 // Read the logo SVG and resize it
-const logoSvg = readFileSync("public/logo-mark.svg", "utf8");
+const logoSvg = readFileSync("public/images/brand/logo-mark.svg", "utf8");
 
 // Create the OG image using SVG overlay
 const svgOverlay = `

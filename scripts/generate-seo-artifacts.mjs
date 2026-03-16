@@ -147,12 +147,12 @@ function buildSitemap(projects, posts) {
       lastmod: latestSiteUpdate,
       images: [
         {
-          loc: "/og-default.jpg",
+          loc: "/images/brand/og-default.jpg",
           title: "Layth Ayache portfolio",
           caption: "Open Graph image for laythayache.com",
         },
         {
-          loc: "/landing-page-portrait.png",
+          loc: "/images/brand/landing-page-portrait.png",
           title: "Layth Ayache portrait",
           caption: "Homepage portrait of Layth Ayache",
         },
@@ -170,7 +170,7 @@ function buildSitemap(projects, posts) {
               caption: "Image used by latest blog post",
             }
           : {
-              loc: "/og-default.jpg",
+              loc: "/images/brand/og-default.jpg",
               title: "Layth Ayache blog",
               caption: "Default blog social image",
             },
@@ -182,7 +182,7 @@ function buildSitemap(projects, posts) {
       lastmod: latestProjectUpdate,
       images: [
         {
-          loc: omnisign?.thumbnail || "/og-default.jpg",
+          loc: omnisign?.thumbnail || "/images/brand/og-default.jpg",
           title: "Projects overview",
           caption: "Projects and case studies by Layth Ayache",
         },
@@ -194,7 +194,7 @@ function buildSitemap(projects, posts) {
       lastmod: omnisign?.updatedAt ?? latestProjectUpdate,
       images: [
         {
-          loc: omnisign?.thumbnail || "/omnisign-logo.png",
+          loc: omnisign?.thumbnail || "/images/brand/omnisign-logo.png",
           title: "OmniSign logo",
           caption: "AI sign language translation project",
         },
@@ -213,7 +213,7 @@ function buildSitemap(projects, posts) {
       lastmod: latestSiteUpdate,
       images: [
         {
-          loc: "/og-default.jpg",
+          loc: "/images/brand/og-default.jpg",
           title: "Beyond Tech",
           caption: "Community and leadership page",
         },
@@ -244,7 +244,7 @@ function buildSitemap(projects, posts) {
             }
           : null,
         {
-          loc: "/og-default.jpg",
+          loc: "/images/brand/og-default.jpg",
           title: `${project.title} social image`,
           caption: `${project.title} on laythayache.com`,
         },
@@ -258,7 +258,7 @@ function buildSitemap(projects, posts) {
     lastmod: post.date,
     images: [
       {
-        loc: post.coverImage || "/og-default.jpg",
+        loc: post.coverImage || "/images/brand/og-default.jpg",
         title: `${post.title} cover image`,
         caption: post.coverImageAlt || post.excerpt,
       },

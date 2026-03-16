@@ -75,7 +75,7 @@ export const projects: Project[] = [
     challenge_url: "/#contact",
     friend_project: false,
     tags: ["AI", "Accessibility", "Computer Vision"],
-    thumbnail: "/omnisign-logo.png",
+    thumbnail: "/images/brand/omnisign-logo.png",
     featured: true,
     demoVideoUrl:
       "https://pub-f6654749f9534ed48b99cc5f4b614b9b.r2.dev/WhatsApp%20Video%202025-11-29%20at%2012.43.10%20PM.mp4",

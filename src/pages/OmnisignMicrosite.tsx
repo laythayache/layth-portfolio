@@ -144,7 +144,7 @@ export default function OmnisignMicrosite() {
         ]}
         canonical="https://laythayache.com/projects/omnisign"
         ogType="article"
-        ogImage="https://laythayache.com/omnisign-logo.png"
+        ogImage="https://laythayache.com/images/brand/omnisign-logo.png"
         ogImageAlt="OmniSign logo"
         modifiedTime="2026-02-05"
         jsonLd={omnisignJsonLd}
@@ -178,7 +178,7 @@ export default function OmnisignMicrosite() {
 
             <div className="mb-5 flex items-center gap-5">
               <img
-                src="/omnisign-logo.png"
+                src="/images/brand/omnisign-logo.png"
                 alt="OmniSign logo - AI-powered Lebanese Sign Language translation"
                 width={512}
                 height={512}
@@ -235,7 +235,7 @@ export default function OmnisignMicrosite() {
                 className="h-full w-full object-cover"
                 playsInline
                 preload="metadata"
-                poster="/omnisign-logo.png"
+                poster="/images/brand/omnisign-logo.png"
                 controls={isPlaying}
                 title="OmniSign demo video"
                 aria-label="OmniSign Lebanese Sign Language demo video"

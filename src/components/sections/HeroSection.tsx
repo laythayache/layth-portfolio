@@ -127,7 +127,7 @@ export default function HeroSection() {
 
           {/* Circular photo — object-position lower to show full face */}
           <img
-            src="/landing-page-portrait.png"
+            src="/images/brand/landing-page-portrait.png"
             alt="Layth Ayache — Technical Architect"
             className="relative z-10 h-[150px] w-[150px] rounded-full border-[3px] border-accent/40 object-cover object-top shadow-[0_8px_30px_rgb(7_108_100_/_0.2),0_18px_40px_rgb(15_23_42_/_0.12)] sm:h-[175px] sm:w-[175px] md:h-[200px] md:w-[200px]"
             loading="eager"

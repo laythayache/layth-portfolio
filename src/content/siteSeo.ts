@@ -5,7 +5,7 @@ import type { BlogPost } from "@/content/posts";
 
 export const SITE_URL = "https://laythayache.com";
 export const SITE_NAME = "Layth Ayache";
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/og-default.jpg`;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/brand/og-default.jpg`;
 export const DEFAULT_KEYWORDS = [
   // Identity & positioning
   "Layth Ayache",
@@ -239,7 +239,7 @@ export function personJsonLd() {
     givenName: "Layth",
     familyName: "Ayache",
     url: SITE_URL,
-    image: absoluteUrl("/apple-touch-icon.png"),
+    image: absoluteUrl("/favicons/apple-touch-icon.png"),
     birthDate: "2003",
     gender: "Male",
     jobTitle: [
@@ -346,7 +346,7 @@ export function organizationJsonLd() {
     "@id": ORG_ID,
     name: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl("/logo-mark.svg"),
+    logo: absoluteUrl("/images/brand/logo-mark.svg"),
     founder: { "@id": PERSON_ID },
     sameAs: [
       "https://github.com/laythayache",

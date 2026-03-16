@@ -228,41 +228,41 @@ export const team: TeamMember[] = [
     role: "AI & ML Lead",
     detail:
       "Computer vision, model training, data pipeline, dataset cleaning & augmentation, community outreach, event planning",
-    image: "/layth-ayache.jpeg",
+    image: "/images/team/layth-ayache.jpeg",
   },
   {
     name: "Tayseer Laz",
     role: "Web & PR Lead",
     detail:
       "Website development, model integration into mobile app, data collection, community communications, event coordination",
-    image: "/tayseer-laz.webp",
+    image: "/images/team/tayseer-laz.webp",
   },
   {
     name: "Abu Baker Hussein El Khatib",
     role: "App Developer",
     detail:
       "Flutter mobile app, web app development, data collection at campus events and community booths",
-    image: "/abubaker.webp",
+    image: "/images/team/abubaker.webp",
   },
   {
     name: "Noor El Hariri",
     role: "Project Coordinator",
     detail:
       "Flutter app development, academic documentation, project reports, research coordination",
-    image: "/noor-el-hariri.webp",
+    image: "/images/team/noor-el-hariri.webp",
   },
   {
     name: "Rami Kronbi",
     role: "Computer Vision Engineer",
     detail:
       "ML engineering, CV pipeline development, data collection, next-phase technical lead",
-    image: "/rami-kronbi.webp",
+    image: "/images/team/rami-kronbi.webp",
   },
   {
     name: "Dr. Oussama Mustapha",
     role: "Research Advisor",
     detail: "Academic guidance, research methodology, project oversight",
-    image: "/oussama-mustapha.webp",
+    image: "/images/team/oussama-mustapha.webp",
   },
 ];
 

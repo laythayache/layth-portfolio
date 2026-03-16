@@ -18,7 +18,7 @@ import { dirname } from "node:path";
 
 const OUT_DIR = "out";
 const BASE_URL = "https://laythayache.com";
-const OG_IMAGE = `${BASE_URL}/og-default.jpg`;
+const OG_IMAGE = `${BASE_URL}/images/brand/og-default.jpg`;
 const DEFAULT_OG_ALT = "Layth Ayache AI systems portfolio preview";
 
 const PROJECTS_SOURCE = "src/content/projects.ts";
@@ -47,7 +47,7 @@ function personFragment() {
     givenName: "Layth",
     familyName: "Ayache",
     url: BASE_URL,
-    image: `${BASE_URL}/apple-touch-icon.png`,
+    image: `${BASE_URL}/favicons/apple-touch-icon.png`,
     birthDate: "2003",
     gender: "Male",
     jobTitle: [
@@ -165,7 +165,7 @@ function organizationFragment() {
     "@id": ORG_ID,
     name: "Layth Ayache",
     url: BASE_URL,
-    logo: `${BASE_URL}/logo-mark.svg`,
+    logo: `${BASE_URL}/images/brand/logo-mark.svg`,
     founder: { "@id": PERSON_ID },
   };
 }
@@ -417,7 +417,7 @@ function getRoutes() {
       title: "Beyond Tech | Layth Ayache",
       description:
         "Community leadership, emergency medical response, music, and initiatives beyond engineering. Layth Ayache's volunteer work, scouting, and outreach in Lebanon.",
-      ogImage: "/landing-page-portrait.png",
+      ogImage: "/images/brand/landing-page-portrait.png",
       ogImageAlt: "Layth Ayache beyond technology and community work",
     },
   ];

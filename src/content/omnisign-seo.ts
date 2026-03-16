@@ -52,7 +52,7 @@ export const omnisignJsonLd = {
         "AI-powered real-time sign language translation system for Lebanese Sign Language (LSL) and Arabic Sign Language. Uses computer vision, neural language modeling, and edge computing to translate gestures to text and speech. The first digital LSL dataset, with 50,000+ signs collected and 80,000+ processed. 98% accuracy. Self-funded.",
       applicationCategory: "Accessibility",
       operatingSystem: "Cross-platform",
-      image: `${BASE}/omnisign-logo.png`,
+      image: `${BASE}/images/brand/omnisign-logo.png`,
       featureList: [
         "Real-time sign language gesture recognition",
         "Lebanese Sign Language (LSL) support — first of its kind",

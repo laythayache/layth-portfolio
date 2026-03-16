@@ -112,7 +112,7 @@ export default function Navbar() {
           }}
         >
           <img
-            src="/logo-mark.svg"
+            src="/images/brand/logo-mark.svg"
             alt="Layth Ayache logo mark"
             width={1248}
             height={832}

@@ -3,7 +3,7 @@ title: "Real-Time Video Anonymization at 30 FPS on a $35 Computer"
 date: 2026-03-13
 excerpt: How I built PrivacyGuard — a zero-cloud, GDPR-compliant video de-identification pipeline running on Raspberry Pi 4 using YOLOv8-nano and ONNX Runtime.
 tags: [Privacy, Edge AI, Computer Vision, Open Source, GDPR]
-coverImage: /og-default.jpg
+coverImage: /images/brand/og-default.jpg
 coverImageAlt: Open Graph image for Layth Ayache AI systems portfolio
 ---
 

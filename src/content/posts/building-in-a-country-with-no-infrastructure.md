@@ -3,7 +3,7 @@ title: Building in a Country with No Infrastructure
 date: 2026-02-15
 excerpt: How infrastructure fragility becomes an engineering variable when production systems cannot assume perfect conditions.
 tags: [Infrastructure, AI, Lebanon]
-coverImage: /omnisign-logo.png
+coverImage: /images/brand/omnisign-logo.png
 coverImageAlt: OmniSign logo for Lebanese Sign Language translation
 externalCanonical: https://medium.com/@laythayache5/building-in-a-country-with-no-infrastructure-3f8595472895
 ---

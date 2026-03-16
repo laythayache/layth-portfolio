@@ -1,38 +1,39 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SECTION } from "@/motion/tokens";
+import { SECTION, HERO } from "@/motion/tokens";
 
 /* ── data ─────────────────────────────────────────────────────── */
 
-const LANGUAGES = [
-  "Arabic (Native)",
-  "French (B2 DELF)",
-  "English (Professional)",
+const PULL_QUOTES = [
+  "I don't build things that work — I build things that keep working.",
+  "I optimize for the person who inherits my code at 2am.",
+  "If it can't survive a bad network, a tired operator, and a Tuesday deploy — it's not ready.",
+  "When the power cuts three times a day, you learn what fault-tolerant really looks like.",
+  "Clever code impresses engineers. Boring code serves users.",
+  "I come from a country where nothing works automatically — so I learned to make things work automatically.",
+  "Unreliable infrastructure taught me what reliable engineering actually means.",
+  "The trash can is always fuller than the desk.",
+  "Every system I've shipped has a graveyard of versions that didn't make it.",
+  "I don't trust systems that haven't failed yet.",
 ] as const;
 
-const BEYOND = [
-  "7 yrs pianist — Lebanese Conservatory",
-  "EMT volunteer — Civil Defense",
-  "Jarrah Scouts member",
-  "AI Club President",
-  "Zaka AI Student Ambassador",
+const QUOTE_INTERVAL = 5000;
+
+const CONTENT_BLOCKS = [
+  {
+    label: "My Process",
+    text: "I spec before I build, prototype before I commit, and test against failure before I test for success. I'd rather ship something simple that survives reality than something ambitious that doesn't.",
+  },
+  {
+    label: "Working With Me",
+    text: "I ask a lot of questions at the start so I don't build the wrong thing. I over-communicate during the build so there are no surprises. I document after the ship so the next person isn't guessing. That's the loop.",
+  },
+  {
+    label: "The Long Game",
+    text: "I don't want to build the next app. I want to build the thing the next app runs on. Infrastructure that outlasts the team that built it.",
+  },
 ] as const;
-
-/* ── animation variants ───────────────────────────────────────── */
-
-const badgePop = {
-  hidden: { opacity: 0, scale: 0.8 },
-  visible: (index: number) => ({
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.3,
-      delay: 0.04 + index * 0.06,
-      ease: SECTION.ease,
-    },
-  }),
-};
 
 /* ── reveal image component ───────────────────────────────────── */
 
@@ -124,8 +125,8 @@ function DualLayerReveal() {
     >
       {/* Back image — "The Process" (warm, revealed through mask) */}
       <img
-        src="/about-process.png"
-        alt="The process — late nights, coffee, books, and failed attempts"
+        src="/images/about/about-process.png"
+        alt="The process — late nights, effort, and failed attempts"
         className="absolute inset-0 h-full w-full object-cover"
         loading="lazy"
         draggable={false}
@@ -134,7 +135,7 @@ function DualLayerReveal() {
       {/* Front image — "The Result" (cool/teal, default visible) */}
       <img
         ref={frontRef}
-        src="/about-result.png"
+        src="/images/about/about-result.png"
         alt="The result — composed, confident, finished work"
         className="absolute inset-0 h-full w-full object-cover"
         loading="lazy"
@@ -147,6 +148,41 @@ function DualLayerReveal() {
           hover to reveal
         </span>
       )}
+    </div>
+  );
+}
+
+/* ── rotating pull quote ──────────────────────────────────────── */
+
+function RotatingQuote() {
+  const [index, setIndex] = useState(0);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    if (reduced) return;
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % PULL_QUOTES.length);
+    }, QUOTE_INTERVAL);
+    return () => clearInterval(interval);
+  }, [reduced]);
+
+  return (
+    <div className="mx-auto flex min-h-[10rem] max-w-3xl items-center justify-center text-center sm:min-h-[8rem] lg:min-h-[7rem]">
+      <AnimatePresence mode="wait">
+        <motion.blockquote
+          key={index}
+          className="font-serif text-2xl font-semibold leading-snug text-text-primary italic md:text-3xl lg:text-4xl"
+          initial={reduced ? undefined : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduced ? undefined : { opacity: 0, y: -12 }}
+          transition={{
+            duration: HERO.hookTransition,
+            ease: SECTION.ease,
+          }}
+        >
+          &ldquo;{PULL_QUOTES[index]}&rdquo;
+        </motion.blockquote>
+      </AnimatePresence>
     </div>
   );
 }
@@ -170,68 +206,23 @@ export default function AboutSection() {
           <DualLayerReveal />
         </motion.div>
 
-        {/* ── Pull quote ── */}
-        <motion.blockquote
-          className="mx-auto mt-12 max-w-3xl text-center font-serif text-2xl font-semibold leading-snug text-text-primary italic md:text-3xl lg:text-4xl"
-          variants={SECTION.fadeUp}
-        >
-          &ldquo;I build systems that work under real constraints, not demos
-          for ideal conditions.&rdquo;
-        </motion.blockquote>
+        {/* ── Rotating pull quote ── */}
+        <motion.div className="mt-12" variants={SECTION.fadeUp}>
+          <RotatingQuote />
+        </motion.div>
 
-        {/* ── Supporting content — 3 columns ── */}
+        {/* ── Content blocks — 3 columns ── */}
         <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
-          {/* Bio */}
-          <motion.div variants={SECTION.fadeUp}>
-            <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
-              Who I Am
-            </h3>
-            <p className="text-base leading-relaxed text-text-secondary">
-              AI Systems Architect. B.E. in Computer &amp; Communication
-              Engineering. I architect internal software systems, build
-              automated workflows, and deploy production AI solutions across
-              telecom, finance, and enterprise platforms.
-            </p>
-          </motion.div>
-
-          {/* Languages */}
-          <motion.div variants={SECTION.fadeUp}>
-            <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
-              Languages
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {LANGUAGES.map((language, index) => (
-                <motion.span
-                  key={language}
-                  className={cn(
-                    "rounded-full border border-border-strong px-3 py-1",
-                    "font-mono text-xs text-text-secondary",
-                  )}
-                  variants={badgePop}
-                  custom={index}
-                >
-                  {language}
-                </motion.span>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Beyond Engineering */}
-          <motion.div variants={SECTION.fadeUp}>
-            <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
-              Beyond Engineering
-            </h3>
-            <ul className="space-y-1.5">
-              {BEYOND.map((item) => (
-                <li
-                  key={item}
-                  className="font-mono text-sm leading-relaxed text-text-muted"
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+          {CONTENT_BLOCKS.map((block) => (
+            <motion.div key={block.label} variants={SECTION.fadeUp}>
+              <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+                {block.label}
+              </h3>
+              <p className="text-base leading-relaxed text-text-secondary">
+                {block.text}
+              </p>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
     </section>

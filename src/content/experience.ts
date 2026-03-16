@@ -1,6 +1,7 @@
 export interface ExperienceEntry {
   id: string;
   company: string;
+  logo?: string;
   role: string;
   type: string;
   location: string;
@@ -14,6 +15,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "aligned-tech",
     company: "Aligned Tech",
+    logo: "/images/logos/aligned-tech.png",
     role: "AI Systems Engineer & Technology Consultant",
     type: "Full-time",
     location: "Hazmieh, Lebanon",
@@ -39,6 +41,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "cog-developers",
     company: "Cog Developers",
+    logo: "/images/logos/cog-developers.svg",
     role: "Data Scientist",
     type: "Full-time",
     location: "Beirut, Lebanon",
@@ -62,6 +65,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "organizer-mea",
     company: "Organizer (MEA)",
+    logo: "/images/logos/organizer-mea.svg",
     role: "AI Software Developer",
     type: "Part-time",
     location: "Beirut, Lebanon",
@@ -85,6 +89,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "ogero-network",
     company: "OGERO",
+    logo: "/images/logos/ogero.svg",
     role: "Network Engineer",
     type: "Internship",
     location: "Beirut, Lebanon",
@@ -100,6 +105,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "ogero-data",
     company: "OGERO",
+    logo: "/images/logos/ogero.svg",
     role: "Data Analyst Intern",
     type: "Internship",
     location: "Beirut, Lebanon (Hybrid)",
@@ -115,6 +121,7 @@ export const experience: ExperienceEntry[] = [
   {
     id: "rhu",
     company: "Rafik Hariri University",
+    logo: "/images/logos/rhu.png",
     role: "Work Study Student & AI Club President",
     type: "Part-time",
     location: "Meshref, Lebanon",
@@ -133,6 +140,7 @@ export const beyondTechExperience: ExperienceEntry[] = [
   {
     id: "civil-defense",
     company: "Lebanese Civil Defense",
+    logo: "/images/logos/civil-defense.png",
     role: "Emergency Medical Technician",
     type: "Volunteer",
     location: "Beirut, Lebanon",
@@ -147,6 +155,7 @@ export const beyondTechExperience: ExperienceEntry[] = [
   {
     id: "zaka",
     company: "ZAKA",
+    logo: "/images/logos/zaka.png",
     role: "University Ambassador",
     type: "Ambassador",
     location: "Lebanon",
