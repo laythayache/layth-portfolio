@@ -27,7 +27,7 @@ export default function Navbar() {
   const activeSection = useScrollSpy(NAV_SECTION_IDS, {
     rootMargin: "-30% 0px -55% 0px",
     threshold: SCROLLSPY_THRESHOLDS,
-    initialActive: "about",
+    initialActive: "",
   });
 
   // Scroll progress bar
