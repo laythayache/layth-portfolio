@@ -108,7 +108,7 @@ export const omnisignJsonLd = {
       "@id": `${PAGE}#layth-ayache`,
       name: "Layth Ayache",
       url: BASE,
-      image: `${BASE}/layth-ayache.jpeg`,
+      image: `${BASE}/images/team/layth-ayache.jpeg`,
       jobTitle: "AI & ML Lead",
       description:
         "AI and Machine Learning Lead of OmniSign. Responsible for computer vision, model training, data pipeline, dataset cleaning and augmentation, community outreach, and event planning for the OmniSign Lebanese Sign Language translation project at Rafik Hariri University.",

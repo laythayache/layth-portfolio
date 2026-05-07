@@ -239,7 +239,12 @@ export function personJsonLd() {
     givenName: "Layth",
     familyName: "Ayache",
     url: SITE_URL,
-    image: absoluteUrl("/favicons/apple-touch-icon.png"),
+    image: {
+      "@type": "ImageObject",
+      url: absoluteUrl("/images/team/layth-ayache.jpeg"),
+      caption: "Layth Ayache — AI Systems Architect, Beirut, Lebanon",
+      contentUrl: absoluteUrl("/images/team/layth-ayache.jpeg"),
+    },
     birthDate: "2003",
     gender: "Male",
     jobTitle: [
