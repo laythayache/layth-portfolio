@@ -8,11 +8,11 @@ import useScrollSpy from "@/hooks/useScrollSpy";
 
 const NAV_SECTIONS = [
   { id: "about", label: "About" },
-  { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
+  { id: "services", label: "Services" },
+  { id: "projects", label: "Work" },
   { id: "speaking", label: "Speaking" },
-  { id: "blog", label: "Blog" },
-  { id: "certifications", label: "Certs" },
+  { id: "blog", label: "Writing" },
+  { id: "certifications", label: "Credentials" },
   { id: "faq", label: "FAQ" },
   { id: "contact", label: "Contact" },
 ] as const;

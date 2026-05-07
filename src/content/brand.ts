@@ -1,10 +1,11 @@
 export const BRAND = {
   name: "Layth Ayache",
-  title: "AI Systems Architect",
+  title: "AI Systems Engineer & Technical Consultant",
+  thesis: "Systems that survive reality.",
   tagline:
-    "Architecting production AI systems — computer vision, NLP, data pipelines, and infrastructure engineering from prototype to deployment.",
+    "Production AI for environments where assumptions fail — computer vision, data pipelines, and infrastructure designed for messy data, intermittent networks, and real operational constraints.",
   description:
-    "AI systems architect from Lebanon building production-grade computer vision, NLP, and data pipeline infrastructure. Leading engineering at Aligned Tech.",
+    "AI systems engineer and technical consultant from Lebanon. Designs and builds computer vision, data pipelines, and infrastructure-aware AI for real operational environments — where reliability, auditability, and local-first deployment matter.",
   url: "https://laythayache.com",
   github: "https://github.com/laythayache",
   linkedin: "https://www.linkedin.com/in/laythayache",

@@ -144,6 +144,11 @@ function personFragment() {
       "https://github.com/laythayache",
       "https://www.linkedin.com/in/laythayache",
       "https://medium.com/@laythayache5",
+      "https://sessionize.com/layth-ayache",
+      // TODO: append additional verified public profiles when available
+      //   (Crunchbase, Dev.to, Hashnode, ResearchGate, ORCID, press mentions).
+      //   Each entry must be a real, public URL and should also be reflected
+      //   on /about so visible profiles match schema sameAs.
     ],
   };
 }
@@ -185,18 +190,21 @@ function breadcrumb(items) {
 /* ── JSON-LD generators per route type ────────────────────────────── */
 
 function homeJsonLd(faqItems) {
+  // The canonical ProfilePage lives on /about. The homepage is a WebPage that
+  // references the Person entity — this avoids two competing ProfilePage @ids.
   const graph = [
     websiteFragment(),
     organizationFragment(),
     personFragment(),
     {
-      "@type": "ProfilePage",
-      "@id": `${BASE_URL}/#profilepage`,
+      "@type": "WebPage",
+      "@id": `${BASE_URL}/#webpage`,
       url: BASE_URL,
-      name: "Layth Ayache | AI Systems Architect & Technology Leader",
+      name: "Layth Ayache | AI Systems Engineer & Technical Consultant",
       description:
-        "AI systems architect and technology leader specializing in computer vision, NLP, privacy-preserving AI, web scraping, medical AI, cybersecurity, data pipeline engineering, and national-scale digital infrastructure. Building production-grade systems and leading engineering operations at Aligned Tech.",
+        "Layth Ayache builds AI systems that survive reality — production computer vision, data pipelines, and infrastructure-aware deployments for environments where assumptions fail.",
       isPartOf: { "@id": WEBSITE_ID },
+      about: { "@id": PERSON_ID },
       mainEntity: { "@id": PERSON_ID },
       inLanguage: "en",
       breadcrumb: breadcrumb([{ name: "Home", path: "/" }]),
@@ -314,6 +322,65 @@ function genericPageJsonLd(route) {
   };
 }
 
+function aboutPageJsonLd() {
+  const url = `${BASE_URL}/about`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      websiteFragment(),
+      organizationFragment(),
+      personFragment(),
+      {
+        "@type": "ProfilePage",
+        "@id": `${url}#profilepage`,
+        url,
+        name: "Layth Ayache — AI Systems Engineer & Technical Consultant",
+        description:
+          "Layth Ayache — AI Systems Engineer & Technical Consultant in Lebanon. Designs production AI systems, computer vision pipelines, and infrastructure-aware deployments for environments where reliability matters.",
+        isPartOf: { "@id": WEBSITE_ID },
+        mainEntity: { "@id": PERSON_ID },
+        about: { "@id": PERSON_ID },
+        inLanguage: "en",
+        breadcrumb: breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "About", path: "/about" },
+        ]),
+      },
+    ],
+  };
+}
+
+function collectionPageJsonLd(route, items) {
+  const url = `${BASE_URL}${route.path}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CollectionPage",
+        "@id": `${url}#collectionpage`,
+        url,
+        name: route.title,
+        description: route.description,
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": PERSON_ID },
+        inLanguage: "en",
+        breadcrumb: breadcrumb([
+          { name: "Home", path: "/" },
+          { name: route.title.split(" | ")[0], path: route.path },
+        ]),
+        ...(items
+          ? {
+              mainEntity: {
+                "@type": "ItemList",
+                itemListElement: items,
+              },
+            }
+          : {}),
+      },
+    ],
+  };
+}
+
 /* ── Parsers ──────────────────────────────────────────────────────── */
 
 function parseProjects() {
@@ -366,6 +433,34 @@ function parseBlogPosts() {
     .filter(Boolean);
 }
 
+function parseSpeakingEntries() {
+  const SOURCE = "src/content/speaking.ts";
+  if (!existsSync(SOURCE)) return [];
+  const source = readFileSync(SOURCE, "utf8");
+  const pattern =
+    /id:\s*"([^"]+)"[\s\S]*?title:\s*"([^"]+)"[\s\S]*?description:\s*\n?\s*"([^"]+)"/g;
+  return [...source.matchAll(pattern)].map((m) => ({
+    id: m[1],
+    title: m[2],
+    description: m[3].replace(/\s+/g, " ").trim(),
+  }));
+}
+
+function parseCertifications() {
+  const SOURCE = "src/content/certifications.ts";
+  if (!existsSync(SOURCE)) return [];
+  const source = readFileSync(SOURCE, "utf8");
+  const pattern =
+    /id:\s*"([^"]+)"[\s\S]*?name:\s*"([^"]+)"[\s\S]*?issuer:\s*"([^"]+)"[\s\S]*?(?:date:\s*"([^"]+)"[\s\S]*?)?group:\s*"(degrees|professional|awards)"/g;
+  return [...source.matchAll(pattern)].map((m) => ({
+    id: m[1],
+    name: m[2],
+    issuer: m[3],
+    date: m[4],
+    group: m[5],
+  }));
+}
+
 function parseFaqItems() {
   if (!existsSync(FAQ_SOURCE)) return [];
   const source = readFileSync(FAQ_SOURCE, "utf8");
@@ -395,7 +490,35 @@ function getRoutes() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())[0];
   const omnisign = projects.find((project) => project.slug === "omnisign");
 
+  const speakingItems = parseSpeakingEntries();
+  const credentialItems = parseCertifications();
+
   const routes = [
+    {
+      path: "/about",
+      title: "Layth Ayache — AI Systems Engineer & Technical Consultant",
+      description:
+        "Layth Ayache — AI Systems Engineer & Technical Consultant in Lebanon. Designs production AI systems, computer vision pipelines, and infrastructure-aware deployments for environments where reliability matters.",
+      ogImage: "/images/brand/landing-page-portrait.png",
+      ogImageAlt: "Layth Ayache — AI Systems Engineer",
+      jsonLd: aboutPageJsonLd(),
+    },
+    {
+      path: "/speaking",
+      title: "Speaking & Community | Layth Ayache",
+      description:
+        "Talks, mentorship, and community engagement by Layth Ayache — focused on practical AI systems, engineering education, and community-first technology in Lebanon and beyond.",
+      ogImage: OG_IMAGE,
+      ogImageAlt: "Layth Ayache speaking and community engagements",
+    },
+    {
+      path: "/credentials",
+      title: "Credentials & Education | Layth Ayache",
+      description:
+        "Verified credentials, professional certificates, and education for Layth Ayache — engineering degree, networking and security certifications, computer vision, and clinical credentials.",
+      ogImage: OG_IMAGE,
+      ogImageAlt: "Layth Ayache credentials and education",
+    },
     {
       path: "/blog",
       title: "Writing and Insights | Layth Ayache",
@@ -422,8 +545,43 @@ function getRoutes() {
     },
   ];
 
-  // Attach JSON-LD to static routes
+  // Attach JSON-LD to static routes (skip those that pre-set their own).
   for (const route of routes) {
+    if (route.jsonLd) continue;
+    if (route.path === "/speaking") {
+      route.jsonLd = collectionPageJsonLd(
+        route,
+        speakingItems.map((entry, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          name: entry.title,
+          description: entry.description,
+        }))
+      );
+      continue;
+    }
+    if (route.path === "/credentials") {
+      route.jsonLd = collectionPageJsonLd(
+        route,
+        credentialItems.map((cert, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          item: {
+            "@type": "EducationalOccupationalCredential",
+            name: cert.name,
+            credentialCategory:
+              cert.group === "degrees"
+                ? "degree"
+                : cert.group === "professional"
+                ? "certification"
+                : "award",
+            recognizedBy: { "@type": "Organization", name: cert.issuer },
+            ...(cert.date ? { dateCreated: cert.date } : {}),
+          },
+        }))
+      );
+      continue;
+    }
     route.jsonLd = genericPageJsonLd(route);
   }
 

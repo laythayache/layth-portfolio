@@ -43,6 +43,14 @@ export interface ProjectLinks {
   video?: string;
 }
 
+export interface ProjectDecision {
+  id: string;
+  title: string;
+  chose: string;
+  rejected?: string;
+  why: string;
+}
+
 export interface ProjectSections {
   problem: string;
   systemReality: string;
@@ -54,6 +62,12 @@ export interface ProjectSections {
   unsolved: string;
   challenges: string;
   reliability?: string;
+  /**
+   * Optional structured decision log. When populated, renders as a
+   * branded DecisionLog component instead of (or alongside) the
+   * freeform `tradeoffs` prose.
+   */
+  decisions?: ProjectDecision[];
 }
 
 export interface Project {

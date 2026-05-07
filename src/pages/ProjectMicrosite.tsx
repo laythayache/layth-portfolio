@@ -12,8 +12,26 @@ import {
   MobileTOC,
 } from "@/components/microsite/TableOfContents";
 import { buildTocItems } from "@/lib/microsite-sections";
-import { cn, statusColor } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import NotFound from "./NotFound";
+import StatusChip, { type ChipTone } from "@/components/brand/StatusChip";
+import DecisionLog from "@/components/brand/DecisionLog";
+import SignalDivider from "@/components/brand/SignalDivider";
+import type { ProjectStatus } from "@/content/types";
+
+function statusToTone(status: ProjectStatus): ChipTone {
+  switch (status) {
+    case "completed":
+      return "stable";
+    case "ongoing":
+      return "ongoing";
+    case "paused":
+      return "warn";
+    case "idea":
+    default:
+      return "research";
+  }
+}
 
 /* ── Animation helpers ── */
 const EASE_OUT: [number, number, number, number] = [0, 0, 0.2, 1];
@@ -178,22 +196,12 @@ export default function ProjectMicrosite() {
               {project.summary}
             </p>
 
-            {/* Badge row */}
-            <div className="flex flex-wrap items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 font-mono text-xs text-text-muted">
-                <span className={cn("h-2 w-2 rounded-full", statusColor(project.status))} />
-                {project.status}
-              </span>
-              <span className="rounded-full border border-border px-3 py-1 font-mono text-xs text-text-muted">
-                {project.kind}
-              </span>
+            {/* Status chips — branded, command-center style */}
+            <div className="flex flex-wrap items-center gap-2">
+              <StatusChip tone={statusToTone(project.status)} label={project.status} />
+              <StatusChip tone="auditable" label={project.kind} />
               {project.tags?.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border px-3 py-1 font-mono text-xs text-text-muted"
-                >
-                  {tag}
-                </span>
+                <StatusChip key={tag} tone="auditable" label={tag} />
               ))}
             </div>
 
@@ -234,17 +242,22 @@ export default function ProjectMicrosite() {
             </motion.div>
           )}
 
-          {/* ── Quick Info Bar ── */}
+          {/* ── Executive Summary / Quick Info Bar ── */}
           <motion.div
-            className="mb-12 rounded-xl border border-border bg-surface-raised p-6"
+            className="relative mb-12 overflow-hidden rounded-md border border-border bg-surface-raised p-6"
             {...sectionAnim}
           >
+            <div
+              className="system-grid-bg pointer-events-none absolute inset-0 opacity-40"
+              aria-hidden="true"
+            />
+            <div className="relative">
             {project.outcome && (
-              <div className="mb-5 rounded-lg border-l-4 border-accent bg-surface-overlay px-4 py-3">
-                <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted mb-1">
-                  Outcome
+              <div className="mb-5 border-l-2 border-accent bg-surface-overlay/70 px-4 py-3">
+                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent mb-1">
+                  Executive summary
                 </p>
-                <p className="text-sm font-medium text-text-primary">
+                <p className="text-base font-medium leading-relaxed text-text-primary">
                   {project.outcome}
                 </p>
               </div>
@@ -302,10 +315,11 @@ export default function ProjectMicrosite() {
                 )}
               </div>
             )}
+            </div>
           </motion.div>
 
           {/* ── Divider between info and narrative ── */}
-          <hr className="border-border mb-4" />
+          <SignalDivider label="Case study" className="mb-6 px-0" />
 
           {/* ── Narrative Sections ── */}
           {project.sections.problem && (
@@ -354,7 +368,12 @@ export default function ProjectMicrosite() {
 
           {project.sections.tradeoffs && (
             <NarrativeSection id="decisions" label="05 — Decisions" heading="Key Decisions & Tradeoffs">
-              {project.sections.tradeoffs}
+              <div className="space-y-6">
+                <p>{project.sections.tradeoffs}</p>
+                {project.sections.decisions && project.sections.decisions.length > 0 && (
+                  <DecisionLog decisions={project.sections.decisions} className="mt-6" />
+                )}
+              </div>
             </NarrativeSection>
           )}
 

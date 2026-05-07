@@ -10,9 +10,12 @@ const SYSTEM_PROMPT_PATH = "functions/api/system-prompt.ts";
 
 const STATIC_ROUTE_CONFIG = {
   "/": { priority: "1.0", changefreq: "weekly" },
+  "/about": { priority: "0.9", changefreq: "monthly" },
   "/blog": { priority: "0.8", changefreq: "weekly" },
   "/projects": { priority: "0.8", changefreq: "weekly" },
   "/projects/omnisign": { priority: "0.9", changefreq: "monthly" },
+  "/speaking": { priority: "0.6", changefreq: "monthly" },
+  "/credentials": { priority: "0.6", changefreq: "monthly" },
   "/beyond-tech": { priority: "0.5", changefreq: "monthly" },
 };
 
@@ -206,6 +209,42 @@ function buildSitemap(projects, posts) {
             }
           : null,
       ].filter(Boolean),
+    },
+    {
+      path: "/about",
+      ...STATIC_ROUTE_CONFIG["/about"],
+      lastmod: latestSiteUpdate,
+      images: [
+        {
+          loc: "/images/brand/landing-page-portrait.png",
+          title: "Layth Ayache",
+          caption: "AI Systems Engineer & Technical Consultant",
+        },
+      ],
+    },
+    {
+      path: "/speaking",
+      ...STATIC_ROUTE_CONFIG["/speaking"],
+      lastmod: latestSiteUpdate,
+      images: [
+        {
+          loc: "/images/brand/og-default.jpg",
+          title: "Speaking and community",
+          caption: "Talks, mentorship, and community engagements",
+        },
+      ],
+    },
+    {
+      path: "/credentials",
+      ...STATIC_ROUTE_CONFIG["/credentials"],
+      lastmod: latestSiteUpdate,
+      images: [
+        {
+          loc: "/images/brand/og-default.jpg",
+          title: "Credentials and education",
+          caption: "Verified credentials and education",
+        },
+      ],
     },
     {
       path: "/beyond-tech",

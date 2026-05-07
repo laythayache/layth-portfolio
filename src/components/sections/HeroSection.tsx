@@ -5,12 +5,13 @@ import { useLenis } from "@/motion/LenisProvider";
 import { SECTION, HERO } from "@/motion/tokens";
 import { useChat } from "@/context/ChatContext";
 import TextReveal from "@/components/TextReveal";
+import StatusChip from "@/components/brand/StatusChip";
 
 const HOOKS = [
-  "What if your systems just worked?",
-  "What does reliable actually look like?",
-  "Ever wonder why systems fail?",
-  "What if infrastructure was invisible?",
+  "Built for environments where assumptions fail.",
+  "Architecture before automation.",
+  "Reliability is not a feature. It is the system.",
+  "If the network fails, the system should degrade — not disappear.",
 ];
 
 export default function HeroSection() {
@@ -56,7 +57,8 @@ export default function HeroSection() {
       aria-labelledby="hero-title"
     >
       {/* Background accents */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgb(7_108_100_/_0.06),transparent_50%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgb(var(--accent)/0.08),transparent_50%)]" />
+      <div className="system-grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
 
       {/* Top bar: social icons left, contact right */}
       <motion.div
@@ -128,8 +130,8 @@ export default function HeroSection() {
           {/* Circular photo — object-position lower to show full face */}
           <img
             src="/images/brand/landing-page-portrait.png"
-            alt="Layth Ayache — Technical Architect"
-            className="relative z-10 h-[150px] w-[150px] rounded-full border-[3px] border-accent/40 object-cover object-top shadow-[0_8px_30px_rgb(7_108_100_/_0.2),0_18px_40px_rgb(15_23_42_/_0.12)] sm:h-[175px] sm:w-[175px] md:h-[200px] md:w-[200px]"
+            alt="Layth Ayache — AI Systems Architect"
+            className="relative z-10 h-[150px] w-[150px] rounded-full border-[3px] border-accent/40 object-cover object-top shadow-[0_8px_30px_rgb(var(--accent)/0.22),0_18px_40px_rgb(var(--shadow-dark)/0.14)] sm:h-[175px] sm:w-[175px] md:h-[200px] md:w-[200px]"
             loading="eager"
           />
 
@@ -168,42 +170,87 @@ export default function HeroSection() {
           className="mt-1 font-mono text-xs uppercase tracking-[0.25em] text-text-muted sm:text-sm"
           {...fade(HERO.stagger.title)}
         >
-          AI Systems Architect
+          AI Systems Engineer · Technical Consultant
         </motion.p>
 
-        {/* Rotating question hooks */}
-        <div className="mt-2.5 h-8 sm:h-10">
+        {/* Brand thesis */}
+        <motion.p
+          className="mt-4 max-w-2xl text-center font-serif text-xl leading-tight text-text-primary sm:text-2xl md:text-[1.65rem]"
+          {...fade(HERO.stagger.title + 0.05)}
+          id="hero-title"
+        >
+          I build AI systems that survive reality.
+        </motion.p>
+
+        {/* Supporting line */}
+        <motion.p
+          className="mt-3 max-w-xl text-center text-sm leading-relaxed text-text-secondary sm:text-base"
+          {...fade(HERO.stagger.title + 0.08)}
+        >
+          Computer vision, data pipelines, and infrastructure designed for
+          messy data, intermittent networks, and constraints that don&rsquo;t
+          appear in lab demos.
+        </motion.p>
+
+        {/* Rotating brand microcopy */}
+        <div className="mt-4 h-6 sm:h-7">
           <AnimatePresence mode="wait">
             <motion.p
               key={hookIndex}
-              className="text-center font-serif text-lg font-medium text-text-secondary sm:text-xl md:text-2xl"
-              initial={reduced ? undefined : { opacity: 0, y: 12 }}
+              className="text-center font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted sm:text-xs"
+              initial={reduced ? undefined : { opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? undefined : { opacity: 0, y: -12 }}
+              exit={reduced ? undefined : { opacity: 0, y: -8 }}
               transition={{
                 duration: HERO.hookTransition,
                 ease: HERO.ease,
               }}
-              id="hero-title"
             >
               {HOOKS[hookIndex]}
             </motion.p>
           </AnimatePresence>
         </div>
 
-        {/* CTA */}
-        <motion.button
-          type="button"
-          onClick={() => scrollToSection("projects")}
-          whileHover={reduced ? undefined : SECTION.buttonHover}
-          whileTap={reduced ? undefined : SECTION.buttonTap}
-          data-magnetic
-          data-cursor-label="Explore"
-          className="mt-3 inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-7 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:px-8 sm:py-3 sm:text-base"
+        {/* CTA pair */}
+        <motion.div
+          className="mt-5 flex flex-col items-center gap-3 sm:flex-row"
           {...fade(HERO.stagger.cta)}
         >
-          Explore My Work
-        </motion.button>
+          <motion.button
+            type="button"
+            onClick={() => scrollToSection("projects")}
+            whileHover={reduced ? undefined : SECTION.buttonHover}
+            whileTap={reduced ? undefined : SECTION.buttonTap}
+            data-magnetic
+            data-cursor-label="Case studies"
+            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-7 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:px-8 sm:py-3 sm:text-base"
+          >
+            View Case Studies
+          </motion.button>
+          <motion.button
+            type="button"
+            onClick={() => scrollToSection("contact")}
+            whileHover={reduced ? undefined : SECTION.buttonHover}
+            whileTap={reduced ? undefined : SECTION.buttonTap}
+            data-magnetic
+            data-cursor-label="Discuss a system"
+            className="inline-flex items-center gap-2 rounded-md border border-text-primary/80 bg-transparent px-7 py-2.5 text-sm font-semibold text-text-primary transition-colors hover:bg-text-primary hover:text-surface-raised sm:px-8 sm:py-3 sm:text-base"
+          >
+            Discuss a System
+          </motion.button>
+        </motion.div>
+
+        {/* Status-chip strip — reinforces engineering discipline at a glance */}
+        <motion.div
+          className="mt-6 flex flex-wrap items-center justify-center gap-2"
+          aria-label="Engineering principles"
+          {...fade(HERO.stagger.cta + 0.05)}
+        >
+          <StatusChip tone="production" label="Production" />
+          <StatusChip tone="local-first" label="Local-first" />
+          <StatusChip tone="auditable" label="Auditable" />
+          <StatusChip tone="zero-cloud" label="Zero-cloud capable" />
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}

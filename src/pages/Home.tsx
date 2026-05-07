@@ -3,6 +3,7 @@ import SEO from "@/components/SEO";
 import { useLenis } from "@/motion/LenisProvider";
 import HeroSection from "@/components/sections/HeroSection";
 import AboutSection from "@/components/sections/AboutSection";
+import ServicesSection from "@/components/sections/ServicesSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import SpeakingSection from "@/components/sections/SpeakingSection";
@@ -53,6 +54,8 @@ export default function Home() {
         <HeroSection />
         <div className="section-divider" aria-hidden="true" />
         <AboutSection />
+        <div className="section-divider" aria-hidden="true" />
+        <ServicesSection />
         <div className="section-divider" aria-hidden="true" />
         <ExperienceSection />
         <div className="section-divider" aria-hidden="true" />

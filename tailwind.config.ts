@@ -49,6 +49,12 @@ export default {
           DEFAULT: "rgb(var(--accent) / <alpha-value>)",
           hover: "rgb(var(--accent-hover) / <alpha-value>)",
         },
+        steel: {
+          DEFAULT: "rgb(var(--steel) / <alpha-value>)",
+          soft: "rgb(var(--steel-soft) / <alpha-value>)",
+        },
+        warn: "rgb(var(--warn) / <alpha-value>)",
+        success: "rgb(var(--success) / <alpha-value>)",
       },
     },
   },

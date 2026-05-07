@@ -19,6 +19,9 @@ const BlogIndex = lazy(() => import("@/pages/BlogIndex"));
 const BlogPost = lazy(() => import("@/pages/BlogPost"));
 const BeyondTech = lazy(() => import("@/pages/BeyondTech"));
 const ProjectsIndex = lazy(() => import("@/pages/ProjectsIndex"));
+const About = lazy(() => import("@/pages/About"));
+const Speaking = lazy(() => import("@/pages/Speaking"));
+const Credentials = lazy(() => import("@/pages/Credentials"));
 
 export default function App() {
   useRemoveStaticJsonLd();
@@ -28,6 +31,9 @@ export default function App() {
       <Routes>
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/speaking" element={<Speaking />} />
+          <Route path="/credentials" element={<Credentials />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/beyond-tech" element={<BeyondTech />} />
@@ -49,7 +55,7 @@ export default function App() {
           <Route path="/writing" element={<Navigate to="/blog" replace />} />
           <Route path="/playbook" element={<Navigate to="/" replace />} />
           <Route path="/now" element={<Navigate to="/" replace />} />
-          <Route path="/about" element={<Navigate to="/#about" replace />} />
+          <Route path="/certifications" element={<Navigate to="/credentials" replace />} />
           <Route path="/contact" element={<Navigate to="/#contact" replace />} />
           <Route path="/submit" element={<Navigate to="/#contact" replace />} />
 

@@ -55,6 +55,39 @@
     </image:image>
   </url>
   <url>
+    <loc>https://laythayache.com/about</loc>
+    <lastmod>2026-03-13</lastmod>
+    <priority>0.9</priority>
+    <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/images/brand/landing-page-portrait.png</image:loc>
+      <image:title>Layth Ayache</image:title>
+      <image:caption>AI Systems Engineer &amp; Technical Consultant</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://laythayache.com/speaking</loc>
+    <lastmod>2026-03-13</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/images/brand/og-default.jpg</image:loc>
+      <image:title>Speaking and community</image:title>
+      <image:caption>Talks, mentorship, and community engagements</image:caption>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://laythayache.com/credentials</loc>
+    <lastmod>2026-03-13</lastmod>
+    <priority>0.6</priority>
+    <changefreq>monthly</changefreq>
+    <image:image>
+      <image:loc>https://laythayache.com/images/brand/og-default.jpg</image:loc>
+      <image:title>Credentials and education</image:title>
+      <image:caption>Verified credentials and education</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://laythayache.com/beyond-tech</loc>
     <lastmod>2026-03-13</lastmod>
     <priority>0.5</priority>

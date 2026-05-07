@@ -341,6 +341,10 @@ export function personJsonLd() {
       "https://github.com/laythayache",
       "https://www.linkedin.com/in/laythayache",
       "https://medium.com/@laythayache5",
+      "https://sessionize.com/layth-ayache",
+      // TODO: append additional verified public profiles when available
+      //   (Crunchbase, Dev.to, Hashnode, ResearchGate, ORCID, press mentions).
+      //   Mirror the same list in scripts/inject-meta.mjs and on /about.
     ],
   };
 }
@@ -391,13 +395,16 @@ export function homePageJsonLd() {
       personJsonLd(),
       faqJsonLd(),
       {
-        "@type": "ProfilePage",
-        "@id": `${SITE_URL}/#profilepage`,
+        // Canonical ProfilePage lives on /about; homepage is a WebPage that
+        // references the Person entity to avoid competing ProfilePage @ids.
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/#webpage`,
         url: SITE_URL,
-        name: "Layth Ayache | AI Systems Architect & Technology Leader",
+        name: "Layth Ayache | AI Systems Engineer & Technical Consultant",
         description:
-          "AI systems architect and technology leader specializing in computer vision, NLP, privacy-preserving AI, web scraping, medical AI, cybersecurity, data pipeline engineering, and national-scale digital infrastructure. Building production-grade systems and leading engineering operations at Aligned Tech.",
+          "Layth Ayache builds AI systems that survive reality — production computer vision, data pipelines, and infrastructure-aware deployments for environments where assumptions fail.",
         isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": PERSON_ID },
         mainEntity: { "@id": PERSON_ID },
         inLanguage: "en",
         breadcrumb: breadcrumbJsonLd([{ name: "Home", path: "/" }]),
