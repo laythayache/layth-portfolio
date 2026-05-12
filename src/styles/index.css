@@ -189,13 +189,13 @@
 
   .hero-accessible {
     background:
-      linear-gradient(180deg, rgb(252 249 243) 0%, rgb(245 241 232) 62%, rgb(238 232 220) 100%);
+      linear-gradient(180deg, rgb(250 246 238) 0%, rgb(243 239 230) 62%, rgb(231 224 209) 100%);
   }
 
   .hero-blueprint {
     background:
-      radial-gradient(circle at 50% 34%, rgb(var(--steel) / 0.10) 0%, transparent 56%),
-      linear-gradient(180deg, rgb(252 249 243) 0%, rgb(245 241 232) 62%, rgb(238 232 220) 100%);
+      radial-gradient(circle at 50% 34%, rgb(var(--steel) / 0.08) 0%, transparent 56%),
+      linear-gradient(180deg, rgb(250 246 238) 0%, rgb(243 239 230) 62%, rgb(231 224 209) 100%);
   }
 
   .hero-blueprint-grid {
@@ -257,11 +257,11 @@
     background: linear-gradient(
       90deg,
       transparent 0%,
-      rgb(var(--accent) / 0.85) 50%,
+      rgb(var(--accent) / 0.45) 50%,
       transparent 100%
     );
-    width: 30%;
-    animation: signal-sweep 7s cubic-bezier(0.55, 0.05, 0.45, 0.95) infinite;
+    width: 22%;
+    animation: signal-sweep 11s cubic-bezier(0.55, 0.05, 0.45, 0.95) infinite;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -436,26 +436,29 @@
 
 @layer base {
   :root {
-    /* Brand palette — "Systems that survive reality":
-       warm-stone surfaces, deep-navy authority, controlled cyan-teal accent,
-       steel-grey for system diagrams, restrained amber for status. */
-    --surface: 245 241 232;
-    --surface-raised: 252 249 243;
-    --surface-overlay: 235 228 215;
-    --text-primary: 9 17 36;
-    --text-secondary: 32 50 76;
-    --text-muted: 92 108 128;
-    --border: 215 207 192;
-    --border-strong: 184 173 156;
-    --accent: 8 95 122;
-    --accent-hover: 6 75 100;
-    --steel: 100 116 139;
-    --steel-soft: 148 163 184;
-    --warn: 217 119 6;
-    --success: 5 122 85;
-    --code-bg: 13 22 42;
-    --code-text: 209 213 219;
-    --shadow-dark: 13 22 42;
+    /* Brand palette — "Controlled Blade":
+       disciplined, clean, controlled intensity. Cream + beige surfaces,
+       navy-black ink, olive primary accent, warm leather brown for emphasis,
+       charcoal for body. Restraint over chrome. */
+    --surface: 243 239 230;          /* #F3EFE6 cream */
+    --surface-raised: 250 246 238;   /* paper, just above surface */
+    --surface-overlay: 201 191 174;  /* #C9BFAE warm beige */
+    --text-primary: 11 29 42;        /* #0B1D2A navy-black, max emphasis */
+    --text-secondary: 61 65 64;      /* #3D4140 deep charcoal, body */
+    --text-muted: 100 100 95;        /* warm mid-charcoal */
+    --border: 188 178 162;           /* warm beige border */
+    --border-strong: 145 137 122;    /* deeper warm border */
+    --accent: 89 97 76;              /* #59614C olive — primary accent */
+    --accent-hover: 70 78 60;        /* darker olive */
+    --leather: 75 52 38;             /* #4B3426 warm brown — emphasis */
+    --ink: 11 29 42;                 /* #0B1D2A near-black navy (semantic) */
+    --steel: 100 100 95;             /* repurposed as muted text variant */
+    --steel-soft: 145 137 122;       /* same as border-strong */
+    --warn: 217 119 6;               /* amber — used very sparingly */
+    --success: 89 97 76;             /* olive doubles for stable/production */
+    --code-bg: 17 17 17;             /* #111111 true black for code surfaces */
+    --code-text: 201 191 174;        /* beige on black */
+    --shadow-dark: 11 29 42;
     --nav-height: 4.5rem;
     --space-1: 0.5rem;
     --space-2: 1rem;

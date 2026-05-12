@@ -25,25 +25,25 @@ export default function SpeakingSection() {
           visible: { transition: { staggerChildren: 0.03, delayChildren: 0.05 } },
         }}
       >
-        <motion.h2
-          className="type-h2 text-center"
+        <motion.div
+          className="mb-10"
           variants={{
-            hidden: { opacity: 0, y: 14 },
+            hidden: { opacity: 0, y: 12 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
-          Speaking and Community
-        </motion.h2>
-        <motion.p
-          className="type-body mx-auto mt-4 max-w-3xl text-center"
-          variants={{
-            hidden: { opacity: 0, y: 14 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
-          Talks and initiatives focused on practical AI systems, engineering
-          education, and community-first technology.
-        </motion.p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+            <span className="text-leather">—</span> no. 05 / speaking
+          </p>
+          <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
+            Speaking, mentorship, and community.
+          </h2>
+          <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
+          <p className="mt-5 max-w-2xl text-[1.0625rem] leading-[1.7] text-text-secondary">
+            Talks and initiatives focused on practical AI systems, engineering
+            education, and community-first technology.
+          </p>
+        </motion.div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {speakingEntries.map((entry) => {

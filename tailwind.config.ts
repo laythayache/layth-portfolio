@@ -53,6 +53,8 @@ export default {
           DEFAULT: "rgb(var(--steel) / <alpha-value>)",
           soft: "rgb(var(--steel-soft) / <alpha-value>)",
         },
+        leather: "rgb(var(--leather) / <alpha-value>)",
+        ink: "rgb(var(--ink) / <alpha-value>)",
         warn: "rgb(var(--warn) / <alpha-value>)",
         success: "rgb(var(--success) / <alpha-value>)",
       },

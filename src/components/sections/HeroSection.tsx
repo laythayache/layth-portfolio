@@ -1,14 +1,11 @@
-import { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { ChevronDown, Mic, Github, Linkedin, Mail } from "lucide-react";
+import { useCallback } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ChevronDown, Github, Linkedin } from "lucide-react";
 import { useLenis } from "@/motion/LenisProvider";
 import { SECTION, HERO } from "@/motion/tokens";
-import { useChat } from "@/context/ChatContext";
 import TextReveal from "@/components/TextReveal";
-import StatusChip from "@/components/brand/StatusChip";
 
-const HOOKS = [
-  "Built for environments where assumptions fail.",
+const MANIFESTO = [
   "Architecture before automation.",
   "Reliability is not a feature. It is the system.",
   "If the network fails, the system should degrade — not disappear.",
@@ -17,17 +14,6 @@ const HOOKS = [
 export default function HeroSection() {
   const reduced = useReducedMotion();
   const lenis = useLenis();
-  const { openVoiceChat } = useChat();
-  const [hookIndex, setHookIndex] = useState(0);
-
-  // Rotate question hooks
-  useEffect(() => {
-    if (reduced) return;
-    const interval = setInterval(() => {
-      setHookIndex((prev) => (prev + 1) % HOOKS.length);
-    }, HERO.hookInterval);
-    return () => clearInterval(interval);
-  }, [reduced]);
 
   const scrollToSection = useCallback(
     (id: string) => {
@@ -56,217 +42,193 @@ export default function HeroSection() {
       className="hero-accessible relative flex min-h-screen flex-col"
       aria-labelledby="hero-title"
     >
-      {/* Background accents */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgb(var(--accent)/0.08),transparent_50%)]" />
-      <div className="system-grid-bg pointer-events-none absolute inset-0 opacity-60" aria-hidden="true" />
+      {/* Restrained background: subtle warm wash + very faint grid */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_30%_28%,rgb(var(--accent)/0.05),transparent_55%)]"
+      />
+      <div
+        aria-hidden="true"
+        className="system-grid-bg pointer-events-none absolute inset-0 opacity-20"
+      />
 
-      {/* Top bar: social icons left, contact right */}
+      {/* Top bar: edition mark left, socials right */}
       <motion.div
         className="relative z-20 mx-auto flex w-full max-w-6xl items-center justify-between px-6 pt-6"
         {...fade(HERO.stagger.periphery)}
       >
-        <div className="flex items-center gap-4">
+        <p className="font-mono text-[10px] uppercase tracking-[0.28em] text-text-muted">
+          LA <span className="mx-2 text-border-strong">/</span> Beirut{" "}
+          <span className="mx-2 text-border-strong">—</span> 26
+        </p>
+        <div className="flex items-center gap-5">
           <a
             href="https://linkedin.com/in/laythayache"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="text-text-muted transition-colors hover:text-accent"
+            className="text-text-muted transition-colors hover:text-text-primary"
             data-magnetic
           >
-            <Linkedin size={20} />
+            <Linkedin size={17} />
           </a>
           <a
             href="https://github.com/laythayache"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub"
-            className="text-text-muted transition-colors hover:text-accent"
+            className="text-text-muted transition-colors hover:text-text-primary"
             data-magnetic
           >
-            <Github size={20} />
+            <Github size={17} />
           </a>
         </div>
-        <a
-          href="#contact"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollToSection("contact");
-          }}
-          className="inline-flex items-center gap-2 text-sm font-medium text-text-muted transition-colors hover:text-accent"
-          data-magnetic
-          data-cursor-label="Contact"
-        >
-          <Mail size={16} aria-hidden />
-          Get in Touch
-        </a>
       </motion.div>
 
-      {/* Main centered content */}
-      <div className="relative z-10 mx-auto flex flex-1 flex-col items-center justify-center px-6 py-2">
-        {/* Layered photo + logo composition */}
-        <motion.div
-          className="relative flex h-[200px] w-[200px] items-center justify-center overflow-visible sm:h-[220px] sm:w-[220px] md:h-[250px] md:w-[250px]"
-          initial={reduced ? undefined : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: HERO.entranceDuration, ease: HERO.ease }}
-        >
-          {/* Logo backdrop — inlined SVG, centered on the S content */}
-          <svg
-            viewBox="300 115 591 580"
-            aria-hidden="true"
-            className="absolute left-1/2 top-1/2 z-[2] h-auto w-[350px] -translate-x-1/2 -translate-y-1/2 opacity-[0.18] sm:w-[425px] md:w-[500px]"
+      {/* Main editorial layout: text 7/12 left, portrait 5/12 right (single column on mobile) */}
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col items-stretch justify-center gap-10 px-6 py-12 md:flex-row md:items-center md:gap-12 md:py-16 lg:gap-16">
+        {/* Left column: typography spine */}
+        <div className="md:w-7/12">
+          {/* Edition tag */}
+          <motion.p
+            className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted"
+            {...fade(HERO.stagger.periphery + 0.05)}
           >
-            <path transform="translate(819,147)" d="m0 0h9l-4 3-19 10-19 12-14 10-14 11-12 11-10 10-11 14-11 15-11 19-11 22-12 33-5 18-8 39-6 39-6 25-8 24-11 25-10 18-15 22-11 13-7 8-11 12-16 15-17 14-17 12-17 11-27 14-20 9-24 9-31 9-39 8-4-1 21-12 16-10 16-12 13-10 16-15 8-7 13-15 11-14 11-16 12-21 9-20 9-24 5-17 6-31 4-35 3-38 5-30 5-19 5-15 11-24 12-19 13-16 11-12 10-9 16-13 21-13 23-12 27-11 28-9 25-6 25-4 24-3z" fill="#6b7280"/>
-            <path transform="translate(813,135)" d="m0 0h32l23 1 3 1v2l-20 10-22 12-14 8-20 13-11 8-20 16-17 17-9 11-10 14-8 13-9 16-8 19-7 19-7 23-6 28-5 30-5 27-6 23-10 28-12 25-9 15-8 12-14 18-12 13-7 8-9 9-8 7-11 10-11 8-15 11-18 11-16 9-17 9-27 11-34 11-36 8-29 4-21 2h-23l4-4 21-10 23-13 20-12 16-11 17-13 10-9 8-7 19-19 11-14 13-18 10-17 8-16 9-23 7-23 6-30 3-25 3-40 3-26 5-24 6-20 9-22 9-17 12-18 12-14 9-10 8-8 11-9 13-10 25-15 16-8 18-8 28-10 22-6 23-5 29-4zm6 12-22 2-37 5-22 5-24 7-17 6-22 9-20 10-19 12-11 8-13 11-15 14-9 11-9 12-12 20-11 25-7 24-5 27-3 30-3 36-5 32-5 21-8 24-11 26-12 22-8 12-12 16-12 14-9 10-12 11-10 9-16 12-20 14-25 14-3 3 9-1 34-7 31-9 19-7 23-10 24-12 21-13 16-12 14-11 24-22 14-15 11-14 8-11 12-19 9-17 10-25 7-21 6-27 7-45 7-32 5-16 11-31 14-28 12-19 12-15 9-11 15-15 14-11 15-11 16-10 17-10 12-6v-1z" fill="#6b7280"/>
-          </svg>
+            <span className="text-leather">—</span> no. 04 / engineer&apos;s log
+          </motion.p>
 
-          {/* Pulsating rings — 4 rings radiating outward */}
-          <div className="animate-hero-pulse absolute z-[3] h-[220px] w-[220px] rounded-full border-2 border-accent/35 sm:h-[250px] sm:w-[250px] md:h-[280px] md:w-[280px]" />
-          <div className="animate-hero-pulse-delayed absolute z-[3] h-[270px] w-[270px] rounded-full border-[1.5px] border-accent/25 sm:h-[310px] sm:w-[310px] md:h-[350px] md:w-[350px]" />
-          <div className="animate-hero-pulse-third absolute z-[3] h-[320px] w-[320px] rounded-full border border-accent/15 sm:h-[370px] sm:w-[370px] md:h-[420px] md:w-[420px]" />
-          <div className="animate-hero-pulse-fourth absolute z-[3] h-[370px] w-[370px] rounded-full border border-accent/10 sm:h-[430px] sm:w-[430px] md:h-[490px] md:w-[490px]" />
-
-          {/* Circular photo — object-position lower to show full face */}
-          <img
-            src="/images/brand/landing-page-portrait.png"
-            alt="Layth Ayache — AI Systems Architect"
-            className="relative z-10 h-[150px] w-[150px] rounded-full border-[3px] border-accent/40 object-cover object-top shadow-[0_8px_30px_rgb(var(--accent)/0.22),0_18px_40px_rgb(var(--shadow-dark)/0.14)] sm:h-[175px] sm:w-[175px] md:h-[200px] md:w-[200px]"
-            loading="eager"
+          {/* Name */}
+          <TextReveal
+            text="Layth Ayache."
+            as="h1"
+            className="mt-3 font-serif text-[clamp(2.6rem,7vw,4.6rem)] font-semibold leading-[1.02] tracking-[-0.02em] text-text-primary"
+            delay={HERO.stagger.name}
           />
 
-          {/* Mic button — on the inner ring edge, bottom-right */}
-          <motion.button
-            type="button"
-            onClick={openVoiceChat}
-            aria-label="Start voice conversation"
-            data-magnetic
-            data-cursor-label="Talk to me"
-            className="absolute bottom-[-2%] right-[2%] z-20 flex h-9 w-9 items-center justify-center rounded-full border border-accent bg-surface-raised text-accent shadow-md transition-colors hover:bg-accent hover:text-white sm:h-10 sm:w-10"
-            whileHover={reduced ? undefined : { scale: 1.1 }}
-            whileTap={reduced ? undefined : { scale: 0.95 }}
-            initial={reduced ? undefined : { opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              delay: HERO.stagger.periphery,
-              duration: 0.4,
-              ease: HERO.ease,
-            }}
+          {/* Leather underline — single watch-strap mark */}
+          <motion.div
+            aria-hidden="true"
+            className="mt-4 h-[2px] w-14 bg-leather"
+            initial={reduced ? undefined : { scaleX: 0, transformOrigin: "left" }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: 0.6, delay: HERO.stagger.name + 0.2, ease: HERO.ease }}
+          />
+
+          {/* Subtitle */}
+          <motion.p
+            className="mt-5 font-mono text-xs uppercase tracking-[0.22em] text-text-secondary sm:text-[13px]"
+            {...fade(HERO.stagger.title)}
           >
-            <Mic size={16} />
-          </motion.button>
-        </motion.div>
+            AI Systems Engineer <span className="mx-2 text-border-strong">·</span> Technical Consultant
+          </motion.p>
 
-        {/* Name — extra bottom padding to prevent descender clipping */}
-        <TextReveal
-          text="Layth Ayache"
-          as="h1"
-          className="mt-4 font-serif text-3xl font-bold leading-tight text-text-primary sm:text-4xl md:text-5xl"
-          delay={HERO.stagger.name}
-        />
+          {/* Brand thesis */}
+          <motion.p
+            id="hero-title"
+            className="mt-8 max-w-2xl font-serif text-[clamp(1.4rem,2.6vw,2rem)] leading-[1.25] tracking-[-0.01em] text-text-primary"
+            {...fade(HERO.stagger.title + 0.05)}
+          >
+            I build AI systems that survive reality.
+          </motion.p>
 
-        {/* Title — letter-spaced */}
-        <motion.p
-          className="mt-1 font-mono text-xs uppercase tracking-[0.25em] text-text-muted sm:text-sm"
-          {...fade(HERO.stagger.title)}
-        >
-          AI Systems Engineer · Technical Consultant
-        </motion.p>
+          {/* Supporting paragraph */}
+          <motion.p
+            className="mt-5 max-w-xl text-[1.0625rem] leading-[1.7] text-text-secondary"
+            {...fade(HERO.stagger.title + 0.1)}
+          >
+            Computer vision, data pipelines, and infrastructure designed for
+            messy data, intermittent networks, and constraints that don&rsquo;t
+            appear in lab demos.
+          </motion.p>
 
-        {/* Brand thesis */}
-        <motion.p
-          className="mt-4 max-w-2xl text-center font-serif text-xl leading-tight text-text-primary sm:text-2xl md:text-[1.65rem]"
-          {...fade(HERO.stagger.title + 0.05)}
-          id="hero-title"
-        >
-          I build AI systems that survive reality.
-        </motion.p>
+          {/* Manifesto bullets — static, restrained */}
+          <motion.ul
+            className="mt-8 space-y-2"
+            {...fade(HERO.stagger.title + 0.15)}
+          >
+            {MANIFESTO.map((line) => (
+              <li
+                key={line}
+                className="flex gap-3 font-mono text-[12px] uppercase tracking-[0.1em] text-text-muted sm:text-[13px]"
+              >
+                <span aria-hidden="true" className="mt-[0.6em] h-px w-4 shrink-0 bg-leather/70" />
+                <span className="leading-snug">{line}</span>
+              </li>
+            ))}
+          </motion.ul>
 
-        {/* Supporting line */}
-        <motion.p
-          className="mt-3 max-w-xl text-center text-sm leading-relaxed text-text-secondary sm:text-base"
-          {...fade(HERO.stagger.title + 0.08)}
-        >
-          Computer vision, data pipelines, and infrastructure designed for
-          messy data, intermittent networks, and constraints that don&rsquo;t
-          appear in lab demos.
-        </motion.p>
-
-        {/* Rotating brand microcopy */}
-        <div className="mt-4 h-6 sm:h-7">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={hookIndex}
-              className="text-center font-mono text-[11px] uppercase tracking-[0.18em] text-text-muted sm:text-xs"
-              initial={reduced ? undefined : { opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? undefined : { opacity: 0, y: -8 }}
-              transition={{
-                duration: HERO.hookTransition,
-                ease: HERO.ease,
-              }}
+          {/* CTAs */}
+          <motion.div
+            className="mt-10 flex flex-wrap items-center gap-4"
+            {...fade(HERO.stagger.cta)}
+          >
+            <motion.button
+              type="button"
+              onClick={() => scrollToSection("projects")}
+              whileHover={reduced ? undefined : SECTION.buttonHover}
+              whileTap={reduced ? undefined : SECTION.buttonTap}
+              data-magnetic
+              data-cursor-label="Case studies"
+              className="inline-flex items-center gap-2 border border-accent bg-accent px-6 py-3 font-mono text-[11px] uppercase tracking-[0.18em] text-surface-raised transition-colors hover:bg-accent-hover"
             >
-              {HOOKS[hookIndex]}
-            </motion.p>
-          </AnimatePresence>
+              View case studies
+              <span aria-hidden="true">→</span>
+            </motion.button>
+            <button
+              type="button"
+              onClick={() => scrollToSection("contact")}
+              data-magnetic
+              data-cursor-label="Discuss a system"
+              className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-text-primary transition-colors hover:text-leather"
+            >
+              <span aria-hidden="true" className="h-px w-5 bg-text-primary transition-colors group-hover:bg-leather" />
+              Discuss a system
+            </button>
+          </motion.div>
         </div>
 
-        {/* CTA pair */}
-        <motion.div
-          className="mt-5 flex flex-col items-center gap-3 sm:flex-row"
-          {...fade(HERO.stagger.cta)}
+        {/* Right column: portrait as supporting editorial element, not the centerpiece */}
+        <motion.figure
+          className="relative mx-auto w-full max-w-[280px] md:mx-0 md:w-5/12 md:max-w-none"
+          initial={reduced ? undefined : { opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: HERO.stagger.name + 0.1, ease: HERO.ease }}
         >
-          <motion.button
-            type="button"
-            onClick={() => scrollToSection("projects")}
-            whileHover={reduced ? undefined : SECTION.buttonHover}
-            whileTap={reduced ? undefined : SECTION.buttonTap}
-            data-magnetic
-            data-cursor-label="Case studies"
-            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-7 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:px-8 sm:py-3 sm:text-base"
-          >
-            View Case Studies
-          </motion.button>
-          <motion.button
-            type="button"
-            onClick={() => scrollToSection("contact")}
-            whileHover={reduced ? undefined : SECTION.buttonHover}
-            whileTap={reduced ? undefined : SECTION.buttonTap}
-            data-magnetic
-            data-cursor-label="Discuss a system"
-            className="inline-flex items-center gap-2 rounded-md border border-text-primary/80 bg-transparent px-7 py-2.5 text-sm font-semibold text-text-primary transition-colors hover:bg-text-primary hover:text-surface-raised sm:px-8 sm:py-3 sm:text-base"
-          >
-            Discuss a System
-          </motion.button>
-        </motion.div>
-
-        {/* Status-chip strip — reinforces engineering discipline at a glance */}
-        <motion.div
-          className="mt-6 flex flex-wrap items-center justify-center gap-2"
-          aria-label="Engineering principles"
-          {...fade(HERO.stagger.cta + 0.05)}
-        >
-          <StatusChip tone="production" label="Production" />
-          <StatusChip tone="local-first" label="Local-first" />
-          <StatusChip tone="auditable" label="Auditable" />
-          <StatusChip tone="zero-cloud" label="Zero-cloud capable" />
-        </motion.div>
+          <div className="relative aspect-[4/5] w-full overflow-hidden border border-border-strong/60 bg-surface-overlay/40">
+            <img
+              src="/images/brand/landing-page-portrait.png"
+              alt="Layth Ayache — AI Systems Engineer & Technical Consultant"
+              loading="eager"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover object-top"
+            />
+            {/* Faint warm overlay to settle the photo into the palette */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface/30 mix-blend-multiply"
+            />
+          </div>
+          <figcaption className="mt-3 flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
+            <span>Layth · 03</span>
+            <span className="text-border-strong">portrait / beirut</span>
+          </figcaption>
+        </motion.figure>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — restrained */}
       <motion.button
         type="button"
         onClick={() => scrollToSection("about")}
         initial={reduced ? undefined : { opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: HERO.stagger.scroll, duration: 0.5 }}
-        className="scroll-indicator relative z-10 mx-auto mb-2 flex flex-col items-center gap-0.5 text-text-muted"
+        className="scroll-indicator relative z-10 mx-auto mb-6 flex flex-col items-center gap-1 text-text-muted"
         aria-label="Scroll to about section"
       >
-        <span className="text-[10px] font-medium uppercase tracking-widest">
-          Scroll
+        <span className="font-mono text-[10px] uppercase tracking-[0.28em]">
+          Continue
         </span>
-        <ChevronDown size={14} aria-hidden />
+        <ChevronDown size={13} aria-hidden />
       </motion.button>
     </section>
   );

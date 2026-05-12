@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import SEO from "@/components/SEO";
-import StatusChip from "@/components/brand/StatusChip";
 import SignalDivider from "@/components/brand/SignalDivider";
 import { BRAND } from "@/content/brand";
 import {
@@ -181,14 +180,6 @@ export default function About() {
               </div>
             </li>
           </ul>
-
-          {/* Brand chip strip */}
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            <StatusChip tone="production" label="Production" />
-            <StatusChip tone="local-first" label="Local-first" />
-            <StatusChip tone="auditable" label="Auditable" />
-            <StatusChip tone="zero-cloud" label="Zero-cloud capable" />
-          </div>
 
           <SignalDivider label="What I work on" className="my-12 px-0" />
 

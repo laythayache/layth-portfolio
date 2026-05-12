@@ -42,24 +42,24 @@ export default function CertificationsSection() {
           visible: { transition: { staggerChildren: 0.03, delayChildren: 0.03 } },
         }}
       >
-        <motion.h2
-          className="type-h2 text-center"
+        <motion.div
+          className="mb-10"
           variants={{
             hidden: { opacity: 0, y: 12 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
-          Certifications and Education
-        </motion.h2>
-        <motion.p
-          className="type-body mx-auto mt-4 max-w-3xl text-center"
-          variants={{
-            hidden: { opacity: 0, y: 12 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
-          Grouped credentials with concise details. Expand any card for context.
-        </motion.p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+            <span className="text-leather">—</span> no. 07 / credentials
+          </p>
+          <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
+            Credentials and education.
+          </h2>
+          <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
+          <p className="mt-5 max-w-2xl text-[1.0625rem] leading-[1.7] text-text-secondary">
+            Grouped credentials with concise details. Expand any card for context.
+          </p>
+        </motion.div>
 
         <div className="mt-10 space-y-8">
           {(Object.keys(GROUP_META) as CredentialGroup[]).map((groupKey) => {

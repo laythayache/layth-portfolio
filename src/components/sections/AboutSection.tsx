@@ -1,43 +1,32 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SECTION, HERO } from "@/motion/tokens";
+import { SECTION } from "@/motion/tokens";
 
 /* ── data ─────────────────────────────────────────────────────── */
 
-const PULL_QUOTES = [
-  "I don't build things that work — I build things that keep working.",
-  "I optimize for the person who inherits my code at 2am.",
-  "If it can't survive a bad network, a tired operator, and a Tuesday deploy — it's not ready.",
-  "When the power cuts three times a day, you learn what fault-tolerant really looks like.",
-  "Clever code impresses engineers. Boring code serves users.",
-  "I come from a country where nothing works automatically — so I learned to make things work automatically.",
-  "Unreliable infrastructure taught me what reliable engineering actually means.",
-  "The trash can is always fuller than the desk.",
-  "Every system I've shipped has a graveyard of versions that didn't make it.",
-  "I don't trust systems that haven't failed yet.",
-] as const;
-
-const QUOTE_INTERVAL = 5000;
+/** The single epigraph — strongest of the prior rotating set.
+ *  Editorial restraint: pick one line and commit. */
+const EPIGRAPH =
+  "I come from a country where nothing works automatically — so I learned to make things work automatically.";
 
 const CONTENT_BLOCKS = [
   {
-    label: "My Process",
+    label: "I.  Process",
     text: "I spec before I build, prototype before I commit, and test against failure before I test for success. I'd rather ship something simple that survives reality than something ambitious that doesn't.",
   },
   {
-    label: "Working With Me",
+    label: "II. Working with me",
     text: "I ask a lot of questions at the start so I don't build the wrong thing. I over-communicate during the build so there are no surprises. I document after the ship so the next person isn't guessing. That's the loop.",
   },
   {
-    label: "The Long Game",
+    label: "III. The long game",
     text: "I don't want to build the next app. I want to build the thing the next app runs on. Infrastructure that outlasts the team that built it.",
   },
 ] as const;
 
-/* ── reveal image component ───────────────────────────────────── */
+/* ── dual-layer reveal — kept but simplified ───────────────────── */
 
-/** Each blob is an elliptical hole that oscillates around the cursor. */
 const BLOBS = [
   { rx: 195, ry: 150, phase: 0, speed: 0.9, amp: 32 },
   { rx: 160, ry: 185, phase: 1.6, speed: 1.25, amp: 38 },
@@ -53,12 +42,10 @@ function DualLayerReveal() {
   const [isTouch, setIsTouch] = useState(false);
   const reduced = useReducedMotion();
 
-  /* detect touch device once */
   useEffect(() => {
     setIsTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
 
-  /* morphing animation loop — runs while cursor is over image */
   useEffect(() => {
     if (isTouch || reduced) return;
     const front = frontRef.current;
@@ -80,7 +67,7 @@ function DualLayerReveal() {
         front.style.maskImage = mask;
         front.style.webkitMaskImage = mask;
         front.style.maskComposite = "intersect";
-        (front.style as any).webkitMaskComposite = "source-in";
+        (front.style as React.CSSProperties & Record<string, string>).webkitMaskComposite = "source-in";
       }
       rafId.current = requestAnimationFrame(animate);
     }
@@ -112,78 +99,43 @@ function DualLayerReveal() {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "about-reveal-container relative mx-auto w-full max-w-2xl overflow-hidden rounded-2xl",
-        "shadow-[0_16px_48px_rgb(15_23_42_/_0.10)] border border-border",
-        "aspect-[4/3] sm:aspect-[16/10]",
-        isTouch && !reduced && "about-reveal-auto-sweep",
-      )}
-      onMouseMove={handleMove}
-      onMouseLeave={handleLeave}
-    >
-      {/* Back image — "The Process" (warm, revealed through mask) */}
-      <img
-        src="/images/about/about-process.png"
-        alt="The process — late nights, effort, and failed attempts"
-        className="absolute inset-0 h-full w-full object-cover"
-        loading="lazy"
-        draggable={false}
-      />
-
-      {/* Front image — "The Result" (cool/teal, default visible) */}
-      <img
-        ref={frontRef}
-        src="/images/about/about-result.png"
-        alt="The result — composed, confident, finished work"
-        className="absolute inset-0 h-full w-full object-cover"
-        loading="lazy"
-        draggable={false}
-      />
-
-      {/* Subtle hint label */}
-      {!isTouch && (
-        <span className="pointer-events-none absolute bottom-4 right-4 rounded-md border border-border-strong/60 bg-surface/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-text-muted backdrop-blur-sm select-none opacity-60">
-          hover to reveal
-        </span>
-      )}
-    </div>
-  );
-}
-
-/* ── rotating pull quote ──────────────────────────────────────── */
-
-function RotatingQuote() {
-  const [index, setIndex] = useState(0);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    if (reduced) return;
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % PULL_QUOTES.length);
-    }, QUOTE_INTERVAL);
-    return () => clearInterval(interval);
-  }, [reduced]);
-
-  return (
-    <div className="mx-auto flex min-h-[10rem] max-w-3xl items-center justify-center text-center sm:min-h-[8rem] lg:min-h-[7rem]">
-      <AnimatePresence mode="wait">
-        <motion.blockquote
-          key={index}
-          className="font-serif text-2xl font-semibold leading-snug text-text-primary italic md:text-3xl lg:text-4xl"
-          initial={reduced ? undefined : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={reduced ? undefined : { opacity: 0, y: -12 }}
-          transition={{
-            duration: HERO.hookTransition,
-            ease: SECTION.ease,
-          }}
-        >
-          &ldquo;{PULL_QUOTES[index]}&rdquo;
-        </motion.blockquote>
-      </AnimatePresence>
-    </div>
+    <figure>
+      <div
+        ref={containerRef}
+        className={cn(
+          "about-reveal-container relative w-full overflow-hidden border border-border-strong/60",
+          "aspect-[16/10]",
+          isTouch && !reduced && "about-reveal-auto-sweep",
+        )}
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+      >
+        <img
+          src="/images/about/about-process.png"
+          alt="Process — late nights, effort, failed attempts"
+          className="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          draggable={false}
+        />
+        <img
+          ref={frontRef}
+          src="/images/about/about-result.png"
+          alt="Result — composed, finished work"
+          className="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          draggable={false}
+        />
+        {!isTouch && (
+          <span className="pointer-events-none absolute bottom-3 right-3 border border-border-strong/60 bg-surface/80 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-text-muted backdrop-blur-sm opacity-60">
+            hover to reveal
+          </span>
+        )}
+      </div>
+      <figcaption className="mt-3 flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
+        <span>process &nbsp;/&nbsp; result</span>
+        <span className="text-border-strong">plate · ii</span>
+      </figcaption>
+    </figure>
   );
 }
 
@@ -193,35 +145,50 @@ export default function AboutSection() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="about" className="section-glass-alt section-shell px-6">
+    <section id="about" className="section-shell px-6">
       <motion.div
-        className="mx-auto max-w-6xl"
+        className="mx-auto max-w-5xl"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
         viewport={SECTION.viewport}
         variants={SECTION.container}
       >
-        {/* ── Dual-layer reveal image ── */}
-        <motion.div variants={SECTION.fadeUp}>
+        {/* Editorial chapter header */}
+        <motion.div variants={SECTION.fadeUp} className="mb-10">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+            <span className="text-leather">—</span> no. 01 / about
+          </p>
+          <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
+            From a country where nothing works automatically.
+          </h2>
+          <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
+        </motion.div>
+
+        {/* Static epigraph — replaces 10 rotating quotes */}
+        <motion.blockquote
+          variants={SECTION.fadeUp}
+          className="my-12 border-l-2 border-leather/60 pl-6 font-serif text-[clamp(1.25rem,2.2vw,1.75rem)] italic leading-[1.4] text-text-primary"
+        >
+          &ldquo;{EPIGRAPH}&rdquo;
+        </motion.blockquote>
+
+        {/* Diptych */}
+        <motion.div variants={SECTION.fadeUp} className="my-14">
           <DualLayerReveal />
         </motion.div>
 
-        {/* ── Rotating pull quote ── */}
-        <motion.div className="mt-12" variants={SECTION.fadeUp}>
-          <RotatingQuote />
-        </motion.div>
-
-        {/* ── Content blocks — 3 columns ── */}
-        <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+        {/* Three sequential journal-entry blocks — left-aligned, numbered roman */}
+        <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-10">
           {CONTENT_BLOCKS.map((block) => (
-            <motion.div key={block.label} variants={SECTION.fadeUp}>
-              <h3 className="mb-3 font-mono text-xs uppercase tracking-wider text-text-muted">
+            <motion.article key={block.label} variants={SECTION.fadeUp}>
+              <h3 className="font-mono text-[11px] uppercase tracking-[0.2em] text-leather">
                 {block.label}
               </h3>
-              <p className="text-base leading-relaxed text-text-secondary">
+              <div aria-hidden="true" className="mt-2 h-px w-8 bg-border-strong" />
+              <p className="mt-4 text-[1.0625rem] leading-[1.7] text-text-secondary">
                 {block.text}
               </p>
-            </motion.div>
+            </motion.article>
           ))}
         </div>
       </motion.div>

@@ -68,48 +68,44 @@ export default function ExperienceSection() {
   return (
     <section id="experience" className="section-glass section-shell px-6">
       <div className="mx-auto max-w-6xl">
-        {/* Header */}
-        <motion.h2
-          className="type-h2 text-center"
-          initial={reduced ? undefined : { opacity: 0, y: 10 }}
+        {/* Editorial chapter header */}
+        <motion.div
+          className="mb-10"
+          initial={reduced ? undefined : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          Experience Timeline
-        </motion.h2>
-        <motion.p
-          className="type-body mx-auto mt-4 max-w-3xl text-center"
-          initial={reduced ? undefined : { opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{
-            duration: 0.35,
-            delay: 0.05,
-            ease: [0.2, 0.8, 0.2, 1],
-          }}
-        >
-          Built across AI engineering, data science, telecom infrastructure,
-          and technical consulting.
-        </motion.p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+            <span className="text-leather">—</span> no. 03 / experience
+          </p>
+          <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
+            A timeline of systems shipped.
+          </h2>
+          <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
+          <p className="mt-5 max-w-2xl text-[1.0625rem] leading-[1.7] text-text-secondary">
+            Built across AI engineering, data science, telecom infrastructure,
+            and technical consulting.
+          </p>
+        </motion.div>
 
-        {/* Stats */}
-        <div className="mt-10 grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-border bg-surface-raised p-4">
+        {/* Stats — sharper rounded-md instead of rounded-xl */}
+        <div className="mt-4 grid gap-4 sm:grid-cols-3">
+          <div className="rounded-md border border-border bg-surface-raised p-4">
             <p className="type-caption">Roles</p>
-            <p className="mt-2 text-2xl font-semibold text-text-primary">
+            <p className="mt-2 font-serif text-3xl font-semibold text-text-primary">
               {totalEntries}
             </p>
           </div>
-          <div className="rounded-xl border border-border bg-surface-raised p-4">
+          <div className="rounded-md border border-border bg-surface-raised p-4">
             <p className="type-caption">Years Covered</p>
-            <p className="mt-2 text-2xl font-semibold text-text-primary">
+            <p className="mt-2 font-serif text-3xl font-semibold text-text-primary">
               {coveredYears}
             </p>
           </div>
-          <div className="rounded-xl border border-border bg-surface-raised p-4">
+          <div className="rounded-md border border-border bg-surface-raised p-4">
             <p className="type-caption">Engagement Types</p>
-            <p className="mt-2 text-2xl font-semibold text-text-primary">
+            <p className="mt-2 font-serif text-3xl font-semibold text-text-primary">
               {domains}
             </p>
           </div>

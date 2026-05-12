@@ -80,7 +80,7 @@ export default function ServicesSection() {
       aria-labelledby="services-heading"
     >
       <div
-        className="system-grid-bg pointer-events-none absolute inset-0 opacity-50"
+        className="system-grid-bg pointer-events-none absolute inset-0 opacity-25"
         aria-hidden="true"
       />
       <motion.div
@@ -93,36 +93,29 @@ export default function ServicesSection() {
           visible: { transition: { staggerChildren: 0.04, delayChildren: 0.04 } },
         }}
       >
-        <motion.p
-          className="type-kicker text-center"
+        <motion.div
+          className="mb-10"
           variants={{
-            hidden: { opacity: 0, y: 10 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-          }}
-        >
-          Where I can help
-        </motion.p>
-        <motion.h2
-          id="services-heading"
-          className="type-h2 mt-3 text-center"
-          variants={{
-            hidden: { opacity: 0, y: 14 },
+            hidden: { opacity: 0, y: 12 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
-          Engineered for the field, not the lab.
-        </motion.h2>
-        <motion.p
-          className="type-body mx-auto mt-4 max-w-3xl text-center"
-          variants={{
-            hidden: { opacity: 0, y: 14 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
-          Five engagement shapes — built around what production AI actually
-          requires: scoped problems, reliability budgets, and architecture that
-          survives the constraints of real environments.
-        </motion.p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+            <span className="text-leather">—</span> no. 02 / services
+          </p>
+          <h2
+            id="services-heading"
+            className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary"
+          >
+            Engineered for the field, not the lab.
+          </h2>
+          <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
+          <p className="mt-5 max-w-2xl text-[1.0625rem] leading-[1.7] text-text-secondary">
+            Five engagement shapes — built around what production AI actually
+            requires: scoped problems, reliability budgets, and architecture that
+            survives the constraints of real environments.
+          </p>
+        </motion.div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service) => {

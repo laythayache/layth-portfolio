@@ -145,25 +145,33 @@ export default function ContactSection() {
         <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.8fr]">
           <div>
             <motion.p
-              className="type-kicker"
+              className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted"
               variants={{
                 hidden: { opacity: 0, y: 10 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
               }}
             >
-              Contact
+              <span className="text-leather">—</span> no. 09 / contact
             </motion.p>
             <motion.h2
-              className="type-h2 mt-4"
+              className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary"
               variants={{
                 hidden: { opacity: 0, y: 10 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
               }}
             >
-              Let&apos;s Build The Future Together
+              Discuss a system.
             </motion.h2>
+            <motion.div
+              aria-hidden="true"
+              className="mt-4 h-[2px] w-14 bg-leather"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { duration: 0.4 } },
+              }}
+            />
             <motion.p
-              className="type-body mt-4"
+              className="mt-5 max-w-xl text-[1.0625rem] leading-[1.7] text-text-secondary"
               variants={{
                 hidden: { opacity: 0, y: 5 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },

@@ -20,31 +20,31 @@ export default function BlogSection() {
           visible: { transition: { staggerChildren: 0.06, delayChildren: 0.04 } },
         }}
       >
-        <motion.h2
-          className="type-h2 text-center"
+        <motion.div
+          className="mb-10"
           variants={{
             hidden: { opacity: 0, y: 12 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
           }}
         >
-          Writing and Insights
-        </motion.h2>
-        <motion.p
-          className="type-body mx-auto mt-4 max-w-3xl text-center"
-          variants={{
-            hidden: { opacity: 0, y: 12 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
-          In-depth notes on AI systems design, reliability, and practical
-          engineering decisions.
-        </motion.p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+            <span className="text-leather">—</span> no. 06 / writing
+          </p>
+          <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
+            Field notes from the engineering bench.
+          </h2>
+          <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
+          <p className="mt-5 max-w-2xl text-[1.0625rem] leading-[1.7] text-text-secondary">
+            In-depth notes on AI systems design, reliability, and practical
+            engineering decisions.
+          </p>
+        </motion.div>
 
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <motion.article
               key={post.slug}
-              className="card-lift overflow-hidden rounded-xl border border-border bg-surface-raised"
+              className="card-lift overflow-hidden rounded-md border border-border bg-surface-raised"
               variants={{
                 hidden: { opacity: 0, y: 10 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },

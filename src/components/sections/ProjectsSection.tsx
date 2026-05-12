@@ -60,25 +60,25 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="section-glass-alt section-shell px-6">
       <div className="mx-auto max-w-6xl">
-        <motion.h2
-          className="type-h2 text-center"
-          initial={reduced ? undefined : { opacity: 0, y: 8 }}
+        <motion.div
+          className="mb-10"
+          initial={reduced ? undefined : { opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-60px" }}
           transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          Featured Projects
-        </motion.h2>
-        <motion.p
-          className="type-body mx-auto mt-4 max-w-3xl text-center"
-          initial={reduced ? undefined : { opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.35, delay: 0.05, ease: [0.2, 0.8, 0.2, 1] }}
-        >
-          Highlights from production systems and research projects. Each card
-          links to a full case study with scope, architecture, and outcomes.
-        </motion.p>
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
+            <span className="text-leather">—</span> no. 04 / case studies
+          </p>
+          <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
+            Systems shipped under real constraints.
+          </h2>
+          <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
+          <p className="mt-5 max-w-2xl text-[1.0625rem] leading-[1.7] text-text-secondary">
+            Highlights from production systems and research projects. Each card
+            links to a full case study with scope, architecture, and outcomes.
+          </p>
+        </motion.div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {topProjects.map((project, index) => {
@@ -90,7 +90,7 @@ export default function ProjectsSection() {
             return (
               <motion.article
                 key={project.slug}
-                className="card-lift overflow-hidden rounded-2xl border border-border bg-surface-raised"
+                className="card-lift overflow-hidden rounded-md border border-border bg-surface-raised"
                 initial={reduced ? undefined : { opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
