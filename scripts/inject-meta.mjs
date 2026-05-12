@@ -758,11 +758,11 @@ function main() {
   // Patch homepage with its own JSON-LD
   const homeRoute = {
     path: "/",
-    title: "Layth Ayache | AI Systems Architect & Technology Leader",
+    title: "Layth Ayache | AI Systems Engineer & Technical Consultant",
     description:
-      "Senior AI systems architect and technology leader from Lebanon. Building production-grade computer vision, NLP, data pipelines, and national-scale digital infrastructure at Aligned Tech.",
+      "Layth Ayache builds AI systems that survive reality — production computer vision, data pipelines, and infrastructure-aware deployments for environments where assumptions fail. AI systems engineer and technical consultant from Lebanon.",
     ogImage: OG_IMAGE,
-    ogImageAlt: "Layth Ayache AI systems portfolio preview",
+    ogImageAlt: "Layth Ayache — AI Systems Engineer & Technical Consultant",
     ogImageWidth: 1200,
     ogImageHeight: 630,
     jsonLd: homeJsonLd(faqItems),
