@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLenis } from "@/motion/LenisProvider";
 import "./HeroSection.css";
 
@@ -143,9 +143,20 @@ export default function HeroSection() {
     };
   }, [splash]);
 
-  const base = photos.length ? photos : PLACEHOLDER_EVENTS;
-  const half = Array.from({ length: 28 }, (_, i) => base[i % base.length]);
-  const wall = [...half, ...half];
+  // Drifting wall tiles. Fill from the live gallery (cycle when few photos,
+  // one-each when many), then Fisher–Yates shuffle so photos land in scattered
+  // positions instead of a fixed lattice. Both halves are identical so the
+  // vertical drift loops seamlessly. Re-shuffles whenever the gallery changes.
+  const wall = useMemo(() => {
+    const base = photos.length ? photos : PLACEHOLDER_EVENTS;
+    const tiles = Math.max(28, base.length);
+    const filled = Array.from({ length: tiles }, (_, i) => base[i % base.length]);
+    for (let i = filled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [filled[i], filled[j]] = [filled[j], filled[i]];
+    }
+    return [...filled, ...filled];
+  }, [photos]);
 
   return (
     <section
