@@ -32,6 +32,8 @@ export default function HeroSection() {
   const fillRef = useRef<SVGPathElement>(null);
   const cometUpRef = useRef<SVGCircleElement>(null);
   const cometDnRef = useRef<SVGCircleElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [cols, setCols] = useState(7);
 
   const scrollToSection = useCallback(
     (id: string) => {
@@ -143,20 +145,55 @@ export default function HeroSection() {
     };
   }, [splash]);
 
-  // Drifting wall tiles. Fill from the live gallery (cycle when few photos,
-  // one-each when many), then Fisher–Yates shuffle so photos land in scattered
-  // positions instead of a fixed lattice. Both halves are identical so the
-  // vertical drift loops seamlessly. Re-shuffles whenever the gallery changes.
+  // Track the wall's live column count (responsive: 4→6→7→9) so the adjacency
+  // repair below knows each tile's vertical neighbour.
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid || typeof ResizeObserver === "undefined") return;
+    const measure = () => {
+      const tpl = getComputedStyle(grid).gridTemplateColumns;
+      const n = tpl && tpl !== "none" ? tpl.split(/\s+/).filter(Boolean).length : 0;
+      if (n > 0) setCols(n);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(grid);
+    return () => ro.disconnect();
+  }, []);
+
+  // Drifting wall tiles. Sequential constructive fill: each tile picks a random
+  // photo that differs from its already-placed left + top neighbours (plus, on
+  // the last row, the first row it loops into). With ≥3 photos a valid choice
+  // always exists, so the grid never shows two adjacent duplicates — yet stays
+  // random-looking. Both halves are identical so the vertical drift loops
+  // seamlessly. Re-runs when the gallery or column count changes.
   const wall = useMemo(() => {
     const base = photos.length ? photos : PLACEHOLDER_EVENTS;
-    const tiles = Math.max(28, base.length);
-    const filled = Array.from({ length: tiles }, (_, i) => base[i % base.length]);
-    for (let i = filled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [filled[i], filled[j]] = [filled[j], filled[i]];
+    const rows = Math.max(4, Math.ceil(28 / cols));
+    const n = rows * cols;
+    const arr: string[] = new Array(n);
+    for (let idx = 0; idx < n; idx++) {
+      const row = Math.floor(idx / cols);
+      const col = idx % cols;
+      const avoid = new Set<string>();
+      if (col > 0) avoid.add(arr[idx - 1]); // left
+      if (row > 0) avoid.add(arr[idx - cols]); // top
+      if (row === rows - 1) avoid.add(arr[col]); // cyclic bottom = loop seam
+      let choices = base.filter((p) => !avoid.has(p));
+      if (!choices.length) {
+        // Too few photos to honour every edge: drop the seam first (keep
+        // left+top distinct), then fall back to just a distinct left neighbour.
+        const lt = new Set<string>();
+        if (col > 0) lt.add(arr[idx - 1]);
+        if (row > 0) lt.add(arr[idx - cols]);
+        choices = base.filter((p) => !lt.has(p));
+        if (!choices.length) choices = col > 0 ? base.filter((p) => p !== arr[idx - 1]) : [...base];
+        if (!choices.length) choices = [...base];
+      }
+      arr[idx] = choices[Math.floor(Math.random() * choices.length)];
     }
-    return [...filled, ...filled];
-  }, [photos]);
+    return [...arr, ...arr];
+  }, [photos, cols]);
 
   return (
     <section
@@ -169,7 +206,7 @@ export default function HeroSection() {
       <div className="ff-wall" aria-hidden="true">
         <div className="ff-persp">
           <div className="ff-tilt">
-            <div className="ff-grid">
+            <div className="ff-grid" ref={gridRef}>
               {wall.map((src, i) => (
                 <img key={i} className="ff-tile" src={src} alt="" loading="lazy" decoding="async" />
               ))}
