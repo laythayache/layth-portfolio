@@ -14,5 +14,10 @@
 /ongoing        /           301
 /friends        /           301
 
+# Client-only app route (no prerendered file) — serve the SPA shell so
+# React Router can mount it client-side instead of hitting the 404 catch-all.
+/admin          /index.html   200
+/admin/*        /index.html   200
+
 # Unknown routes should return a real 404 for clean indexing
 /*              /404.html   404
