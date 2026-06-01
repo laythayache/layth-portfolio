@@ -36,7 +36,7 @@ const BLOBS = [
 
 function DualLayerReveal() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const frontRef = useRef<HTMLImageElement>(null);
+  const frontRef = useRef<HTMLDivElement>(null);
   const mousePos = useRef<{ x: number; y: number } | null>(null);
   const rafId = useRef(0);
   const [isTouch, setIsTouch] = useState(false);
@@ -110,20 +110,17 @@ function DualLayerReveal() {
         onMouseMove={handleMove}
         onMouseLeave={handleLeave}
       >
-        <img
-          src="/images/about/about-process.png"
-          alt="Process — late nights, effort, failed attempts"
-          className="absolute inset-0 h-full w-full object-cover"
-          loading="lazy"
-          draggable={false}
+        {/* Placeholder tonal layers (real process/result photos pending) */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full"
+          style={{ background: "linear-gradient(135deg, #2b2620, #15120f 72%)" }}
         />
-        <img
+        <div
           ref={frontRef}
-          src="/images/about/about-result.png"
-          alt="Result — composed, finished work"
-          className="absolute inset-0 h-full w-full object-cover"
-          loading="lazy"
-          draggable={false}
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full"
+          style={{ background: "linear-gradient(135deg, #C9BFAE, #8a8273 78%)" }}
         />
         {!isTouch && (
           <span className="pointer-events-none absolute bottom-3 right-3 border border-border-strong/60 bg-surface/80 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-text-muted backdrop-blur-sm opacity-60">

@@ -1,4 +1,4 @@
-import { lazy, useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RootLayout from "@/layouts/RootLayout";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -22,6 +22,7 @@ const ProjectsIndex = lazy(() => import("@/pages/ProjectsIndex"));
 const About = lazy(() => import("@/pages/About"));
 const Speaking = lazy(() => import("@/pages/Speaking"));
 const Credentials = lazy(() => import("@/pages/Credentials"));
+const Admin = lazy(() => import("@/pages/Admin"));
 
 export default function App() {
   useRemoveStaticJsonLd();
@@ -29,6 +30,8 @@ export default function App() {
     <ErrorBoundary>
       <BrowserRouter>
       <Routes>
+        {/* Standalone admin CMS — no public nav/footer */}
+        <Route path="/admin" element={<Suspense fallback={null}><Admin /></Suspense>} />
         <Route element={<RootLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
