@@ -4,11 +4,11 @@ compatibility_date = "2024-01-01"
 # R2 bucket for the dynamic event gallery (admin CMS)
 [[r2_buckets]]
 binding = "GALLERY"
-bucket_name = "layth-gallery"
+bucket_name = "portfolio-assets"
 
 [env.production]
 name = "layth-portfolio"
 
 [[env.production.r2_buckets]]
 binding = "GALLERY"
-bucket_name = "layth-gallery"
+bucket_name = "portfolio-assets"
