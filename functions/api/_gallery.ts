@@ -34,6 +34,7 @@ export function publicItem(it: GalleryItem) {
   return {
     id: it.id,
     caption: it.caption,
+    kind: it.contentType.startsWith("video/") ? "video" : "image",
     url: `/api/gallery/file/${encodeURIComponent(it.key)}`,
   };
 }
