@@ -779,6 +779,20 @@ function main() {
     count++;
   }
 
+  // Admin CMS — a client-only route with no SEO. Write a static shell so
+  // Cloudflare Pages serves /admin like any prerendered route (→ /admin/ →
+  // React mounts) instead of falling through to the 404 catch-all. noindex.
+  const adminShell = template
+    .replace(/<title>[^<]*<\/title>/, "<title>Admin — Layth Ayache</title>")
+    .replace(
+      /<meta name="robots" content="[^"]*"\s*\/>/,
+      '<meta name="robots" content="noindex, nofollow" />'
+    )
+    .replace("<!-- jsonld -->", "");
+  mkdirSync(`${OUT_DIR}/admin`, { recursive: true });
+  writeFileSync(`${OUT_DIR}/admin/index.html`, adminShell, "utf8");
+  count++;
+
   console.log(`Injected meta tags for ${count} routes`);
 }
 
