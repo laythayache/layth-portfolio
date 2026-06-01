@@ -113,9 +113,9 @@ export default function Navbar() {
         >
           <img
             src="/images/brand/logo-mark.svg"
-            alt="Layth Ayache logo mark"
-            width={1248}
-            height={832}
+            alt="Layth Ayache — hysteresis mark"
+            width={200}
+            height={200}
             loading="eager"
             decoding="async"
             className={cn(

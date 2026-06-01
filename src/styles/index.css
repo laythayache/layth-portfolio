@@ -9,6 +9,11 @@
 /* IBM Plex Mono — metadata/code font */
 @import "@fontsource/ibm-plex-mono/latin-400.css";
 
+/* Fraunces — display serif (brand mark wordmark + hero headline) */
+@import "@fontsource/fraunces/latin-500.css";
+@import "@fontsource/fraunces/latin-600.css";
+@import "@fontsource/fraunces/latin-600-italic.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
