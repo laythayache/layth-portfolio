@@ -10,11 +10,7 @@ const DOWN =
 const FILL = `${UP} L -75 55.98 ${DOWN.replace("M -75 55.98", "")} Z`;
 
 /* Fallback placeholder photos — shown until the CMS gallery (R2) has images. */
-type Media = { url: string; kind: "image" | "video" };
-const PLACEHOLDER_EVENTS: Media[] = Array.from({ length: 12 }, (_, i) => ({
-  url: `https://picsum.photos/seed/layth-ev${i + 1}/440/330`,
-  kind: "image",
-}));
+const PLACEHOLDER_EVENTS = Array.from({ length: 12 }, (_, i) => `https://picsum.photos/seed/layth-ev${i + 1}/440/330`);
 
 export default function HeroSection() {
   const lenis = useLenis();
@@ -28,7 +24,7 @@ export default function HeroSection() {
     }
   });
 
-  const [photos, setPhotos] = useState<Media[]>(PLACEHOLDER_EVENTS);
+  const [photos, setPhotos] = useState<string[]>(PLACEHOLDER_EVENTS);
 
   const sectionRef = useRef<HTMLElement>(null);
   const upRef = useRef<SVGPathElement>(null);
@@ -55,12 +51,7 @@ export default function HeroSection() {
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
         if (alive && d && Array.isArray(d.items) && d.items.length) {
-          setPhotos(
-            d.items.map((it: { url: string; kind?: string }) => ({
-              url: it.url,
-              kind: it.kind === "video" ? "video" : "image",
-            }))
-          );
+          setPhotos(d.items.map((it: { url: string }) => it.url));
         }
       })
       .catch(() => {});
@@ -152,27 +143,19 @@ export default function HeroSection() {
     };
   }, [splash]);
 
-  // Drifting wall tiles. Photos fill the wall; videos are a capped garnish
-  // (≤ MAX_VIDEO_TILES autoplaying <video> per half, ×2 for the loop) so the
-  // wall stays fast on mobile. Non-video tiles use your photos — or
-  // placeholders if you've only uploaded video. Fisher–Yates shuffle scatters
-  // tiles into random positions; both halves are identical so the drift loops
-  // seamlessly. Re-runs whenever the gallery changes.
+  // Drifting wall tiles. Fill from the live gallery (cycle when few photos,
+  // one-each when many), then Fisher–Yates shuffle so photos land in scattered
+  // positions instead of a fixed lattice. Both halves are identical so the
+  // vertical drift loops seamlessly. Re-shuffles whenever the gallery changes.
   const wall = useMemo(() => {
-    const MAX_VIDEO_TILES = 4;
-    const TILES = 28;
     const base = photos.length ? photos : PLACEHOLDER_EVENTS;
-    const vids = base.filter((m) => m.kind === "video").slice(0, MAX_VIDEO_TILES);
-    const imgs = base.filter((m) => m.kind === "image");
-    const fill = imgs.length ? imgs : PLACEHOLDER_EVENTS;
-    const tiles: Media[] = Array.from({ length: TILES }, (_, i) =>
-      i < vids.length ? vids[i] : fill[(i - vids.length) % fill.length]
-    );
-    for (let i = tiles.length - 1; i > 0; i--) {
+    const tiles = Math.max(28, base.length);
+    const filled = Array.from({ length: tiles }, (_, i) => base[i % base.length]);
+    for (let i = filled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+      [filled[i], filled[j]] = [filled[j], filled[i]];
     }
-    return [...tiles, ...tiles];
+    return [...filled, ...filled];
   }, [photos]);
 
   return (
@@ -187,23 +170,9 @@ export default function HeroSection() {
         <div className="ff-persp">
           <div className="ff-tilt">
             <div className="ff-grid">
-              {wall.map((m, i) =>
-                m.kind === "video" ? (
-                  <video
-                    key={i}
-                    className="ff-tile"
-                    src={m.url}
-                    autoPlay
-                    loop
-                    playsInline
-                    ref={(el) => {
-                      if (el) el.muted = true;
-                    }}
-                  />
-                ) : (
-                  <img key={i} className="ff-tile" src={m.url} alt="" loading="lazy" decoding="async" />
-                )
-              )}
+              {wall.map((src, i) => (
+                <img key={i} className="ff-tile" src={src} alt="" loading="lazy" decoding="async" />
+              ))}
             </div>
           </div>
         </div>

@@ -5,7 +5,6 @@ interface Item {
   id: string;
   url: string;
   caption: string;
-  kind?: "image" | "video";
 }
 
 export default function Admin() {
@@ -109,7 +108,7 @@ export default function Admin() {
   }
 
   async function del(id: string) {
-    if (!window.confirm("Delete this item?")) return;
+    if (!window.confirm("Delete this image?")) return;
     try {
       const r = await fetch(`/api/gallery/${id}`, { method: "DELETE" });
       if (r.ok) {
@@ -166,7 +165,7 @@ export default function Admin() {
           <div>
             <h1 className="font-serif text-2xl text-text-primary">Event gallery</h1>
             <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-text-muted">
-              {items.length} item{items.length === 1 ? "" : "s"} · order = display order on the hero
+              {items.length} image{items.length === 1 ? "" : "s"} · order = display order on the hero
             </p>
           </div>
           <button onClick={logout} className="font-mono text-xs uppercase tracking-[0.18em] text-text-secondary transition-colors hover:text-accent">
@@ -182,9 +181,9 @@ export default function Admin() {
           }}
           className="mt-6 flex cursor-pointer flex-col items-center justify-center gap-2 border-2 border-dashed border-border-strong bg-surface-raised/50 px-6 py-10 text-center transition-colors hover:border-accent"
         >
-          <input ref={fileRef} type="file" accept="image/*,video/mp4,video/webm" multiple className="hidden" onChange={(e) => upload(e.target.files)} />
-          <span className="font-mono text-sm text-text-primary">{busy ? "Uploading…" : "Drop images or video here, or click to choose"}</span>
-          <span className="font-mono text-[11px] text-text-muted">JPG · PNG · WEBP · AVIF · GIF up to 10MB · MP4 · WEBM up to 50MB</span>
+          <input ref={fileRef} type="file" accept="image/*" multiple className="hidden" onChange={(e) => upload(e.target.files)} />
+          <span className="font-mono text-sm text-text-primary">{busy ? "Uploading…" : "Drop images here, or click to choose"}</span>
+          <span className="font-mono text-[11px] text-text-muted">JPG · PNG · WEBP · AVIF · GIF — up to 10MB each</span>
         </label>
         {error && <p className="mt-3 font-mono text-xs text-warn">{error}</p>}
 
@@ -192,19 +191,10 @@ export default function Admin() {
           {items.map((it, i) => (
             <div key={it.id} className="overflow-hidden border border-border-strong bg-surface-raised">
               <div className="relative aspect-[4/3] bg-surface-overlay">
-                {it.kind === "video" ? (
-                  <video src={it.url} className="h-full w-full object-cover" muted playsInline controls preload="metadata" />
-                ) : (
-                  <img src={it.url} alt={it.caption} className="h-full w-full object-cover" loading="lazy" />
-                )}
+                <img src={it.url} alt={it.caption} className="h-full w-full object-cover" loading="lazy" />
                 <span className="absolute left-2 top-2 bg-ink/70 px-2 py-0.5 font-mono text-[10px] text-surface">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                {it.kind === "video" && (
-                  <span className="absolute right-2 top-2 bg-accent/90 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-surface-raised">
-                    video
-                  </span>
-                )}
               </div>
               <div className="p-3">
                 <input
@@ -243,7 +233,7 @@ export default function Admin() {
           ))}
         </div>
         {items.length === 0 && (
-          <p className="mt-10 text-center font-mono text-sm text-text-muted">Nothing yet — add your first highlighted event above.</p>
+          <p className="mt-10 text-center font-mono text-sm text-text-muted">No images yet — add your first highlighted event above.</p>
         )}
       </div>
     </div>

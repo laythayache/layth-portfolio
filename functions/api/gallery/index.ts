@@ -14,8 +14,6 @@ const EXT: Record<string, string> = {
   "image/webp": "webp",
   "image/avif": "avif",
   "image/gif": "gif",
-  "video/mp4": "mp4",
-  "video/webm": "webm",
 };
 
 // auth: upload an image -> R2 + manifest
@@ -34,10 +32,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const ct = file.type || "application/octet-stream";
   const ext = EXT[ct];
-  if (!ext) return json({ error: "Unsupported file type (images + MP4/WEBM video only)" }, 415);
-  const isVideo = ct.startsWith("video/");
-  const maxMb = isVideo ? 50 : 10;
-  if (file.size > maxMb * 1024 * 1024) return json({ error: `Max ${isVideo ? "video" : "image"} size is ${maxMb}MB` }, 413);
+  if (!ext) return json({ error: "Unsupported image type" }, 415);
+  if (file.size > 10 * 1024 * 1024) return json({ error: "Max file size is 10MB" }, 413);
 
   const id = crypto.randomUUID();
   const key = `${id}.${ext}`;
