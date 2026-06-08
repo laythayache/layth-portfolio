@@ -441,28 +441,26 @@
 
 @layer base {
   :root {
-    /* Brand palette — "Controlled Blade":
-       disciplined, clean, controlled intensity. Cream + beige surfaces,
-       navy-black ink, olive primary accent, warm leather brown for emphasis,
-       charcoal for body. Restraint over chrome. */
-    --surface: 243 239 230;          /* #F3EFE6 cream */
-    --surface-raised: 250 246 238;   /* paper, just above surface */
-    --surface-overlay: 201 191 174;  /* #C9BFAE warm beige */
-    --text-primary: 11 29 42;        /* #0B1D2A navy-black, max emphasis */
-    --text-secondary: 61 65 64;      /* #3D4140 deep charcoal, body */
-    --text-muted: 100 100 95;        /* warm mid-charcoal */
-    --border: 188 178 162;           /* warm beige border */
-    --border-strong: 145 137 122;    /* deeper warm border */
-    --accent: 89 97 76;              /* #59614C olive — primary accent */
-    --accent-hover: 70 78 60;        /* darker olive */
-    --leather: 75 52 38;             /* #4B3426 warm brown — emphasis */
-    --ink: 11 29 42;                 /* #0B1D2A near-black navy (semantic) */
-    --steel: 100 100 95;             /* repurposed as muted text variant */
-    --steel-soft: 145 137 122;       /* same as border-strong */
+    /* Brand palette — "Controlled Blade" · Beirut Navy:
+       deep navy surfaces, sand ink, amber accent. Restraint over chrome. */
+    --surface: 11 29 42;             /* #0B1D2A deep navy */
+    --surface-raised: 14 36 51;      /* #0E2433 one step up */
+    --surface-overlay: 7 21 32;      /* #071520 recessed */
+    --text-primary: 231 220 198;     /* #E7DCC6 sand, max emphasis */
+    --text-secondary: 185 174 151;   /* #B9AE97 muted sand, body */
+    --text-muted: 125 139 149;       /* #7D8B95 slate-sand */
+    --border: 42 56 68;              /* subtle navy-light hairline */
+    --border-strong: 74 90 102;      /* deeper navy-light border */
+    --accent: 200 137 59;            /* #C8893B amber — primary accent */
+    --accent-hover: 156 106 44;      /* #9C6A2C darker amber */
+    --leather: 200 137 59;           /* repointed to amber (brown reads muddy on navy) */
+    --ink: 11 29 42;                 /* #0B1D2A near-black navy (semantic, overlays) */
+    --steel: 125 139 149;            /* muted text variant */
+    --steel-soft: 74 90 102;         /* same as border-strong */
     --warn: 217 119 6;               /* amber — used very sparingly */
     --success: 89 97 76;             /* olive doubles for stable/production */
     --code-bg: 17 17 17;             /* #111111 true black for code surfaces */
-    --code-text: 201 191 174;        /* beige on black */
+    --code-text: 231 220 198;        /* sand on black */
     --shadow-dark: 11 29 42;
     --nav-height: 4.5rem;
     --space-1: 0.5rem;

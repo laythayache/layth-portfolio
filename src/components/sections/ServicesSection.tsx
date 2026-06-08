@@ -167,7 +167,7 @@ export default function ServicesSection() {
           <button
             type="button"
             onClick={scrollToContact}
-            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-7 py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
+            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-7 py-3 text-sm font-semibold text-surface transition-colors hover:bg-accent-hover"
             data-magnetic
             data-cursor-label="Discuss a system"
           >

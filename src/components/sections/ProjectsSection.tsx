@@ -161,7 +161,7 @@ export default function ProjectsSection() {
                   <div className="mt-5 flex flex-wrap items-center gap-3">
                     <Link
                       to={`/projects/${project.slug}`}
-                      className="inline-flex items-center gap-2 rounded-md border border-accent px-4 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-white"
+                      className="inline-flex items-center gap-2 rounded-md border border-accent px-4 py-2 text-sm font-semibold text-accent transition-colors hover:bg-accent hover:text-surface"
                     >
                       Open Case Study
                       <ArrowRight size={14} aria-hidden />

@@ -68,14 +68,14 @@ export default function NewsletterSignup() {
           }}
           required
           aria-label="Email address"
-          className="min-w-0 flex-1 rounded-md border border-border-strong bg-white px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
+          className="min-w-0 flex-1 rounded-md border border-border-strong bg-surface-raised px-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none"
         />
         <motion.button
           type="submit"
           disabled={status === "loading"}
           whileHover={reduced ? undefined : SECTION.buttonHover}
           whileTap={reduced ? undefined : SECTION.buttonTap}
-          className="shrink-0 rounded-md border border-accent bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
+          className="shrink-0 rounded-md border border-accent bg-accent px-4 py-2.5 text-sm font-semibold text-surface transition-colors hover:bg-accent-hover disabled:opacity-60"
         >
           {status === "loading" ? "..." : "Subscribe"}
         </motion.button>

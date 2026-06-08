@@ -190,7 +190,7 @@ export default function ContactSection() {
             >
           <motion.a
             href="mailto:laythayache5@gmail.com"
-            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover sm:px-5 sm:py-3 sm:text-base"
+            className="inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-4 py-2.5 text-sm font-semibold text-surface transition-colors hover:bg-accent-hover sm:px-5 sm:py-3 sm:text-base"
             whileHover={reduced ? undefined : SECTION.buttonHover}
             whileTap={reduced ? undefined : SECTION.buttonTap}
           >
@@ -264,7 +264,7 @@ export default function ContactSection() {
                 autoComplete="name"
                 value={form.name}
                 onChange={(event) => updateField("name", event.target.value)}
-                className="mt-2 w-full rounded-md border border-border-strong bg-white px-4 py-3 text-base text-text-primary focus:border-accent focus:outline-none"
+                className="mt-2 w-full rounded-md border border-border-strong bg-surface-raised px-4 py-3 text-base text-text-primary focus:border-accent focus:outline-none"
                 required
               />
             </div>
@@ -283,7 +283,7 @@ export default function ContactSection() {
                 autoComplete="email"
                 value={form.email}
                 onChange={(event) => updateField("email", event.target.value)}
-                className="mt-2 w-full rounded-md border border-border-strong bg-white px-4 py-3 text-base text-text-primary focus:border-accent focus:outline-none"
+                className="mt-2 w-full rounded-md border border-border-strong bg-surface-raised px-4 py-3 text-base text-text-primary focus:border-accent focus:outline-none"
                 required
               />
             </div>
@@ -302,7 +302,7 @@ export default function ContactSection() {
                 autoComplete="organization"
                 value={form.company}
                 onChange={(event) => updateField("company", event.target.value)}
-                className="mt-2 w-full rounded-md border border-border-strong bg-white px-4 py-3 text-base text-text-primary focus:border-accent focus:outline-none"
+                className="mt-2 w-full rounded-md border border-border-strong bg-surface-raised px-4 py-3 text-base text-text-primary focus:border-accent focus:outline-none"
               />
             </div>
 
@@ -319,7 +319,7 @@ export default function ContactSection() {
                 type="text"
                 value={form.subject}
                 onChange={(event) => updateField("subject", event.target.value)}
-                className="mt-2 w-full rounded-md border border-border-strong bg-white px-4 py-3 text-base text-text-primary focus:border-accent focus:outline-none"
+                className="mt-2 w-full rounded-md border border-border-strong bg-surface-raised px-4 py-3 text-base text-text-primary focus:border-accent focus:outline-none"
               />
             </div>
           </div>
@@ -337,7 +337,7 @@ export default function ContactSection() {
               value={form.message}
               onChange={(event) => updateField("message", event.target.value)}
               rows={7}
-              className="mt-2 w-full rounded-md border border-border-strong bg-white px-4 py-3 text-base leading-relaxed text-text-primary focus:border-accent focus:outline-none"
+              className="mt-2 w-full rounded-md border border-border-strong bg-surface-raised px-4 py-3 text-base leading-relaxed text-text-primary focus:border-accent focus:outline-none"
               required
             />
             <p className="mt-2 text-sm text-text-muted">
@@ -351,8 +351,8 @@ export default function ContactSection() {
               role={feedback.kind === "error" ? "alert" : "status"}
               className={
                 feedback.kind === "error"
-                  ? "mt-4 text-sm font-medium text-red-700"
-                  : "mt-4 text-sm font-medium text-emerald-700"
+                  ? "mt-4 text-sm font-medium text-red-400"
+                  : "mt-4 text-sm font-medium text-emerald-400"
               }
             >
               {feedback.message}
@@ -364,7 +364,7 @@ export default function ContactSection() {
             disabled={submitting}
             whileHover={reduced ? undefined : SECTION.buttonHover}
             whileTap={reduced ? undefined : SECTION.buttonTap}
-            className="mt-6 inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-6 py-3 text-base font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-6 inline-flex items-center gap-2 rounded-md border border-accent bg-accent px-6 py-3 text-base font-semibold text-surface transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? "Sending..." : "Send Message"}
             <ArrowUpRight size={15} aria-hidden />
