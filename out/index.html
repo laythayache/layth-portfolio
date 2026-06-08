@@ -16,7 +16,7 @@
     <meta name="publisher" content="Layth Ayache" />
     <meta name="application-name" content="Layth Ayache" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="theme-color" content="#F8FAFC" />
+    <meta name="theme-color" content="#0B1D2A" />
     <meta property="og:title" content="Layth Ayache | AI Systems Engineer &amp; Technical Consultant" />
     <meta property="og:description" content="Layth Ayache builds AI systems that survive reality — production computer vision, data pipelines, and infrastructure-aware deployments for environments where assumptions fail. AI systems engineer and technical consultant from Lebanon." />
     <meta property="og:type" content="website" />
@@ -264,111 +264,47 @@
           }
         ]
       }
-    },
-    {
-      "@type": "FAQPage",
-      "@id": "https://laythayache.com/#faq",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What kind of systems do you architect?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "I architect production-grade AI systems including computer vision platforms (YOLOv8, OpenCV), NLP pipelines, web scraping and data extraction systems (Google scraping, Selenium, Scrapy), medical AI and clinical decision support, cybersecurity infrastructure, real-time analytics dashboards, and large-scale data pipelines. My work spans from embedded hardware and IoT to cloud-deployed national-scale services."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What industries have you worked in?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Telecom infrastructure (OGERO — network engineering, fiber optics, DSLAM systems, and predictive analytics at national scale), finance (Organizer/MEA — AI-powered document processing, OCR pipelines, and anomaly detection), marketing technology (Aligned Tech — CRM architecture, API integrations, ETL pipelines), healthcare and emergency medicine (EMT, patient monitoring systems), cybersecurity (network security, firewall configuration, VLAN security), and accessibility (OmniSign — sign language AI with computer vision)."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's your tech stack?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "AI/ML: Python, TensorFlow, PyTorch, YOLOv8, OpenCV, Scikit-learn, Hugging Face, LangChain. Web scraping: Selenium, Puppeteer, Playwright, Scrapy, BeautifulSoup. Full-stack: React, TypeScript, Node.js, GraphQL. Data: PostgreSQL, MongoDB, Apache Kafka, real-time ETL. Infrastructure: Docker, Kubernetes, AWS, GCP, Cloudflare Workers. Security: Cisco, Linux, SNMP, firewall/VLAN configuration. Embedded: Arduino, Raspberry Pi, FPGA, Verilog. CRM: HubSpot, Zapier."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you build web scraping and data extraction systems?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. I architect automated web scraping systems for Google search results, social media platforms, e-commerce pricing, competitive intelligence, and structured data extraction at scale. I use Selenium, Puppeteer, Playwright, Scrapy, and BeautifulSoup depending on the target. I design anti-detection strategies, proxy rotation, rate limiting, and data pipeline integration for production-grade scraping infrastructure."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you work on medical AI and healthcare systems?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. I have experience in medical image analysis, clinical decision support systems, patient monitoring, biomedical signal processing, and emergency medical technology (certified EMT with the Lebanese Civil Defense). I build HIPAA-aware AI systems for healthcare providers and integrate with electronic health records and telemedicine platforms."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you work on cybersecurity and network security?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. I have hands-on experience with network security architecture at OGERO (national telecom), including firewall configuration, VLAN security, intrusion detection, SNMP automation, and multi-layer security. I design zero trust architectures, security automation pipelines, threat detection systems, and critical infrastructure protection for production environments."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you work with CRMs and SaaS platforms?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. I architect CRM systems at scale, build API integrations with platforms like HubSpot, Meta, LinkedIn, and TikTok, and design automated workflows connecting SaaS tools. I structure databases and data schemas for internal analytics platforms and marketing automation systems."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's your vision for Lebanon's technology infrastructure?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "My 20-year vision is to architect and lead nationwide digital infrastructure for Lebanon — from telecom and smart city systems to e-government platforms, healthcare networks, and critical infrastructure protection. Having worked at OGERO (the national telecom backbone), I understand the existing infrastructure and what needs to be built. I am positioning myself as a stack architect and technology decision-maker who can bridge Lebanon's infrastructure gaps with production-grade systems."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you offer senior technical consulting?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. I provide senior-level consulting on AI system architecture, infrastructure design, web scraping systems, medical AI integration, cybersecurity strategy, cloud infrastructure, and digital transformation. Whether you need a production pipeline, national-scale infrastructure, security audit, or AI strategy — I can architect, scope, and lead the build."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How can I work with you?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Reach out via email at laythayache5@gmail.com, schedule a call at calendly.com/laythayache5/30min, or connect on LinkedIn. I'm open to senior consulting engagements, infrastructure architecture contracts, full-time leadership opportunities, advisory roles, and speaking invitations."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What languages do you speak?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Arabic (native), French (B2 — DELF certified), and English (full professional proficiency). I work comfortably in multilingual environments across the Middle East and internationally."
-          }
-        }
-      ]
     }
   ]
 }
     </script>
-    <script type="module" crossorigin src="/assets/index-CWYRWIXR.js"></script>
+    <!--
+      Navy boot canvas — kills the cream-then-navy flash on the homepage.
+      The body is cream (--surface) site-wide, but the homepage hero is navy
+      and only paints once React mounts. This layer fills the first viewport
+      with the hero navy from the very first frame. It's gated to "/" only
+      (so cream inner pages don't flash navy) and is exactly one viewport tall
+      and absolutely positioned, so it sits behind the hero and never bleeds
+      into the transparent cream sections below it.
+    -->
+    <style>
+      #hero-boot { display: none; }
+      html.hero-boot #hero-boot {
+        display: block;
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 100vh; height: 100svh;
+        background-color: #0B1D2A;
+        z-index: 0;
+        pointer-events: none;
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          var p = location.pathname;
+          if (p === "/" || p === "") document.documentElement.classList.add("hero-boot");
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-BVe72vBW.js"></script>
     <link rel="modulepreload" crossorigin href="/assets/vendor-react-Z0NsfZkA.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-motion-HaAVijAX.js">
     <link rel="modulepreload" crossorigin href="/assets/vendor-icons-CjeJHndi.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-CCx3RJG2.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-BhwrgIzg.css">
   </head>
   <body>
     <div id="root"></div>
+    <div id="hero-boot" aria-hidden="true"></div>
   </body>
 </html>

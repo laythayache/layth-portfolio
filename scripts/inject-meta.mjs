@@ -482,6 +482,38 @@ function parseFaqItems() {
 
 /* ── Route definitions ─────────────────────────────────────────────── */
 
+function faqRouteJsonLd(faqItems) {
+  const url = `${BASE_URL}/faq`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        url,
+        mainEntity: faqItems.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: { "@type": "Answer", text: item.answer },
+        })),
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${url}#webpage`,
+        url,
+        name: "FAQ | Layth Ayache",
+        description:
+          "Short answers about consulting, AI systems, and collaboration with Layth Ayache.",
+        isPartOf: { "@id": WEBSITE_ID },
+        breadcrumb: breadcrumb([
+          { name: "Home", path: "/" },
+          { name: "FAQ", path: "/faq" },
+        ]),
+      },
+    ],
+  };
+}
+
 function getRoutes() {
   const projects = parseProjects();
   const posts = parseBlogPosts();
@@ -753,6 +785,15 @@ function main() {
   const template = readFileSync(templatePath, "utf8");
   const routes = getRoutes();
   const faqItems = parseFaqItems();
+  routes.push({
+    path: "/faq",
+    title: "FAQ | Layth Ayache",
+    description:
+      "Short answers about consulting, AI systems, and collaboration with Layth Ayache.",
+    ogImage: OG_IMAGE,
+    ogImageAlt: "Layth Ayache FAQ",
+    jsonLd: faqRouteJsonLd(faqItems),
+  });
   let count = 0;
 
   // Patch homepage with its own JSON-LD
@@ -765,7 +806,7 @@ function main() {
     ogImageAlt: "Layth Ayache — AI Systems Engineer & Technical Consultant",
     ogImageWidth: 1200,
     ogImageHeight: 630,
-    jsonLd: homeJsonLd(faqItems),
+    jsonLd: homeJsonLd(),
   };
   writeFileSync(templatePath, injectMeta(template, homeRoute), "utf8");
   count++;

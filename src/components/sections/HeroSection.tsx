@@ -219,7 +219,7 @@ export default function HeroSection() {
 
       <div className="ff-field">
         <div className="ff-kicker">
-          <span className="tick" aria-hidden="true" /> AI Systems &amp; Automation Engineer — Beirut
+          <span className="tick" aria-hidden="true" /> AI Systems and Automation Engineer
         </div>
 
         <div className="ff-markwrap" role="img" aria-label="Layth Ayache — hysteresis emblem">
@@ -245,9 +245,8 @@ export default function HeroSection() {
         </div>
 
         <div className="ff-below">
-          <h1 className="ff-rise" data-d="3">
-            I build systems that <em>hold under pressure.</em>
-          </h1>
+          {/* SEO/a11y heading only — intentionally not shown (the emblem carries the hero). */}
+          <h1 className="sr-only">I build systems that hold under pressure.</h1>
           <div className="ff-cta ff-rise" data-d="4">
             <button type="button" className="ff-btn" onClick={() => scrollToSection("projects")}>
               See the work <span aria-hidden="true">→</span>

@@ -8,15 +8,17 @@ import useScrollSpy from "@/hooks/useScrollSpy";
 
 const NAV_SECTIONS = [
   { id: "about", label: "About" },
-  { id: "services", label: "Services" },
   { id: "projects", label: "Work" },
-  { id: "speaking", label: "Speaking" },
-  { id: "blog", label: "Writing" },
+  { id: "services", label: "Services" },
   { id: "certifications", label: "Credentials" },
-  { id: "faq", label: "FAQ" },
+  { id: "speaking", label: "Speaking" },
+  { to: "/blog", label: "Writing" },
+  { to: "/faq", label: "FAQ" },
   { id: "contact", label: "Contact" },
 ] as const;
-const NAV_SECTION_IDS = NAV_SECTIONS.map((section) => section.id);
+const NAV_SECTION_IDS = NAV_SECTIONS.flatMap((section) =>
+  "id" in section ? [section.id] : []
+);
 const SCROLLSPY_THRESHOLDS = [0.2, 0.45, 0.7];
 
 export default function Navbar() {
@@ -135,6 +137,19 @@ export default function Navbar() {
         {/* Desktop nav links */}
         <div className="hidden items-center gap-2 lg:flex">
           {NAV_SECTIONS.map((section) => {
+            if ("to" in section) {
+              return (
+                <Link
+                  key={section.to}
+                  to={section.to}
+                  data-magnetic
+                  data-cursor-label={`Go to ${section.label}`}
+                  className="relative rounded-md px-3 py-2 text-base font-medium text-text-secondary transition-colors hover:bg-surface-overlay hover:text-accent"
+                >
+                  {section.label}
+                </Link>
+              );
+            }
             const active = isHome && activeSection === section.id;
             return (
               <button
@@ -192,6 +207,18 @@ export default function Navbar() {
           >
             <div className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
               {NAV_SECTIONS.map((section) => {
+                if ("to" in section) {
+                  return (
+                    <Link
+                      key={section.to}
+                      to={section.to}
+                      onClick={() => setMobileOpen(false)}
+                      className="rounded-md px-3 py-3 text-left text-base font-medium text-text-secondary transition-colors hover:bg-surface-overlay hover:text-accent"
+                    >
+                      {section.label}
+                    </Link>
+                  );
+                }
                 const active = isHome && activeSection === section.id;
                 return (
                   <button

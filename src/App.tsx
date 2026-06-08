@@ -23,6 +23,7 @@ const About = lazy(() => import("@/pages/About"));
 const Speaking = lazy(() => import("@/pages/Speaking"));
 const Credentials = lazy(() => import("@/pages/Credentials"));
 const Admin = lazy(() => import("@/pages/Admin"));
+const FAQ = lazy(() => import("@/pages/FAQ"));
 
 export default function App() {
   useRemoveStaticJsonLd();
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/beyond-tech" element={<BeyondTech />} />
+          <Route path="/faq" element={<FAQ />} />
 
           {/* Projects listing + detail routes */}
           <Route path="/projects" element={<ProjectsIndex />} />

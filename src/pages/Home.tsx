@@ -7,9 +7,7 @@ import ServicesSection from "@/components/sections/ServicesSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import SpeakingSection from "@/components/sections/SpeakingSection";
-import BlogSection from "@/components/sections/BlogSection";
 import CertificationsSection from "@/components/sections/CertificationsSection";
-import FAQSection from "@/components/sections/FAQSection";
 import ContactSection from "@/components/sections/ContactSection";
 import { DEFAULT_KEYWORDS, homePageJsonLd } from "@/content/siteSeo";
 import { projects } from "@/content/projects";
@@ -55,19 +53,15 @@ export default function Home() {
         <div className="section-divider" aria-hidden="true" />
         <AboutSection />
         <div className="section-divider" aria-hidden="true" />
-        <ServicesSection />
-        <div className="section-divider" aria-hidden="true" />
         <ExperienceSection />
         <div className="section-divider" aria-hidden="true" />
         <ProjectsSection />
         <div className="section-divider" aria-hidden="true" />
-        <SpeakingSection />
-        <div className="section-divider" aria-hidden="true" />
-        <BlogSection />
+        <ServicesSection />
         <div className="section-divider" aria-hidden="true" />
         <CertificationsSection />
         <div className="section-divider" aria-hidden="true" />
-        <FAQSection />
+        <SpeakingSection />
         <div className="section-divider" aria-hidden="true" />
         <ContactSection />
       </div>

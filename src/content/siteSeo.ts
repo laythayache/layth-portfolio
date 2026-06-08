@@ -364,10 +364,12 @@ export function organizationJsonLd() {
   };
 }
 
-function faqJsonLd() {
+export function faqPageJsonLd() {
   return {
+    "@context": "https://schema.org",
     "@type": "FAQPage",
-    "@id": `${SITE_URL}/#faq`,
+    "@id": `${SITE_URL}/faq#faq`,
+    url: `${SITE_URL}/faq`,
     mainEntity: faqItems.map((item) => ({
       "@type": "Question",
       name: item.question,
@@ -393,7 +395,6 @@ export function homePageJsonLd() {
       websiteJsonLd(),
       organizationJsonLd(),
       personJsonLd(),
-      faqJsonLd(),
       {
         // Canonical ProfilePage lives on /about; homepage is a WebPage that
         // references the Person entity to avoid competing ProfilePage @ids.
