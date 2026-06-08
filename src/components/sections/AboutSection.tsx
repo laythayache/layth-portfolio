@@ -1,193 +1,98 @@
-import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
 import { SECTION } from "@/motion/tokens";
+import "./AboutSection.css";
 
-/* ── data ─────────────────────────────────────────────────────── */
+/* ── content ───────────────────────────────────────────────────── */
 
-/** The single epigraph — strongest of the prior rotating set.
- *  Editorial restraint: pick one line and commit. */
-const EPIGRAPH =
-  "I come from a country where nothing works automatically — so I learned to make things work automatically.";
-
-const CONTENT_BLOCKS = [
+/** Three principle blocks — direct, compressed, no fog words. Kept verbatim;
+ *  they read as "under construction, not finished authority". */
+const BLOCKS = [
   {
-    label: "I.  Process",
+    n: "I",
+    label: "Process",
     text: "I spec before I build, prototype before I commit, and test against failure before I test for success. I'd rather ship something simple that survives reality than something ambitious that doesn't.",
   },
   {
-    label: "II. Working with me",
+    n: "II",
+    label: "Working with me",
     text: "I ask a lot of questions at the start so I don't build the wrong thing. I over-communicate during the build so there are no surprises. I document after the ship so the next person isn't guessing. That's the loop.",
   },
   {
-    label: "III. The long game",
+    n: "III",
+    label: "The long game",
     text: "I don't want to build the next app. I want to build the thing the next app runs on. Infrastructure that outlasts the team that built it.",
   },
 ] as const;
 
-/* ── dual-layer reveal — kept but simplified ───────────────────── */
+/** Hard facts — echoes the hero's field-report strip. */
+const FACTS = [
+  { k: "Base", v: "Beirut · 26" },
+  { k: "Role", v: "AI Systems & Automation" },
+  { k: "Service", v: "Civil Defense · EMT" },
+  { k: "Status", v: "Building · 2026" },
+] as const;
 
-const BLOBS = [
-  { rx: 195, ry: 150, phase: 0, speed: 0.9, amp: 32 },
-  { rx: 160, ry: 185, phase: 1.6, speed: 1.25, amp: 38 },
-  { rx: 178, ry: 162, phase: 3.1, speed: 0.75, amp: 28 },
-  { rx: 150, ry: 178, phase: 4.4, speed: 1.05, amp: 34 },
-];
-
-function DualLayerReveal() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const frontRef = useRef<HTMLDivElement>(null);
-  const mousePos = useRef<{ x: number; y: number } | null>(null);
-  const rafId = useRef(0);
-  const [isTouch, setIsTouch] = useState(false);
-  const reduced = useReducedMotion();
-
-  useEffect(() => {
-    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
-  }, []);
-
-  useEffect(() => {
-    if (isTouch || reduced) return;
-    const front = frontRef.current;
-    if (!front) return;
-
-    let running = true;
-
-    function animate() {
-      if (!running) return;
-      const pos = mousePos.current;
-      if (pos && front) {
-        const t = performance.now() / 1000;
-        const gradients = BLOBS.map((b) => {
-          const dx = Math.sin(t * b.speed + b.phase) * b.amp;
-          const dy = Math.cos(t * b.speed * 0.7 + b.phase + 0.5) * b.amp;
-          return `radial-gradient(ellipse ${b.rx}px ${b.ry}px at ${pos.x + dx}px ${pos.y + dy}px, transparent 0%, transparent 40%, black 68%)`;
-        });
-        const mask = gradients.join(", ");
-        front.style.maskImage = mask;
-        front.style.webkitMaskImage = mask;
-        front.style.maskComposite = "intersect";
-        (front.style as React.CSSProperties & Record<string, string>).webkitMaskComposite = "source-in";
-      }
-      rafId.current = requestAnimationFrame(animate);
-    }
-
-    animate();
-    return () => {
-      running = false;
-      cancelAnimationFrame(rafId.current);
-    };
-  }, [isTouch, reduced]);
-
-  const handleMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (isTouch) return;
-      const rect = containerRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      mousePos.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    },
-    [isTouch],
-  );
-
-  const handleLeave = useCallback(() => {
-    mousePos.current = null;
-    const front = frontRef.current;
-    if (front) {
-      front.style.maskImage = "";
-      front.style.webkitMaskImage = "";
-    }
-  }, []);
-
-  return (
-    <figure>
-      <div
-        ref={containerRef}
-        className={cn(
-          "about-reveal-container relative w-full overflow-hidden border border-border-strong/60",
-          "aspect-[16/10]",
-          isTouch && !reduced && "about-reveal-auto-sweep",
-        )}
-        onMouseMove={handleMove}
-        onMouseLeave={handleLeave}
-      >
-        {/* Placeholder tonal layers (real process/result photos pending) */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full"
-          style={{ background: "linear-gradient(135deg, #2b2620, #15120f 72%)" }}
-        />
-        <div
-          ref={frontRef}
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full"
-          style={{ background: "linear-gradient(135deg, #C9BFAE, #8a8273 78%)" }}
-        />
-        {!isTouch && (
-          <span className="pointer-events-none absolute bottom-3 right-3 border border-border-strong/60 bg-surface/80 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-text-muted backdrop-blur-sm opacity-60">
-            hover to reveal
-          </span>
-        )}
-      </div>
-      <figcaption className="mt-3 flex items-baseline justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
-        <span>process &nbsp;/&nbsp; result</span>
-        <span className="text-border-strong">plate · ii</span>
-      </figcaption>
-    </figure>
-  );
-}
-
-/* ── main section ─────────────────────────────────────────────── */
+/* ── section ───────────────────────────────────────────────────── */
 
 export default function AboutSection() {
   const reduced = useReducedMotion();
 
   return (
-    <section id="about" className="section-shell px-6">
+    <section id="about" className="about-dossier">
       <motion.div
-        className="mx-auto max-w-5xl"
+        className="ad-inner"
         initial={reduced ? undefined : "hidden"}
         whileInView="visible"
         viewport={SECTION.viewport}
         variants={SECTION.container}
       >
-        {/* Editorial chapter header */}
-        <motion.div variants={SECTION.fadeUp} className="mb-10">
-          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
-            <span className="text-leather">—</span> no. 01 / about
-          </p>
-          <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
-            From a country where nothing works automatically.
-          </h2>
-          <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
-        </motion.div>
+        <motion.p variants={SECTION.fadeUp} className="ad-kicker">
+          <span className="ad-dash" aria-hidden="true" /> no. 01 / about
+        </motion.p>
 
-        {/* Static epigraph — replaces 10 rotating quotes */}
-        <motion.blockquote
-          variants={SECTION.fadeUp}
-          className="my-12 border-l-2 border-leather/60 pl-6 font-serif text-[clamp(1.25rem,2.2vw,1.75rem)] italic leading-[1.4] text-text-primary"
-        >
-          &ldquo;{EPIGRAPH}&rdquo;
-        </motion.blockquote>
+        <div className="ad-grid">
+          {/* Portrait. Replace the <div className="ad-plate"> with
+              <img className="ad-plate" src="/images/brand/about-portrait.jpg"
+                   alt="Layth Ayache at work in Beirut" /> once the photo is shot. */}
+          <motion.figure variants={SECTION.fadeUp} className="ad-portrait">
+            <div className="ad-plate" role="img" aria-label="Portrait of Layth Ayache (pending)">
+              <span className="ad-plate-tag">portrait · pending</span>
+            </div>
+            <figcaption className="ad-cap">
+              <span>Layth Ayache — Beirut</span>
+              <span className="ad-cap-meta">plate · i</span>
+            </figcaption>
+          </motion.figure>
 
-        {/* Diptych */}
-        <motion.div variants={SECTION.fadeUp} className="my-14">
-          <DualLayerReveal />
-        </motion.div>
+          <div className="ad-body">
+            <motion.h2 variants={SECTION.fadeUp} className="ad-lead">
+              I come from a country where nothing works automatically —{" "}
+              <em>so I learned to make things work automatically.</em>
+            </motion.h2>
+            <motion.div variants={SECTION.fadeUp} className="ad-rule" aria-hidden="true" />
 
-        {/* Three sequential journal-entry blocks — left-aligned, numbered roman */}
-        <div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-10">
-          {CONTENT_BLOCKS.map((block) => (
-            <motion.article key={block.label} variants={SECTION.fadeUp}>
-              <h3 className="font-mono text-[11px] uppercase tracking-[0.2em] text-leather">
-                {block.label}
-              </h3>
-              <div aria-hidden="true" className="mt-2 h-px w-8 bg-border-strong" />
-              <p className="mt-4 text-[1.0625rem] leading-[1.7] text-text-secondary">
-                {block.text}
-              </p>
-            </motion.article>
-          ))}
+            <div className="ad-blocks">
+              {BLOCKS.map((b) => (
+                <motion.article key={b.n} variants={SECTION.fadeUp} className="ad-block">
+                  <h3>
+                    <span className="ad-num">{b.n}</span> {b.label}
+                  </h3>
+                  <div className="ad-brule" aria-hidden="true" />
+                  <p>{b.text}</p>
+                </motion.article>
+              ))}
+            </div>
+          </div>
         </div>
+
+        <motion.div variants={SECTION.fadeUp} className="ad-facts">
+          {FACTS.map((f) => (
+            <div key={f.k} className="ad-fact">
+              <span className="ad-fact-k">{f.k}</span>
+              <span className="ad-fact-v">{f.v}</span>
+            </div>
+          ))}
+        </motion.div>
       </motion.div>
     </section>
   );

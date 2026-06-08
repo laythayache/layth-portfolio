@@ -245,9 +245,6 @@ export default function HeroSection() {
         </div>
 
         <div className="ff-below">
-          <h1 className="ff-rise" data-d="3">
-            I build systems that <em>hold under pressure.</em>
-          </h1>
           <div className="ff-cta ff-rise" data-d="4">
             <button type="button" className="ff-btn" onClick={() => scrollToSection("projects")}>
               See the work <span aria-hidden="true">→</span>

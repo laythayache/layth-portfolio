@@ -34,9 +34,9 @@ export default function HeroIntro({ onComplete }: HeroIntroProps) {
       return;
     }
 
-    const t1 = window.setTimeout(() => setPhase("title"), 450);
-    const t2 = window.setTimeout(() => setPhase("exiting"), 2050);
-    const t3 = window.setTimeout(finish, 2750);
+    const t1 = window.setTimeout(() => setPhase("title"), 180);
+    const t2 = window.setTimeout(() => setPhase("exiting"), 680);
+    const t3 = window.setTimeout(finish, 1000);
 
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") finish();
@@ -54,7 +54,7 @@ export default function HeroIntro({ onComplete }: HeroIntroProps) {
   const barHeight =
     phase === "exiting" ? "0%" : phase === "title" ? "42%" : "50%";
   const barTransition = {
-    duration: phase === "exiting" ? 0.75 : 0.55,
+    duration: phase === "exiting" ? 0.3 : 0.4,
     ease: EASE,
   };
 
@@ -89,8 +89,8 @@ export default function HeroIntro({ onComplete }: HeroIntroProps) {
                 y: phase === "title" ? 0 : 8,
               }}
               transition={{
-                duration: phase === "exiting" ? 0.3 : 0.65,
-                delay: phase === "title" ? 0.25 : 0,
+                duration: phase === "exiting" ? 0.2 : 0.35,
+                delay: phase === "title" ? 0.08 : 0,
                 ease: EASE,
               }}
             >
