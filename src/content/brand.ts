@@ -1,7 +1,7 @@
 export const BRAND = {
   name: "Layth Ayache",
   title: "AI Systems Engineer & Technical Consultant",
-  thesis: "Systems that survive reality.",
+  thesis: "Systems that hold under pressure.",
   tagline:
     "Production AI for environments where assumptions fail — computer vision, data pipelines, and infrastructure designed for messy data, intermittent networks, and real operational constraints.",
   description:
