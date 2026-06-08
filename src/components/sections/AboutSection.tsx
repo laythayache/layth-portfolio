@@ -26,7 +26,8 @@ const BLOCKS = [
 
 /** Hard facts — echoes the hero's field-report strip. */
 const FACTS = [
-  { k: "Base", v: "Beirut · 26" },
+  { k: "Base", v: "Beirut, LB" },
+  { k: "Reach", v: "Worldwide · Remote" },
   { k: "Role", v: "AI Systems & Automation" },
   { k: "Service", v: "Civil Defense · EMT" },
   { k: "Status", v: "Building · 2026" },
@@ -69,6 +70,9 @@ export default function AboutSection() {
               I come from a country where nothing works automatically —{" "}
               <em>so I learned to make things work automatically.</em>
             </motion.h2>
+            <motion.p variants={SECTION.fadeUp} className="ad-sub">
+              Based in Beirut — I build for teams anywhere.
+            </motion.p>
             <motion.div variants={SECTION.fadeUp} className="ad-rule" aria-hidden="true" />
 
             <div className="ad-blocks">

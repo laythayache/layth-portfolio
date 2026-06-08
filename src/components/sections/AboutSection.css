@@ -65,6 +65,7 @@
   text-wrap:balance;
 }
 .about-dossier .ad-lead em { font-style:italic; color:var(--ad-amber); }
+.about-dossier .ad-sub { margin:14px 0 0; max-width:48ch; color:var(--ad-sand-2); font-size:1.0625rem; line-height:1.6; }
 .about-dossier .ad-rule { width:54px; height:2px; background:var(--ad-amber); margin:clamp(20px,3vh,30px) 0 0; }
 
 .about-dossier .ad-blocks { display:grid; gap:clamp(22px,3vh,34px); margin-top:clamp(28px,4vh,44px); }
