@@ -16,7 +16,7 @@
     <meta name="publisher" content="Layth Ayache" />
     <meta name="application-name" content="Layth Ayache" />
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-    <meta name="theme-color" content="#F8FAFC" />
+    <meta name="theme-color" content="#0B1D2A" />
     <meta property="og:title" content="Layth Ayache | AI Systems Architect &amp; Technology Leader" />
     <meta property="og:description" content="Senior AI systems architect and technology leader from Lebanon. Building production-grade computer vision, NLP, data pipelines, and national-scale digital infrastructure at Aligned Tech." />
     <meta property="og:type" content="website" />
@@ -37,9 +37,39 @@
     <link rel="alternate" type="application/rss+xml" title="Layth Ayache — Blog" href="https://laythayache.com/feed.xml" />
     <link rel="alternate" type="text/plain" href="https://laythayache.com/llms.txt" title="LLM context" />
     <!-- jsonld -->
+    <!--
+      Navy boot canvas — kills the cream-then-navy flash on the homepage.
+      The body is cream (--surface) site-wide, but the homepage hero is navy
+      and only paints once React mounts. This layer fills the first viewport
+      with the hero navy from the very first frame. It's gated to "/" only
+      (so cream inner pages don't flash navy) and is exactly one viewport tall
+      and absolutely positioned, so it sits behind the hero and never bleeds
+      into the transparent cream sections below it.
+    -->
+    <style>
+      #hero-boot { display: none; }
+      html.hero-boot #hero-boot {
+        display: block;
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 100vh; height: 100svh;
+        background-color: #0B1D2A;
+        z-index: 0;
+        pointer-events: none;
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          var p = location.pathname;
+          if (p === "/" || p === "") document.documentElement.classList.add("hero-boot");
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <div id="hero-boot" aria-hidden="true"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

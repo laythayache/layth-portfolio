@@ -74,10 +74,10 @@ export default function HeroSection() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const lenUp = up.getTotalLength();
     const lenDn = down.getTotalLength();
-    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
-    const DRAW = 2400;
-    const FILLMS = 1000;
-    const GAP = 160;
+    const ease = (t: number) => 1 - Math.pow(1 - t, 3); // ease-out: snappy start, soft landing
+    const DRAW = 1100;
+    const FILLMS = 400;
+    const GAP = 100;
     let raf = 0;
     let t0: number | null = null;
 
@@ -85,7 +85,7 @@ export default function HeroSection() {
     const reveal = () => section.classList.add("revealed");
     const endDraw = () => {
       [cometUp, cometDn].forEach((c) => {
-        c.style.transition = "opacity .5s ease";
+        c.style.transition = "opacity .35s ease";
         c.style.opacity = "0";
       });
       fill.animate([{ fillOpacity: 0 }, { fillOpacity: 1 }], {
