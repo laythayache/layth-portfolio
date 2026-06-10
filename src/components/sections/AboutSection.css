@@ -1,9 +1,12 @@
 /* ============================================================
-   About — "Operator Dossier" · Beirut Navy
-   First human beat after the hero: real environmental portrait +
-   one sharp identity line + three principle blocks (field report)
-   + a hard-facts strip echoing the hero's footer line.
-   Scoped under .about-dossier.
+   About — "Operator Dossier" · Beirut Navy · "fig. i"
+   Full-measure identity line over a two-column dossier:
+   the locked B–H mark drawn as an engineering-handbook plate
+   (axes, remanence, coercivity — all measured, nothing fake)
+   beside a ruled ledger of principles, closed by a hard-facts
+   registry strip. Scoped under .about-dossier.
+   The 26px unit repeats: kicker dash, block rules, facts dash,
+   plate grid pitch.
    ============================================================ */
 .about-dossier {
   --ad-navy:#0B1D2A; --ad-navy-2:#0E2433; --ad-navy-deep:#071520;
@@ -26,26 +29,65 @@
 }
 .about-dossier .ad-dash { width:26px; height:1px; background:var(--ad-amber); }
 
-/* two-column dossier */
+/* identity — name + role label, set beside the plate */
+.about-dossier .ad-lead {
+  margin:0; font-family:"Fraunces",serif; font-weight:600; color:var(--ad-sand);
+  font-size:clamp(1.9rem,3.4vw,2.85rem); line-height:1; letter-spacing:-.015em;
+}
+.about-dossier .ad-role {
+  margin:14px 0 0; font-family:"IBM Plex Mono",monospace; font-size:12px;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--ad-amber);
+}
+.about-dossier .ad-rule { width:54px; height:2px; background:var(--ad-amber); margin:clamp(22px,3.4vh,32px) 0 clamp(22px,3.4vh,32px); }
+
+/* offering lines — every one written by Layth */
+.about-dossier .ad-body { max-width:42ch; }
+.about-dossier .ad-line { margin:0; max-width:38ch; color:var(--ad-sand-2); font-size:1.125rem; line-height:1.68; }
+.about-dossier .ad-line + .ad-line { margin-top:18px; }
+/* lead line — the offer; brighter + larger so the column has a clear head */
+.about-dossier .ad-line--lead { max-width:40ch; color:var(--ad-sand); font-size:1.3125rem; line-height:1.58; }
+
+/* two-column dossier — the plate is the larger track (the section's specimen) */
 .about-dossier .ad-grid {
-  display:grid; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);
-  gap:clamp(28px,5vw,68px); align-items:start;
+  display:grid; grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);
+  gap:clamp(36px,5vw,72px); align-items:center;
+  margin-top:clamp(32px,5vh,56px);
 }
 
-/* portrait plate (placeholder until the real photo is dropped in) */
-.about-dossier .ad-portrait { margin:0; }
+/* plate — the locked mark as a measured handbook figure, sized to be looked at */
+.about-dossier .ad-portrait { margin:0; max-width:none; }
 .about-dossier .ad-plate {
-  position:relative; display:block; width:100%; aspect-ratio:4/5; object-fit:cover;
+  position:relative; display:block; width:100%; aspect-ratio:4/5;
+  max-height:min(78vh,620px); margin-inline:auto;
   border:1px solid var(--ad-border); border-radius:3px; overflow:hidden;
-  background:
-    radial-gradient(125% 80% at 30% 16%, rgba(201,191,174,.22) 0%, rgba(201,191,174,0) 55%),
-    linear-gradient(150deg, #2b2620 0%, #15120f 58%, #0c1a25 100%);
+  background-color:var(--ad-navy-deep);
+  background-image:
+    repeating-linear-gradient(0deg,  rgba(231,220,198,.055) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(90deg, rgba(231,220,198,.055) 0 1px, transparent 1px 26px);
   box-shadow:0 26px 64px -30px rgba(0,0,0,.72);
 }
 .about-dossier .ad-plate::after {
   content:""; position:absolute; inset:0; opacity:.45; mix-blend-mode:overlay; pointer-events:none;
   background-image:repeating-linear-gradient(0deg, rgba(255,255,255,.045) 0 1px, transparent 1px 3px);
 }
+
+/* the figure — three honest stroke weights: grid 5% → axes 28% → loop full sand */
+.about-dossier .ad-fig { position:absolute; inset:22px; width:calc(100% - 44px); height:calc(100% - 44px); }
+.about-dossier .ad-fig line { stroke:rgba(231,220,198,.28); stroke-width:.75; }
+.about-dossier .ad-fig text { font-family:"IBM Plex Mono",monospace; font-size:10px; fill:var(--ad-muted); }
+.about-dossier .ad-fig-branch { stroke:var(--ad-sand); stroke-width:2.25; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.about-dossier .ad-fig-fill { fill:var(--ad-sand); fill-opacity:.05; stroke:none; }
+.about-dossier .ad-fig-notes circle { fill:var(--ad-amber); }
+.about-dossier .ad-fig-notes text { font-size:8.5px; fill:var(--ad-amber); }
+
+/* future portrait drop-in (see TSX comment — ships now so the swap is purely additive) */
+.about-dossier .ad-plate-img {
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  filter:saturate(.88) brightness(.82);
+}
+.about-dossier .ad-fig-mini { width:32px; height:32px; display:inline-block; vertical-align:middle; }
+.about-dossier .ad-fig-mini path { stroke:var(--ad-sand-2); stroke-width:7; fill:none; opacity:.8; stroke-linecap:round; }
+
 .about-dossier .ad-plate-tag {
   position:absolute; left:13px; bottom:13px;
   font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.22em; text-transform:uppercase;
@@ -53,45 +95,42 @@
   background:rgba(7,18,28,.5); backdrop-filter:blur(3px);
 }
 .about-dossier .ad-cap {
-  display:flex; justify-content:space-between; gap:12px; margin-top:12px;
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:12px; margin-top:12px;
   font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--ad-muted);
 }
-.about-dossier .ad-cap-meta { color:var(--ad-sand-2); }
+.about-dossier .ad-cap-meta { color:var(--ad-sand-2); margin-left:auto; }
 
-/* identity line + principles */
-.about-dossier .ad-lead {
-  margin:0; max-width:24ch; font-family:"Fraunces",serif; font-weight:600; color:var(--ad-sand);
-  font-size:clamp(1.5rem,3vw,2.35rem); line-height:1.16; letter-spacing:-.015em;
-  text-wrap:balance;
+/* hard-facts registry strip */
+.about-dossier .ad-facts { margin-top:clamp(40px,7vh,80px); }
+.about-dossier .ad-fsep {
+  display:block; height:1px; background:var(--ad-border);
+  transform-origin:left; margin-bottom:16px;
 }
-.about-dossier .ad-lead em { font-style:italic; color:var(--ad-amber); }
-.about-dossier .ad-sub { margin:14px 0 0; max-width:48ch; color:var(--ad-sand-2); font-size:1.0625rem; line-height:1.6; }
-.about-dossier .ad-rule { width:54px; height:2px; background:var(--ad-amber); margin:clamp(20px,3vh,30px) 0 0; }
-
-.about-dossier .ad-blocks { display:grid; gap:clamp(22px,3vh,34px); margin-top:clamp(28px,4vh,44px); }
-.about-dossier .ad-block h3 {
-  display:flex; align-items:baseline; gap:10px; margin:0;
-  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--ad-amber);
-}
-.about-dossier .ad-num { color:var(--ad-sand-2); }
-.about-dossier .ad-brule { width:26px; height:1px; background:var(--ad-border); margin:8px 0 12px; }
-.about-dossier .ad-block p { margin:0; max-width:62ch; color:var(--ad-sand-2); font-size:1.0125rem; line-height:1.72; }
-
-/* hard-facts strip */
-.about-dossier .ad-facts {
-  margin-top:clamp(40px,7vh,80px); border-top:1px solid var(--ad-border); padding-top:16px;
-  display:flex; flex-wrap:wrap; gap:clamp(16px,3vw,40px);
-}
+.about-dossier .ad-facts-row { display:flex; flex-wrap:wrap; gap:clamp(16px,3vw,40px); }
 .about-dossier .ad-fact {
   display:flex; align-items:center; gap:10px;
   font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase;
 }
+.about-dossier .ad-fact:first-child::before {
+  content:""; width:26px; height:1px; background:var(--ad-amber);
+}
 .about-dossier .ad-fact-k { color:var(--ad-muted); }
 .about-dossier .ad-fact-v { color:var(--ad-sand-2); }
 
+@media (min-width:1100px){
+  .about-dossier .ad-facts-row { justify-content:space-between; }
+}
 @media (max-width:860px){
-  .about-dossier .ad-grid { grid-template-columns:1fr; gap:clamp(24px,5vw,40px); }
-  .about-dossier .ad-portrait { max-width:360px; }
+  .about-dossier .ad-grid { grid-template-columns:1fr; gap:clamp(24px,5vw,40px); align-items:start; }
+  .about-dossier .ad-portrait { max-width:380px; margin-inline:auto; }
+  .about-dossier .ad-plate { max-height:none; }
+  .about-dossier .ad-body,
+  .about-dossier .ad-line { max-width:none; }
+}
+@media (max-width:430px){
+  .about-dossier .ad-portrait { max-width:none; }
+  .about-dossier .ad-line { font-size:1.0625rem; }
+  .about-dossier .ad-line--lead { font-size:1.15rem; }
 }
 @media (prefers-reduced-motion:reduce){
   .about-dossier .ad-plate::after { display:none; }
