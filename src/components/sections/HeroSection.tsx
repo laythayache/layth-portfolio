@@ -62,6 +62,53 @@ export default function HeroSection() {
     };
   }, []);
 
+  // A slight scroll-down while resting on the hero smoothly slides the page up
+  // to the next section. Re-arms whenever you return to the very top; skipped
+  // for reduced-motion. A short ready-gate lets any on-load hash scroll settle
+  // first so deep links (e.g. /#projects) aren't yanked to #about.
+  useEffect(() => {
+    if (!lenis) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const TRIGGER = 48; // px of downward nudge needed to commit
+    const RESET = 6; // back near the top re-arms the slide
+    let armed = true;
+    let animating = false;
+    let ready = !window.location.hash.slice(1);
+    const readyTimer = window.setTimeout(() => {
+      ready = true;
+    }, 1300);
+
+    const onScroll = () => {
+      const y = lenis.scroll;
+      if (y <= RESET) {
+        armed = true;
+        animating = false;
+        return;
+      }
+      if (!ready || animating || !armed) return;
+      if (y > TRIGGER && y < window.innerHeight * 0.9) {
+        armed = false;
+        animating = true;
+        lenis.scrollTo("#about", {
+          offset: -84,
+          duration: 1.2,
+          lock: true,
+          easing: (t: number) => 1 - Math.pow(1 - t, 3),
+          onComplete: () => {
+            animating = false;
+          },
+        });
+      }
+    };
+
+    lenis.on("scroll", onScroll);
+    return () => {
+      window.clearTimeout(readyTimer);
+      lenis.off("scroll", onScroll);
+    };
+  }, [lenis]);
+
   useEffect(() => {
     const section = sectionRef.current;
     const up = upRef.current;
@@ -260,9 +307,9 @@ export default function HeroSection() {
 
       <div className="ff-strip">
         <div className="ff-stripline">
-          <div className="ff-meta ff-rise" data-d="4">Beirut · 26</div>
+          <div className="ff-meta ff-rise" data-d="4">Lebanon · 26</div>
           <div className="ff-status ff-rise" data-d="4">
-            <span className="dot" aria-hidden="true" /> Status — Building · 2026
+            <span className="dot" aria-hidden="true" /> Status — Operational · 2026
           </div>
         </div>
       </div>
