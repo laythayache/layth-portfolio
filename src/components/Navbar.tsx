@@ -7,7 +7,7 @@ import { useLenis } from "@/motion/LenisProvider";
 import useScrollSpy from "@/hooks/useScrollSpy";
 
 const NAV_SECTIONS = [
-  { id: "about", label: "About" },
+  { to: "/about", label: "About" },
   { id: "projects", label: "Work" },
   { id: "services", label: "Services" },
   { id: "certifications", label: "Credentials" },

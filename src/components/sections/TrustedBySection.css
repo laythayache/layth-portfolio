@@ -1,0 +1,72 @@
+/* ============================================================
+   Trusted by — client / collaborator logo register · Beirut Navy
+   First band after the hero: a contact-sheet grid of marks on navy,
+   hairline-ruled cells, in the site's dossier register.
+   Scoped under .trusted-band.
+   ============================================================ */
+.trusted-band {
+  --tb-navy:#0B1D2A; --tb-navy-2:#0E2433; --tb-navy-deep:#071520;
+  --tb-sand:#E7DCC6; --tb-sand-2:#B9AE97; --tb-muted:#7d8b95;
+  --tb-amber:#C8893B; --tb-border:rgba(231,220,198,.16);
+  position:relative; color:var(--tb-sand);
+  font-family:"Inter",system-ui,sans-serif;
+  padding:clamp(64px,11vh,140px) 0;
+  background:
+    radial-gradient(120% 90% at 82% -8%, #102b3d 0%, var(--tb-navy) 56%),
+    linear-gradient(180deg, var(--tb-navy-deep) 0%, var(--tb-navy) 32%, var(--tb-navy-2) 100%);
+}
+.trusted-band .tb-inner { max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,44px); }
+
+/* chapter kicker */
+.trusted-band .tb-kicker {
+  display:inline-flex; align-items:center; gap:12px; margin:0 0 clamp(20px,3vh,30px);
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.24em; text-transform:uppercase;
+  color:var(--tb-muted);
+}
+.trusted-band .tb-dash { width:26px; height:1px; background:var(--tb-amber); }
+
+/* heading */
+.trusted-band .tb-lead {
+  margin:0; font-family:"Fraunces",serif; font-weight:600; color:var(--tb-sand);
+  font-size:clamp(1.9rem,3.4vw,2.85rem); line-height:1; letter-spacing:-.015em;
+}
+.trusted-band .tb-sub { margin:14px 0 0; max-width:54ch; color:var(--tb-sand-2); font-size:1.0625rem; line-height:1.6; }
+.trusted-band .tb-rule { width:54px; height:2px; background:var(--tb-amber); margin:clamp(24px,3.6vh,34px) 0 clamp(28px,4vh,44px); }
+
+/* logo register — hairline-bordered cells, wrapping. 2 / 3 / 4 per row; a
+   partial last row left-aligns on navy (never a grey gap), so it reads clean
+   at any client count. */
+.trusted-band .tb-grid { display:flex; flex-wrap:wrap; gap:12px; }
+.trusted-band .tb-cell {
+  flex:0 1 calc((100% - 12px) / 2);
+  min-height:clamp(92px,13vw,116px);
+  display:flex; align-items:center; justify-content:center; padding:22px;
+  border:1px solid var(--tb-border); border-radius:3px; background:var(--tb-navy-deep);
+}
+@media (min-width:560px){ .trusted-band .tb-cell { flex-basis:calc((100% - 24px) / 3); } }
+@media (min-width:900px){ .trusted-band .tb-cell { flex-basis:calc((100% - 36px) / 4); } }
+.trusted-band .tb-cell.is-empty { background:transparent; }
+.trusted-band .tb-link { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
+
+/* logos sit light/monochrome on the navy; gentle lift on hover */
+.trusted-band .tb-logo {
+  max-height:40px; max-width:74%; object-fit:contain;
+  opacity:.82; transition:opacity .25s ease;
+}
+.trusted-band .tb-link:hover .tb-logo,
+.trusted-band .tb-cell:hover .tb-logo { opacity:1; }
+
+/* wordmark fallback when a client has a name but no logo file yet */
+.trusted-band .tb-name {
+  font-family:"Fraunces",serif; font-weight:600; font-size:1.0625rem; color:var(--tb-sand-2);
+  letter-spacing:.01em; text-align:center;
+}
+
+/* neutral placeholder mark for empty cells */
+.trusted-band .tb-placeholder {
+  font-family:"IBM Plex Mono",monospace; font-size:14px; color:var(--tb-muted); opacity:.4;
+}
+
+@media (prefers-reduced-motion:reduce){
+  .trusted-band .tb-logo { transition:none; }
+}

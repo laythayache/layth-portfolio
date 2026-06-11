@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import SEO from "@/components/SEO";
 import { useLenis } from "@/motion/LenisProvider";
 import HeroSection from "@/components/sections/HeroSection";
-import AboutSection from "@/components/sections/AboutSection";
+import TrustedBySection from "@/components/sections/TrustedBySection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
@@ -24,7 +24,7 @@ const latestModified = [
 export default function Home() {
   const lenis = useLenis();
 
-  // Scroll to hash target after lazy-load mount (e.g. /#about, /#contact)
+  // Scroll to hash target after lazy-load mount (e.g. /#trusted, /#contact)
   useEffect(() => {
     const hash = window.location.hash.slice(1);
     if (!hash) return;
@@ -51,7 +51,7 @@ export default function Home() {
       <div className="relative z-10">
         <HeroSection />
         <div className="section-divider" aria-hidden="true" />
-        <AboutSection />
+        <TrustedBySection />
         <div className="section-divider" aria-hidden="true" />
         <ExperienceSection />
         <div className="section-divider" aria-hidden="true" />

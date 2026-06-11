@@ -65,7 +65,7 @@ export default function HeroSection() {
   // A slight scroll-down while resting on the hero smoothly slides the page up
   // to the next section. Re-arms whenever you return to the very top; skipped
   // for reduced-motion. A short ready-gate lets any on-load hash scroll settle
-  // first so deep links (e.g. /#projects) aren't yanked to #about.
+  // first so deep links (e.g. /#projects) aren't yanked to #trusted.
   useEffect(() => {
     if (!lenis) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -90,7 +90,7 @@ export default function HeroSection() {
       if (y > TRIGGER && y < window.innerHeight * 0.9) {
         armed = false;
         animating = true;
-        lenis.scrollTo("#about", {
+        lenis.scrollTo("#trusted", {
           offset: -84,
           duration: 1.2,
           lock: true,
