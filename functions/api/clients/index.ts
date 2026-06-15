@@ -4,15 +4,19 @@ import {
   readClients,
   writeClients,
   publicClient,
+  isVisible,
   sanitizeHref,
   sanitizeName,
   type ClientItem,
 } from "../_clients";
 
-// public: ordered list for the Trusted by section + admin
-export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
+// GET: public callers get only visible logos (Trusted by section); the admin
+// asks for ?admin=1 (authenticated) to get every logo + its visibility flag.
+export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const m = await readClients(env);
-  return json({ items: m.items.map(publicClient) }, 200, { "Cache-Control": "public, max-age=30" });
+  const wantAll = new URL(request.url).searchParams.get("admin") === "1" && (await isAuthed(request, env));
+  const items = (wantAll ? m.items : m.items.filter(isVisible)).map(publicClient);
+  return json({ items }, 200, { "Cache-Control": wantAll ? "no-store" : "public, max-age=30" });
 };
 
 // Logos are usually vector — SVG first, plus the raster types the gallery accepts.
@@ -51,7 +55,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     httpMetadata: { contentType: ct },
   });
 
-  const item: ClientItem = { id, key, name, href, contentType: ct, createdAt: Date.now() };
+  const item: ClientItem = { id, key, name, href, visible: true, contentType: ct, createdAt: Date.now() };
   const m = await readClients(env);
   m.items.push(item);
   await writeClients(env, m);

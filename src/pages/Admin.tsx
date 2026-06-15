@@ -19,6 +19,8 @@ type Config = {
   fields: Field[];
   deriveName?: string; // field auto-filled from the filename on upload
   emptyNote: string;
+  hasVisibility?: boolean; // show a per-item "show on site" toggle
+  listQuery?: string; // extra query for the admin list fetch (e.g. "?admin=1")
 };
 
 const GALLERY_CONFIG: Config = {
@@ -49,6 +51,8 @@ const CLIENTS_CONFIG: Config = {
   ],
   deriveName: "name",
   emptyNote: "No logos yet — drop a client logo above, then set its name and link.",
+  hasVisibility: true,
+  listQuery: "?admin=1",
 };
 
 const TABS = [
@@ -74,7 +78,7 @@ function CollectionManager({ config }: { config: Config }) {
 
   const load = useCallback(async () => {
     try {
-      const r = await fetch(config.endpoint);
+      const r = await fetch(config.endpoint + (config.listQuery || ""), { cache: "no-store" });
       if (r.ok) {
         const d = await r.json();
         setItems(d.items || []);
@@ -82,7 +86,7 @@ function CollectionManager({ config }: { config: Config }) {
     } catch {
       /* ignore */
     }
-  }, [config.endpoint]);
+  }, [config.endpoint, config.listQuery]);
 
   useEffect(() => {
     load();
@@ -144,7 +148,11 @@ function CollectionManager({ config }: { config: Config }) {
     <div>
       <p className="mt-1 font-mono text-xs uppercase tracking-[0.18em] text-text-muted">
         {items.length} {config.countNoun}
-        {items.length === 1 ? "" : "s"} · {config.orderNote}
+        {items.length === 1 ? "" : "s"}
+        {config.hasVisibility && items.some((it) => it.visible === false)
+          ? ` · ${items.filter((it) => it.visible === false).length} hidden`
+          : ""}{" "}
+        · {config.orderNote}
       </p>
 
       <label
@@ -169,59 +177,91 @@ function CollectionManager({ config }: { config: Config }) {
       {error && <p className="mt-3 font-mono text-xs text-warn">{error}</p>}
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((it, i) => (
-          <div key={it.id} className="overflow-hidden border border-border-strong bg-surface-raised">
-            <div className="relative aspect-[4/3]">
-              {config.preview === "logo" ? (
-                <div className="grid h-full w-full place-items-center bg-ink p-6">
-                  <img src={it.url} alt={String(it.name ?? "")} className="max-h-16 max-w-[72%] object-contain" loading="lazy" />
-                </div>
-              ) : (
-                <img src={it.url} alt={String(it.caption ?? "")} className="h-full w-full bg-surface-overlay object-cover" loading="lazy" />
-              )}
-              <span className="absolute left-2 top-2 bg-ink/70 px-2 py-0.5 font-mono text-[10px] text-surface">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-            </div>
-            <div className="space-y-2 p-3">
-              {config.fields.map((f) => (
-                <input
-                  key={f.key}
-                  type={f.type ?? "text"}
-                  defaultValue={String(it[f.key] ?? "")}
-                  placeholder={f.placeholder}
-                  onBlur={(e) => {
-                    if (e.target.value !== String(it[f.key] ?? "")) patch(it.id, { [f.key]: e.target.value });
-                  }}
-                  className="w-full border-b border-border bg-transparent pb-1 font-mono text-xs text-text-primary outline-none focus:border-accent"
-                />
-              ))}
-              <div className="flex items-center justify-between pt-1">
-                <div className="flex gap-1">
+        {items.map((it, i) => {
+          const hidden = config.hasVisibility && it.visible === false;
+          return (
+            <div key={it.id} className="overflow-hidden border border-border-strong bg-surface-raised">
+              <div className="relative aspect-[4/3]">
+                {config.preview === "logo" ? (
+                  <div className="grid h-full w-full place-items-center bg-ink p-6">
+                    <img
+                      src={it.url}
+                      alt={String(it.name ?? "")}
+                      className={`max-h-16 max-w-[72%] object-contain${hidden ? " opacity-20" : ""}`}
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <img
+                    src={it.url}
+                    alt={String(it.caption ?? "")}
+                    className={`h-full w-full bg-surface-overlay object-cover${hidden ? " opacity-30" : ""}`}
+                    loading="lazy"
+                  />
+                )}
+                <span className="absolute left-2 top-2 bg-ink/70 px-2 py-0.5 font-mono text-[10px] text-surface">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                {hidden && (
+                  <span className="absolute right-2 top-2 bg-warn/85 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-surface">
+                    Hidden
+                  </span>
+                )}
+              </div>
+              <div className="space-y-2 p-3">
+                {config.fields.map((f) => (
+                  <input
+                    key={f.key}
+                    type={f.type ?? "text"}
+                    defaultValue={String(it[f.key] ?? "")}
+                    placeholder={f.placeholder}
+                    onBlur={(e) => {
+                      if (e.target.value !== String(it[f.key] ?? "")) patch(it.id, { [f.key]: e.target.value });
+                    }}
+                    className="w-full border-b border-border bg-transparent pb-1 font-mono text-xs text-text-primary outline-none focus:border-accent"
+                  />
+                ))}
+                {config.hasVisibility && (
                   <button
-                    onClick={() => patch(it.id, { direction: "up" })}
-                    disabled={i === 0}
-                    aria-label="Move up"
-                    className="border border-border-strong px-2 py-1 font-mono text-xs text-text-secondary transition-colors disabled:opacity-30 hover:enabled:border-accent hover:enabled:text-accent"
+                    type="button"
+                    onClick={() => patch(it.id, { visible: it.visible === false })}
+                    className={
+                      "flex w-full items-center justify-center gap-2 border px-2 py-1.5 font-mono text-[11px] uppercase tracking-[0.15em] transition-colors " +
+                      (hidden
+                        ? "border-border-strong text-text-muted hover:border-accent hover:text-accent"
+                        : "border-accent/50 bg-accent/12 text-accent hover:bg-accent/20")
+                    }
                   >
-                    ↑
+                    {hidden ? "○ Hidden — show on site" : "● Shown on site"}
                   </button>
-                  <button
-                    onClick={() => patch(it.id, { direction: "down" })}
-                    disabled={i === items.length - 1}
-                    aria-label="Move down"
-                    className="border border-border-strong px-2 py-1 font-mono text-xs text-text-secondary transition-colors disabled:opacity-30 hover:enabled:border-accent hover:enabled:text-accent"
-                  >
-                    ↓
+                )}
+                <div className="flex items-center justify-between pt-1">
+                  <div className="flex gap-1">
+                    <button
+                      onClick={() => patch(it.id, { direction: "up" })}
+                      disabled={i === 0}
+                      aria-label="Move up"
+                      className="border border-border-strong px-2 py-1 font-mono text-xs text-text-secondary transition-colors disabled:opacity-30 hover:enabled:border-accent hover:enabled:text-accent"
+                    >
+                      ↑
+                    </button>
+                    <button
+                      onClick={() => patch(it.id, { direction: "down" })}
+                      disabled={i === items.length - 1}
+                      aria-label="Move down"
+                      className="border border-border-strong px-2 py-1 font-mono text-xs text-text-secondary transition-colors disabled:opacity-30 hover:enabled:border-accent hover:enabled:text-accent"
+                    >
+                      ↓
+                    </button>
+                  </div>
+                  <button onClick={() => del(it.id)} className="font-mono text-xs uppercase tracking-wide text-warn/80 transition-colors hover:text-warn">
+                    Delete
                   </button>
                 </div>
-                <button onClick={() => del(it.id)} className="font-mono text-xs uppercase tracking-wide text-warn/80 transition-colors hover:text-warn">
-                  Delete
-                </button>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {items.length === 0 && <p className="mt-10 text-center font-mono text-sm text-text-muted">{config.emptyNote}</p>}
     </div>

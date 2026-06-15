@@ -2,11 +2,11 @@
 import { isAuthed, json, type Env } from "../_auth";
 import { readClients, writeClients, publicClient, sanitizeHref, sanitizeName } from "../_clients";
 
-// auth: edit name and/or href and/or reorder (direction: "up" | "down")
+// auth: edit name/href, toggle visibility, and/or reorder (direction: "up" | "down")
 export const onRequestPatch: PagesFunction<Env> = async ({ request, env, params }) => {
   if (!(await isAuthed(request, env))) return json({ error: "Unauthorized" }, 401);
   const id = String(params.id);
-  let body: { name?: string; href?: string; direction?: "up" | "down" };
+  let body: { name?: string; href?: string; visible?: boolean; direction?: "up" | "down" };
   try {
     body = await request.json();
   } catch {
@@ -18,6 +18,7 @@ export const onRequestPatch: PagesFunction<Env> = async ({ request, env, params 
 
   if (typeof body.name === "string") m.items[idx].name = sanitizeName(body.name);
   if (typeof body.href === "string") m.items[idx].href = sanitizeHref(body.href);
+  if (typeof body.visible === "boolean") m.items[idx].visible = body.visible;
   if (body.direction === "up" && idx > 0) {
     [m.items[idx - 1], m.items[idx]] = [m.items[idx], m.items[idx - 1]];
   } else if (body.direction === "down" && idx < m.items.length - 1) {

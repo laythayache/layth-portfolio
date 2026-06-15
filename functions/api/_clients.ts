@@ -9,6 +9,7 @@ export interface ClientItem {
   key: string; // R2 filename (without the "clients/" prefix), e.g. "abc.svg"
   name: string;
   href: string; // optional external link (http/https only)
+  visible?: boolean; // shown publicly when not false; hidden items stay in the CMS only
   contentType: string;
   createdAt: number;
 }
@@ -40,8 +41,14 @@ export function publicClient(it: ClientItem) {
     id: it.id,
     name: it.name,
     href: it.href,
+    visible: it.visible !== false,
     url: `/api/clients/file/${encodeURIComponent(it.key)}`,
   };
+}
+
+/** Legacy items have no `visible` field — treat undefined as visible. */
+export function isVisible(it: ClientItem): boolean {
+  return it.visible !== false;
 }
 
 /** Only allow absolute http(s) links — blocks javascript:/data: XSS via the logo link. */
