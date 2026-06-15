@@ -127,14 +127,13 @@ export default function TrustedBySection() {
             {/* Lancaster medallion — one chain, many properties */}
             {medallion && (
               <motion.div variants={SECTION.fadeUp} className="tb-medallion">
-                <Linked c={{ href: medallion.href }}>
-                  {medallion.url ? (
-                    <img className="tb-med-emblem" src={medallion.url} alt="Lancaster" loading="lazy" />
-                  ) : (
-                    <span className="tb-med-name">Lancaster</span>
-                  )}
-                </Linked>
-                <div className="tb-med-name">Lancaster</div>
+                {medallion.href ? (
+                  <a className="tb-med-name tb-med-link" href={medallion.href} target="_blank" rel="noopener noreferrer">
+                    Lancaster
+                  </a>
+                ) : (
+                  <div className="tb-med-name">Lancaster</div>
+                )}
                 <div className="tb-med-frieze">{medallion.labels.join(" · ")}</div>
                 <div className="tb-med-count">×{medallion.count} properties</div>
               </motion.div>

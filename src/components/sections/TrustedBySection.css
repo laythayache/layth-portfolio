@@ -67,6 +67,8 @@
   flex:none; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--tb-amber);
   border:1px solid var(--tb-border); padding:4px 8px; white-space:nowrap;
 }
+.trusted-band .tb-med-link { text-decoration:none; transition:color .2s ease; }
+.trusted-band .tb-med-link:hover { color:var(--tb-amber); }
 @media (max-width:640px){
   .trusted-band .tb-med-frieze { flex-basis:100%; order:3; }
   .trusted-band .tb-med-count { order:2; }
