@@ -33,6 +33,54 @@
 .trusted-band .tb-sub { margin:14px 0 0; max-width:54ch; color:var(--tb-sand-2); font-size:1.0625rem; line-height:1.6; }
 .trusted-band .tb-rule { width:54px; height:2px; background:var(--tb-amber); margin:clamp(24px,3.6vh,34px) 0 clamp(28px,4vh,44px); }
 
+/* anchor row — the recognisable marks, borderless and larger, in equal columns
+   (flex:1 1 120px, not space-between — the latter collapses shrinkable SVG imgs
+   with max-width:100% to zero width) */
+.trusted-band .tb-anchors {
+  display:flex; flex-wrap:wrap; align-items:center;
+  gap:clamp(18px,3vw,44px); padding:2px 0 clamp(24px,3.6vh,36px);
+}
+.trusted-band .tb-anchor { flex:1 1 120px; min-width:0; display:flex; align-items:center; justify-content:center; }
+.trusted-band .tb-logo-lg { max-height:clamp(28px,3.4vw,42px); max-width:100%; width:auto; object-fit:contain; opacity:.9; }
+
+/* Lancaster medallion — one chain shown once, with its properties as a frieze */
+.trusted-band .tb-medallion {
+  display:flex; align-items:center; flex-wrap:wrap; gap:clamp(14px,2.4vw,26px);
+  border:1px solid var(--tb-border); border-radius:3px; background:var(--tb-navy-deep);
+  padding:clamp(14px,2vh,20px) clamp(18px,2.5vw,26px);
+  margin:0 0 clamp(30px,4.5vh,44px);
+}
+.trusted-band .tb-med-emblem {
+  filter:brightness(0) invert(1); opacity:.9; flex:none;
+  max-height:clamp(36px,4vw,48px); max-width:120px; object-fit:contain;
+}
+.trusted-band .tb-med-name {
+  flex:none; font-family:"Fraunces",serif; font-size:clamp(1.2rem,2vw,1.6rem);
+  letter-spacing:.04em; white-space:nowrap; color:var(--tb-sand);
+}
+.trusted-band .tb-med-frieze {
+  flex:1; min-width:200px;
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em;
+  line-height:1.85; color:var(--tb-sand-2);
+}
+.trusted-band .tb-med-count {
+  flex:none; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--tb-amber);
+  border:1px solid var(--tb-border); padding:4px 8px; white-space:nowrap;
+}
+@media (max-width:640px){
+  .trusted-band .tb-med-frieze { flex-basis:100%; order:3; }
+  .trusted-band .tb-med-count { order:2; }
+}
+
+/* quiet-grid label */
+.trusted-band .tb-qlabel {
+  display:flex; align-items:center; gap:10px; margin:0 0 14px;
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--tb-muted);
+}
+.trusted-band .tb-qlabel .tb-dash { width:26px; height:1px; background:var(--tb-amber); }
+.trusted-band .tb-grid-quiet { opacity:.82; }
+
 /* logo register — hairline-bordered cells, wrapping. 2 / 3 / 4 per row; a
    partial last row left-aligns on navy (never a grey gap), so it reads clean
    at any client count. */
