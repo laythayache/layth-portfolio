@@ -66,11 +66,8 @@ export default function TrustedBySection() {
         viewport={SECTION.viewport}
         variants={SECTION.container}
       >
-        <motion.p variants={SECTION.fadeUp} className="tb-kicker">
-          <span className="tb-dash" aria-hidden="true" /> no. 01 / trusted by
-        </motion.p>
         <motion.h2 variants={SECTION.fadeUp} className="tb-lead">
-          Trusted by
+          Trusted By
         </motion.h2>
         <motion.p variants={SECTION.fadeUp} className="tb-sub">
           Across hotels, holdings, government, real estate, and engineering.
