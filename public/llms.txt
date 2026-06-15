@@ -90,4 +90,4 @@
 - Blog RSS feed: https://laythayache.com/feed.xml
 - Cross-check with sitemap: https://laythayache.com/sitemap.xml
 
-Last updated: 2026-06-11
+Last updated: 2026-06-15
