@@ -46,16 +46,24 @@
 /* each slot is fixed-width with the logo centred — spacing lives in the slot,
    not in a track gap, so the duplicated set tiles exactly (seamless -50% loop) */
 .trusted-band .tb-slot {
-  flex:0 0 auto; width:clamp(168px,20vw,280px);
+  position:relative; flex:0 0 auto; width:clamp(168px,20vw,280px);
   display:flex; align-items:center; justify-content:center;
   min-height:clamp(66px,8vw,96px); padding:0 clamp(10px,1.6vw,22px);
 }
 .trusted-band .tb-link { display:flex; align-items:center; justify-content:center; width:100%; height:100%; }
 .trusted-band .tb-logo {
   max-height:clamp(30px,3.6vw,44px); max-width:100%; width:auto; object-fit:contain;
-  filter:brightness(0) invert(1); opacity:.8; transition:opacity .25s ease;
+  filter:brightness(0) invert(1); opacity:.8; transition:opacity .25s ease, transform .25s ease;
 }
-.trusted-band .tb-slot:hover .tb-logo { opacity:1; }
+/* on hover the logo lifts and its name reveals below */
+.trusted-band .tb-slot:hover .tb-logo { opacity:1; transform:translateY(-8px); }
+.trusted-band .tb-slot-name {
+  position:absolute; left:0; right:0; bottom:clamp(4px,1vh,10px);
+  font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--tb-sand-2); text-align:center; white-space:nowrap; pointer-events:none;
+  opacity:0; transform:translateY(4px); transition:opacity .22s ease, transform .22s ease;
+}
+.trusted-band .tb-slot:hover .tb-slot-name { opacity:1; transform:translateY(0); }
 .trusted-band .tb-name { font-family:"Fraunces",serif; font-weight:600; font-size:1.0625rem; color:var(--tb-sand-2); text-align:center; }
 .trusted-band .tb-placeholder { font-family:"IBM Plex Mono",monospace; font-size:14px; color:var(--tb-muted); opacity:.4; }
 

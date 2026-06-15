@@ -27,6 +27,11 @@ function Slot({ c }: { c: Client }) {
       ) : (
         mark
       )}
+      {c.url && c.name && (
+        <span className="tb-slot-name" aria-hidden="true">
+          {c.name}
+        </span>
+      )}
     </div>
   );
 }
