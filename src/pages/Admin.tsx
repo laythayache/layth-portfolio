@@ -58,6 +58,7 @@ const CLIENTS_CONFIG: Config = {
 const TABS = [
   { id: "gallery", label: "Gallery", config: GALLERY_CONFIG },
   { id: "clients", label: "Trusted by", config: CLIENTS_CONFIG },
+  { id: "about", label: "About", config: undefined },
 ] as const;
 
 type Item = { id: string; url: string; [k: string]: unknown };
@@ -268,6 +269,126 @@ function CollectionManager({ config }: { config: Config }) {
   );
 }
 
+/* ── About page editor (single CMS document, GET/PUT /api/about) ──── */
+type AFact = { label: string; value: string };
+type APrinciple = { title: string; body: string };
+type ADoc = { role: string; intro: string; facts: AFact[]; focusTitle: string; focus: string[]; principlesTitle: string; principles: APrinciple[] };
+const ABOUT_EMPTY: ADoc = { role: "", intro: "", facts: [], focusTitle: "Focus areas", focus: [], principlesTitle: "How I work", principles: [] };
+const aInput = "w-full border border-border-strong bg-surface px-3 py-2 font-mono text-sm text-text-primary outline-none focus:border-accent";
+const aLabel = "mb-1 block font-mono text-[10px] uppercase tracking-[0.16em] text-text-muted";
+const aAdd = "border border-border-strong px-3 py-1.5 font-mono text-[11px] uppercase tracking-wide text-text-secondary transition-colors hover:border-accent hover:text-accent";
+const aDel = "shrink-0 border border-border-strong px-3 font-mono text-xs text-warn/80 transition-colors hover:text-warn";
+
+function AboutEditor() {
+  const [doc, setDoc] = useState<ADoc>(ABOUT_EMPTY);
+  const [loaded, setLoaded] = useState(false);
+  const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+
+  useEffect(() => {
+    fetch("/api/about")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (d) setDoc({ ...ABOUT_EMPTY, ...d }); })
+      .catch(() => {})
+      .finally(() => setLoaded(true));
+  }, []);
+
+  const set = (patch: Partial<ADoc>) => setDoc((d) => ({ ...d, ...patch }));
+
+  async function save() {
+    setStatus("saving");
+    try {
+      const r = await fetch("/api/about", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(doc) });
+      if (r.ok) {
+        const d = await r.json();
+        setDoc({ ...ABOUT_EMPTY, ...d });
+        setStatus("saved");
+        setTimeout(() => setStatus("idle"), 2500);
+      } else setStatus("error");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (!loaded) return <p className="font-mono text-sm text-text-muted">Loading…</p>;
+
+  return (
+    <div className="space-y-7">
+      <p className="font-mono text-xs uppercase tracking-[0.18em] text-text-muted">
+        Edit the /about page text · empty sections hide · feeds the homepage About band too · live ~30s after save
+      </p>
+
+      <div>
+        <label className={aLabel}>Role / subtitle</label>
+        <input className={aInput} value={doc.role} onChange={(e) => set({ role: e.target.value })} placeholder="AI Systems Engineer & Technical Consultant" />
+      </div>
+
+      <div>
+        <label className={aLabel}>Intro — your bio (blank line = new paragraph)</label>
+        <textarea className={`${aInput} min-h-[150px] leading-relaxed`} value={doc.intro} onChange={(e) => set({ intro: e.target.value })} placeholder="Write your bio in your own words…" />
+      </div>
+
+      <div>
+        <label className={aLabel}>Facts — label + value</label>
+        <div className="space-y-2">
+          {doc.facts.map((f, i) => (
+            <div key={i} className="flex gap-2">
+              <input className={`${aInput} sm:w-44 sm:flex-none`} value={f.label} placeholder="Based in" onChange={(e) => set({ facts: doc.facts.map((x, j) => (j === i ? { ...x, label: e.target.value } : x)) })} />
+              <input className={aInput} value={f.value} placeholder="Lebanon" onChange={(e) => set({ facts: doc.facts.map((x, j) => (j === i ? { ...x, value: e.target.value } : x)) })} />
+              <button className={aDel} onClick={() => set({ facts: doc.facts.filter((_, j) => j !== i) })} aria-label="Remove">✕</button>
+            </div>
+          ))}
+          <button className={aAdd} onClick={() => set({ facts: [...doc.facts, { label: "", value: "" }] })}>+ Add fact</button>
+        </div>
+      </div>
+
+      <div>
+        <label className={aLabel}>Focus section title</label>
+        <input className={aInput} value={doc.focusTitle} onChange={(e) => set({ focusTitle: e.target.value })} />
+      </div>
+      <div>
+        <label className={aLabel}>Focus areas</label>
+        <div className="space-y-2">
+          {doc.focus.map((v, i) => (
+            <div key={i} className="flex gap-2">
+              <input className={aInput} value={v} placeholder="e.g. Workflow automation" onChange={(e) => set({ focus: doc.focus.map((x, j) => (j === i ? e.target.value : x)) })} />
+              <button className={aDel} onClick={() => set({ focus: doc.focus.filter((_, j) => j !== i) })} aria-label="Remove">✕</button>
+            </div>
+          ))}
+          <button className={aAdd} onClick={() => set({ focus: [...doc.focus, ""] })}>+ Add focus area</button>
+        </div>
+      </div>
+
+      <div>
+        <label className={aLabel}>Principles section title</label>
+        <input className={aInput} value={doc.principlesTitle} onChange={(e) => set({ principlesTitle: e.target.value })} />
+      </div>
+      <div>
+        <label className={aLabel}>Principles — title + body</label>
+        <div className="space-y-3">
+          {doc.principles.map((p, i) => (
+            <div key={i} className="space-y-2 border border-border-strong/60 p-3">
+              <div className="flex gap-2">
+                <input className={aInput} value={p.title} placeholder="Architecture before automation" onChange={(e) => set({ principles: doc.principles.map((x, j) => (j === i ? { ...x, title: e.target.value } : x)) })} />
+                <button className={aDel} onClick={() => set({ principles: doc.principles.filter((_, j) => j !== i) })} aria-label="Remove">✕</button>
+              </div>
+              <textarea className={`${aInput} min-h-[72px]`} value={p.body} placeholder="Short paragraph in your own words…" onChange={(e) => set({ principles: doc.principles.map((x, j) => (j === i ? { ...x, body: e.target.value } : x)) })} />
+            </div>
+          ))}
+          <button className={aAdd} onClick={() => set({ principles: [...doc.principles, { title: "", body: "" }] })}>+ Add principle</button>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-4 border-t border-border-strong pt-5">
+        <button onClick={save} disabled={status === "saving"} className="bg-accent px-5 py-2.5 font-mono text-xs uppercase tracking-[0.18em] text-surface-raised transition-colors hover:bg-accent-hover disabled:opacity-50">
+          {status === "saving" ? "Saving…" : "Save"}
+        </button>
+        {status === "saved" && <span className="font-mono text-xs text-accent">✓ Saved — live in ~30s</span>}
+        {status === "error" && <span className="font-mono text-xs text-warn">Save failed</span>}
+      </div>
+    </div>
+  );
+}
+
 export default function Admin() {
   const [authed, setAuthed] = useState<boolean | null>(null);
   const [password, setPassword] = useState("");
@@ -355,7 +476,7 @@ export default function Admin() {
       </Helmet>
       <div className="mx-auto max-w-5xl">
         <header className="flex items-center justify-between border-b border-border-strong pb-5">
-          <h1 className="font-serif text-2xl text-text-primary">{active.config.title}</h1>
+          <h1 className="font-serif text-2xl text-text-primary">{active.id === "about" ? "About page" : active.config?.title}</h1>
           <button onClick={logout} className="font-mono text-xs uppercase tracking-[0.18em] text-text-secondary transition-colors hover:text-accent">
             Log out
           </button>
@@ -382,7 +503,11 @@ export default function Admin() {
 
         <div className="mt-6">
           {/* key forces a fresh load when switching collections */}
-          <CollectionManager key={active.id} config={active.config} />
+          {active.id === "about" ? (
+            <AboutEditor key="about" />
+          ) : (
+            <CollectionManager key={active.id} config={active.config as Config} />
+          )}
         </div>
       </div>
     </div>

@@ -1,0 +1,91 @@
+/* ============================================================
+   About page — Beirut Navy "Controlled Blade" register.
+   Visible text is CMS-managed; this is the fixed layout.
+   Scoped under .about-page.
+   ============================================================ */
+.about-page {
+  --ab-navy:#0B1D2A; --ab-navy-2:#0E2433; --ab-navy-deep:#071520;
+  --ab-sand:#E7DCC6; --ab-sand-2:#B9AE97; --ab-muted:#7d8b95;
+  --ab-amber:#C8893B; --ab-border:rgba(231,220,198,.16);
+  min-height:100vh; color:var(--ab-sand);
+  font-family:"Inter",system-ui,sans-serif;
+  padding:clamp(84px,13vh,150px) 0 clamp(64px,10vh,120px);
+  background:
+    radial-gradient(120% 70% at 82% -4%, #102b3d 0%, var(--ab-navy) 52%),
+    linear-gradient(180deg, var(--ab-navy-deep) 0%, var(--ab-navy) 30%, var(--ab-navy-2) 100%);
+}
+.about-page .ab-inner { max-width:760px; margin:0 auto; padding:0 clamp(20px,5vw,44px); }
+
+.about-page .ab-back {
+  display:inline-flex; align-items:center; gap:8px; margin-bottom:clamp(28px,5vh,48px);
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--ab-muted); text-decoration:none; transition:color .2s ease;
+}
+.about-page .ab-back:hover { color:var(--ab-amber); }
+
+.about-page .ab-kicker {
+  display:inline-flex; align-items:center; gap:12px; margin:0 0 18px;
+  font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--ab-muted);
+}
+.about-page .ab-dash { width:26px; height:1px; background:var(--ab-amber); }
+.about-page .ab-name {
+  margin:0; font-family:"Fraunces",serif; font-weight:600; color:var(--ab-sand);
+  font-size:clamp(2.2rem,5vw,3.4rem); line-height:1; letter-spacing:-.018em;
+}
+.about-page .ab-role {
+  margin:14px 0 0; font-family:"IBM Plex Mono",monospace; font-size:12px;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--ab-amber);
+}
+.about-page .ab-intro { margin:clamp(24px,4vh,36px) 0 0; }
+.about-page .ab-intro p { margin:0 0 16px; max-width:62ch; color:var(--ab-sand-2); font-size:1.125rem; line-height:1.72; }
+.about-page .ab-intro p:last-child { margin-bottom:0; }
+
+/* facts */
+.about-page .ab-facts {
+  list-style:none; margin:clamp(28px,4.5vh,40px) 0 0; padding:0;
+  display:grid; gap:10px; grid-template-columns:1fr;
+}
+@media (min-width:560px){ .about-page .ab-facts { grid-template-columns:1fr 1fr; } }
+.about-page .ab-fact {
+  display:flex; flex-direction:column; gap:5px;
+  border:1px solid var(--ab-border); border-radius:3px; background:var(--ab-navy-deep); padding:14px 16px;
+}
+.about-page .ab-fact-label { font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ab-muted); }
+.about-page .ab-fact-value { color:var(--ab-sand); font-size:1rem; }
+
+/* sections */
+.about-page .ab-section { margin-top:clamp(40px,6vh,64px); }
+.about-page .ab-rule { width:54px; height:2px; background:var(--ab-amber); margin-bottom:clamp(18px,2.6vh,24px); }
+.about-page .ab-h2 {
+  margin:0 0 clamp(16px,2.4vh,22px); font-family:"Fraunces",serif; font-weight:600;
+  font-size:clamp(1.4rem,2.6vw,1.85rem); color:var(--ab-sand); letter-spacing:-.01em;
+}
+
+/* focus chips */
+.about-page .ab-focus { list-style:none; margin:0; padding:0; display:grid; gap:8px; grid-template-columns:1fr; }
+@media (min-width:560px){ .about-page .ab-focus { grid-template-columns:1fr 1fr; } }
+.about-page .ab-focus-item {
+  display:flex; align-items:center; gap:10px;
+  border:1px solid var(--ab-border); border-radius:3px; background:var(--ab-navy-deep); padding:12px 14px;
+  color:var(--ab-sand-2); font-size:.95rem;
+}
+.about-page .ab-tick { width:12px; height:1px; background:var(--ab-amber); flex:none; }
+
+/* principles */
+.about-page .ab-principles { display:grid; gap:12px; }
+.about-page .ab-principle { border:1px solid var(--ab-border); border-radius:3px; background:var(--ab-navy-deep); padding:clamp(16px,2vw,22px); }
+.about-page .ab-principle h3 { margin:0; font-family:"Fraunces",serif; font-weight:600; font-size:1.15rem; color:var(--ab-sand); }
+.about-page .ab-principle p { margin:8px 0 0; max-width:64ch; color:var(--ab-sand-2); font-size:1rem; line-height:1.68; }
+
+/* reach me */
+.about-page .ab-profiles { display:flex; flex-wrap:wrap; gap:10px; }
+.about-page .ab-profile {
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid var(--ab-border); border-radius:3px; background:var(--ab-navy-deep); padding:9px 14px;
+  font-size:.9rem; color:var(--ab-sand); text-decoration:none; transition:border-color .2s ease, color .2s ease;
+}
+.about-page .ab-profile:hover { border-color:var(--ab-amber); color:var(--ab-amber); }
+.about-page .ab-contact { margin:clamp(20px,3vh,28px) 0 0; color:var(--ab-sand-2); font-size:1rem; line-height:1.7; }
+.about-page .ab-link { color:var(--ab-amber); text-decoration:none; }
+.about-page .ab-link:hover { text-decoration:underline; }
+.about-page .ab-mail { display:inline; margin:0 2px -1px 0; }

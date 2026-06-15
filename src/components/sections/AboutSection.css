@@ -1,0 +1,52 @@
+/* ============================================================
+   About band — condensed homepage About (after Trusted-by) · Beirut Navy.
+   Shares CMS content with the /about page. Scoped under .about-band.
+   ============================================================ */
+.about-band {
+  --ab-navy:#0B1D2A; --ab-navy-2:#0E2433; --ab-navy-deep:#071520;
+  --ab-sand:#E7DCC6; --ab-sand-2:#B9AE97; --ab-muted:#7d8b95;
+  --ab-amber:#C8893B; --ab-border:rgba(231,220,198,.16);
+  position:relative; color:var(--ab-sand);
+  font-family:"Inter",system-ui,sans-serif;
+  padding:clamp(64px,11vh,140px) 0;
+  background:
+    radial-gradient(120% 90% at 18% -8%, #102b3d 0%, var(--ab-navy) 56%),
+    linear-gradient(180deg, var(--ab-navy-deep) 0%, var(--ab-navy) 32%, var(--ab-navy-2) 100%);
+}
+.about-band .ab2-inner { max-width:1180px; margin:0 auto; padding:0 clamp(20px,4vw,44px); }
+
+.about-band .ab2-lead {
+  margin:0; font-family:"Fraunces",serif; font-weight:600; color:var(--ab-sand);
+  font-size:clamp(1.9rem,3.4vw,2.85rem); line-height:1; letter-spacing:-.015em;
+}
+.about-band .ab2-role {
+  margin:14px 0 0; font-family:"IBM Plex Mono",monospace; font-size:12px;
+  letter-spacing:.18em; text-transform:uppercase; color:var(--ab-amber);
+}
+.about-band .ab2-rule { width:54px; height:2px; background:var(--ab-amber); margin:clamp(22px,3.4vh,32px) 0 clamp(24px,3.6vh,34px); }
+
+.about-band .ab2-intro { max-width:64ch; }
+.about-band .ab2-intro p { margin:0 0 16px; color:var(--ab-sand-2); font-size:1.125rem; line-height:1.72; }
+.about-band .ab2-intro p:last-child { margin-bottom:0; }
+
+.about-band .ab2-facts {
+  list-style:none; margin:clamp(28px,4vh,40px) 0 0; padding:0;
+  display:grid; gap:10px; grid-template-columns:1fr;
+}
+@media (min-width:560px){ .about-band .ab2-facts { grid-template-columns:1fr 1fr; } }
+@media (min-width:900px){ .about-band .ab2-facts { grid-template-columns:repeat(4,1fr); } }
+.about-band .ab2-fact {
+  display:flex; flex-direction:column; gap:5px;
+  border:1px solid var(--ab-border); border-radius:3px; background:var(--ab-navy-deep); padding:14px 16px;
+}
+.about-band .ab2-fk { font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--ab-muted); }
+.about-band .ab2-fv { color:var(--ab-sand); font-size:.95rem; }
+
+.about-band .ab2-more { margin-top:clamp(30px,4.5vh,44px); }
+.about-band .ab2-link {
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ab-amber); text-decoration:none;
+  border:1px solid var(--ab-border); border-radius:3px; padding:11px 18px; transition:border-color .2s ease;
+}
+.about-band .ab2-link:hover { border-color:var(--ab-amber); }
