@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, type ComponentType } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RootLayout from "@/layouts/RootLayout";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -12,18 +12,45 @@ function useRemoveStaticJsonLd() {
   }, []);
 }
 
-const Home = lazy(() => import("@/pages/Home"));
-const ProjectMicrosite = lazy(() => import("@/pages/ProjectMicrosite"));
-const OmnisignMicrosite = lazy(() => import("@/pages/OmnisignMicrosite"));
-const BlogIndex = lazy(() => import("@/pages/BlogIndex"));
-const BlogPost = lazy(() => import("@/pages/BlogPost"));
-const BeyondTech = lazy(() => import("@/pages/BeyondTech"));
-const ProjectsIndex = lazy(() => import("@/pages/ProjectsIndex"));
-const About = lazy(() => import("@/pages/About"));
-const Speaking = lazy(() => import("@/pages/Speaking"));
-const Credentials = lazy(() => import("@/pages/Credentials"));
-const Admin = lazy(() => import("@/pages/Admin"));
-const FAQ = lazy(() => import("@/pages/FAQ"));
+const RELOAD_KEY = "chunkReloadAt";
+
+/** Lazy import that survives stale code-split chunks after a deploy.
+ *  When you ship often, an already-open tab holds a shell that points at the
+ *  previous build's hashed chunks; navigating to a lazy route then fetches a
+ *  chunk the new deploy removed, the import rejects, and the page goes blank.
+ *  Here we reload once to pull the fresh shell — so it resolves itself with no
+ *  manual refresh. A timestamp guard stops a genuinely-missing chunk looping. */
+function lazyWithReload<T extends ComponentType<any>>(
+  factory: () => Promise<{ default: T }>
+) {
+  return lazy(() =>
+    factory().catch((err: unknown) => {
+      const msg = err instanceof Error ? err.message : String(err);
+      const isChunkError =
+        /dynamically imported module|loading chunk|failed to fetch|module script failed/i.test(msg);
+      const last = Number(sessionStorage.getItem(RELOAD_KEY) || 0);
+      if (isChunkError && Date.now() - last > 10000) {
+        sessionStorage.setItem(RELOAD_KEY, String(Date.now()));
+        window.location.reload();
+        return new Promise<{ default: T }>(() => {}); // hold render until the reload lands
+      }
+      throw err;
+    })
+  );
+}
+
+const Home = lazyWithReload(() => import("@/pages/Home"));
+const ProjectMicrosite = lazyWithReload(() => import("@/pages/ProjectMicrosite"));
+const OmnisignMicrosite = lazyWithReload(() => import("@/pages/OmnisignMicrosite"));
+const BlogIndex = lazyWithReload(() => import("@/pages/BlogIndex"));
+const BlogPost = lazyWithReload(() => import("@/pages/BlogPost"));
+const BeyondTech = lazyWithReload(() => import("@/pages/BeyondTech"));
+const ProjectsIndex = lazyWithReload(() => import("@/pages/ProjectsIndex"));
+const About = lazyWithReload(() => import("@/pages/About"));
+const Speaking = lazyWithReload(() => import("@/pages/Speaking"));
+const Credentials = lazyWithReload(() => import("@/pages/Credentials"));
+const Admin = lazyWithReload(() => import("@/pages/Admin"));
+const FAQ = lazyWithReload(() => import("@/pages/FAQ"));
 
 export default function App() {
   useRemoveStaticJsonLd();
