@@ -47,7 +47,7 @@ function personFragment() {
     givenName: "Layth",
     familyName: "Ayache",
     url: BASE_URL,
-    image: `${BASE_URL}/favicons/apple-touch-icon.png`,
+    image: `${BASE_URL}/images/team/layth-ayache.jpeg`,
     birthDate: "2003",
     gender: "Male",
     jobTitle: [
@@ -531,7 +531,7 @@ function getRoutes() {
       title: "Layth Ayache — AI Systems Engineer & Technical Consultant",
       description:
         "Layth Ayache — AI Systems Engineer & Technical Consultant in Lebanon. Designs production AI systems, computer vision pipelines, and infrastructure-aware deployments for environments where reliability matters.",
-      ogImage: "/images/brand/landing-page-portrait.png",
+      ogImage: OG_IMAGE,
       ogImageAlt: "Layth Ayache — AI Systems Engineer",
       jsonLd: aboutPageJsonLd(),
     },
@@ -572,7 +572,7 @@ function getRoutes() {
       title: "Beyond Tech | Layth Ayache",
       description:
         "Community leadership, emergency medical response, music, and initiatives beyond engineering. Layth Ayache's volunteer work, scouting, and outreach in Lebanon.",
-      ogImage: "/images/brand/landing-page-portrait.png",
+      ogImage: OG_IMAGE,
       ogImageAlt: "Layth Ayache beyond technology and community work",
     },
   ];
