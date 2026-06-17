@@ -17,14 +17,14 @@
 .about-page .ab-inner { max-width:760px; margin:0 auto; padding:0 clamp(20px,5vw,44px); }
 
 .about-page .ab-back {
-  display:inline-flex; align-items:center; gap:8px; margin-bottom:clamp(28px,5vh,48px);
+  display:flex; width:fit-content; align-items:center; gap:8px; margin-bottom:clamp(28px,5vh,48px);
   font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase;
   color:var(--ab-muted); text-decoration:none; transition:color .2s ease;
 }
 .about-page .ab-back:hover { color:var(--ab-amber); }
 
 .about-page .ab-kicker {
-  display:inline-flex; align-items:center; gap:12px; margin:0 0 18px;
+  display:flex; width:fit-content; align-items:center; gap:12px; margin:0 0 18px;
   font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--ab-muted);
 }
 .about-page .ab-dash { width:26px; height:1px; background:var(--ab-amber); }
