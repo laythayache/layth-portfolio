@@ -8,7 +8,7 @@ import useScrollSpy from "@/hooks/useScrollSpy";
 
 const NAV_SECTIONS = [
   { to: "/about", label: "About" },
-  { id: "projects", label: "Work" },
+  { to: "/projects", label: "Work" },
   { id: "services", label: "Services" },
   { id: "certifications", label: "Credentials" },
   { id: "speaking", label: "Speaking" },
