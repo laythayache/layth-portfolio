@@ -314,7 +314,7 @@ function AboutEditor() {
   return (
     <div className="space-y-7">
       <p className="font-mono text-xs uppercase tracking-[0.18em] text-text-muted">
-        Edit the /about page text · empty sections hide · feeds the homepage About band too · live ~30s after save
+        Edit the /about page text · empty sections hide · changes the /about page only · live ~30s after save
       </p>
 
       <div>

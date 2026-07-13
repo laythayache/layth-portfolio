@@ -3,7 +3,7 @@ import SEO from "@/components/SEO";
 import { useLenis } from "@/motion/LenisProvider";
 import HeroSection from "@/components/sections/HeroSection";
 import TrustedBySection from "@/components/sections/TrustedBySection";
-import AboutSection from "@/components/sections/AboutSection";
+import StatementSection from "@/components/sections/StatementSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
 import ProjectsSection from "@/components/sections/ProjectsSection";
@@ -54,7 +54,7 @@ export default function Home() {
         <div className="section-divider" aria-hidden="true" />
         <TrustedBySection />
         <div className="section-divider" aria-hidden="true" />
-        <AboutSection />
+        <StatementSection />
         <div className="section-divider" aria-hidden="true" />
         <ExperienceSection />
         <div className="section-divider" aria-hidden="true" />

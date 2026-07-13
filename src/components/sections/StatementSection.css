@@ -1,0 +1,48 @@
+/* ============================================================
+   Statement band — oversized first-person positioning line.
+   Replaces the homepage About band. Beirut-Navy palette:
+   sand type on navy, key word in amber. Scoped under .statement-band.
+   ============================================================ */
+.statement-band {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(88px, 17vh, 210px) 0;
+  background:
+    radial-gradient(120% 88% at 16% -10%, #102b3d 0%, rgb(var(--surface)) 58%),
+    linear-gradient(180deg, rgb(var(--surface-overlay)) 0%, rgb(var(--surface)) 34%, rgb(var(--surface-raised)) 100%);
+}
+
+.statement-band .statement-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 4vw, 44px);
+}
+
+/* The line itself — heavy grotesk, tight, uppercase. */
+.statement-band .statement-line {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 8.6vw, 7.25rem);
+  line-height: 0.96;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  color: rgb(var(--text-primary));
+  text-wrap: balance;
+}
+.statement-band .st-accent {
+  color: rgb(var(--accent));
+}
+
+/* Supporting line — quiet, capped measure, sits under the statement. */
+.statement-band .statement-sub {
+  margin: clamp(28px, 4.6vh, 52px) 0 0;
+  max-width: 62ch;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.62;
+  color: rgb(var(--text-secondary));
+}
+
+@media (max-width: 480px) {
+  .statement-band .statement-line { letter-spacing: -0.025em; }
+}

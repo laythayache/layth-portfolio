@@ -2,9 +2,11 @@
 @import "@fontsource/ibm-plex-serif/latin-600.css";
 @import "@fontsource/ibm-plex-serif/latin-700.css";
 
-/* Inter — body font */
+/* Inter — body font (700/800 power the big statement band) */
 @import "@fontsource/inter/latin-400.css";
 @import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-700.css";
+@import "@fontsource/inter/latin-800.css";
 
 /* IBM Plex Mono — metadata/code font */
 @import "@fontsource/ibm-plex-mono/latin-400.css";
