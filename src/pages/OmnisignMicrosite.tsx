@@ -160,6 +160,10 @@ export default function OmnisignMicrosite() {
         <DesktopTOC items={TOC_ITEMS} />
       </div>
 
+      {/* Reserve a right gutter for the fixed TOC (≥xl) so wide content sections
+          don't slide underneath it — mirrors ProjectMicrosite's lg:mr-64. */}
+      <div className="xl:pr-64">
+
       {/* ── Hero ── */}
       <section id="hero" className="relative pb-6 pt-8">
         {/* Decorative hand landmarks background */}
@@ -803,6 +807,7 @@ export default function OmnisignMicrosite() {
           </p>
         </div>
       </footer>
+      </div>
     </article>
   );
 }

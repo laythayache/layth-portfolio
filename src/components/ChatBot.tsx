@@ -594,7 +594,7 @@ export default function ChatBot() {
                         >
                           <div
                             className={cn(
-                              "max-w-[88%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
+                              "max-w-[88%] break-words rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
                               msg.role === "user"
                                 ? "rounded-br-md bg-accent text-white"
                                 : "rounded-bl-md border border-border bg-surface-overlay text-text-primary",
