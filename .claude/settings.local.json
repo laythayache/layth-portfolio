@@ -9,7 +9,11 @@
       "Bash(gzip:*)",
       "Bash(du:*)",
       "Bash(node scripts/optimize-images.js:*)",
-      "WebFetch(domain:ramikronbi.com)"
+      "WebFetch(domain:ramikronbi.com)",
+      "Bash(git show *)"
+    ],
+    "additionalDirectories": [
+      "\\tmp"
     ]
   }
 }

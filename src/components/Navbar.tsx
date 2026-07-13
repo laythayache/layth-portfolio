@@ -7,13 +7,13 @@ import { useLenis } from "@/motion/LenisProvider";
 import useScrollSpy from "@/hooks/useScrollSpy";
 
 const NAV_SECTIONS = [
-  { to: "/about", label: "About" },
-  { to: "/projects", label: "Work" },
+  { to: "/about/", label: "About" },
+  { to: "/projects/", label: "Work" },
   { id: "services", label: "Services" },
   { id: "certifications", label: "Credentials" },
   { id: "speaking", label: "Speaking" },
-  { to: "/blog", label: "Writing" },
-  { to: "/faq", label: "FAQ" },
+  { to: "/blog/", label: "Writing" },
+  { to: "/faq/", label: "FAQ" },
   { id: "contact", label: "Contact" },
 ] as const;
 const NAV_SECTION_IDS = NAV_SECTIONS.flatMap((section) =>
