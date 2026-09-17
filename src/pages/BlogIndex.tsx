@@ -52,7 +52,7 @@ export default function BlogIndex() {
       <section className="section-shell px-6">
         <div className="mx-auto max-w-6xl">
           <Link
-            to="/#blog"
+            to="/"
             className="inline-flex items-center gap-2 text-sm font-medium text-text-secondary hover:text-accent"
           >
             <ArrowLeft size={14} aria-hidden />

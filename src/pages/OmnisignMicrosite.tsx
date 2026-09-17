@@ -165,7 +165,7 @@ export default function OmnisignMicrosite() {
       <div className="xl:pr-64">
 
       {/* ── Hero ── */}
-      <section id="hero" className="relative pb-6 pt-8">
+      <section id="hero" className="relative overflow-hidden pb-6 pt-8">
         {/* Decorative hand landmarks background */}
         <div className="pointer-events-none absolute -right-10 top-0 h-64 w-64 opacity-[0.07] md:right-10 md:h-96 md:w-96">
           <HandLandmarks className="h-full w-full text-teal-600" />
@@ -355,11 +355,11 @@ export default function OmnisignMicrosite() {
                 transition={{ delay: 0.3, duration: reduced ? 0.15 : 0.6, ease: EASE_OUT }}
               >
                 <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-slate-400">
-                  The engineering focus
+                  Accessibility requirement
                 </p>
                 <p className="font-sans text-xl font-semibold leading-snug text-slate-800">
-                  Connect a locally collected sign-language dataset to practical,
-                  on-device recognition.
+                  Recognized Lebanese Sign Language must become readable text quickly
+                  enough to support a live conversation.
                 </p>
                 <div className="mt-6 h-px bg-gradient-to-r from-teal-600 to-transparent" />
               </motion.div>

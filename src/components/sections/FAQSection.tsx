@@ -33,9 +33,9 @@ export default function FAQSection() {
           <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted">
             <span className="text-leather">—</span> no. 08 / faq
           </p>
-          <h2 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
+          <h1 className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary">
             Frequently asked questions.
-          </h2>
+          </h1>
           <div aria-hidden="true" className="mt-4 h-[2px] w-14 bg-leather" />
           <p className="mt-5 max-w-2xl text-[1.0625rem] leading-[1.7] text-text-secondary">
             Short answers about consulting, AI systems, and collaboration.
@@ -54,7 +54,7 @@ export default function FAQSection() {
                   visible: { opacity: 1, y: 0, transition: { duration: 0.22 } },
                 }}
               >
-                <h3>
+                <h2>
                   <button
                     type="button"
                     onClick={() => toggle(index)}
@@ -74,7 +74,7 @@ export default function FAQSection() {
                       aria-hidden
                     />
                   </button>
-                </h3>
+                </h2>
 
                 <AnimatePresence initial={false}>
                   {isOpen && (

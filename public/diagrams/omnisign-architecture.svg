@@ -23,7 +23,7 @@
   <!-- Section labels -->
   <text x="30" y="45" class="section-label">On-Device</text>
   <text x="330" y="45" class="section-label">Federated Learning</text>
-  <text x="670" y="45" class="section-label">Output & Export</text>
+  <text x="670" y="45" class="section-label">Output &amp; Export</text>
 
   <!-- ON-DEVICE LAYER -->
   <!-- Camera/Input -->
@@ -106,7 +106,7 @@
 
   <!-- Privacy & Constraints box -->
   <rect x="30" y="430" width="950" height="140" rx="4" fill="none" stroke="#1a1a1a" stroke-width="1" stroke-dasharray="5,5" />
-  <text x="50" y="455" class="section-label">Privacy & Design Decisions</text>
+  <text x="50" y="455" class="section-label">Privacy &amp; Design Decisions</text>
   <text x="50" y="475" class="label">✓ On-device processing prevents data leakage (privacy-first)</text>
   <text x="50" y="495" class="label">✓ Federated learning allows 6 contributors to improve model without centralizing data</text>
   <text x="50" y="515" class="label">✓ Alphabet-level accuracy (89%) chosen over full translation to avoid complexity at this stage</text>

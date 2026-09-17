@@ -95,7 +95,7 @@ export default function Credentials() {
         jsonLd={credentialsPageJsonLd()}
       />
 
-      <main className="relative px-6 pb-24 pt-12">
+      <div className="relative px-6 pb-24 pt-12">
         <div
           className="system-grid-bg pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-50"
           aria-hidden="true"
@@ -115,7 +115,7 @@ export default function Credentials() {
           <p className="type-body mt-4 max-w-2xl">
             Engineering degree, networking and security certifications, applied
             computer vision, and clinical credentials. Each entry is grouped by
-            type and links to the issuing organization where verifiable.
+            type with its issuer, date, and relevant scope.
           </p>
 
           <SignalDivider label="Verified credentials" className="my-10 px-0" />
@@ -175,7 +175,7 @@ export default function Credentials() {
             })}
           </div>
         </div>
-      </main>
+      </div>
     </>
   );
 }

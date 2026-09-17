@@ -183,7 +183,7 @@ export default function ProjectMicrosite() {
         <div className={cn("mx-auto max-w-4xl", showToc && "lg:mr-64")}>
           {/* Back link */}
           <Link
-            to="/projects/"
+            to="/projects"
             className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-accent"
           >
             <ArrowLeft size={14} />
@@ -455,7 +455,7 @@ export default function ProjectMicrosite() {
           {/* Back to projects */}
           <div className="pb-8 text-center">
             <Link
-              to="/#projects"
+              to="/projects"
               className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-accent"
             >
               <ArrowLeft size={14} />

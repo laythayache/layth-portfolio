@@ -353,7 +353,7 @@ export const ctaCards: CTACard[] = [
     title: "Contribute Signs",
     description:
       "Help us grow the dataset. We'll set you up with our data collector app — completely free. Record signs from your community.",
-    action: "Request app access",
+    action: "Request data collector",
     email: "laythayache5@gmail.com",
     subject: "OmniSign - I want to contribute sign data",
   },
