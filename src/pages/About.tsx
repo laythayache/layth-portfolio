@@ -105,6 +105,15 @@ export default function About() {
             </div>
           )}
 
+          <section className="ab-section">
+            <div className="ab-rule" aria-hidden="true" />
+            <h2 className="ab-h2">Engineering with responsibility</h2>
+            <div className="ab-intro">
+              <p>My experience spans telecom infrastructure, AI systems, teaching, and emergency medical volunteering with the Lebanese Civil Defense. Across these settings, I care about understanding the situation, taking responsibility, and making the work useful to the people relying on it.</p>
+              <p>Lebanon is home. I want to build dependable systems here, with a long-term interest in healthcare, public services, and the infrastructure that supports everyday life.</p>
+            </div>
+          </section>
+
           {c.facts.length > 0 && (
             <ul className="ab-facts">
               {c.facts.map((f, i) => (

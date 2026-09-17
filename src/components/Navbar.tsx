@@ -26,7 +26,6 @@ export default function Navbar() {
   const isHome = pathname === "/";
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [revealed, setRevealed] = useState(false);
   const activeSection = useScrollSpy(NAV_SECTION_IDS, {
     rootMargin: "-30% 0px -55% 0px",
     threshold: SCROLLSPY_THRESHOLDS,
@@ -41,12 +40,11 @@ export default function Navbar() {
     restDelta: 0.001,
   });
 
-  // Scroll detection: shadow + (on home) reveal the navbar only after leaving the hero
+  // Keep navigation available from first paint; add a shadow on scroll.
   useEffect(() => {
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 8);
-      setRevealed(!isHome || y > window.innerHeight * 0.55);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
@@ -90,9 +88,6 @@ export default function Navbar() {
       className={cn(
         "fixed left-0 right-0 top-0 z-50 transition-all duration-500",
         "border-b border-border-strong bg-surface/94 backdrop-blur-lg",
-        revealed
-          ? "translate-y-0 opacity-100"
-          : "-translate-y-full opacity-0 pointer-events-none",
         isHome && !scrolled
           ? "shadow-none"
           : "shadow-[0_8px_24px_rgb(15_23_42_/_0.08)]"

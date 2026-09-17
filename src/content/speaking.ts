@@ -52,20 +52,20 @@ export const speakingEntries: SpeakingEntry[] = [
   {
     id: "civil-defense-community",
     title: "Emergency Medical Volunteer",
-    role: "EMT & Mentor",
+    role: "EMT & Mentor · Currently inactive",
     organization: "Lebanese Civil Defense",
     description:
-      "Deliver on-site emergency medical care, execute BLS protocols, coordinate patient transport, and mentor new EMT volunteers.",
+      "Delivered on-site emergency medical care, executed BLS protocols, coordinated patient transport, and mentored new EMT volunteers.",
     ctaLabel: "Learn more",
     link: "https://www.linkedin.com/in/laythayache",
   },
   {
     id: "jarrah-scouts",
     title: "Jarrah Scouts",
-    role: "Active Member",
+    role: "Former Member",
     organization: "Jarrah Scouts Lebanon",
     description:
-      "Long-standing member contributing to community service projects, leadership development, and outdoor education programs.",
+      "Contributed to community service projects, leadership development, and outdoor education programs.",
     ctaLabel: "Learn more",
     link: "https://www.linkedin.com/in/laythayache",
   },

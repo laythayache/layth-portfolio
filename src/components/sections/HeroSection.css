@@ -136,3 +136,23 @@
 }
 
 /* (emblem + text position locked via --ff-cx / --ff-cy on .ffhero) */
+
+/* Identity and message lead; the emblem supports them. Flow layout avoids
+   collisions between the headline, actions and footer at narrow sizes. */
+.ffhero { --E:clamp(72px, 12vh, 120px); display:flex; flex-direction:column; }
+.ffhero .ff-field {
+  position:relative; inset:auto; flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:20px;
+  padding:calc(var(--nav-height, 4.5rem) + 40px) 24px 40px;
+}
+.ffhero .ff-kicker { position:static; transform:none; white-space:normal; text-align:center; justify-content:center; opacity:1; color:var(--ff-sand-2); }
+.ffhero .ff-markwrap { position:relative; left:auto; top:auto; flex:none; transform:none; }
+.ffhero.drawing .ff-markwrap, .ffhero.revealed .ff-markwrap { transform:none; }
+.ffhero .ff-below { position:static; transform:none; width:100%; max-width:760px; padding:0; gap:20px; }
+.ffhero .ff-name { font-family:"IBM Plex Mono",monospace; font-size:14px; letter-spacing:.16em; text-transform:uppercase; }
+.ffhero h1 { font-size:clamp(2.2rem,5.5vw,4.5rem); max-width:19ch; margin:0; }
+.ffhero .ff-summary { max-width:46ch; color:var(--ff-sand); font-size:clamp(1rem,2vw,1.125rem); line-height:1.6; }
+.ffhero .ff-strip { position:relative; left:auto; right:auto; bottom:auto; }
+.ffhero .ff-status { white-space:normal; line-height:1.6; }
+.ffhero .ff-scrim { background:linear-gradient(180deg,rgba(7,18,28,.72),rgba(7,18,28,.68) 65%,rgba(7,18,28,.9)); }
+@media (prefers-reduced-motion:reduce) { .ffhero .ff-markwrap { transform:none !important; } }

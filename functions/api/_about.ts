@@ -45,7 +45,9 @@ export function sanitizeAbout(input: unknown): AboutContent {
   return {
     role: str(o.role, 120),
     intro: str(o.intro, 2400),
-    facts,
+    facts: facts.map((f) => f.label.trim().toLowerCase() === "currently" && f.value.trim() === "Aligned Tech"
+      ? { label: "Previous role", value: "Aligned Tech · Nov 2025 – Aug 2026" }
+      : f),
     focusTitle: str(o.focusTitle, 60) || "Focus areas",
     focus,
     principlesTitle: str(o.principlesTitle, 60) || "How I work",
