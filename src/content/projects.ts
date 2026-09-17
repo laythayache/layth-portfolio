@@ -69,9 +69,6 @@ export const projects: Project[] = [
     stack: "TensorFlow, MediaPipe, React Native, Python, WebRTC",
     timeframe: "2024 - Present",
     architectureDiagram: "/diagrams/omnisign-architecture.svg",
-    links: {
-      repo: "https://github.com/laythayache/omnisign",
-    },
     challenge_url: "/#contact",
     friend_project: false,
     tags: ["AI", "Accessibility", "Computer Vision"],

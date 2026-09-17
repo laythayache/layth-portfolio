@@ -4,30 +4,32 @@ interface Env {
   OPENAI_API_KEY: string;
 }
 
+function jsonResponse(body: Record<string, unknown>, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+    },
+  });
+}
+
 export const onRequestPost: PagesFunction<Env> = async (context) => {
   const apiKey = context.env.OPENAI_API_KEY;
   if (!apiKey) {
-    return new Response(
-      JSON.stringify({ error: "Service unavailable." }),
-      { status: 503, headers: { "Content-Type": "application/json" } }
-    );
+    console.error("Portfolio chat is missing OPENAI_API_KEY.");
+    return jsonResponse({ error: "Service unavailable." }, 503);
   }
 
   let body: { messages?: unknown };
   try {
     body = await context.request.json();
   } catch {
-    return new Response(
-      JSON.stringify({ error: "Invalid request body." }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
+    return jsonResponse({ error: "Invalid request body." }, 400);
   }
 
   if (!Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 20) {
-    return new Response(
-      JSON.stringify({ error: "Messages array is required." }),
-      { status: 400, headers: { "Content-Type": "application/json" } }
-    );
+    return jsonResponse({ error: "Messages array is required." }, 400);
   }
 
   const validRoles = new Set(["user", "assistant"]);
@@ -37,7 +39,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return typeof candidate.role === "string" && validRoles.has(candidate.role) && typeof candidate.content === "string" && candidate.content.trim().length > 0 && candidate.content.length <= 4000;
   });
   if (messages.length !== body.messages.length || !messages.some((message) => message.role === "user")) {
-    return new Response(JSON.stringify({ error: "Messages must use user or assistant roles and contain 1–4000 characters." }), { status: 400, headers: { "Content-Type": "application/json" } });
+    return jsonResponse({ error: "Messages must use user or assistant roles and contain 1–4000 characters." }, 400);
   }
 
   let response: Response;
@@ -54,31 +56,42 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           { role: "system", content: SYSTEM_PROMPT },
           ...messages,
         ],
-        stream: true,
         max_tokens: 300,
         temperature: 0.3,
       }),
     });
-  } catch {
-    return new Response(
-      JSON.stringify({ error: "AI service unavailable." }),
-      { status: 502, headers: { "Content-Type": "application/json" } }
-    );
+  } catch (error) {
+    console.error("OpenAI request failed before a response was received.", error);
+    return jsonResponse({ error: "AI service unavailable." }, 502);
   }
 
   if (!response.ok) {
-    return new Response(
-      JSON.stringify({ error: "AI service error." }),
-      { status: 502, headers: { "Content-Type": "application/json" } }
+    console.error("OpenAI request returned an error.", {
+      status: response.status,
+      requestId: response.headers.get("x-request-id"),
+    });
+    return jsonResponse(
+      { error: response.status === 429 ? "AI service is busy." : "AI service error." },
+      response.status === 429 ? 429 : 502,
     );
   }
 
-  // Pipe the SSE stream directly back to the client
-  return new Response(response.body, {
-    headers: {
-      "Content-Type": "text/event-stream",
-      "Cache-Control": "no-cache",
-      Connection: "keep-alive",
-    },
-  });
+  let completion: unknown;
+  try {
+    completion = await response.json();
+  } catch (error) {
+    console.error("OpenAI returned a non-JSON success response.", error);
+    return jsonResponse({ error: "AI service returned an invalid response." }, 502);
+  }
+
+  const content = (completion as {
+    choices?: Array<{ message?: { content?: unknown } }>;
+  }).choices?.[0]?.message?.content;
+
+  if (typeof content !== "string" || !content.trim()) {
+    console.error("OpenAI returned a completion without message content.");
+    return jsonResponse({ error: "AI service returned an empty response." }, 502);
+  }
+
+  return jsonResponse({ content: content.trim() });
 };

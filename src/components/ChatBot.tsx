@@ -366,7 +366,6 @@ export default function ChatBot() {
 
     const controller = new AbortController();
     abortRef.current = controller;
-    let reader: ReadableStreamDefaultReader<Uint8Array> | undefined;
 
     try {
       const response = await fetch("/api/chat", {
@@ -381,48 +380,26 @@ export default function ChatBot() {
       if (response.status === 429) throw new Error("rate-limited");
       if (!response.ok) throw new Error(`API error: ${response.status}`);
 
-      reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let accumulated = "";
-
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split("\n").filter((l) => l.trim() !== "");
-
-          for (const line of lines) {
-            if (line === "data: [DONE]") continue;
-            if (!line.startsWith("data: ")) continue;
-            try {
-              const json = JSON.parse(line.slice(6));
-              const delta = json.choices?.[0]?.delta?.content;
-              if (delta) {
-                accumulated += delta;
-                const { text: displayText, hasAction } = parseMessage(accumulated);
-                setMessages((prev) => {
-                  const updated = [...prev];
-                  updated[updated.length - 1] = {
-                    role: "assistant",
-                    content: accumulated,
-                    showActionCard: hasAction,
-                  };
-                  return updated;
-                });
-                void displayText; // used via showActionCard
-              }
-            } catch {
-              // skip malformed chunks
-            }
-          }
-        }
+      const payload = await response.json() as { content?: unknown };
+      if (typeof payload.content !== "string" || !payload.content.trim()) {
+        throw new Error("empty-response");
       }
+      const content = payload.content.trim();
+      const { hasAction } = parseMessage(content);
+      setMessages((prev) => {
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          content,
+          showActionCard: hasAction,
+        };
+        return updated;
+      });
 
       // Speak the final response in voice mode
-      if (isVoiceMode && accumulated) {
-        const { text: spokenText } = parseMessage(accumulated);
+      if (isVoiceMode) {
+        const { text: spokenText } = parseMessage(content);
         if (spokenText) speak(spokenText);
       }
     } catch (error) {
@@ -430,19 +407,20 @@ export default function ChatBot() {
       const isRateLimited =
         error instanceof Error && error.message === "rate-limited";
       const errorMsg = isRateLimited
-        ? "Too many questions — try again in a bit."
-        : "Sorry, I couldn't process that. Please try again.";
+        ? "The assistant is handling too many questions right now. You can still email Layth or schedule a call below. [ACTION:contact]"
+        : "The portfolio assistant is temporarily unavailable. You can email Layth directly or schedule a call below. [ACTION:contact]";
       setMessages((prev) => {
         const updated = [...prev];
-        updated[updated.length - 1] = {
-          role: "assistant",
+        const lastIndex = updated.length - 1;
+        updated[lastIndex] = {
+          ...updated[lastIndex],
           content: errorMsg,
+          showActionCard: true,
         };
         return updated;
       });
-      if (isVoiceMode) speak(errorMsg);
+      if (isVoiceMode) speak(parseMessage(errorMsg).text);
     } finally {
-      reader?.cancel().catch(() => {});
       abortRef.current = null;
       setStreaming(false);
     }
@@ -525,7 +503,7 @@ export default function ChatBot() {
               <div className="flex-1">
                 <p className="text-sm font-semibold text-text-primary">LBV</p>
                 <p className="text-xs text-text-muted">
-                  Layth&rsquo;s AI &middot; ask me anything
+                  Professional portfolio assistant
                 </p>
               </div>
               <button
@@ -560,7 +538,7 @@ export default function ChatBot() {
                       Hey, I&rsquo;m LBV.
                     </p>
                     <p className="mt-1 text-xs text-text-muted">
-                      Ask me anything — about Layth, his work, or how he can help you.
+                      Ask about Layth&rsquo;s work, experience, capabilities, or contact options.
                     </p>
                   </div>
                   <div className="mt-2 flex flex-wrap justify-center gap-2">
@@ -645,7 +623,7 @@ export default function ChatBot() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask LBV anything…"
+                placeholder="Ask about Layth&rsquo;s work…"
                 disabled={streaming || isListening}
                 aria-label="Message to LBV"
                 className={cn(

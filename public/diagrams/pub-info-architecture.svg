@@ -58,7 +58,7 @@
 
   <!-- Monitoring -->
   <rect x="350" y="310" width="120" height="80" rx="4" class="box" />
-  <text x="410" y="340" text-anchor="middle" class="title">Monitoring &</text>
+  <text x="410" y="340" text-anchor="middle" class="title">Monitoring &amp;</text>
   <text x="410" y="358" text-anchor="middle" class="title">Alerting</text>
   <text x="410" y="376" text-anchor="middle" class="label">Prometheus</text>
 
@@ -69,16 +69,16 @@
   <text x="740" y="118" text-anchor="middle" class="label">Query DSL, Auth</text>
   <text x="740" y="136" text-anchor="middle" class="label">Rate Limiting</text>
 
-  <!-- Users & Consumers -->
+  <!-- Users &amp; Consumers -->
   <rect x="670" y="180" width="140" height="100" rx="4" class="box" />
   <text x="740" y="220" text-anchor="middle" class="title">Consumers</text>
   <text x="740" y="238" text-anchor="middle" class="label">Researchers</text>
   <text x="740" y="256" text-anchor="middle" class="label">Journalists</text>
   <text x="740" y="274" text-anchor="middle" class="label">Analysts</text>
 
-  <!-- Archive & Export -->
+  <!-- Archive &amp; Export -->
   <rect x="670" y="310" width="140" height="80" rx="4" class="box" />
-  <text x="740" y="340" text-anchor="middle" class="title">Archive &</text>
+  <text x="740" y="340" text-anchor="middle" class="title">Archive &amp;</text>
   <text x="740" y="358" text-anchor="middle" class="title">Export</text>
   <text x="740" y="376" text-anchor="middle" class="label">Long-term Storage</text>
 
