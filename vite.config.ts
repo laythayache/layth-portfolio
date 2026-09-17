@@ -65,9 +65,8 @@ function chatApiDevProxy(): Plugin {
                   { role: "system", content: SYSTEM_PROMPT },
                   ...messages,
                 ],
-                stream: true,
                 max_tokens: 300,
-                temperature: 0.7,
+                temperature: 0.3,
               }),
             }
           );
@@ -79,21 +78,21 @@ function chatApiDevProxy(): Plugin {
             return;
           }
 
-          res.writeHead(200, {
-            "Content-Type": "text/event-stream",
-            "Cache-Control": "no-cache",
-            Connection: "keep-alive",
-          });
-
-          const reader = response.body?.getReader();
-          if (reader) {
-            while (true) {
-              const { done, value } = await reader.read();
-              if (done) break;
-              res.write(value);
-            }
+          const completion = await response.json() as {
+            choices?: Array<{ message?: { content?: unknown } }>;
+          };
+          const content = completion.choices?.[0]?.message?.content;
+          if (typeof content !== "string" || !content.trim()) {
+            res.writeHead(502, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: "AI service returned an empty response." }));
+            return;
           }
-          res.end();
+
+          res.writeHead(200, {
+            "Content-Type": "application/json; charset=utf-8",
+            "Cache-Control": "no-store",
+          });
+          res.end(JSON.stringify({ content: content.trim() }));
         } catch (err) {
           res.writeHead(500, { "Content-Type": "application/json" });
           res.end(JSON.stringify({ error: "Proxy error", detail: String(err) }));

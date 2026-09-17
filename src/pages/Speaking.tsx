@@ -66,7 +66,7 @@ export default function Speaking() {
         jsonLd={speakingPageJsonLd()}
       />
 
-      <main className="relative px-6 pb-24 pt-12">
+      <div className="relative px-6 pb-24 pt-12">
         <div
           className="system-grid-bg pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-50"
           aria-hidden="true"
@@ -133,7 +133,7 @@ export default function Speaking() {
             })}
           </ul>
         </div>
-      </main>
+      </div>
     </>
   );
 }

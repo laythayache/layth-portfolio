@@ -36,7 +36,7 @@ export default function About() {
 
   return <>
     <SEO title={`${PROFESSIONAL.name} | ${PROFESSIONAL.primaryTitle}`} description={BRAND.description} canonical={`${SITE_URL}/about`} jsonLd={aboutPageJsonLd()} />
-    <main className="about-page"><div className="ab-inner">
+    <section className="about-page"><div className="ab-inner">
       <Link to="/" className="ab-back"><ArrowLeft size={13} aria-hidden /> Back home</Link>
       <p className="ab-kicker"><span className="ab-dash" aria-hidden /> professional profile</p>
       <h1 className="ab-name">{PROFESSIONAL.name}</h1><p className="ab-role">{PROFESSIONAL.primaryTitle}</p>
@@ -50,6 +50,6 @@ export default function About() {
       <section className="ab-section"><div className="ab-rule" aria-hidden /><h2 className="ab-h2">{cms.focusTitle}</h2><ul className="ab-focus">{focus.map((item) => <li className="ab-focus-item" key={item}><span className="ab-tick" aria-hidden />{item}</li>)}</ul></section>
       <section className="ab-section"><div className="ab-rule" aria-hidden /><h2 className="ab-h2">{cms.principlesTitle}</h2><div className="ab-principles">{principles.map((item) => <article className="ab-principle" key={item.title}><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></section>
       <section className="ab-section"><div className="ab-rule" aria-hidden /><h2 className="ab-h2">Contact</h2><div className="ab-profiles"><a href={BRAND.linkedin} target="_blank" rel="noopener noreferrer me" className="ab-profile"><Linkedin size={14} aria-hidden /> LinkedIn <ArrowUpRight size={12} aria-hidden /></a><a href={BRAND.github} target="_blank" rel="noopener noreferrer me" className="ab-profile"><Github size={14} aria-hidden /> GitHub <ArrowUpRight size={12} aria-hidden /></a></div><p className="ab-contact"><a href={`mailto:${BRAND.email}`} className="ab-link"><Mail size={12} className="ab-mail" aria-hidden /> {BRAND.email}</a></p></section>
-    </div></main>
+    </div></section>
   </>;
 }

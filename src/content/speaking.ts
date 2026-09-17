@@ -16,7 +16,7 @@ export const speakingEntries: SpeakingEntry[] = [
     organization: "Rafik Hariri University",
     description:
       "Founded and led the university AI club. Organized workshops and hackathons, mentoring 100+ students in computer vision, NLP, and ML deployment.",
-    ctaLabel: "View highlights",
+    ctaLabel: "View Layth on LinkedIn",
     link: "https://www.linkedin.com/in/laythayache",
   },
   {
@@ -26,7 +26,7 @@ export const speakingEntries: SpeakingEntry[] = [
     organization: "Rafik Hariri University",
     description:
       "Organized stargazing events, physics lectures, and science outreach activities to promote STEM engagement across the university community.",
-    ctaLabel: "Learn more",
+    ctaLabel: "View Layth on LinkedIn",
     link: "https://www.linkedin.com/in/laythayache",
   },
   {
@@ -36,7 +36,7 @@ export const speakingEntries: SpeakingEntry[] = [
     organization: "Public Schools and Little Engineer Initiative",
     description:
       "Designed beginner-friendly robotics sessions in underserved communities with hands-on Arduino and problem-solving labs.",
-    ctaLabel: "Join community",
+    ctaLabel: "View Layth on LinkedIn",
     link: "https://www.linkedin.com/in/laythayache",
   },
   {
@@ -46,7 +46,7 @@ export const speakingEntries: SpeakingEntry[] = [
     organization: "ZAKA",
     description:
       "Organized AI-focused events and connected students with practitioners to bridge research, industry, and mentorship.",
-    ctaLabel: "See updates",
+    ctaLabel: "View Layth on LinkedIn",
     link: "https://www.linkedin.com/in/laythayache",
   },
   {
@@ -56,7 +56,7 @@ export const speakingEntries: SpeakingEntry[] = [
     organization: "Lebanese Civil Defense",
     description:
       "Delivered on-site emergency medical care, executed BLS protocols, coordinated patient transport, and mentored new EMT volunteers.",
-    ctaLabel: "Learn more",
+    ctaLabel: "View Layth on LinkedIn",
     link: "https://www.linkedin.com/in/laythayache",
   },
   {
@@ -66,17 +66,7 @@ export const speakingEntries: SpeakingEntry[] = [
     organization: "Jarrah Scouts Lebanon",
     description:
       "Contributed to community service projects, leadership development, and outdoor education programs.",
-    ctaLabel: "Learn more",
+    ctaLabel: "View Layth on LinkedIn",
     link: "https://www.linkedin.com/in/laythayache",
-  },
-  {
-    id: "sessionize-speaker",
-    title: "Speaker Profile",
-    role: "Conference Speaker",
-    organization: "Sessionize",
-    description:
-      "Public speaker profile for tech conferences and developer events. Available for talks on AI systems, edge deployment, and building production software in resource-constrained environments.",
-    ctaLabel: "View speaker profile",
-    link: "https://sessionize.com/layth-ayache",
   },
 ];
