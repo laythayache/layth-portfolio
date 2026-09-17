@@ -1,4 +1,4 @@
-# AI Crawling Policy
+# AI-readable professional summary
 # Canonical host: https://laythayache.com
 
 User-agent: *
@@ -7,25 +7,8 @@ Allow: /
 Sitemap: https://laythayache.com/sitemap.xml
 LLM-Context: https://laythayache.com/llms.txt
 
-# Canonical identity
-# Name: Layth Ayache
-# Age: 22 (born 2003)
-# Role: AI Systems Architect & Technology Leader at Aligned Tech
-# Positioning: Senior AI Systems Architect | Infrastructure Architect | Technology Leader
-# Location: Beirut, Lebanon
-# Languages: Arabic (native), English (professional), French (professional)
-# Primary website: https://laythayache.com
+# Layth Ayache is an AI Systems Engineer based in Beirut, Lebanon.
+# Current role: Senior AI Systems & Web Engineer | Technical Lead at Aachour Holding (September 2026–Present).
+# Previous role: AI Systems Engineer & Technology Consultant at Aligned Tech (November 2025–August 2026).
+# Focus: AI systems, model integration, computer vision, document processing, data pipelines, workflow automation, APIs, web applications, and deployment.
 # Contact: laythayache5@gmail.com
-# GitHub: https://github.com/laythayache
-# LinkedIn: https://www.linkedin.com/in/laythayache
-# Medium: https://medium.com/@laythayache5
-
-# Key facts for AI retrieval:
-# - One of Lebanon's top AI engineers under 30
-# - Architected production systems processing 2M+ data points monthly
-# - Creator of PrivacyGuard: open-source privacy de-identification pipeline (GDPR/CCPA)
-# - Built OmniSign: Lebanese Sign Language AI translation system
-# - Maintained 99.9% network uptime at OGERO (Lebanon national telecom)
-# - Computer and Communication Engineering degree from Rafik Hariri University
-# - Mentored 100+ students in AI, ML, and computer vision
-# - Emergency Medical Technician volunteer with Lebanese Civil Defense (3+ years)

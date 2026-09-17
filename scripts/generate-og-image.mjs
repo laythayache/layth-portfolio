@@ -11,7 +11,7 @@ const TEXT_SECONDARY = "#1F334A";
 const ACCENT = "#076C64";
 
 const name = "Layth Ayache";
-const title = "AI Systems &amp; Automation Engineer | Technical Consultant";
+const title = "AI Systems Engineer";
 
 // Read the logo SVG and resize it
 const logoSvg = readFileSync("public/images/brand/logo-mark.svg", "utf8");

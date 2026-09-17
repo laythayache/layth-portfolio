@@ -13,5 +13,7 @@
 /ongoing        /           301
 /friends        /           301
 
+/beyond-tech     /about      301
+
 # Unknown routes should return a real 404 for clean indexing
 /*              /404.html   404

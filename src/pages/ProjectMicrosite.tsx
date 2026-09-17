@@ -252,17 +252,6 @@ export default function ProjectMicrosite() {
               aria-hidden="true"
             />
             <div className="relative">
-            {project.outcome && (
-              <div className="mb-5 border-l-2 border-accent bg-surface-overlay/70 px-4 py-3">
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-accent mb-1">
-                  Executive summary
-                </p>
-                <p className="text-base font-medium leading-relaxed text-text-primary">
-                  {project.outcome}
-                </p>
-              </div>
-            )}
-
             {project.stack && (
               <div className="mb-5">
                 <p className="font-mono text-[11px] uppercase tracking-wider text-text-muted mb-2">

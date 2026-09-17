@@ -1,71 +1,19 @@
 {
-  "name": "Layth Ayache - AI Systems Architect",
+  "name": "Layth Ayache - AI Systems Engineer",
   "short_name": "Layth Ayache",
-  "description": "AI systems architect from Lebanon building production-grade computer vision, NLP, and data pipeline infrastructure. Leading engineering at Aligned Tech.",
+  "description": "Professional portfolio of Layth Ayache, AI Systems Engineer at Aachour Holding.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "theme_color": "#1C1C1C",
-  "background_color": "#E7E2DB",
-  "orientation": "portrait-primary",
+  "theme_color": "#0B1821",
+  "background_color": "#F3EAD8",
   "icons": [
-    {
-      "src": "/favicons/favicon-48.png",
-      "sizes": "48x48",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "/favicons/apple-touch-icon.png",
-      "sizes": "180x180",
-      "type": "image/png",
-      "purpose": "any"
-    }
+    { "src": "/favicons/favicon-48.png", "sizes": "48x48", "type": "image/png", "purpose": "any" },
+    { "src": "/favicons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" }
   ],
-  "screenshots": [
-    {
-      "src": "/images/brand/landing-page-portrait.png",
-      "sizes": "1024x1536",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/images/brand/og-default.jpg",
-      "sizes": "1200x630",
-      "type": "image/jpeg",
-      "form_factor": "wide"
-    }
-  ],
-  "categories": [
-    "productivity",
-    "business"
-  ],
+  "categories": ["business", "productivity"],
   "shortcuts": [
-    {
-      "name": "Blog",
-      "short_name": "Blog",
-      "description": "Read articles on systems engineering and automation",
-      "url": "/blog",
-      "icons": [
-        {
-          "src": "/favicons/favicon-48.png",
-          "sizes": "48x48",
-          "type": "image/png"
-        }
-      ]
-    },
-    {
-      "name": "About",
-      "short_name": "About",
-      "description": "Learn about my work and approach",
-      "url": "/#about",
-      "icons": [
-        {
-          "src": "/favicons/favicon-48.png",
-          "sizes": "48x48",
-          "type": "image/png"
-        }
-      ]
-    }
+    { "name": "Selected work", "short_name": "Work", "description": "Review project case studies", "url": "/projects", "icons": [{ "src": "/favicons/favicon-48.png", "sizes": "48x48", "type": "image/png" }] },
+    { "name": "About", "short_name": "About", "description": "Professional profile and working approach", "url": "/about", "icons": [{ "src": "/favicons/favicon-48.png", "sizes": "48x48", "type": "image/png" }] }
   ]
 }

@@ -10,10 +10,6 @@ const SPEAKING_CROSS_IDS = new Set(["rhu"]);
 
 /* The standout figure for each role, surfaced from its own bullets. */
 const HIGHLIGHT: Record<string, { value: string; label: string }> = {
-  "cog-developers": { value: "95%", label: "CV detection accuracy" },
-  "organizer-mea": { value: "50K+", label: "documents processed (OCR)" },
-  "ogero-network": { value: "99.9%", label: "network uptime" },
-  "ogero-data": { value: "18%", label: "better forecasting" },
   rhu: { value: "100+", label: "students mentored" },
 };
 
@@ -51,7 +47,7 @@ export default function ExperienceSection() {
         </motion.h2>
         <motion.div variants={SECTION.fadeUp} className="exp-rule" aria-hidden="true" />
         <motion.p variants={SECTION.fadeUp} className="exp-sub">
-          AI engineering · data science · telecom infrastructure · technical consulting.
+          AI systems · web engineering · data workflows · technical leadership.
         </motion.p>
         <motion.p variants={SECTION.fadeUp} className="exp-stats">
           {roles} roles · {orgs} organisations · since {since}
@@ -114,8 +110,8 @@ export default function ExperienceSection() {
         </ol>
 
         <motion.div variants={SECTION.fadeUp} className="exp-more">
-          <Link to="/beyond-tech" className="exp-beyond">
-            Beyond tech — community &amp; volunteer roles <ArrowRight size={14} aria-hidden="true" />
+          <Link to="/about" className="exp-beyond">
+            Read the professional profile <ArrowRight size={14} aria-hidden="true" />
           </Link>
         </motion.div>
       </motion.div>

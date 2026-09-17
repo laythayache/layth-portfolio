@@ -371,8 +371,8 @@ export default function ContactSection() {
           </motion.button>
 
           <p className="mt-4 text-xs text-text-muted">
-            Privacy note: your message is sent securely and is not stored
-            publicly. No tracking or third-party data sharing.
+            Form submissions are processed by Web3Forms and delivered by email.
+            Do not include confidential or sensitive information.
           </p>
         </motion.form>
 

@@ -13,14 +13,25 @@ export interface ExperienceEntry {
 
 export const experience: ExperienceEntry[] = [
   {
+    id: "aachour-holding",
+    company: "Aachour Holding",
+    role: "Senior AI Systems & Web Engineer | Technical Lead",
+    type: "Full-time",
+    location: "Beirut, Lebanon",
+    dateStart: "September 2026",
+    dateEnd: "Present",
+    bullets: ["AI systems engineering", "Web engineering", "Technical leadership"],
+    skills: ["AI Systems", "Web Engineering", "Technical Leadership"],
+  },
+  {
     id: "aligned-tech",
     company: "Aligned Tech",
     logo: "/images/logos/aligned-tech.png",
     role: "AI Systems Engineer & Technology Consultant",
     type: "Full-time",
     location: "Hazmieh, Lebanon",
-    dateStart: "Nov 2025",
-    dateEnd: "Aug 2026",
+    dateStart: "November 2025",
+    dateEnd: "August 2026",
     bullets: [
       "Led AI systems architecture, cross-functional engineering, and technology strategy across all company software and data initiatives",
       "Drove end-to-end AI infrastructure and engineering operations — from data pipeline architecture to production deployment and monitoring",

@@ -106,7 +106,7 @@ export default function Navbar() {
         <Link
           to="/"
           aria-label="Home"
-          className="flex items-center"
+          className="flex items-center gap-3"
           data-magnetic
           data-cursor-label="Return to Intro"
           onClick={() => {
@@ -127,6 +127,10 @@ export default function Navbar() {
                 : "opacity-90 hover:opacity-100"
             )}
           />
+          <span className="hidden text-left sm:block">
+            <strong className="block text-sm leading-tight text-text-primary">Layth Ayache</strong>
+            <span className="block text-[10px] uppercase tracking-[0.14em] text-text-muted">AI Systems Engineer</span>
+          </span>
         </Link>
 
         {/* Desktop nav links */}

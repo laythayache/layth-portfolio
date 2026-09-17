@@ -131,7 +131,7 @@ export default function OmnisignMicrosite() {
     <article className="relative min-h-screen bg-white">
       <SEO
         title="OmniSign | AI Sign Language Translation for Lebanese Sign Language"
-        description="OmniSign is an AI-powered Lebanese Sign Language translation system — 50,000+ signs, 98% accuracy, privacy-first on-device inference. Built at Rafik Hariri University."
+        description="OmniSign is a Lebanese Sign Language recognition prototype covering dataset collection, model training, and an application inference flow. The reported 98% result is from internal evaluation under controlled conditions."
         keywords={[
           ...DEFAULT_KEYWORDS,
           "OmniSign",
@@ -811,6 +811,5 @@ export default function OmnisignMicrosite() {
     </article>
   );
 }
-
 
 
