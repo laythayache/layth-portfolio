@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import type { ThankItem } from "@/content/omnisign";
+interface ThankItem { name: string; note: string; link?: string }
 
 interface ThanksListProps {
   items: ThankItem[];

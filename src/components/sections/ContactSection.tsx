@@ -3,7 +3,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Calendar, Github, Linkedin, Mail } from "lucide-react";
 import { SECTION } from "@/motion/tokens";
 import { BRAND } from "@/content/brand";
-import NewsletterSignup from "@/components/NewsletterSignup";
 
 interface FormState {
   name: string;
@@ -84,6 +83,11 @@ export default function ContactSection() {
     // Honeypot check — bots fill hidden fields
     if (form._honeypot) return;
 
+    if (!import.meta.env.VITE_WEB3FORMS_KEY) {
+      setFeedback({ kind: "error", message: "Please email laythayache5@gmail.com directly; the inquiry form is currently unavailable." });
+      return;
+    }
+
     setSubmitting(true);
     setFeedback({ kind: "idle", message: "" });
 
@@ -142,16 +146,16 @@ export default function ContactSection() {
           visible: { transition: { staggerChildren: 0.03, delayChildren: 0.03 } },
         }}
       >
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.8fr]">
+        <div className="contact-intro">
           <div>
             <motion.p
-              className="font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted"
+              className="contact-kicker font-mono text-[11px] uppercase tracking-[0.22em] text-text-muted"
               variants={{
                 hidden: { opacity: 0, y: 10 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
               }}
             >
-              <span className="text-leather">—</span> no. 09 / contact
+              <span className="text-leather">—</span> 06 / Contact
             </motion.p>
             <motion.h2
               className="mt-3 font-serif text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.08] tracking-[-0.015em] text-text-primary"
@@ -160,7 +164,7 @@ export default function ContactSection() {
                 visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
               }}
             >
-              Discuss a system.
+              Let’s talk about the work.
             </motion.h2>
             <motion.div
               aria-hidden="true"
@@ -171,7 +175,7 @@ export default function ContactSection() {
               }}
             />
             <motion.p
-              className="mt-5 max-w-xl text-[1.0625rem] leading-[1.7] text-text-secondary"
+              className="contact-description mt-5 max-w-xl text-[1.0625rem] leading-[1.7] text-text-secondary"
               variants={{
                 hidden: { opacity: 0, y: 5 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
@@ -211,22 +215,11 @@ export default function ContactSection() {
             </motion.div>
           </div>
 
-          <motion.div
-            className="hidden lg:block"
-            variants={{
-              hidden: { opacity: 0, scale: 0.95 },
-              visible: { opacity: 1, scale: 1, transition: { duration: 0.4 } },
-            }}
-          >
-            <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=500&q=80"
-              alt="Engineering team collaborating at a shared workspace"
-              className="w-full rounded-2xl border border-border object-cover shadow-[0_12px_32px_rgb(15_23_42_/_0.08)]"
-              loading="lazy"
-            />
-          </motion.div>
+
         </div>
 
+        <details className="contact-form-toggle">
+          <summary>Send a project inquiry</summary>
         <motion.form
           className="mt-9 rounded-2xl border border-border-strong bg-surface-raised p-4 shadow-sm sm:p-6 md:p-8"
           variants={{
@@ -235,7 +228,7 @@ export default function ContactSection() {
           }}
           onSubmit={handleSubmit}
           noValidate
-          aria-describedby="contact-feedback"
+          aria-describedby={feedback.kind !== "idle" ? "contact-feedback" : undefined}
         >
           {/* Honeypot — hidden from real users, traps bots */}
           <div className="hidden" aria-hidden="true">
@@ -375,19 +368,12 @@ export default function ContactSection() {
             Do not include confidential or sensitive information.
           </p>
         </motion.form>
+        </details>
+
+
 
         <motion.div
-          className="mt-10 max-w-md"
-          variants={{
-            hidden: { opacity: 0, y: 5 },
-            visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
-          }}
-        >
-          <NewsletterSignup />
-        </motion.div>
-
-        <motion.div
-          className="mt-8 flex flex-wrap gap-3"
+          className="contact-socials mt-8 flex flex-wrap gap-3"
           variants={{
             hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },
@@ -412,7 +398,7 @@ export default function ContactSection() {
         </motion.div>
 
         <motion.div
-          className="mt-12 flex items-center gap-3"
+          className="contact-copyright mt-12 flex items-center gap-3"
           variants={{
             hidden: { opacity: 0, y: 5 },
             visible: { opacity: 1, y: 0, transition: { duration: 0.35 } },

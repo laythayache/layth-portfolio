@@ -242,7 +242,18 @@ function ContactCard() {
 }
 
 // --- Voice helpers ---
-type SpeechRecognitionInstance = InstanceType<typeof SpeechRecognition>;
+interface SpeechRecognitionEvent { results: { [index: number]: { [index: number]: { transcript: string } } } }
+interface SpeechRecognitionInstance {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: (() => void) | null;
+  onend: (() => void) | null;
+  start(): void;
+  stop(): void;
+  abort(): void;
+}
 
 function getSpeechRecognition(): SpeechRecognitionInstance | null {
   const SR =
@@ -405,6 +416,7 @@ export default function ChatBot() {
                 setMessages((prev) => {
                   const updated = [...prev];
                   updated[updated.length - 1] = {
+                    id: assistantMessage.id,
                     role: "assistant",
                     content: accumulated,
                     showActionCard: hasAction,
@@ -435,6 +447,7 @@ export default function ChatBot() {
       setMessages((prev) => {
         const updated = [...prev];
         updated[updated.length - 1] = {
+                    id: assistantMessage.id,
           role: "assistant",
           content: errorMsg,
         };

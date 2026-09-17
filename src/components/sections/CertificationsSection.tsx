@@ -1,4 +1,5 @@
-import { useMemo, useState, type ComponentType } from "react";
+import type { LucideIcon } from "lucide-react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Award, ChevronDown, GraduationCap, ShieldCheck } from "lucide-react";
 import {
@@ -9,7 +10,7 @@ import {
 
 const GROUP_META: Record<
   CredentialGroup,
-  { label: string; icon: ComponentType<{ size?: number; className?: string }> }
+  { label: string; icon: LucideIcon }
 > = {
   degrees: { label: "Degrees", icon: GraduationCap },
   professional: { label: "Professional Certificates", icon: ShieldCheck },

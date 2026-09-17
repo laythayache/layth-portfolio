@@ -9,6 +9,7 @@ export interface QuickFact {
 }
 
 export interface Feature {
+  ndaRequired?: boolean;
   title: string;
   description: string;
 }
@@ -352,7 +353,7 @@ export const ctaCards: CTACard[] = [
     title: "Contribute Signs",
     description:
       "Help us grow the dataset. We'll set you up with our data collector app — completely free. Record signs from your community.",
-    action: "Get the app",
+    action: "Request app access",
     email: "laythayache5@gmail.com",
     subject: "OmniSign - I want to contribute sign data",
   },

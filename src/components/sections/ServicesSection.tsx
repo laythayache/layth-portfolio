@@ -1,3 +1,4 @@
+import type { LucideIcon } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   Boxes,
@@ -12,7 +13,7 @@ import { useLenis } from "@/motion/LenisProvider";
 
 interface Service {
   id: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: LucideIcon;
   title: string;
   blurb: string;
   signals: string[];

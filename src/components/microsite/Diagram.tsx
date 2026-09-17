@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
-import type { TranslationFlowNode } from "@/content/omnisign";
+interface TranslationFlowNode { label: string; detail: string }
 
 interface DiagramProps {
   nodes: TranslationFlowNode[];

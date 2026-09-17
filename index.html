@@ -37,39 +37,10 @@
     <link rel="alternate" type="application/rss+xml" title="Layth Ayache — Blog" href="https://laythayache.com/feed.xml" />
     <link rel="alternate" type="text/plain" href="https://laythayache.com/llms.txt" title="LLM context" />
     <!-- jsonld -->
-    <!--
-      Navy boot canvas — kills the cream-then-navy flash on the homepage.
-      The body is cream (--surface) site-wide, but the homepage hero is navy
-      and only paints once React mounts. This layer fills the first viewport
-      with the hero navy from the very first frame. It's gated to "/" only
-      (so cream inner pages don't flash navy) and is exactly one viewport tall
-      and absolutely positioned, so it sits behind the hero and never bleeds
-      into the transparent cream sections below it.
-    -->
-    <style>
-      #hero-boot { display: none; }
-      html.hero-boot #hero-boot {
-        display: block;
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 100vh; height: 100svh;
-        background-color: #0B1D2A;
-        z-index: 0;
-        pointer-events: none;
-      }
-    </style>
-    <script>
-      (function () {
-        try {
-          var p = location.pathname;
-          if (p === "/" || p === "") document.documentElement.classList.add("hero-boot");
-        } catch (e) {}
-      })();
-    </script>
+    <style>html, body { margin: 0; background: #151618; color: #eeece5; }</style>
   </head>
   <body>
     <div id="root"></div>
-    <div id="hero-boot" aria-hidden="true"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

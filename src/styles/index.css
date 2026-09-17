@@ -442,27 +442,26 @@
 
 @layer base {
   :root {
-    /* Brand palette — "Controlled Blade" · Beirut Navy:
-       deep navy surfaces, sand ink, amber accent. Restraint over chrome. */
-    --surface: 11 29 42;             /* #0B1D2A deep navy */
-    --surface-raised: 14 36 51;      /* #0E2433 one step up */
-    --surface-overlay: 7 21 32;      /* #071520 recessed */
-    --text-primary: 231 220 198;     /* #E7DCC6 sand, max emphasis */
-    --text-secondary: 185 174 151;   /* #B9AE97 muted sand, body */
-    --text-muted: 125 139 149;       /* #7D8B95 slate-sand */
-    --border: 42 56 68;              /* subtle navy-light hairline */
-    --border-strong: 74 90 102;      /* deeper navy-light border */
-    --accent: 200 137 59;            /* #C8893B amber — primary accent */
-    --accent-hover: 156 106 44;      /* #9C6A2C darker amber */
-    --leather: 200 137 59;           /* repointed to amber (brown reads muddy on navy) */
-    --ink: 11 29 42;                 /* #0B1D2A near-black navy (semantic, overlays) */
-    --steel: 125 139 149;            /* muted text variant */
-    --steel-soft: 74 90 102;         /* same as border-strong */
-    --warn: 217 119 6;               /* amber — used very sparingly */
-    --success: 89 97 76;             /* olive doubles for stable/production */
-    --code-bg: 17 17 17;             /* #111111 true black for code surfaces */
-    --code-text: 231 220 198;        /* sand on black */
-    --shadow-dark: 11 29 42;
+    /* Charcoal, warm ivory and blue; shared across all public routes. */
+    --surface: 21 22 24;
+    --surface-raised: 30 32 35;
+    --surface-overlay: 17 18 20;
+    --text-primary: 238 236 229;
+    --text-secondary: 190 193 198;
+    --text-muted: 149 156 166;
+    --border: 53 57 63;
+    --border-strong: 77 84 95;
+    --accent: 110 145 255;
+    --accent-hover: 146 173 255;
+    --leather: 110 145 255;
+    --ink: 21 22 24;
+    --steel: 149 156 166;
+    --steel-soft: 77 84 95;
+    --warn: 217 119 6;
+    --success: 105 152 126;
+    --code-bg: 17 18 20;
+    --code-text: 238 236 229;
+    --shadow-dark: 0 0 0;
     --nav-height: 4.5rem;
     --space-1: 0.5rem;
     --space-2: 1rem;

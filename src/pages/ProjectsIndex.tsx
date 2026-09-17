@@ -16,12 +16,6 @@ function getProjectIcon(tags: string[] | undefined): LucideIcon {
   for (const tag of tags ?? []) if (TAG_ICON_MAP[tag]) return TAG_ICON_MAP[tag];
   return Brain;
 }
-const PLACEHOLDER_THUMBS = [
-  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&q=80",
-  "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=500&q=80",
-  "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=500&q=80",
-  "https://images.unsplash.com/photo-1518186285589-2f7649de83e0?w=500&q=80",
-];
 
 function buildFilters(items: typeof projects) {
   const counts = new Map<string, number>();
@@ -61,11 +55,11 @@ export default function ProjectsIndex() {
         </p>
 
         <div className="wk-filters">
-          <button type="button" onClick={() => setActiveTag(null)} className={`wk-filter${activeTag === null ? " is-active" : ""}`}>
+          <button type="button" onClick={() => setActiveTag(null)} aria-pressed={activeTag === null} className={`wk-filter${activeTag === null ? " is-active" : ""}`}>
             All
           </button>
           {tags.map((tag) => (
-            <button key={tag} type="button" onClick={() => setActiveTag(tag)} className={`wk-filter${activeTag === tag ? " is-active" : ""}`}>
+            <button key={tag} type="button" onClick={() => setActiveTag(tag)} aria-pressed={activeTag === tag} className={`wk-filter${activeTag === tag ? " is-active" : ""}`}>
               {tag}
             </button>
           ))}
@@ -77,7 +71,7 @@ export default function ProjectsIndex() {
           <div className="wk-grid">
             {filtered.map((project, i) => {
               const Icon = getProjectIcon(project.tags);
-              const thumb = project.thumbnail ?? PLACEHOLDER_THUMBS[i % PLACEHOLDER_THUMBS.length];
+              const thumb = project.thumbnail;
               return (
                 <motion.article
                   key={project.slug}

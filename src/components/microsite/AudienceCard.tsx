@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Badge from "./Badge";
-import type { Audience } from "@/content/omnisign";
+interface Audience { title: string; points: string[]; ndaRequired?: boolean }
 
 interface AudienceCardProps {
   audience: Audience;
@@ -35,7 +35,7 @@ export default function AudienceCard({ audience }: AudienceCardProps) {
 
   if (audience.ndaRequired) {
     return (
-      <Link to="/projects/omnisign/contact" className="block">
+      <Link to="/projects/omnisign/#get-involved" className="block">
         {content}
       </Link>
     );

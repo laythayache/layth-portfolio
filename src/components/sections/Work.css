@@ -3,9 +3,9 @@
    (.work-band) and the dedicated /projects page (.work-page).
    ============================================================ */
 .work-band, .work-page {
-  --wk-navy:#0B1D2A; --wk-navy-2:#0E2433; --wk-navy-deep:#071520;
-  --wk-sand:#E7DCC6; --wk-sand-2:#B9AE97; --wk-muted:#7d8b95;
-  --wk-amber:#C8893B; --wk-border:rgba(231,220,198,.16);
+  --wk-navy:#151618; --wk-navy-2:#1e2023; --wk-navy-deep:#111214;
+  --wk-sand:#eeece5; --wk-sand-2:#bec1c6; --wk-muted:#959ca6;
+  --wk-amber:#6e91ff; --wk-border:rgba(238,236,229,.16);
   color:var(--wk-sand); font-family:"Inter",system-ui,sans-serif;
 }
 
@@ -19,7 +19,7 @@
   border:1px solid var(--wk-border); border-radius:4px; background:var(--wk-navy-deep);
   transition:border-color .2s ease, transform .2s ease;
 }
-.wk-card:hover { border-color:rgba(200,137,59,.45); transform:translateY(-2px); }
+.wk-card:hover { border-color:rgba(110,145,255,.45); transform:translateY(-2px); }
 .wk-thumb { aspect-ratio:16/9; width:100%; overflow:hidden; border-bottom:1px solid var(--wk-border); background:var(--wk-navy-2); }
 .wk-thumb img { height:100%; width:100%; object-fit:cover; transition:transform .5s ease; }
 .wk-card:hover .wk-thumb img { transform:scale(1.04); }
@@ -55,7 +55,7 @@
 .work-band {
   position:relative; padding:clamp(64px,11vh,140px) 0;
   background:
-    radial-gradient(120% 90% at 18% -8%, #102b3d 0%, var(--wk-navy) 56%),
+    radial-gradient(120% 90% at 18% -8%, #20242f 0%, var(--wk-navy) 56%),
     linear-gradient(180deg, var(--wk-navy-2) 0%, var(--wk-navy) 36%, var(--wk-navy-deep) 100%);
 }
 .work-band .wk-inner { max-width:1100px; margin:0 auto; padding:0 clamp(20px,4vw,44px); }
@@ -83,7 +83,7 @@
 .work-page {
   min-height:100vh; padding:clamp(84px,13vh,150px) 0 clamp(64px,10vh,120px);
   background:
-    radial-gradient(120% 70% at 82% -4%, #102b3d 0%, var(--wk-navy) 52%),
+    radial-gradient(120% 70% at 82% -4%, #20242f 0%, var(--wk-navy) 52%),
     linear-gradient(180deg, var(--wk-navy-deep) 0%, var(--wk-navy) 30%, var(--wk-navy-2) 100%);
 }
 .work-page .wk-inner { max-width:1100px; margin:0 auto; padding:0 clamp(20px,5vw,44px); }

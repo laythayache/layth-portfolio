@@ -1,6 +1,7 @@
+import type { LucideIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Award, GraduationCap, ShieldCheck } from "lucide-react";
-import { useMemo, type ComponentType } from "react";
+import { useMemo } from "react";
 import SEO from "@/components/SEO";
 import SignalDivider from "@/components/brand/SignalDivider";
 import {
@@ -17,7 +18,7 @@ const PAGE_DESCRIPTION =
 
 const GROUP_META: Record<
   CredentialGroup,
-  { label: string; icon: ComponentType<{ size?: number; className?: string }> }
+  { label: string; icon: LucideIcon }
 > = {
   degrees: { label: "Degrees", icon: GraduationCap },
   professional: { label: "Professional Certificates", icon: ShieldCheck },

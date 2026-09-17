@@ -355,11 +355,11 @@ export default function OmnisignMicrosite() {
                 transition={{ delay: 0.3, duration: reduced ? 0.15 : 0.6, ease: EASE_OUT }}
               >
                 <p className="mb-4 font-mono text-[10px] uppercase tracking-widest text-slate-400">
-                  The moment
+                  The engineering focus
                 </p>
                 <p className="font-sans text-xl font-semibold leading-snug text-slate-800">
-                  He had every right to share that moment with the people around him
-                  — easier than that.
+                  Connect a locally collected sign-language dataset to practical,
+                  on-device recognition.
                 </p>
                 <div className="mt-6 h-px bg-gradient-to-r from-teal-600 to-transparent" />
               </motion.div>

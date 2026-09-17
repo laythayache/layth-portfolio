@@ -2,43 +2,53 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://laythayache.com/</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://laythayache.com/about</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://laythayache.com/projects</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://laythayache.com/projects/omnisign</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://laythayache.com/credentials</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://laythayache.com/speaking</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://laythayache.com/blog</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://laythayache.com/faq</loc>
-    <lastmod>2026-03-13</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://laythayache.com/projects/lancaster-websites</loc>
+    <lastmod>2026-09-17</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://laythayache.com/projects/daleel</loc>
+    <lastmod>2026-09-17</lastmod>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://laythayache.com/projects/privacy-guard</loc>

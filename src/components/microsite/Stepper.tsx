@@ -1,4 +1,4 @@
-import type { HowItWorksStep } from "@/content/omnisign";
+interface HowItWorksStep { number: number; title: string; description: string }
 
 interface StepperProps {
   steps: HowItWorksStep[];

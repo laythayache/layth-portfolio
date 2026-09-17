@@ -18,6 +18,9 @@ import StatusChip, { type ChipTone } from "@/components/brand/StatusChip";
 import DecisionLog from "@/components/brand/DecisionLog";
 import SignalDivider from "@/components/brand/SignalDivider";
 import type { ProjectStatus } from "@/content/types";
+import ProjectVisual from "@/components/portfolio/ProjectVisual";
+import { featuredWork, lancasterProperties } from "@/content/featured-work";
+import "@/components/portfolio/portfolio.css";
 
 function statusToTone(status: ProjectStatus): ChipTone {
   switch (status) {
@@ -180,7 +183,7 @@ export default function ProjectMicrosite() {
         <div className={cn("mx-auto max-w-4xl", showToc && "lg:mr-64")}>
           {/* Back link */}
           <Link
-            to="/#projects"
+            to="/projects/"
             className="mb-10 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-wider text-text-muted transition-colors hover:text-accent"
           >
             <ArrowLeft size={14} />
@@ -230,6 +233,16 @@ export default function ProjectMicrosite() {
             {/* Mobile TOC */}
             {showToc && <div className="mt-6"><MobileTOC items={tocItems} /></div>}
           </motion.header>
+
+          {featuredWork.some((work) => work.slug === project.slug) && (
+            <div className="case-study-visual"><ProjectVisual slug={project.slug} /></div>
+          )}
+          {project.slug === "lancaster-websites" && (
+            <section className="mb-12" aria-labelledby="property-sites">
+              <h2 id="property-sites" className="font-sans text-xl">Explore the properties</h2>
+              <div className="property-links">{lancasterProperties.map((property) => <a key={property.name} href={property.url} target="_blank" rel="noreferrer">{property.name}<ArrowUpRight size={16} /></a>)}</div>
+            </section>
+          )}
 
           {/* ── Demo Video ── */}
           {project.demoVideoUrl && (
@@ -289,7 +302,7 @@ export default function ProjectMicrosite() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-accent transition-colors"
                   >
-                    Demo <ArrowUpRight size={13} aria-hidden />
+                    Visit website <ArrowUpRight size={13} aria-hidden />
                   </a>
                 )}
                 {project.links.video && (

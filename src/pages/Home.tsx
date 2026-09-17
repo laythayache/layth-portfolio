@@ -1,14 +1,8 @@
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { useLenis } from "@/motion/LenisProvider";
-import HeroSection from "@/components/sections/HeroSection";
-import StatementSection from "@/components/sections/StatementSection";
-import ServicesSection from "@/components/sections/ServicesSection";
-import ExperienceSection from "@/components/sections/ExperienceSection";
-import ProjectsSection from "@/components/sections/ProjectsSection";
-import SpeakingSection from "@/components/sections/SpeakingSection";
-import CertificationsSection from "@/components/sections/CertificationsSection";
-import ContactSection from "@/components/sections/ContactSection";
+import CreativePortfolio from "@/components/portfolio/CreativePortfolio";
 import { DEFAULT_KEYWORDS, homePageJsonLd } from "@/content/siteSeo";
 import { projects } from "@/content/projects";
 import { getAllPosts } from "@/content/posts";
@@ -23,10 +17,11 @@ const latestModified = [
 
 export default function Home() {
   const lenis = useLenis();
+  const location = useLocation();
 
   // Scroll to hash target after lazy-load mount (e.g. /#trusted, /#contact)
   useEffect(() => {
-    const hash = window.location.hash.slice(1);
+    const hash = location.hash.slice(1);
     if (!hash) return;
     const timer = setTimeout(() => {
       if (lenis) {
@@ -36,7 +31,7 @@ export default function Home() {
       }
     }, 100);
     return () => clearTimeout(timer);
-  }, [lenis]);
+  }, [lenis, location.hash]);
 
   return (
     <>
@@ -48,23 +43,7 @@ export default function Home() {
         modifiedTime={latestModified}
         jsonLd={homePageJsonLd()}
       />
-      <div className="relative z-10">
-        <HeroSection />
-        <div className="section-divider" aria-hidden="true" />
-        <ProjectsSection />
-        <div className="section-divider" aria-hidden="true" />
-        <ServicesSection />
-        <div className="section-divider" aria-hidden="true" />
-        <ExperienceSection />
-        <div className="section-divider" aria-hidden="true" />
-        <StatementSection />
-        <div className="section-divider" aria-hidden="true" />
-        <CertificationsSection />
-        <div className="section-divider" aria-hidden="true" />
-        <SpeakingSection />
-        <div className="section-divider" aria-hidden="true" />
-        <ContactSection />
-      </div>
+      <CreativePortfolio />
     </>
   );
 }

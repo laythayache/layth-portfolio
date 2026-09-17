@@ -22,6 +22,10 @@
 - [FAQ](https://laythayache.com/faq)
 
 ## Projects
+- [Lancaster Websites](https://laythayache.com/projects/lancaster-websites) | ongoing
+  A collection of Lancaster hospitality websites built on a shared React, Node.js and PostgreSQL platform, supporting property content and guest discovery.
+- [Daleel](https://laythayache.com/projects/daleel) | ongoing
+  A public guide to Lebanese elections. Layth contributed web scraping and information gathering for the platform's searchable election information.
 - [PrivacyGuard](https://laythayache.com/projects/privacy-guard) | ongoing
   Production-grade, open-source privacy de-identification pipeline for real-time anonymization of sensitive regions in video streams. Runs on edge devices at 25-30 FPS with zero cloud dependency.
 - [OmniSign](https://laythayache.com/projects/omnisign) | ongoing

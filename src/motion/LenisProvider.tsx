@@ -17,6 +17,7 @@ export default function LenisProvider({ children }: { children: ReactNode }) {
   const [lenis, setLenis] = useState<Lenis | null>(null);
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const instance = new Lenis({
       duration: 1.08,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
