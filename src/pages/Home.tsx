@@ -56,9 +56,9 @@ export default function Home() {
         <div className="section-divider" aria-hidden="true" />
         <StatementSection />
         <div className="section-divider" aria-hidden="true" />
-        <ExperienceSection />
-        <div className="section-divider" aria-hidden="true" />
         <ProjectsSection />
+        <div className="section-divider" aria-hidden="true" />
+        <ExperienceSection />
         <div className="section-divider" aria-hidden="true" />
         <ServicesSection />
         <div className="section-divider" aria-hidden="true" />

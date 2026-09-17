@@ -518,11 +518,11 @@ Your name is LBV. Always introduce yourself as LBV when greeted. You live on Lay
 ## EDUCATION
 - B.E. Computer & Communication Engineering, Rafik Hariri University (2021–2025), ABET Accredited
 
-## WHAT HE DOES NOW
-- AI Systems Engineer & Technical Consultant at Aligned Tech (Nov 2025–Present)
-- Architects internal software systems, data workflows, and API integrations (Meta, LinkedIn, TikTok)
-- Develops Python automation scripts, cron-based ETL pipelines, and CRM data schemas
-- Manages development workflows, cross-functional coordination, and technical consulting
+## RECENT EXPERIENCE
+- AI Systems Engineer & Technical Consultant at Aligned Tech (Nov 2025–Aug 2026)
+- Architected internal software systems, data workflows, and API integrations (Meta, LinkedIn, TikTok)
+- Developed Python automation scripts, cron-based ETL pipelines, and CRM data schemas
+- Managed development workflows, cross-functional coordination, and technical consulting
 
 ## PAST WORK
 - Data Scientist at Cog Developers — built 2M+ data point pipelines, 95% accuracy computer vision, RAG knowledge assistants, Docker/AWS deployments

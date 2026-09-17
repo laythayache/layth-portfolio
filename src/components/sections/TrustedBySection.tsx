@@ -45,7 +45,7 @@ export default function TrustedBySection() {
     fetch("/api/clients")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
-        if (alive && d && Array.isArray(d.items)) setClients(d.items);
+        if (alive && d && Array.isArray(d.items)) setClients(d.items.filter((c: Client) => c.name?.trim().toLowerCase() !== "omnisign"));
       })
       .catch(() => {});
     return () => {
@@ -58,7 +58,7 @@ export default function TrustedBySection() {
   const rowB = list.filter((_, i) => i % 2 === 1);
 
   return (
-    <section id="trusted" className="trusted-band" aria-label="Trusted by">
+    <section id="trusted" className="trusted-band" aria-label="Experience and collaborations">
       <motion.div
         className="tb-inner"
         initial={reduced ? undefined : "hidden"}
@@ -67,10 +67,10 @@ export default function TrustedBySection() {
         variants={SECTION.container}
       >
         <motion.h2 variants={SECTION.fadeUp} className="tb-lead">
-          Trusted By
+          Experience &amp; collaborations
         </motion.h2>
         <motion.p variants={SECTION.fadeUp} className="tb-sub">
-          Across hotels, holdings, government, real estate, and engineering.
+          Organizations across my employment, consulting, and community work.
         </motion.p>
       </motion.div>
 

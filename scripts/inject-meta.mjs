@@ -39,7 +39,6 @@ const WEBSITE_ID = `${BASE_URL}/#website`;
 const ORG_ID = `${BASE_URL}/#organization`;
 
 function personFragment() {
-  const age = new Date().getFullYear() - 2003;
   return {
     "@type": "Person",
     "@id": PERSON_ID,
@@ -55,11 +54,7 @@ function personFragment() {
       "Infrastructure Architect",
     ],
     description:
-      `Layth Ayache is a ${age}-year-old AI systems architect and technology leader from Lebanon. He leads AI systems architecture, cross-functional engineering, and technology strategy at Aligned Tech, driving end-to-end AI infrastructure and engineering operations. At ${age}, he has architected production systems processing millions of data points, deployed computer vision at 95% accuracy, built PrivacyGuard (open-source privacy pipeline), maintained 99.9% uptime at OGERO, and mentored 100+ students in AI.`,
-    worksFor: {
-      "@type": "Organization",
-      name: "Aligned Tech",
-    },
+      "Layth Ayache is an AI systems engineer and technical consultant based in Lebanon. His work spans AI, workflow automation, data pipelines, and telecom infrastructure, alongside experience in emergency medical volunteering and engineering education.",
     alumniOf: [
       {
         "@type": "CollegeOrUniversity",

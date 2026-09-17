@@ -292,8 +292,9 @@ export default function HeroSection() {
         </div>
 
         <div className="ff-below">
-          {/* SEO/a11y heading only — intentionally not shown (the emblem carries the hero). */}
-          <h1 className="sr-only">I build systems that hold under pressure.</h1>
+          <p className="ff-name">Layth Ayache</p>
+          <h1>I build systems that hold under pressure.</h1>
+          <p className="ff-summary">AI, automation, and infrastructure built for the people who depend on them.</p>
           <div className="ff-cta ff-rise" data-d="4">
             <button type="button" className="ff-btn" onClick={() => scrollToSection("projects")}>
               See the work <span aria-hidden="true">→</span>
@@ -307,9 +308,9 @@ export default function HeroSection() {
 
       <div className="ff-strip">
         <div className="ff-stripline">
-          <div className="ff-meta ff-rise" data-d="4">Lebanon · 26</div>
+          <div className="ff-meta ff-rise" data-d="4">Beirut, Lebanon</div>
           <div className="ff-status ff-rise" data-d="4">
-            <span className="dot" aria-hidden="true" /> Status — Operational · 2026
+            <span className="dot" aria-hidden="true" /> Engineering · Service · Responsibility
           </div>
         </div>
       </div>
