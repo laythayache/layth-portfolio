@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import SEO from "@/components/SEO";
 import { useLenis } from "@/motion/LenisProvider";
 import HeroSection from "@/components/sections/HeroSection";
-import TrustedBySection from "@/components/sections/TrustedBySection";
 import StatementSection from "@/components/sections/StatementSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import ExperienceSection from "@/components/sections/ExperienceSection";
@@ -52,15 +51,13 @@ export default function Home() {
       <div className="relative z-10">
         <HeroSection />
         <div className="section-divider" aria-hidden="true" />
-        <TrustedBySection />
-        <div className="section-divider" aria-hidden="true" />
-        <StatementSection />
-        <div className="section-divider" aria-hidden="true" />
         <ProjectsSection />
+        <div className="section-divider" aria-hidden="true" />
+        <ServicesSection />
         <div className="section-divider" aria-hidden="true" />
         <ExperienceSection />
         <div className="section-divider" aria-hidden="true" />
-        <ServicesSection />
+        <StatementSection />
         <div className="section-divider" aria-hidden="true" />
         <CertificationsSection />
         <div className="section-divider" aria-hidden="true" />

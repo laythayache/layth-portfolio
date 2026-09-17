@@ -66,7 +66,6 @@ export default function ProjectsSection() {
                   </div>
                   <p className="wk-summary">{project.summary}</p>
                   {project.role && <p className="wk-summary"><strong>My role:</strong> {project.role}</p>}
-                  {project.outcome && <p className="wk-summary"><strong>Work to date:</strong> {project.outcome}</p>}
                   {project.stack && (
                     <div className="wk-stack">
                       {project.stack.split(", ").slice(0, 4).map((tech) => (

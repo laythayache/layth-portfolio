@@ -80,34 +80,33 @@ export const quickFacts: QuickFact[] = [
 
 // ── Origin story ────────────────────────────
 export const originHook =
-  "It started with a joke nobody laughed at.";
+  "An accessibility-focused Lebanese Sign Language recognition project.";
 
 export const originStory = [
-  "During COVID, I met a deaf man at a clinic. He wasn't struggling to be understood — the staff eventually figured out what he needed through context and gestures.",
-  "What I noticed was different. He was trying to tell a joke. You could see it in his face, his timing, the way he paused for a reaction that never came. Nobody understood him enough to laugh with him.",
-  "He had every right to share that moment with the people around him — easier than that. That was when OmniSign became more than an idea.",
-  "Our university gave us the option to choose from faculty-approved projects. We chose to find our own challenge instead. It felt overwhelming. But it felt right.",
+  "OmniSign addresses an accessibility gap by translating Lebanese Sign Language gestures into outputs that can support communication with people who do not know LSL.",
+  "The team treated it as an engineering and research problem spanning dataset collection, gesture recognition, inference, and a usable application flow.",
+  "It was developed as a university project with community input and remains a prototype rather than a production translation service.",
 ];
 
 // ── The Discovery ───────────────────────────
 export const discoveryTitle = "A language with no map";
 
 export const discoveryNarrative = [
-  "We entered this project assuming data existed. It didn't. We assumed sign language was universal across all spoken languages. It wasn't.",
-  "Arabic sign language in Saudi Arabia is completely different from Lebanon. And Lebanon — in a way that surprised no one who knows the country — didn't have a unified sign language at all.",
-  "Beqaa was different from the South. The South was different from Beirut. Even different sign language schools within Beirut signed differently from each other.",
-  "We spent three months traveling the country trying to find common ground. We couldn't. We were close to giving up.",
-  "Then the team got stubborn. All of us, by nature. We decided this was the step we had to take ourselves — not wait for someone else to take it.",
+  "The initial research found no ready-to-use Lebanese Sign Language dataset for the project scope.",
+  "Sign language varies by region, and the team observed differences between Lebanese communities and schools as well as differences from sign languages used elsewhere in the Arab world.",
+  "Three months of consultation and collection work were used to define a practical vocabulary and document variations.",
+  "Because a standardized source dataset was unavailable, the team created and processed a project-specific dataset with community participation.",
 ];
 
 // ── The Dataset ─────────────────────────────
 export const datasetTitle = "50,000 signs, built by hand";
 
 export const datasetStory = [
-  "We held data collection campaigns across Lebanon. Volunteers signed at our homes — family members we taught ourselves. We partnered with NGOs and deaf communities who opened their doors to us.",
-  "We collected over 50,000 signs in total. After processing, cleaning, and augmenting the data, we ended up with over 80,000 image flows — covering the full Arabic alphabet and around 30 words and expressions used in daily life.",
-  "It was a messy process. If it wasn't for the team's chemistry, it never would have happened.",
+  "We ran data collection campaigns with volunteers and collaborated with NGOs and Deaf community participants in Lebanon.",
+  "The team collected more than 50,000 sign samples. After cleaning and augmentation, the working dataset contained more than 80,000 image sequences covering the Arabic alphabet and around 30 everyday words and expressions.",
+  "Samples were labeled, processed, and reviewed before model training and evaluation.",
 ];
+
 
 export const partners: Partner[] = [
   {

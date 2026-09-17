@@ -15,7 +15,7 @@ export const omnisignJsonLd = {
       url: PAGE,
       name: "OmniSign — AI Sign Language Translation | Lebanese Sign Language",
       description:
-        "OmniSign is an AI-powered Lebanese Sign Language (LSL) translation system built at Rafik Hariri University. 50,000+ signs collected, 98% accuracy, self-funded. Partnered with SignWithNaila.",
+        "OmniSign is a Lebanese Sign Language recognition prototype developed at Rafik Hariri University, covering dataset collection, model training, and an application inference flow. The reported 98% result is from internal evaluation under controlled conditions.",
       isPartOf: { "@id": `${BASE}/#website` },
       about: { "@id": `${PAGE}#software` },
       mainEntity: { "@id": `${PAGE}#software` },
@@ -49,7 +49,7 @@ export const omnisignJsonLd = {
       ],
       url: PAGE,
       description:
-        "AI-powered real-time sign language translation system for Lebanese Sign Language (LSL) and Arabic Sign Language. Uses computer vision, neural language modeling, and edge computing to translate gestures to text and speech. The first digital LSL dataset, with 50,000+ signs collected and 80,000+ processed. 98% accuracy. Self-funded.",
+        "Lebanese Sign Language recognition prototype using computer vision and sequence modeling to convert supported gestures to text and speech. The team collected more than 50,000 samples and reports 98% accuracy only for internal evaluation under controlled conditions; real-world performance varies.",
       applicationCategory: "Accessibility",
       operatingSystem: "Cross-platform",
       image: `${BASE}/images/brand/omnisign-logo.png`,

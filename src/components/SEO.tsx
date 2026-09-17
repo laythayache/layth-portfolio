@@ -27,7 +27,7 @@ interface SEOProps {
 export default function SEO({
   title,
   description,
-  keywords,
+  keywords: _keywords,
   canonical,
   ogType = "website",
   ogImage = "https://laythayache.com/images/brand/og-default.jpg",

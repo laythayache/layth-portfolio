@@ -13,7 +13,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     );
   }
 
-  let body: { messages?: Array<{ role: string; content: string }> };
+  let body: { messages?: unknown };
   try {
     body = await context.request.json();
   } catch {
@@ -23,15 +23,22 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     );
   }
 
-  if (!Array.isArray(body.messages) || body.messages.length === 0) {
+  if (!Array.isArray(body.messages) || body.messages.length === 0 || body.messages.length > 20) {
     return new Response(
       JSON.stringify({ error: "Messages array is required." }),
       { status: 400, headers: { "Content-Type": "application/json" } }
     );
   }
 
-  // Cap conversation length to prevent abuse
-  const messages = body.messages.slice(-20);
+  const validRoles = new Set(["user", "assistant"]);
+  const messages = body.messages.filter((message): message is { role: "user" | "assistant"; content: string } => {
+    if (!message || typeof message !== "object") return false;
+    const candidate = message as Record<string, unknown>;
+    return typeof candidate.role === "string" && validRoles.has(candidate.role) && typeof candidate.content === "string" && candidate.content.trim().length > 0 && candidate.content.length <= 4000;
+  });
+  if (messages.length !== body.messages.length || !messages.some((message) => message.role === "user")) {
+    return new Response(JSON.stringify({ error: "Messages must use user or assistant roles and contain 1–4000 characters." }), { status: 400, headers: { "Content-Type": "application/json" } });
+  }
 
   let response: Response;
   try {
@@ -49,7 +56,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         ],
         stream: true,
         max_tokens: 300,
-        temperature: 0.7,
+        temperature: 0.3,
       }),
     });
   } catch {

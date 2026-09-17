@@ -55,7 +55,7 @@ export default function NewsletterSignup() {
         Get notified when I publish
       </p>
       <p className="mt-1 text-sm text-text-muted">
-        No spam, no noise. Unsubscribe anytime.
+        Subscriptions are processed by Buttondown. Unsubscribe anytime.
       </p>
       <div className="mt-3 flex gap-2">
         <input

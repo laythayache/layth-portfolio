@@ -20,7 +20,7 @@ const RELOAD_KEY = "chunkReloadAt";
  *  chunk the new deploy removed, the import rejects, and the page goes blank.
  *  Here we reload once to pull the fresh shell — so it resolves itself with no
  *  manual refresh. A timestamp guard stops a genuinely-missing chunk looping. */
-function lazyWithReload<T extends ComponentType<any>>(
+function lazyWithReload<T extends ComponentType<Record<string, never>>>(
   factory: () => Promise<{ default: T }>
 ) {
   return lazy(() =>
@@ -44,7 +44,6 @@ const ProjectMicrosite = lazyWithReload(() => import("@/pages/ProjectMicrosite")
 const OmnisignMicrosite = lazyWithReload(() => import("@/pages/OmnisignMicrosite"));
 const BlogIndex = lazyWithReload(() => import("@/pages/BlogIndex"));
 const BlogPost = lazyWithReload(() => import("@/pages/BlogPost"));
-const BeyondTech = lazyWithReload(() => import("@/pages/BeyondTech"));
 const ProjectsIndex = lazyWithReload(() => import("@/pages/ProjectsIndex"));
 const About = lazyWithReload(() => import("@/pages/About"));
 const Speaking = lazyWithReload(() => import("@/pages/Speaking"));
@@ -67,7 +66,7 @@ export default function App() {
           <Route path="/credentials" element={<Credentials />} />
           <Route path="/blog" element={<BlogIndex />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/beyond-tech" element={<BeyondTech />} />
+          <Route path="/beyond-tech" element={<Navigate to="/about" replace />} />
           <Route path="/faq" element={<FAQ />} />
 
           {/* Projects listing + detail routes */}

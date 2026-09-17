@@ -21,7 +21,7 @@ export const ABOUT_KEY = "about/content.json";
 /* Minimal defaults — only the confirmed title is seeded; the owner fills the
    rest in /admin (so nothing unverified ships). Empty sections hide on the page. */
 export const DEFAULT_ABOUT: AboutContent = {
-  role: "AI Systems Engineer & Technical Consultant",
+  role: "AI Systems Engineer",
   intro: "",
   facts: [],
   focusTitle: "Focus areas",
@@ -43,11 +43,16 @@ export function sanitizeAbout(input: unknown): AboutContent {
     : [];
   const focus = Array.isArray(o.focus) ? o.focus.map((x) => str(x, 140)).filter(Boolean).slice(0, 24) : [];
   return {
-    role: str(o.role, 120),
+    role: "AI Systems Engineer",
     intro: str(o.intro, 2400),
-    facts: facts.map((f) => f.label.trim().toLowerCase() === "currently" && f.value.trim() === "Aligned Tech"
-      ? { label: "Previous role", value: "Aligned Tech · Nov 2025 – Aug 2026" }
-      : f),
+    facts: [
+      { label: "Current role", value: "Senior AI Systems & Web Engineer | Technical Lead, Aachour Holding · Sep 2026 – Present" },
+      ...facts
+        .filter((f) => !["currently", "current role"].includes(f.label.trim().toLowerCase()))
+        .map((f) => f.label.trim().toLowerCase() === "previous role" || f.value.includes("Aligned Tech")
+          ? { label: "Previous role", value: "Aligned Tech · Nov 2025 – Aug 2026" }
+          : f),
+    ].slice(0, 12),
     focusTitle: str(o.focusTitle, 60) || "Focus areas",
     focus,
     principlesTitle: str(o.principlesTitle, 60) || "How I work",

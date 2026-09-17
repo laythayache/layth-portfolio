@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import RouteTransition from "@/motion/RouteTransition";
-import CinematicCursor from "@/components/CinematicCursor";
 import ChatBot from "@/components/ChatBot";
 import LenisProvider, { useLenis } from "@/motion/LenisProvider";
 import { ChatProvider } from "@/context/ChatContext";
@@ -23,24 +22,6 @@ function ScrollToTop() {
 }
 
 export default function RootLayout() {
-  const [mountNonCritical, setMountNonCritical] = useState(false);
-
-  useEffect(() => {
-    const fallback = window.setTimeout(() => setMountNonCritical(true), 1200);
-    if ("requestIdleCallback" in window) {
-      const idleId = window.requestIdleCallback(() => {
-        window.clearTimeout(fallback);
-        setMountNonCritical(true);
-      });
-      return () => {
-        window.cancelIdleCallback(idleId);
-        window.clearTimeout(fallback);
-      };
-    }
-
-    return () => window.clearTimeout(fallback);
-  }, []);
-
   return (
     <LenisProvider>
       <ChatProvider>
@@ -48,10 +29,9 @@ export default function RootLayout() {
           Skip to content
         </a>
         <ScrollToTop />
-        {mountNonCritical && <CinematicCursor />}
         <Navbar />
         <RouteTransition />
-        {mountNonCritical && <ChatBot />}
+        <ChatBot />
       </ChatProvider>
     </LenisProvider>
   );

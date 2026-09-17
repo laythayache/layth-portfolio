@@ -3,186 +3,53 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import SEO from "@/components/SEO";
 import { BRAND } from "@/content/brand";
-import {
-  SITE_URL,
-  personJsonLd,
-  websiteJsonLd,
-  organizationJsonLd,
-  absoluteUrl,
-} from "@/content/siteSeo";
+import { PROFESSIONAL } from "@/content/professional";
+import { SITE_URL, personJsonLd, websiteJsonLd, organizationJsonLd, absoluteUrl } from "@/content/siteSeo";
 import "./About.css";
 
-/* The visible text is CMS-managed (/admin → About tab, stored in R2) and fetched
-   from GET /api/about. The layout below is fixed; empty sections hide. */
-type Fact = { label: string; value: string };
 type Principle = { title: string; body: string };
-type AboutContent = {
-  role: string;
-  intro: string;
-  facts: Fact[];
-  focusTitle: string;
-  focus: string[];
-  principlesTitle: string;
-  principles: Principle[];
-};
-
-const EMPTY: AboutContent = { role: "", intro: "", facts: [], focusTitle: "", focus: [], principlesTitle: "", principles: [] };
-
-const ABOUT_PATH = "/about";
-const PAGE_TITLE = `${BRAND.name} — ${BRAND.title}`;
-const PAGE_DESCRIPTION =
-  "Layth Ayache — AI Systems Engineer & Technical Consultant in Lebanon. Designs production AI systems, computer vision pipelines, and infrastructure-aware deployments for environments where reliability matters.";
-const PROFILE_PAGE_ID = `${SITE_URL}${ABOUT_PATH}#profilepage`;
+type AboutContent = { focusTitle: string; focus: string[]; principlesTitle: string; principles: Principle[] };
+const EMPTY: AboutContent = { focusTitle: "What I build", focus: [], principlesTitle: "How I work", principles: [] };
+const DEFAULT_FOCUS = ["AI systems and model integration", "Computer vision and document processing", "Data pipelines and workflow automation", "APIs and systems integration", "Web applications and operational dashboards", "Infrastructure and deployment"];
+const DEFAULT_PRINCIPLES: Principle[] = [
+  { title: "Clarify the system", body: "I define the requirements, users, constraints, and failure modes before implementation." },
+  { title: "Design the flow", body: "I map the data, integrations, interfaces, and operational boundaries so decisions remain explicit." },
+  { title: "Build and validate", body: "I implement in testable stages, check behavior against real inputs, and document limitations." },
+  { title: "Hand over maintainably", body: "I leave clear decisions, operating notes, and a codebase that another engineer can understand." },
+];
 
 function aboutPageJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      websiteJsonLd(),
-      organizationJsonLd(),
-      personJsonLd(),
-      {
-        "@type": "ProfilePage",
-        "@id": PROFILE_PAGE_ID,
-        url: absoluteUrl(ABOUT_PATH),
-        name: PAGE_TITLE,
-        description: PAGE_DESCRIPTION,
-        isPartOf: { "@id": `${SITE_URL}/#website` },
-        mainEntity: { "@id": `${SITE_URL}/#person` },
-        about: { "@id": `${SITE_URL}/#person` },
-        inLanguage: "en",
-        breadcrumb: {
-          "@type": "BreadcrumbList",
-          itemListElement: [
-            { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-            { "@type": "ListItem", position: 2, name: "About", item: absoluteUrl(ABOUT_PATH) },
-          ],
-        },
-      },
-    ],
-  };
+  return { "@context": "https://schema.org", "@graph": [websiteJsonLd(), organizationJsonLd(), personJsonLd(), { "@type": "ProfilePage", "@id": `${SITE_URL}/about#profilepage`, url: absoluteUrl("/about"), name: `About ${PROFESSIONAL.name}`, description: BRAND.description, isPartOf: { "@id": `${SITE_URL}/#website` }, mainEntity: { "@id": `${SITE_URL}/#person` }, inLanguage: "en" }] };
 }
 
 export default function About() {
-  const [c, setC] = useState<AboutContent>(EMPTY);
-
+  const [cms, setCms] = useState<AboutContent>(EMPTY);
   useEffect(() => {
-    let alive = true;
-    fetch("/api/about")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (alive && d) setC({ ...EMPTY, ...d });
-      })
-      .catch(() => {});
-    return () => {
-      alive = false;
-    };
+    let active = true;
+    fetch("/api/about").then((r) => r.ok ? r.json() : null).then((data) => {
+      if (active && data) setCms({ focusTitle: data.focusTitle || EMPTY.focusTitle, focus: Array.isArray(data.focus) ? data.focus : [], principlesTitle: data.principlesTitle || EMPTY.principlesTitle, principles: Array.isArray(data.principles) ? data.principles : [] });
+    }).catch(() => undefined);
+    return () => { active = false; };
   }, []);
+  const focus = cms.focus.length ? cms.focus : DEFAULT_FOCUS;
+  const principles = cms.principles.length ? cms.principles : DEFAULT_PRINCIPLES;
 
-  const paras = c.intro.split(/\n\s*\n/).map((s) => s.trim()).filter(Boolean);
-
-  return (
-    <>
-      <SEO title={PAGE_TITLE} description={PAGE_DESCRIPTION} canonical={`${SITE_URL}${ABOUT_PATH}`} jsonLd={aboutPageJsonLd()} />
-
-      <main className="about-page">
-        <div className="ab-inner">
-          <Link to="/" className="ab-back">
-            <ArrowLeft size={13} aria-hidden /> Back home
-          </Link>
-
-          <p className="ab-kicker">
-            <span className="ab-dash" aria-hidden="true" /> about
-          </p>
-          <h1 className="ab-name">Layth Ayache</h1>
-          {c.role && <p className="ab-role">{c.role}</p>}
-
-          {paras.length > 0 && (
-            <div className="ab-intro">
-              {paras.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
-            </div>
-          )}
-
-          <section className="ab-section">
-            <div className="ab-rule" aria-hidden="true" />
-            <h2 className="ab-h2">Engineering with responsibility</h2>
-            <div className="ab-intro">
-              <p>My experience spans telecom infrastructure, AI systems, teaching, and emergency medical volunteering with the Lebanese Civil Defense. Across these settings, I care about understanding the situation, taking responsibility, and making the work useful to the people relying on it.</p>
-              <p>Lebanon is home. I want to build dependable systems here, with a long-term interest in healthcare, public services, and the infrastructure that supports everyday life.</p>
-            </div>
-          </section>
-
-          {c.facts.length > 0 && (
-            <ul className="ab-facts">
-              {c.facts.map((f, i) => (
-                <li className="ab-fact" key={i}>
-                  <span className="ab-fact-label">{f.label}</span>
-                  <span className="ab-fact-value">{f.value}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {c.focus.length > 0 && (
-            <section className="ab-section">
-              <div className="ab-rule" aria-hidden="true" />
-              <h2 className="ab-h2">{c.focusTitle || "Focus areas"}</h2>
-              <ul className="ab-focus">
-                {c.focus.map((x, i) => (
-                  <li className="ab-focus-item" key={i}>
-                    <span className="ab-tick" aria-hidden="true" />
-                    {x}
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {c.principles.length > 0 && (
-            <section className="ab-section">
-              <div className="ab-rule" aria-hidden="true" />
-              <h2 className="ab-h2">{c.principlesTitle || "How I work"}</h2>
-              <div className="ab-principles">
-                {c.principles.map((p, i) => (
-                  <article className="ab-principle" key={i}>
-                    {p.title && <h3>{p.title}</h3>}
-                    {p.body && <p>{p.body}</p>}
-                  </article>
-                ))}
-              </div>
-            </section>
-          )}
-
-          <section className="ab-section">
-            <div className="ab-rule" aria-hidden="true" />
-            <h2 className="ab-h2">Reach me</h2>
-            <div className="ab-profiles">
-              <a href={BRAND.linkedin} target="_blank" rel="noopener noreferrer me" className="ab-profile">
-                <Linkedin size={14} aria-hidden /> LinkedIn <ArrowUpRight size={12} aria-hidden />
-              </a>
-              <a href={BRAND.github} target="_blank" rel="noopener noreferrer me" className="ab-profile">
-                <Github size={14} aria-hidden /> GitHub <ArrowUpRight size={12} aria-hidden />
-              </a>
-              <a href={BRAND.medium} target="_blank" rel="noopener noreferrer me" className="ab-profile">
-                Medium <ArrowUpRight size={12} aria-hidden />
-              </a>
-            </div>
-            <p className="ab-contact">
-              Email{" "}
-              <a href={`mailto:${BRAND.email}`} className="ab-link">
-                <Mail size={12} className="ab-mail" aria-hidden /> {BRAND.email}
-              </a>{" "}
-              or schedule a call via{" "}
-              <a href={BRAND.calendly} target="_blank" rel="noopener noreferrer" className="ab-link">
-                Calendly
-              </a>
-              .
-            </p>
-          </section>
-        </div>
-      </main>
-    </>
-  );
+  return <>
+    <SEO title={`${PROFESSIONAL.name} | ${PROFESSIONAL.primaryTitle}`} description={BRAND.description} canonical={`${SITE_URL}/about`} jsonLd={aboutPageJsonLd()} />
+    <main className="about-page"><div className="ab-inner">
+      <Link to="/" className="ab-back"><ArrowLeft size={13} aria-hidden /> Back home</Link>
+      <p className="ab-kicker"><span className="ab-dash" aria-hidden /> professional profile</p>
+      <h1 className="ab-name">{PROFESSIONAL.name}</h1><p className="ab-role">{PROFESSIONAL.primaryTitle}</p>
+      <div className="ab-intro"><p>{PROFESSIONAL.summary}</p><p>My work covers the path from requirements and data flow through implementation, integration, testing, deployment, and handover. I focus on systems that are useful in day-to-day operations and clear enough to maintain.</p></div>
+      <ul className="ab-facts">
+        <li className="ab-fact"><span className="ab-fact-label">Current role</span><span className="ab-fact-value">{PROFESSIONAL.currentRole.title}, {PROFESSIONAL.currentRole.company} · {PROFESSIONAL.currentRole.start} – {PROFESSIONAL.currentRole.end}</span></li>
+        <li className="ab-fact"><span className="ab-fact-label">Previous role</span><span className="ab-fact-value">{PROFESSIONAL.previousRole.title}, {PROFESSIONAL.previousRole.company} · {PROFESSIONAL.previousRole.start} – {PROFESSIONAL.previousRole.end}</span></li>
+        <li className="ab-fact"><span className="ab-fact-label">Education</span><span className="ab-fact-value">{PROFESSIONAL.education}</span></li>
+        <li className="ab-fact"><span className="ab-fact-label">Languages</span><span className="ab-fact-value">{PROFESSIONAL.languages.join(" · ")}</span></li>
+      </ul>
+      <section className="ab-section"><div className="ab-rule" aria-hidden /><h2 className="ab-h2">{cms.focusTitle}</h2><ul className="ab-focus">{focus.map((item) => <li className="ab-focus-item" key={item}><span className="ab-tick" aria-hidden />{item}</li>)}</ul></section>
+      <section className="ab-section"><div className="ab-rule" aria-hidden /><h2 className="ab-h2">{cms.principlesTitle}</h2><div className="ab-principles">{principles.map((item) => <article className="ab-principle" key={item.title}><h3>{item.title}</h3><p>{item.body}</p></article>)}</div></section>
+      <section className="ab-section"><div className="ab-rule" aria-hidden /><h2 className="ab-h2">Contact</h2><div className="ab-profiles"><a href={BRAND.linkedin} target="_blank" rel="noopener noreferrer me" className="ab-profile"><Linkedin size={14} aria-hidden /> LinkedIn <ArrowUpRight size={12} aria-hidden /></a><a href={BRAND.github} target="_blank" rel="noopener noreferrer me" className="ab-profile"><Github size={14} aria-hidden /> GitHub <ArrowUpRight size={12} aria-hidden /></a></div><p className="ab-contact"><a href={`mailto:${BRAND.email}`} className="ab-link"><Mail size={12} className="ab-mail" aria-hidden /> {BRAND.email}</a></p></section>
+    </div></main>
+  </>;
 }
