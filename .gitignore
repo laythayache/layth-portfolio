@@ -1,5 +1,6 @@
 node_modules/
 out/
 .wrangler/
+.playwright-mcp/
+artifacts/
 *.log
-

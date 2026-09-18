@@ -4,6 +4,10 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "vite": "^7.3.6"
   }
 }
