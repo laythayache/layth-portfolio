@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="OmniSign case study: sign-language data collection, model training, multimodel recognition, and application integration led by Layth Ayache." />
+    <meta property="og:title" content="OmniSign — Layth Ayache" />
+    <meta property="og:description" content="A team-built sign-language recognition project spanning data, models, and application integration." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://laythayache.com/projects/omnisign/" />
+    <link rel="canonical" href="https://laythayache.com/projects/omnisign/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <title>OmniSign — Layth Ayache</title>
+  </head>
+  <body>
+    <main class="page-shell">
+      <nav class="page-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/projects/">Projects</a><a href="/writing/">Writing</a><a href="/about/">About</a></nav>
+
+      <header class="page-header">
+        <p class="eyebrow">Accessibility · Computer vision · Team project</p>
+        <h1>OmniSign</h1>
+        <p class="page-lede">A sign-language recognition system built around the difficult part first: collecting, cleaning, modeling, and integrating data that did not already exist in a usable form.</p>
+        <div class="page-actions"><a href="#demo">Watch the full demo</a><a href="https://www.rhu.edu.lb/media-room/news/rhu-team-wins-public-choice-award-at-national-fyp-demo-day-2025">RHU award announcement</a><a href="https://medium.com/@laythayache5/building-in-a-country-with-no-infrastructure-3f8595472895">Read the Medium article</a></div>
+      </header>
+
+      <section class="content-section" aria-labelledby="role-heading">
+        <h2 id="role-heading">My role</h2>
+        <div class="prose">
+          <p>I led the AI and data work: collection, processing, cleaning, model training, evaluation workflows, and integration of the recognition models into the application.</p>
+          <p>The application combined several recognition modes and selected between them automatically—closer to language auto-detection than requiring the user to choose a model manually.</p>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="scope-heading">
+        <h2 id="scope-heading">What the system recognized</h2>
+        <ul class="fact-grid">
+          <li><strong>Individual letters</strong><span>Recognition for isolated alphabet signs.</span></li>
+          <li><strong>Selected clinical vocabulary</strong><span>Words chosen for communication contexts where misunderstanding can carry greater consequences.</span></li>
+          <li><strong>Continuous signing</strong><span>Temporal recognition across sequences rather than isolated static frames alone.</span></li>
+          <li><strong>LSL and ASL</strong><span>Lebanese Sign Language was the central data challenge, with American Sign Language support also explored.</span></li>
+        </ul>
+      </section>
+
+      <section class="content-section" aria-labelledby="data-heading">
+        <h2 id="data-heading">Dataset work</h2>
+        <p>Lebanese variations were collected through 21 sign-language schools and teaching contexts. The counts below refer to different stages of the pipeline rather than interchangeable totals.</p>
+        <ul class="fact-grid">
+          <li><strong>40,000</strong><span>Individual sign samples collected.</span></li>
+          <li><strong>50,000</strong><span>Samples after augmentation.</span></li>
+          <li><strong>80,000</strong><span>Landmark records extracted for model workflows.</span></li>
+          <li><strong>21 schools</strong><span>Variation represented across Lebanese teaching contexts.</span></li>
+        </ul>
+      </section>
+
+      <section class="content-section" id="demo" aria-labelledby="demo-heading">
+        <h2 id="demo-heading">Full project demo</h2>
+        <p>The complete recording is 2 minutes 30 seconds. It is presented without trimming so the project can be evaluated in context.</p>
+        <video class="project-video" controls preload="metadata">
+          <source src="https://pub-f6654749f9534ed48b99cc5f4b614b9b.r2.dev/WhatsApp%20Video%202025-11-29%20at%2012.43.10%20PM.mp4" type="video/mp4" />
+          Your browser does not support embedded video.
+        </video>
+      </section>
+
+      <section class="content-section" aria-labelledby="recognition-heading">
+        <h2 id="recognition-heading">Recognition and credit</h2>
+        <div class="prose"><p>The team received First Prize in the Public Choice category at the 2025 National FYP Demo Day, held at LAU on May 26, 2025. This was a team award.</p></div>
+        <ul class="credit-list">
+          <li>Nour El Hariri</li>
+          <li>Layth Ayache</li>
+          <li>Tayseer Laz</li>
+          <li>Abou Baker Hussien Al Khatib</li>
+          <li>Supervised by Dr. Oussama Mustapha</li>
+        </ul>
+      </section>
+
+      <section class="content-section" aria-labelledby="limits-heading">
+        <h2 id="limits-heading">Current limits</h2>
+        <p>OmniSign is presented as a research and engineering prototype, not a universal interpreter or a claim that Lebanese Sign Language has been fully standardized. Recognition quality depends on the signer, capture conditions, vocabulary, and model path.</p>
+      </section>
+
+      <footer class="page-footer"><a href="/projects/">All projects</a><a href="https://tayseerlaz.com/work/omnisign/">Collaborator case study</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>
+    </main>
+  </body>
+</html>

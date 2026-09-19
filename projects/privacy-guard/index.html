@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="PrivacyGuard case study: local video detection and masking with OpenCV, ONNX Runtime, and configurable privacy treatments." />
+    <link rel="canonical" href="https://laythayache.com/projects/privacy-guard/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <title>PrivacyGuard — Layth Ayache</title>
+  </head>
+  <body>
+    <main class="page-shell">
+      <nav class="page-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/projects/">Projects</a><a href="/writing/">Writing</a><a href="/about/">About</a></nav>
+      <header class="page-header">
+        <p class="eyebrow">Computer vision · Edge processing · Public code</p>
+        <h1>PrivacyGuard</h1>
+        <p class="page-lede">A Python pipeline for detecting and masking selected sensitive regions in images, recorded video, and live streams before downstream use.</p>
+        <div class="page-actions"><a href="https://github.com/laythayache/PrivacyGuard">View the repository</a><a href="https://medium.com/@laythayache5/real-time-video-anonymization-at-30-fps-on-a-35-computer-39417d254e01">Read the Medium article</a></div>
+      </header>
+
+      <section class="content-section" aria-labelledby="built-heading">
+        <h2 id="built-heading">What I built</h2>
+        <p>PrivacyGuard combines object detection with configurable Gaussian blur, pixelation, and solid masking. The public repository covers image, video, camera, stream, API, and command-line workflows using Python, OpenCV, ONNX Runtime, and compatible detection models.</p>
+        <ul class="fact-grid">
+          <li><strong>Local processing</strong><span>Frames can be processed without sending the visual data to a cloud inference API.</span></li>
+          <li><strong>Multiple masking modes</strong><span>Blur, pixelation, or complete solid occlusion depending on the downstream need.</span></li>
+          <li><strong>Configurable targets</strong><span>Faces, people, and license plates when supported by the selected model and label mapping.</span></li>
+          <li><strong>Inspectible implementation</strong><span>Public code, examples, tests, and documentation under an MIT license.</span></li>
+        </ul>
+      </section>
+
+      <section class="content-section" aria-labelledby="deployment-heading">
+        <h2 id="deployment-heading">Deployment context</h2>
+        <p>I built PrivacyGuard independently as one component inside a larger CCTV system for a freelance client. It has been used with real footage, but the client, system, recordings, and operational details are confidential and are not reproduced here.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="limits-heading">
+        <h2 id="limits-heading">What the claim does—and does not—mean</h2>
+        <p>Masking quality depends on detection quality. Missed or heavily occluded regions cannot be masked, blur is not encryption, and this project is not presented as automatic legal compliance. Performance figures in the repository remain implementation benchmarks rather than a universal guarantee across models and hardware.</p>
+      </section>
+
+      <footer class="page-footer"><a href="/projects/">All projects</a><a href="https://github.com/laythayache/PrivacyGuard">Code</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>
+    </main>
+  </body>
+</html>
