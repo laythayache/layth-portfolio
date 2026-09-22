@@ -796,6 +796,23 @@ a:focus-visible {
   object-position: center 26%;
 }
 
+.team-photo-link {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.team-photo-link img {
+  margin-bottom: 0;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.team-photo-link:hover img,
+.team-photo-link:focus-visible img {
+  border-color: var(--omni-teal);
+  box-shadow: 0 14px 32px rgba(16, 44, 53, 0.14);
+  transform: translateY(-2px);
+}
+
 .team-grid li:first-child img {
   object-position: center;
 }
