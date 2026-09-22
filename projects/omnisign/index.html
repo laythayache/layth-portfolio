@@ -54,7 +54,7 @@
       <section class="omnisign-award" aria-labelledby="award-heading">
         <p class="eyebrow">National FYP Demo Day 2025</p>
         <h2 id="award-heading">First Prize, Public Choice</h2>
-        <p>OmniSign received the Public Choice award at LAU on May 26, 2025, recognizing the multilingual sign-language interpreter and its intended social impact.</p>
+        <p>We won the Public Choice award at LAU on May 26, 2025. For us, it was recognition that the problem mattered just as much as the technology we built around it.</p>
       </section>
 
       <section class="content-section role-section" aria-labelledby="role-heading">
@@ -82,7 +82,7 @@
             <p class="eyebrow">The working system</p>
             <h2 id="demo-heading">Full project demo</h2>
           </div>
-          <p>The complete 2 minute 30 second recording is presented without trimming so the recognition flow can be seen in context.</p>
+          <p>I’ve kept the complete 2 minute 30 second recording here so you can see the recognition flow in context, without a highlight edit hiding the rough edges.</p>
         </div>
         <div class="omnisign-video-shell">
           <video class="project-video" controls preload="metadata">
@@ -95,11 +95,11 @@
       <section class="content-section" aria-labelledby="origin-heading">
         <div class="section-intro">
           <p class="eyebrow">Why it started</p>
-          <h2 id="origin-heading">A communication problem, not a model demo.</h2>
+          <h2 id="origin-heading">It started with a conversation that couldn’t happen.</h2>
         </div>
         <div class="two-column-story">
-          <p>Co-founder Tayseer Laz traces the project’s origin to a clinic encounter during the COVID period, when a deaf man struggled to share a simple joke. The moment exposed how ordinary conversations can become inaccessible when an interpreter is unavailable.</p>
-          <p>Our first assumption was that sign-language data could be sourced and adapted. Instead, we found significant variation between regions—including Beirut, the Beqaa, and the South—and even between schools in the same area. Roughly three months of travel and collection followed, making the data program the foundation of the product.</p>
+          <p>OmniSign started with something Tayseer experienced at a clinic during COVID. A deaf man was trying to share a simple joke, but without an interpreter, even that became difficult. That stayed with us. It was such an ordinary moment, and it shouldn’t have been so hard.</p>
+          <p>At first, we thought we’d find an existing sign-language dataset and adapt it. But once we started collecting, we saw how much signs varied between Beirut, the Beqaa, and the South—even between schools in the same area. We spent roughly three months traveling and collecting examples. That work became the foundation of OmniSign.</p>
         </div>
       </section>
 
@@ -124,7 +124,7 @@
             <p class="eyebrow">Built from the ground up</p>
             <h2 id="data-heading">The dataset was part of the product.</h2>
           </div>
-          <p>Collection took place across 21 Lebanese sign-language schools and teaching contexts, with support from community members, families, educators, and partner organizations.</p>
+          <p>We collected examples across 21 Lebanese sign-language schools and teaching contexts, with help from community members, families, educators, and partner organizations.</p>
         </div>
         <div class="data-flow" aria-label="Data processing stages">
           <div><span>Collected</span><strong>40,000</strong><p>individual sign samples</p></div>
@@ -133,7 +133,7 @@
           <div aria-hidden="true">→</div>
           <div><span>Extracted</span><strong>80,000</strong><p>landmark records</p></div>
         </div>
-        <p class="evidence-note"><strong>A note on the numbers.</strong> Public summaries have sometimes shortened these stages to “50K+ signs” and “80K+ processed samples.” Here, I separate the units used in our pipeline: 40,000 individual sign samples, 50,000 after augmentation, and 80,000 extracted landmark records.</p>
+        <p class="evidence-note"><strong>A note on the numbers.</strong> You may see shorter versions of these figures elsewhere, such as “50K+ signs” or “80K+ processed samples.” I separate the stages here because they are not the same thing: we collected 40,000 individual sign samples, expanded them to 50,000 through augmentation, and extracted 80,000 landmark records.</p>
       </section>
 
       <section class="content-section" aria-labelledby="community-heading">
@@ -142,7 +142,7 @@
             <p class="eyebrow">Community collection</p>
             <h2 id="community-heading">Built with people, not around them.</h2>
           </div>
-          <p>Deaf participants reached out to contribute, and community partners shaped what was collected. Requests for medical phrases helped make clinical communication an explicit priority.</p>
+          <p>Deaf participants reached out to help us, and our community partners shaped what we collected. When people asked us to include medical phrases, we made clinical communication an explicit priority.</p>
         </div>
         <ul class="partner-list">
           <li><strong>Aaramoun Orphanage Center</strong><span>Data collection and community engagement.</span></li>
@@ -165,8 +165,8 @@
           <div><span>05</span><strong>Translate</strong><p>The application presents the result as text and speech.</p></div>
         </div>
         <div class="prose technical-notes">
-          <p>The public collaborator case study reports a 98% internal evaluation result under controlled conditions. It also describes sub-100 ms recognition as a target and an LSTM-based sequential model. These figures are useful engineering context, not universal performance guarantees: lighting, camera angle, signer, vocabulary, and signing speed all affect results.</p>
-          <p>The product direction also included an interactive learning experience, screen-reader and high-contrast support, haptic feedback, and on-device inference where possible. Edge fallback and privacy-preserving future training were roadmap directions rather than claims of universal offline operation.</p>
+          <p>Tayseer has published a 98% result from one of our controlled internal evaluations, along with our sub-100 ms recognition target and the use of an LSTM-based sequential model. I treat those numbers as engineering context, not as a promise that the system performs the same way everywhere. Lighting, camera angle, signer, vocabulary, and signing speed all affect the result.</p>
+          <p>We also explored an interactive learning experience, screen-reader and high-contrast support, haptic feedback, and on-device inference where possible. Edge fallback and privacy-preserving training were directions we wanted to pursue, not claims that every part of OmniSign already worked offline.</p>
         </div>
       </section>
 
@@ -176,10 +176,10 @@
           <h2 id="timeline-heading">From final-year project to an ongoing platform.</h2>
         </div>
         <ol class="timeline omnisign-timeline">
-          <li><time>Early 2025</time><div><h3>Project foundation</h3><p>The RHU team defined the accessibility problem and began the final-year project.</p></div></li>
-          <li><time>Mid 2025</time><div><h3>Community data collection</h3><p>Collection expanded through Lebanese communities, schools, family volunteers, NGOs, and public booths.</p></div></li>
-          <li><time>Late 2025</time><div><h3>Integrated recognition</h3><p>The team connected the cleaned data, sequential recognition models, and application experience.</p></div></li>
-          <li><time>Next phase</time><div><h3>Broader vocabulary and research</h3><p>The public roadmap prioritizes clinical vocabulary, wider testing, and research into transformer-based approaches.</p></div></li>
+          <li><time>Early 2025</time><div><h3>Project foundation</h3><p>We defined the accessibility problem and began building OmniSign as our final-year project at RHU.</p></div></li>
+          <li><time>Mid 2025</time><div><h3>Community data collection</h3><p>We expanded collection through Lebanese communities, schools, family volunteers, NGOs, and public booths.</p></div></li>
+          <li><time>Late 2025</time><div><h3>Integrated recognition</h3><p>We connected the cleaned data, sequential recognition models, and application experience into one working system.</p></div></li>
+          <li><time>Next phase</time><div><h3>Broader vocabulary and research</h3><p>Our next priorities are broader clinical vocabulary, wider testing, and research into transformer-based approaches.</p></div></li>
         </ol>
       </section>
 
@@ -189,7 +189,7 @@
             <p class="eyebrow">The people behind OmniSign</p>
             <h2 id="team-heading">One product, distinct responsibilities.</h2>
           </div>
-          <p>The team brought together AI, product direction, application development, research, and community work.</p>
+          <p>I didn’t build OmniSign alone. Our team brought together AI, product direction, application development, research, and community work.</p>
         </div>
         <ul class="team-grid">
           <li>
@@ -225,16 +225,16 @@
           <h2 id="questions-heading">Useful context</h2>
         </div>
         <div class="project-faq">
-          <details><summary>Is OmniSign a universal sign-language translator?</summary><p>No. It supports defined Lebanese and American Sign Language recognition paths and a bounded vocabulary. Sign languages are not universal, and Lebanese usage varies by region and teaching context.</p></details>
-          <details><summary>Who was the product designed for?</summary><p>The intended users include deaf and hard-of-hearing people, families, educators, and healthcare workers—especially when an interpreter is not readily available.</p></details>
-          <details><summary>Does the reported accuracy apply everywhere?</summary><p>No. The 98% figure comes from an internal controlled evaluation reported in the collaborator case study. Real-world results vary with capture conditions, signer variation, signing speed, and vocabulary.</p></details>
-          <details><summary>Is the project finished?</summary><p>The award-winning FYP established the working system. The published product direction continues toward more clinical vocabulary, broader validation, and newer sequence-model research.</p></details>
+          <details><summary>Is OmniSign a universal sign-language translator?</summary><p>No. We built defined Lebanese and American Sign Language recognition paths around a bounded vocabulary. Sign languages are not universal, and we saw firsthand how Lebanese usage varies by region and teaching context.</p></details>
+          <details><summary>Who did you design it for?</summary><p>We designed OmniSign for deaf and hard-of-hearing people, families, educators, and healthcare workers—especially in moments when an interpreter is not readily available.</p></details>
+          <details><summary>Does the reported accuracy apply everywhere?</summary><p>No. The 98% figure comes from one of our controlled internal evaluations. Real-world results change with the capture conditions, signer, signing speed, and vocabulary.</p></details>
+          <details><summary>Is the project finished?</summary><p>We built a working system for the award-winning FYP, but I do not see the problem as finished. The next steps are more clinical vocabulary, broader validation, and newer sequence-model research.</p></details>
         </div>
       </section>
 
       <section class="content-section limits-section" aria-labelledby="limits-heading">
         <h2 id="limits-heading">What this case study does not claim</h2>
-        <p>OmniSign is presented as an accessibility research and engineering platform, not a replacement for human interpreters or proof that Lebanese Sign Language has been standardized. The award was earned by the team, and performance numbers remain bounded by their evaluation conditions.</p>
+        <p>I present OmniSign as an accessibility research and engineering platform, not as a replacement for human interpreters or proof that Lebanese Sign Language has been standardized. We earned the award as a team, and I keep every performance number tied to the conditions in which we measured it.</p>
       </section>
 
       <footer class="page-footer">
