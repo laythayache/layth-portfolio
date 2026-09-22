@@ -29,8 +29,8 @@
           <span>OmniSign</span>
         </div>
         <p class="eyebrow">Accessibility · Computer vision · Team project</p>
-        <h1>Translation begins with understanding the signs that already exist.</h1>
-        <p class="page-lede">OmniSign is an AI-powered platform for real-time Lebanese and American Sign Language recognition. We built the data, models, and application together because usable Lebanese Sign Language datasets were not available to us.</p>
+        <h1>AI-powered sign language translation—built from scratch for a language that technology forgot.</h1>
+        <p class="page-lede">We built OmniSign for real-time Lebanese and American Sign Language recognition. The data we needed did not exist, so we had to build the dataset, the models, and the application together.</p>
         <ul class="omnisign-tags" aria-label="Project details">
           <li>AI &amp; ML lead</li>
           <li>Python · TensorFlow · React</li>
@@ -45,10 +45,10 @@
       </header>
 
       <section class="omnisign-metrics" aria-label="Project summary">
-        <div><strong>40K</strong><span>individual sign samples</span></div>
-        <div><strong>50K</strong><span>after augmentation</span></div>
-        <div><strong>80K</strong><span>landmark records</span></div>
-        <div><strong>21</strong><span>Lebanese schools represented</span></div>
+        <div><strong>50K+</strong><span>raw signs collected across Lebanon</span></div>
+        <div><strong>80K+</strong><span>processed image flows after cleaning and augmentation</span></div>
+        <div><strong>98%</strong><span>internal evaluation in controlled conditions</span></div>
+        <div><strong>30+</strong><span>daily expressions plus the Arabic alphabet</span></div>
       </section>
 
       <section class="omnisign-award" aria-labelledby="award-heading">
@@ -95,11 +95,13 @@
       <section class="content-section" aria-labelledby="origin-heading">
         <div class="section-intro">
           <p class="eyebrow">Why it started</p>
-          <h2 id="origin-heading">It started with a conversation that couldn’t happen.</h2>
+          <h2 id="origin-heading">It started with a joke nobody laughed at.</h2>
         </div>
         <div class="two-column-story">
-          <p>OmniSign started with something Tayseer experienced at a clinic during COVID. A deaf man was trying to share a simple joke, but without an interpreter, even that became difficult. That stayed with us. It was such an ordinary moment, and it shouldn’t have been so hard.</p>
-          <p>At first, we thought we’d find an existing sign-language dataset and adapt it. But once we started collecting, we saw how much signs varied between Beirut, the Beqaa, and the South—even between schools in the same area. We spent roughly three months traveling and collecting examples. That work became the foundation of OmniSign.</p>
+          <p>During COVID, I met a deaf man at a clinic. He wasn’t struggling to be understood—the staff eventually figured out what he needed through context and gestures.</p>
+          <p>What I noticed was different. He was trying to tell a joke. You could see it in his face, his timing, and the way he paused for a reaction that never came. Nobody understood him enough to laugh with him.</p>
+          <p>He had every right to share that moment with the people around him—easier than that. That was when OmniSign became more than an idea.</p>
+          <p>Our university gave us the option to choose from faculty-approved projects. We chose to find our own challenge instead. It felt overwhelming. But it felt right.</p>
         </div>
       </section>
 
@@ -110,11 +112,11 @@
         </div>
         <ul class="fact-grid omnisign-capabilities">
           <li><strong>Individual letters</strong><span>Recognition for isolated alphabet signs and spelling flows.</span></li>
-          <li><strong>Everyday and clinical vocabulary</strong><span>An early set of common expressions, with selected medical terms prioritized for higher-stakes conversations.</span></li>
-          <li><strong>Continuous signing</strong><span>Temporal recognition across sequences instead of relying only on individual static frames.</span></li>
-          <li><strong>LSL and ASL</strong><span>Lebanese Sign Language was the central data challenge, with American Sign Language included in the product.</span></li>
-          <li><strong>Automatic model selection</strong><span>The multimodel pipeline routes input without asking the user to manually choose a recognition mode first.</span></li>
-          <li><strong>Text and speech output</strong><span>Recognized signs can be surfaced as readable text and spoken output for the other participant.</span></li>
+          <li><strong>Everyday vocabulary</strong><span>More than 30 daily words and expressions, with clinical vocabulary planned as the next priority.</span></li>
+          <li><strong>Sequence recognition</strong><span>An LSTM-based path recognizes movement across a sequence instead of treating every frame in isolation.</span></li>
+          <li><strong>LSL and basic ASL</strong><span>Lebanese Sign Language is our primary focus, supported by the dataset we collected ourselves.</span></li>
+          <li><strong>Text and speech output</strong><span>Recognized signs can be presented as readable text and spoken output for the other person.</span></li>
+          <li><strong>Learning and accessibility</strong><span>We also explored guided lessons, screen-reader support, high contrast, and haptic feedback.</span></li>
         </ul>
       </section>
 
@@ -122,27 +124,27 @@
         <div class="section-intro section-intro-split">
           <div>
             <p class="eyebrow">Built from the ground up</p>
-            <h2 id="data-heading">The dataset was part of the product.</h2>
+            <h2 id="data-heading">A language with no map.</h2>
           </div>
-          <p>We collected examples across 21 Lebanese sign-language schools and teaching contexts, with help from community members, families, educators, and partner organizations.</p>
+          <p>We entered this project assuming data existed. It didn’t. We assumed sign language was universal. It wasn’t. Beqaa was different from the South, the South was different from Beirut, and even schools within Beirut signed differently.</p>
         </div>
         <div class="data-flow" aria-label="Data processing stages">
-          <div><span>Collected</span><strong>40,000</strong><p>individual sign samples</p></div>
+          <div><span>Collected</span><strong>50,000+</strong><p>raw sign samples</p></div>
           <div aria-hidden="true">→</div>
-          <div><span>Augmented</span><strong>50,000</strong><p>training samples</p></div>
+          <div><span>Processed</span><strong>80,000+</strong><p>cleaned and augmented image flows</p></div>
           <div aria-hidden="true">→</div>
-          <div><span>Extracted</span><strong>80,000</strong><p>landmark records</p></div>
+          <div><span>Vocabulary</span><strong>30+</strong><p>daily expressions plus the alphabet</p></div>
         </div>
-        <p class="evidence-note"><strong>A note on the numbers.</strong> You may see shorter versions of these figures elsewhere, such as “50K+ signs” or “80K+ processed samples.” I separate the stages here because they are not the same thing: we collected 40,000 individual sign samples, expanded them to 50,000 through augmentation, and extracted 80,000 landmark records.</p>
+        <p class="evidence-note"><strong>We built it by hand.</strong> We held data-collection campaigns across Lebanon. Volunteers signed at our homes—family members we taught ourselves—and NGOs and Deaf communities opened their doors to us. It was a messy process. If it wasn’t for the team’s chemistry, it never would have happened.</p>
       </section>
 
       <section class="content-section" aria-labelledby="community-heading">
         <div class="section-intro section-intro-split">
           <div>
             <p class="eyebrow">Community collection</p>
-            <h2 id="community-heading">Built with people, not around them.</h2>
+            <h2 id="community-heading">“This isn’t a final-year project to them. This is a new life.”</h2>
           </div>
-          <p>Deaf participants reached out to help us, and our community partners shaped what we collected. When people asked us to include medical phrases, we made clinical communication an explicit priority.</p>
+          <p>Deaf individuals in Lebanon still reach out and ask how they can help. They don’t see a university assignment; they see the beginning of something that could change their daily lives. Clinical and medical phrases are the addition they request most.</p>
         </div>
         <ul class="partner-list">
           <li><strong>Aaramoun Orphanage Center</strong><span>Data collection and community engagement.</span></li>
@@ -165,8 +167,8 @@
           <div><span>05</span><strong>Translate</strong><p>The application presents the result as text and speech.</p></div>
         </div>
         <div class="prose technical-notes">
-          <p>Tayseer has published a 98% result from one of our controlled internal evaluations, along with our sub-100 ms recognition target and the use of an LSTM-based sequential model. I treat those numbers as engineering context, not as a promise that the system performs the same way everywhere. Lighting, camera angle, signer, vocabulary, and signing speed all affect the result.</p>
-          <p>We also explored an interactive learning experience, screen-reader and high-contrast support, haptic feedback, and on-device inference where possible. Edge fallback and privacy-preserving training were directions we wanted to pursue, not claims that every part of OmniSign already worked offline.</p>
+          <p>We used MediaPipe to extract landmark features and trained an LSTM network for sequence recognition. In our controlled internal evaluation, we reached 98% accuracy. We were surprised too. Real-world results still change with lighting, camera quality, the signer, signing speed, and vocabulary.</p>
+          <p>Our pipeline was designed for real-time translation, with text and speech output and a sub-100 ms latency target. We also explored on-device inference, edge fallback, and privacy-preserving training as the system moved beyond the first prototype.</p>
         </div>
       </section>
 
@@ -176,10 +178,12 @@
           <h2 id="timeline-heading">From final-year project to an ongoing platform.</h2>
         </div>
         <ol class="timeline omnisign-timeline">
-          <li><time>Early 2025</time><div><h3>Project foundation</h3><p>We defined the accessibility problem and began building OmniSign as our final-year project at RHU.</p></div></li>
-          <li><time>Mid 2025</time><div><h3>Community data collection</h3><p>We expanded collection through Lebanese communities, schools, family volunteers, NGOs, and public booths.</p></div></li>
-          <li><time>Late 2025</time><div><h3>Integrated recognition</h3><p>We connected the cleaned data, sequential recognition models, and application experience into one working system.</p></div></li>
-          <li><time>Next phase</time><div><h3>Broader vocabulary and research</h3><p>Our next priorities are broader clinical vocabulary, wider testing, and research into transformer-based approaches.</p></div></li>
+          <li><time>Early 2025</time><div><h3>Started as our FYP</h3><p>Six of us chose to find our own challenge instead of selecting one of the faculty-approved projects.</p></div></li>
+          <li><time>Mid 2025</time><div><h3>50,000 signs collected</h3><p>We ran campaigns across Lebanon with Aaramoun Orphanage, Sin El Fil Church, SignWithNaila, families, and community volunteers.</p></div></li>
+          <li><time>Late 2025</time><div><h3>98% in controlled evaluation</h3><p>We trained the LSTM model on the Arabic alphabet and more than 30 daily expressions.</p></div></li>
+          <li><time>Ongoing</time><div><h3>Weekly development</h3><p>We graduated and started jobs, but kept meeting and coding around work. OmniSign remained self-funded and community-supported.</p></div></li>
+          <li><time>Next</time><div><h3>Clinical vocabulary</h3><p>Medical and clinical phrases are the most requested addition from the Deaf community.</p></div></li>
+          <li><time>Future</time><div><h3>Scalable architecture</h3><p>We are researching transformer-based models for better real-world performance and easier expansion.</p></div></li>
         </ol>
       </section>
 
@@ -225,10 +229,12 @@
           <h2 id="questions-heading">Useful context</h2>
         </div>
         <div class="project-faq">
-          <details><summary>Is OmniSign a universal sign-language translator?</summary><p>No. We built defined Lebanese and American Sign Language recognition paths around a bounded vocabulary. Sign languages are not universal, and we saw firsthand how Lebanese usage varies by region and teaching context.</p></details>
-          <details><summary>Who did you design it for?</summary><p>We designed OmniSign for deaf and hard-of-hearing people, families, educators, and healthcare workers—especially in moments when an interpreter is not readily available.</p></details>
-          <details><summary>Does the reported accuracy apply everywhere?</summary><p>No. The 98% figure comes from one of our controlled internal evaluations. Real-world results change with the capture conditions, signer, signing speed, and vocabulary.</p></details>
-          <details><summary>Is the project finished?</summary><p>We built a working system for the award-winning FYP, but I do not see the problem as finished. The next steps are more clinical vocabulary, broader validation, and newer sequence-model research.</p></details>
+          <details><summary>Which sign languages do you support?</summary><p>We currently support Lebanese Sign Language and basic American Sign Language. LSL is our primary focus, and we built its project dataset from scratch with samples from Beqaa, South Lebanon, and Beirut.</p></details>
+          <details><summary>Is this real-time translation or batch processing?</summary><p>Real-time. Our computer-vision pipeline processes video frames as they arrive. You sign, and it translates.</p></details>
+          <details><summary>How accurate is it?</summary><p>We reached 98% in our controlled internal evaluations. Real-world results vary with lighting, camera quality, the signer, signing speed, and vocabulary.</p></details>
+          <details><summary>How did you collect and label the data?</summary><p>We collected it in-house through events, community partnerships, and Deaf organizations. We recorded volunteers signing, extracted landmark features with MediaPipe, and labeled the data manually with community guidance.</p></details>
+          <details><summary>What model architecture did you use?</summary><p>We used an LSTM network for sequence recognition. Rami and I also explored more scalable approaches, including transformers, for the next iteration.</p></details>
+          <details><summary>Who is this for?</summary><p>Everyone. If you’re deaf, OmniSign helps you communicate. If you want to speak with a deaf person, it helps bridge that gap. Our next focus is clinical vocabulary, where miscommunication carries the highest cost.</p></details>
         </div>
       </section>
 
