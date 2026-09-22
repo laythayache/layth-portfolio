@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "Layth Ayache",
+  "primaryTitle": "Senior AI Engineer",
+  "secondaryTitle": "AI Systems Engineer",
+  "location": "Beirut, Lebanon",
+  "positioning": "An AI engineer who turns data and models into usable systems and owns the engineering around them.",
+  "currentRole": {
+    "organization": "Achour Holding",
+    "title": "Senior AI Systems & Web Engineer | Technical Lead",
+    "since": "2026-09"
+  },
+  "availability": [
+    "Selected senior roles",
+    "Consulting engagements",
+    "Technical partnerships",
+    "Remote international work"
+  ],
+  "capabilities": [
+    "End-to-end AI systems engineering and integration",
+    "Applied computer vision and data engineering",
+    "Conversational AI, WhatsApp automation, and human handoff",
+    "Voice AI and telephony integration",
+    "Data pipelines and operational automation",
+    "AI integration with organizational software and workflows",
+    "Internal tools and workflow platforms",
+    "Technical leadership across AI, backend systems, applications, and deployment"
+  ],
+  "projects": [
+    { "name": "Hader", "status": "production", "url": "https://laythayache.com/projects/hader/" },
+    { "name": "Alinia", "status": "production", "url": "https://laythayache.com/projects/alinia/" },
+    { "name": "OmniSign", "status": "active R&D", "url": "https://laythayache.com/projects/omnisign/" },
+    { "name": "Lancaster Hospitality Platform", "status": "14 public sites; ongoing operations", "url": "https://laythayache.com/projects/lancaster/" },
+    { "name": "Bridge", "status": "two deployed implementations", "url": "https://laythayache.com/projects/bridge/" },
+    { "name": "PrivacyGuard", "status": "independent applied computer-vision project", "url": "https://laythayache.com/projects/privacy-guard/" }
+  ],
+  "contact": {
+    "email": "laythayache5@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/laythayache",
+    "github": "https://github.com/laythayache"
+  },
+  "canonical": "https://laythayache.com/"
+}

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "validate": "npm run build && node scripts/validate.mjs"
   },
   "devDependencies": {
     "vite": "^7.3.6"

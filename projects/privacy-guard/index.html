@@ -5,19 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="description" content="PrivacyGuard case study: local video detection and masking with OpenCV, ONNX Runtime, and configurable privacy treatments." />
+    <meta property="og:title" content="PrivacyGuard — Applied Computer Vision — Layth Ayache" />
+    <meta property="og:description" content="Local detection and configurable masking for sensitive regions in image and video workflows, with explicit performance and privacy limits." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://laythayache.com/projects/privacy-guard/" />
     <link rel="canonical" href="https://laythayache.com/projects/privacy-guard/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/src/styles.css" />
     <title>PrivacyGuard — Layth Ayache</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "@id": "https://laythayache.com/projects/privacy-guard/#project",
+        "url": "https://laythayache.com/projects/privacy-guard/",
+        "name": "PrivacyGuard",
+        "description": "A local computer-vision pipeline for detection and configurable masking in image and video workflows.",
+        "author": { "@id": "https://laythayache.com/#person" },
+        "codeRepository": "https://github.com/laythayache/PrivacyGuard",
+        "programmingLanguage": "Python",
+        "keywords": ["Computer vision", "Local processing", "Video masking", "ONNX Runtime", "OpenCV"]
+      }
+    </script>
   </head>
   <body>
     <main class="page-shell">
       <nav class="page-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/projects/">Projects</a><a href="/writing/">Writing</a><a href="/about/">About</a></nav>
       <header class="page-header">
-        <p class="eyebrow">Computer vision · Edge processing · Public code</p>
+        <p class="eyebrow">Applied computer vision · Local processing · Public code</p>
         <h1>PrivacyGuard</h1>
         <p class="page-lede">A Python pipeline for detecting and masking selected sensitive regions in images, recorded video, and live streams before downstream use.</p>
-        <div class="page-actions"><a href="https://github.com/laythayache/PrivacyGuard">View the repository</a><a href="https://medium.com/@laythayache5/real-time-video-anonymization-at-30-fps-on-a-35-computer-39417d254e01">Read the Medium article</a></div>
+        <div class="page-actions"><a href="https://github.com/laythayache/PrivacyGuard">View the repository</a></div>
       </header>
 
       <section class="content-section" aria-labelledby="built-heading">
@@ -38,7 +56,7 @@
 
       <section class="content-section" aria-labelledby="limits-heading">
         <h2 id="limits-heading">What the claim does—and does not—mean</h2>
-        <p>Masking quality depends on detection quality. Missed or heavily occluded regions cannot be masked, blur is not encryption, and this project is not presented as automatic legal compliance. Performance figures in the repository remain implementation benchmarks rather than a universal guarantee across models and hardware.</p>
+        <p>Masking quality depends on detection quality. Missed or heavily occluded regions cannot be masked, blur is not encryption, and this project is not presented as automatic legal compliance. The public materials do not define one sufficiently complete benchmark configuration and dataset for the headline frame-rate result to be treated as universal; performance remains a narrow implementation result that varies by model, input, hardware, and settings.</p>
       </section>
 
       <footer class="page-footer"><a href="/projects/">All projects</a><a href="https://github.com/laythayache/PrivacyGuard">Code</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>

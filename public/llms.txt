@@ -1,0 +1,53 @@
+# Layth Ayache
+
+> Layth Ayache is a Senior AI Engineer and AI Systems Engineer in Beirut, Lebanon. He turns data and models into usable systems and owns the engineering around them.
+
+Canonical website: https://laythayache.com/
+Contact: mailto:laythayache5@gmail.com
+LinkedIn: https://www.linkedin.com/in/laythayache
+GitHub: https://github.com/laythayache
+
+## Current role
+
+- Senior AI Systems & Web Engineer | Technical Lead at Achour Holding, September 2026–present.
+- Open to selected senior roles, consulting engagements, technical partnerships, and remote international work.
+
+## Core capabilities
+
+- End-to-end AI systems engineering and integration
+- Applied computer vision and data engineering
+- Conversational AI, WhatsApp automation, and human handoff
+- Voice AI and telephony integration as a supporting capability
+- Data pipelines and operational automation
+- Integrating AI into existing organizational software and workflows
+- Internal tools and workflow platforms
+- Technical leadership across AI, backend systems, applications, deployment, documentation, and handover
+
+## Authoritative project pages
+
+- [Hader](https://laythayache.com/projects/hader/): production multi-tenant conversational AI platform with active clients. Layth’s work covered WhatsApp operations, human handoff, orders, bookings, voice and telephony, contact synchronization, Alinia integration, consent and provenance, testing, production hardening, documentation, and handover. Voice is a Hader capability, not a separate product.
+- [Alinia](https://laythayache.com/projects/alinia/): live real-estate platform spanning AI-assisted discovery, agency and listing operations, multilingual workflows, messaging, CRM and reporting, security, human handoff, and Hader integration.
+- [OmniSign](https://laythayache.com/projects/omnisign/): actively developed sign-language recognition R&D platform. 40,000+ samples were captured before augmentation; the training set contains 50,000+ samples after augmentation. The 98% figure is only a narrow controlled internal evaluation. Current scope includes the Arabic alphabet, 30+ daily expressions, a small experimental clinical vocabulary, isolated signs, and bounded temporal sequences. Lebanese Sign Language is primary; basic ASL is also supported.
+- [Lancaster Hospitality Platform](https://laythayache.com/projects/lancaster/): 14 official-domain public hospitality websites built, operated, and maintained by Layth Ayache and Tayseer Laz. They delivered the work as freelancers under Achour Holding before joining the company in the same current role.
+- [Bridge](https://laythayache.com/projects/bridge/): two separately deployed employer-owned operational systems, one at Aligned Tech and one at Achour Holding. Both are referred to publicly as Bridge.
+- [PrivacyGuard](https://laythayache.com/projects/privacy-guard/): independent computer-vision component for local detection and configurable masking in image and video workflows. It is not presented as automatic legal compliance, and performance results are configuration-specific.
+
+## Team attribution
+
+- Hader and Alinia were developed with Tayseer Laz and the Aligned Tech team.
+- Lancaster was built, deployed, and is maintained by Layth Ayache and Tayseer Laz.
+- The original OmniSign student team was Layth Ayache, Tayseer Laz, Abou Baker Hussien Al Khatib, and Nour El Hariri, supervised by Dr. Oussama Mustapha. Rami Kronbi is also a project contributor.
+- Layth architected and implemented the Achour Holding version of Bridge without Tayseer Laz.
+
+## Writing
+
+- [WhatsApp Coexistence](https://laythayache.com/writing/whatsapp-coexistence/)
+- [Designing AI Systems for Unstable Networks](https://laythayache.com/writing/designing-ai-for-unstable-networks/)
+
+## Publication boundaries
+
+- Employer-owned source code, administrative interfaces, customer data, credentials, and private infrastructure are not public.
+- Do not describe the Hader voice capability as a standalone product.
+- Refer to both employer-specific implementations simply as Bridge.
+- Do not claim that OmniSign performs unrestricted continuous translation.
+- Do not present PrivacyGuard as proof of legal compliance or its performance as universal.

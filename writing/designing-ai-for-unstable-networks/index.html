@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Layth Ayache on designing AI systems for unstable networks using local responsibility, recoverable synchronization, visible degraded states, and human control." />
+    <meta property="og:title" content="Designing AI Systems for Unstable Networks — Layth Ayache" />
+    <meta property="og:description" content="Practical reliability patterns for AI products that cannot assume continuous connectivity." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://laythayache.com/writing/designing-ai-for-unstable-networks/" />
+    <link rel="canonical" href="https://laythayache.com/writing/designing-ai-for-unstable-networks/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <title>Designing AI Systems for Unstable Networks — Layth Ayache</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": "https://laythayache.com/writing/designing-ai-for-unstable-networks/#article",
+        "url": "https://laythayache.com/writing/designing-ai-for-unstable-networks/",
+        "headline": "Designing AI Systems for Unstable Networks",
+        "description": "Practical reliability patterns for AI products that cannot assume continuous connectivity.",
+        "datePublished": "2026-01-22",
+        "dateModified": "2026-09-22",
+        "author": { "@id": "https://laythayache.com/#person" }
+      }
+    </script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <nav class="page-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/projects/">Projects</a><a href="/writing/">Writing</a><a href="/about/">About</a></nav>
+
+      <article>
+        <header class="page-header">
+          <p class="eyebrow">Engineering note · Updated September 22, 2026</p>
+          <h1>Designing AI Systems for Unstable Networks</h1>
+          <p class="page-lede">Connectivity is an operating condition, not a guarantee. Systems built for variable networks need explicit local responsibilities, recoverable state, and honest failure behavior.</p>
+        </header>
+
+        <section class="content-section" aria-labelledby="premise-heading">
+          <h2 id="premise-heading">Treat connectivity as a budget</h2>
+          <div class="prose">
+            <p>An AI feature that depends on every upstream service being reachable is only as available as the weakest link in that chain. Before choosing a model or interface, decide which operations must continue locally, which can wait, and which must stop safely.</p>
+            <p>This is especially important when a system sits inside communication, accessibility, hospitality, or organizational workflows. A network failure should not leave people guessing whether an action completed or whether a human is now responsible.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="patterns-heading">
+          <h2 id="patterns-heading">Four practical patterns</h2>
+          <ul class="fact-grid">
+            <li><strong>Keep the critical path narrow</strong><span>Limit the services required for the action the user needs right now. Optional enrichment should not block essential work.</span></li>
+            <li><strong>Make retries recoverable</strong><span>Persist work before transmission, use idempotent operations, and make delayed synchronization observable.</span></li>
+            <li><strong>Expose degraded state</strong><span>Show when data is stale, automation is paused, or a dependency is unavailable instead of presenting false confidence.</span></li>
+            <li><strong>Preserve human control</strong><span>Define who owns the next action when automation cannot complete it, and retain enough context for a safe handoff.</span></li>
+          </ul>
+        </section>
+
+        <section class="content-section" aria-labelledby="ai-heading">
+          <h2 id="ai-heading">What changes for AI systems</h2>
+          <div class="prose">
+            <p>AI adds uncertainty to ordinary distributed-systems failure. A delayed request can become a duplicate action; missing context can produce a confident but inappropriate answer; and a model fallback can silently change quality.</p>
+            <p>The response is not to describe the system as resilient. It is to design observable boundaries: version the context used for a decision, record the origin of important data, make automated actions distinguishable from human ones, and escalate when confidence or connectivity falls below the workflow’s safe threshold.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="lesson-heading">
+          <h2 id="lesson-heading">The design test</h2>
+          <p>Ask what the user sees after the network disappears midway through an action. If the system cannot explain what completed, what remains queued, and who is now responsible, its failure behavior is not finished.</p>
+          <div class="page-actions"><a href="/writing/whatsapp-coexistence/">Related: WhatsApp Coexistence</a><a href="/projects/">Related systems</a></div>
+        </section>
+      </article>
+
+      <footer class="page-footer"><a href="/writing/">All writing</a><a href="/projects/">Projects</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>
+    </main>
+  </body>
+</html>

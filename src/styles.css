@@ -221,6 +221,14 @@ a:focus-visible {
   line-height: 1.45;
 }
 
+.contact-links span {
+  flex-basis: 100%;
+  max-width: 716px;
+  color: #383d42;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
 .page-shell {
   width: min(calc(100% - 48px), 920px);
   margin: 0 auto;
@@ -237,6 +245,15 @@ a:focus-visible {
 
 .page-header {
   max-width: 760px;
+}
+
+.profile-photo {
+  display: block;
+  width: 112px;
+  height: 112px;
+  margin: 0 0 24px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .eyebrow {

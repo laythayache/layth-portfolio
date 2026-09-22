@@ -4,11 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="Projects by Layth Ayache across AI systems, data, automation, web products, accessibility, and engineering." />
+    <meta name="description" content="AI systems engineering projects by Layth Ayache across conversational AI, computer vision, data engineering, workflow automation, voice, and operational software." />
+    <meta property="og:title" content="AI Systems Engineering Projects — Layth Ayache" />
+    <meta property="og:description" content="Production systems, applied AI research, data pipelines, integrations, and operational platforms with clear status and attribution." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://laythayache.com/projects/" />
     <link rel="canonical" href="https://laythayache.com/projects/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/src/styles.css" />
-    <title>Projects — Layth Ayache</title>
+    <title>AI Systems Engineering Projects — Layth Ayache</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "@id": "https://laythayache.com/projects/#page",
+        "url": "https://laythayache.com/projects/",
+        "name": "AI Systems Engineering Projects by Layth Ayache",
+        "author": { "@id": "https://laythayache.com/#person" },
+        "mainEntity": {
+          "@type": "ItemList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "url": "https://laythayache.com/projects/hader/", "name": "Hader" },
+            { "@type": "ListItem", "position": 2, "url": "https://laythayache.com/projects/alinia/", "name": "Alinia" },
+            { "@type": "ListItem", "position": 3, "url": "https://laythayache.com/projects/omnisign/", "name": "OmniSign" },
+            { "@type": "ListItem", "position": 4, "url": "https://laythayache.com/projects/lancaster/", "name": "Lancaster Hospitality Platform" },
+            { "@type": "ListItem", "position": 5, "url": "https://laythayache.com/projects/bridge/", "name": "Bridge" },
+            { "@type": "ListItem", "position": 6, "url": "https://laythayache.com/projects/privacy-guard/", "name": "PrivacyGuard" }
+          ]
+        }
+      }
+    </script>
   </head>
   <body>
     <main class="page-shell">
@@ -18,17 +43,19 @@
 
       <header class="page-header">
         <p class="eyebrow">Projects</p>
-        <h1>Systems, products, and engineering work.</h1>
-        <p class="page-lede">A fuller record of my work. Public case studies explain my contribution; employer-owned projects remain intentionally high-level and do not expose private code or operations.</p>
+        <h1>AI systems, integrations, and operational software.</h1>
+        <p class="page-lede">Work across models, data, backend systems, applications, deployment, and handoff. Every entry distinguishes production systems, active R&amp;D, prototypes, and supporting capabilities; employer-owned work remains intentionally high-level.</p>
       </header>
 
       <section class="project-group" aria-labelledby="featured-heading">
         <h2 id="featured-heading">Featured work</h2>
         <p>Projects with public evidence, live products, or enough context to explain the work responsibly.</p>
         <ul class="project-list">
-          <li><span class="project-status">Hospitality · Live</span><a href="/#lancaster">Lancaster Hospitality Platform</a><p>Twenty-one property websites built with Tayseer Laz, plus the shared platform supporting them.</p></li>
-          <li><span class="project-status">Accessibility AI · Team project</span><a href="/projects/omnisign/">OmniSign</a><p>Sign-language recognition across isolated signs, selected clinical vocabulary, and continuous signing.</p></li>
-          <li><span class="project-status">Computer vision · Public code</span><a href="/projects/privacy-guard/">PrivacyGuard</a><p>Local detection and masking for sensitive regions in image and video pipelines.</p></li>
+          <li><span class="project-status">Conversational and voice AI · Production</span><a href="/projects/hader/">Hader</a><p>A live multi-tenant business communications platform spanning conversational automation, WhatsApp operations, explicit human handoff, orders, bookings, and voice calling.</p></li>
+          <li><span class="project-status">Real-estate AI · Production</span><a href="/projects/alinia/">Alinia</a><p>AI-assisted multilingual property discovery, agency operations, messaging workflows, and human handoff across a live real-estate platform.</p></li>
+          <li><span class="project-status">Accessibility AI · Active R&amp;D</span><a href="/projects/omnisign/">OmniSign</a><p>Lebanese Sign Language recognition across isolated signs and bounded temporal sequences, built with a community-collected dataset.</p></li>
+          <li><span class="project-status">Hospitality · 14 public sites</span><a href="/projects/lancaster/">Lancaster Hospitality Platform</a><p>A shared platform built, operated, and maintained with Tayseer Laz across 14 official-domain public hospitality websites.</p></li>
+          <li><span class="project-status">Computer vision · Public code</span><a href="/projects/privacy-guard/">PrivacyGuard</a><p>Local detection and configurable masking for sensitive regions in image and video pipelines.</p></li>
           <li id="daleel"><span class="project-status">Civic information · Contribution</span><a href="https://daleel-lb.vercel.app/en">Daleel</a><p>Web scraping and information gathering across public channels and news sources for a Lebanese election-information platform.</p></li>
           <li id="bsheel"><span class="project-status">Product · Co-founder</span><a href="https://bsheel.app/">BSHEEL</a><p>Co-founder responsible primarily for business strategy and product direction. The product is being redesigned toward tourism; 4HoursOnly was an earlier gamified stage.</p></li>
           <li><span class="project-status">Civic product · MVP</span><a href="https://almokhtar.info">Al Mokhtar</a><p>A bilingual, neighborhood-by-neighborhood directory for Beirut with maps, listings, search, and delegated local administration.</p></li>
@@ -39,7 +66,7 @@
         <h2 id="internal-heading">Internal systems</h2>
         <p>Employer-owned operational tools are described at a systems level. Private source code, dashboards, company data, credentials, and infrastructure remain confidential.</p>
         <ul class="project-list">
-          <li><span class="project-status">Operations · Two implementations</span><a href="/projects/bridge/">Bridge</a><p>A shared internal-tool pattern implemented as SLA Bridge at Aligned Tech and Achour Holding Bridge, adapting project visibility, progress, communication, and role-scoped access to each organization.</p></li>
+          <li><span class="project-status">Operations · Two deployed implementations</span><a href="/projects/bridge/">Bridge</a><p>Two employer-specific systems adapting project visibility, progress, communication, integrations, and role-scoped access to the way Aligned Tech and Achour Holding operate.</p></li>
         </ul>
       </section>
 
@@ -58,9 +85,8 @@
         <h2 id="aligned-heading">Led at Aligned Tech</h2>
         <p>Employer-owned work. I can describe my role and the public product, but I do not publish source code, private dashboards, credentials, or operational details.</p>
         <ul class="project-list">
-          <li><span class="project-status">AI systems · Employer-owned</span><a href="https://hader.ai/">Hader</a><p>Previously developed as Alignbot. I provided technical leadership and AI-systems engineering for the business communications platform, spanning conversational assistance, customer operations, and human handoff. <a href="/writing/whatsapp-coexistence/">Read the related Coexistence engineering note.</a></p></li>
-          <li><span class="project-status">Real estate AI · Employer-owned</span><a href="https://aliniarealestate.com/">Alinia</a><p>Architecture and delivery work for multilingual property discovery and conversational workflows across web and messaging channels.</p></li>
-          <li><span class="project-status">Voice AI · Prototype</span><strong>Aseer Voicebot</strong><p>Voice-assistant architecture and testing for telephone and WhatsApp calling, order intake, and eventual human handoff.</p></li>
+          <li><span class="project-status">AI systems · Live with active clients</span><a href="/projects/hader/">Hader</a><p>Technical leadership and AI-systems engineering across conversational assistance, WhatsApp automation, customer operations, human handoff, and a live voice and telephony capability.</p></li>
+          <li><span class="project-status">Real estate AI · Live</span><a href="/projects/alinia/">Alinia</a><p>Architecture and delivery across multilingual property discovery, AI services, agency workflows, messaging, reporting, security, and integration with Hader.</p></li>
         </ul>
       </section>
 
@@ -78,17 +104,18 @@
           <li>Arabic semantic and legal-document retrieval</li>
           <li>Enterprise vision analytics</li>
           <li>Conversational knowledge assistant</li>
-          <li>Social-listening data pipelines</li>
+          <li id="social-listening-pipeline">Social Listening Data Pipeline</li>
           <li>Intelligent document processing and OCR</li>
           <li>Financial forecasting and reporting</li>
           <li>OGERO predictive analytics and dashboards</li>
+          <li id="network-infrastructure">Network Security Infrastructure</li>
           <li>Telecom network identification and operations tooling</li>
           <li>Cloud image-classification service</li>
           <li>Scalable AI deployment pipeline</li>
           <li>Time-series anomaly detection</li>
           <li>Real-time analytics and data visualization</li>
           <li>Environmental-monitoring prototype</li>
-          <li>License-plate recognition</li>
+          <li id="license-plate-recognition">License Plate Recognition System</li>
           <li>Face-recognition prototype</li>
           <li>ASL translation prototype</li>
           <li>Image processing, tracking, and color detection</li>
