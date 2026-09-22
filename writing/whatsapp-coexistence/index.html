@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="An engineering note by Layth Ayache on incorporating WhatsApp Coexistence into business workflows while preserving human control, consent, and operational clarity."
+    />
+    <meta property="og:title" content="WhatsApp Coexistence — Layth Ayache" />
+    <meta
+      property="og:description"
+      content="Introducing messaging automation without taking the working phone away from the business."
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://laythayache.com/writing/whatsapp-coexistence/" />
+    <link rel="canonical" href="https://laythayache.com/writing/whatsapp-coexistence/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <title>WhatsApp Coexistence — Layth Ayache</title>
+  </head>
+  <body>
+    <main class="page-shell">
+      <nav class="page-nav" aria-label="Primary navigation">
+        <a href="/">Home</a><a href="/projects/">Projects</a><a href="/writing/">Writing</a><a href="/about/">About</a>
+      </nav>
+
+      <article>
+        <header class="page-header">
+          <p class="eyebrow">Engineering note · September 21, 2026</p>
+          <h1>WhatsApp Coexistence: introducing automation without taking the phone away</h1>
+          <p class="page-lede">A useful messaging integration has to fit the way a business already works. Coexistence makes that possible—but only when onboarding, consent, automation, and human handoff are designed as one system.</p>
+        </header>
+
+        <section class="content-section" aria-labelledby="problem-heading">
+          <h2 id="problem-heading">The operational problem</h2>
+          <div class="prose">
+            <p>For many businesses, a WhatsApp number is not simply a support channel. It is an active workspace used by owners and staff throughout the day. Replacing that familiar phone workflow with a dashboard can create more disruption than the automation solves.</p>
+            <p>WhatsApp Business Coexistence allows an existing business number to remain available in the WhatsApp Business app while also connecting it to platform workflows through Meta’s Cloud API. The technical connection is only the starting point. The real engineering work is making the phone, platform, automation, and people behave like one coherent operation.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="work-heading">
+          <h2 id="work-heading">How it fits into my work</h2>
+          <div class="prose">
+            <p>I worked on Coexistence as part of Hader, previously Alignbot, while leading AI-systems engineering at Aligned Tech. The work sat between product design, external API integration, messaging infrastructure, data governance, and AI-assisted customer operations.</p>
+            <p>My focus was not merely connecting an endpoint. It was shaping an operating model around onboarding, webhook-driven message events, templates, conversation state, bot behavior, and human handoff. The implementation is employer-owned, so this note discusses the engineering approach without exposing private code, tenant information, credentials, or production infrastructure.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="incorporate-heading">
+          <h2 id="incorporate-heading">How to incorporate Coexistence into real work</h2>
+          <div class="prose">
+            <ol>
+              <li><strong>Map the existing workflow first.</strong> Identify who answers from the phone, when a conversation becomes a sales or support task, and where information is recorded today.</li>
+              <li><strong>Give automation a narrow job.</strong> Start with routing, structured intake, approved answers, reminders, or drafting. Do not begin with an unrestricted bot representing the business.</li>
+              <li><strong>Make human intervention an explicit state.</strong> When a person replies from the phone or inbox, automation should pause for that conversation and resume only under a clear rule.</li>
+              <li><strong>Unify the event stream.</strong> Messages from customers, staff replies, delivery events, templates, and automated actions need one ordered conversation record. Without that, the system cannot explain what happened.</li>
+              <li><strong>Design consent and retention before importing data.</strong> Historical conversations and customer information should not be collected simply because an API makes collection possible. Purpose, access, retention, deletion, and failure behavior need to be decided first.</li>
+              <li><strong>Make onboarding observable.</strong> A successful authorization screen does not guarantee a healthy integration. Connection state, webhook delivery, permissions, and recovery paths need visible checks.</li>
+              <li><strong>Connect downstream systems last.</strong> CRM updates, analytics, AI summaries, and follow-up workflows become useful only after message identity and handoff behavior are reliable.</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="ai-heading">
+          <h2 id="ai-heading">Where AI belongs</h2>
+          <div class="prose">
+            <p>Coexistence is not itself an AI feature. It is the messaging and operational foundation that can make carefully scoped AI useful. Once the conversation state is trustworthy, AI can classify requests, retrieve approved information, draft replies, summarize long threads, and surface conversations that require attention.</p>
+            <p>The important boundary is control: the business should know when automation is active, a staff reply should take precedence, and uncertainty should result in escalation rather than confident invention.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="lesson-heading">
+          <h2 id="lesson-heading">The broader lesson</h2>
+          <div class="prose">
+            <p>Integration work is rarely finished when two systems can exchange data. It is finished when responsibilities are clear, failure is visible, humans can intervene safely, and the new system improves the existing operation instead of forcing people to work around it.</p>
+          </div>
+          <div class="page-actions">
+            <a href="https://developers.facebook.com/documentation/business-messaging/whatsapp/embedded-signup/onboarding-business-app-users">Meta’s Coexistence documentation</a>
+            <a href="https://www.postman.com/meta/whatsapp-business-platform/documentation/du6gzjv/embedded-signup">Meta’s Embedded Signup collection</a>
+            <a href="/projects/">Related work</a>
+          </div>
+        </section>
+      </article>
+
+      <footer class="page-footer"><a href="/writing/">All writing</a><a href="/projects/">Projects</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>
+    </main>
+  </body>
+</html>
