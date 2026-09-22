@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="OmniSign case study: sign-language data collection, model training, multimodel recognition, and application integration led by Layth Ayache." />
+    <meta name="description" content="OmniSign case study: the sign-language data program, computer-vision models, multimodel recognition, and application integration led by Layth Ayache." />
     <meta property="og:title" content="OmniSign — Layth Ayache" />
-    <meta property="og:description" content="A team-built sign-language recognition project spanning data, models, and application integration." />
+    <meta property="og:description" content="How we built a real-time Lebanese and American Sign Language recognition system from data collection through application integration." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://laythayache.com/projects/omnisign/" />
     <link rel="canonical" href="https://laythayache.com/projects/omnisign/" />
@@ -15,72 +15,233 @@
     <title>OmniSign — Layth Ayache</title>
   </head>
   <body>
-    <main class="page-shell">
-      <nav class="page-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/projects/">Projects</a><a href="/writing/">Writing</a><a href="/about/">About</a></nav>
+    <main class="page-shell omnisign-page">
+      <nav class="page-nav" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/projects/">Projects</a>
+        <a href="/writing/">Writing</a>
+        <a href="/about/">About</a>
+      </nav>
 
-      <header class="page-header">
+      <header class="omnisign-hero">
+        <div class="omnisign-lockup">
+          <img src="/images/omnisign/omnisign-logo.png" width="48" height="48" alt="" />
+          <span>OmniSign</span>
+        </div>
         <p class="eyebrow">Accessibility · Computer vision · Team project</p>
-        <h1>OmniSign</h1>
-        <p class="page-lede">A sign-language recognition system built around the difficult part first: collecting, cleaning, modeling, and integrating data that did not already exist in a usable form.</p>
-        <div class="page-actions"><a href="#demo">Watch the full demo</a><a href="https://www.rhu.edu.lb/media-room/news/rhu-team-wins-public-choice-award-at-national-fyp-demo-day-2025">RHU award announcement</a><a href="https://medium.com/@laythayache5/building-in-a-country-with-no-infrastructure-3f8595472895">Read the Medium article</a></div>
+        <h1>Translation begins with understanding the signs that already exist.</h1>
+        <p class="page-lede">OmniSign is an AI-powered platform for real-time Lebanese and American Sign Language recognition. We built the data, models, and application together because usable Lebanese Sign Language datasets were not available to us.</p>
+        <ul class="omnisign-tags" aria-label="Project details">
+          <li>AI &amp; ML lead</li>
+          <li>Python · TensorFlow · React</li>
+          <li>Self-funded</li>
+          <li>Public Choice Award</li>
+        </ul>
+        <div class="page-actions">
+          <a href="#demo">Watch the 2:30 demo</a>
+          <a href="https://www.rhu.edu.lb/media-room/news/rhu-team-wins-public-choice-award-at-national-fyp-demo-day-2025">RHU award announcement</a>
+          <a href="https://medium.com/@laythayache5/building-in-a-country-with-no-infrastructure-3f8595472895">Read the story</a>
+        </div>
       </header>
 
-      <section class="content-section" aria-labelledby="role-heading">
-        <h2 id="role-heading">My role</h2>
+      <section class="omnisign-metrics" aria-label="Project summary">
+        <div><strong>40K</strong><span>individual sign samples</span></div>
+        <div><strong>50K</strong><span>after augmentation</span></div>
+        <div><strong>80K</strong><span>landmark records</span></div>
+        <div><strong>21</strong><span>Lebanese schools represented</span></div>
+      </section>
+
+      <section class="omnisign-award" aria-labelledby="award-heading">
+        <p class="eyebrow">National FYP Demo Day 2025</p>
+        <h2 id="award-heading">First Prize, Public Choice</h2>
+        <p>OmniSign received the Public Choice award at LAU on May 26, 2025, recognizing the multilingual sign-language interpreter and its intended social impact.</p>
+      </section>
+
+      <section class="content-section role-section" aria-labelledby="role-heading">
+        <div class="section-intro">
+          <p class="eyebrow">My contribution</p>
+          <h2 id="role-heading">I led the AI and data system from collection to application.</h2>
+        </div>
         <div class="prose">
-          <p>I led the AI and data work: collection, processing, cleaning, model training, evaluation workflows, and integration of the recognition models into the application.</p>
-          <p>The application combined several recognition modes and selected between them automatically—closer to language auto-detection than requiring the user to choose a model manually.</p>
+          <p>As OmniSign’s AI &amp; ML Lead, I owned the technical path that turned community-contributed recordings into models the product could use. My work covered the collection strategy, processing and cleaning, augmentation, landmark extraction, model training and evaluation, multimodel orchestration, and integration into the application.</p>
+          <p>I was also involved in community outreach and event planning. That mattered technically: the quality and breadth of the system depended on earning participation from people and organizations across Lebanon, not only tuning a model after the data arrived.</p>
+        </div>
+        <ol class="role-ledger">
+          <li><span>01</span><strong>Data collection</strong><p>Structured collection across communities and different Lebanese teaching traditions.</p></li>
+          <li><span>02</span><strong>Processing</strong><p>Cleaned, normalized, augmented, and converted recordings into landmark-based training records.</p></li>
+          <li><span>03</span><strong>Model training</strong><p>Built and evaluated computer-vision and sequential recognition paths for isolated and continuous signs.</p></li>
+          <li><span>04</span><strong>Model routing</strong><p>Combined specialized models so the system could select an appropriate path automatically.</p></li>
+          <li><span>05</span><strong>Integration</strong><p>Connected inference to the product experience for live recognition and translated output.</p></li>
+          <li><span>06</span><strong>Outreach</strong><p>Supported the partnerships, collection events, and public demonstrations that made the work possible.</p></li>
+        </ol>
+      </section>
+
+      <section class="content-section" id="demo" aria-labelledby="demo-heading">
+        <div class="section-intro section-intro-split">
+          <div>
+            <p class="eyebrow">The working system</p>
+            <h2 id="demo-heading">Full project demo</h2>
+          </div>
+          <p>The complete 2 minute 30 second recording is presented without trimming so the recognition flow can be seen in context.</p>
+        </div>
+        <div class="omnisign-video-shell">
+          <video class="project-video" controls preload="metadata">
+            <source src="https://pub-f6654749f9534ed48b99cc5f4b614b9b.r2.dev/WhatsApp%20Video%202025-11-29%20at%2012.43.10%20PM.mp4" type="video/mp4" />
+            Your browser does not support embedded video.
+          </video>
+        </div>
+      </section>
+
+      <section class="content-section" aria-labelledby="origin-heading">
+        <div class="section-intro">
+          <p class="eyebrow">Why it started</p>
+          <h2 id="origin-heading">A communication problem, not a model demo.</h2>
+        </div>
+        <div class="two-column-story">
+          <p>Co-founder Tayseer Laz traces the project’s origin to a clinic encounter during the COVID period, when a deaf man struggled to share a simple joke. The moment exposed how ordinary conversations can become inaccessible when an interpreter is unavailable.</p>
+          <p>Our first assumption was that sign-language data could be sourced and adapted. Instead, we found significant variation between regions—including Beirut, the Beqaa, and the South—and even between schools in the same area. Roughly three months of travel and collection followed, making the data program the foundation of the product.</p>
         </div>
       </section>
 
       <section class="content-section" aria-labelledby="scope-heading">
-        <h2 id="scope-heading">What the system recognized</h2>
-        <ul class="fact-grid">
-          <li><strong>Individual letters</strong><span>Recognition for isolated alphabet signs.</span></li>
-          <li><strong>Selected clinical vocabulary</strong><span>Words chosen for communication contexts where misunderstanding can carry greater consequences.</span></li>
-          <li><strong>Continuous signing</strong><span>Temporal recognition across sequences rather than isolated static frames alone.</span></li>
-          <li><strong>LSL and ASL</strong><span>Lebanese Sign Language was the central data challenge, with American Sign Language support also explored.</span></li>
+        <div class="section-intro">
+          <p class="eyebrow">Recognition scope</p>
+          <h2 id="scope-heading">Several modes, one experience.</h2>
+        </div>
+        <ul class="fact-grid omnisign-capabilities">
+          <li><strong>Individual letters</strong><span>Recognition for isolated alphabet signs and spelling flows.</span></li>
+          <li><strong>Everyday and clinical vocabulary</strong><span>An early set of common expressions, with selected medical terms prioritized for higher-stakes conversations.</span></li>
+          <li><strong>Continuous signing</strong><span>Temporal recognition across sequences instead of relying only on individual static frames.</span></li>
+          <li><strong>LSL and ASL</strong><span>Lebanese Sign Language was the central data challenge, with American Sign Language included in the product.</span></li>
+          <li><strong>Automatic model selection</strong><span>The multimodel pipeline routes input without asking the user to manually choose a recognition mode first.</span></li>
+          <li><strong>Text and speech output</strong><span>Recognized signs can be surfaced as readable text and spoken output for the other participant.</span></li>
         </ul>
       </section>
 
-      <section class="content-section" aria-labelledby="data-heading">
-        <h2 id="data-heading">Dataset work</h2>
-        <p>Lebanese variations were collected through 21 sign-language schools and teaching contexts. The counts below refer to different stages of the pipeline rather than interchangeable totals.</p>
-        <ul class="fact-grid">
-          <li><strong>40,000</strong><span>Individual sign samples collected.</span></li>
-          <li><strong>50,000</strong><span>Samples after augmentation.</span></li>
-          <li><strong>80,000</strong><span>Landmark records extracted for model workflows.</span></li>
-          <li><strong>21 schools</strong><span>Variation represented across Lebanese teaching contexts.</span></li>
+      <section class="content-section data-section" aria-labelledby="data-heading">
+        <div class="section-intro section-intro-split">
+          <div>
+            <p class="eyebrow">Built from the ground up</p>
+            <h2 id="data-heading">The dataset was part of the product.</h2>
+          </div>
+          <p>Collection took place across 21 Lebanese sign-language schools and teaching contexts, with support from community members, families, educators, and partner organizations.</p>
+        </div>
+        <div class="data-flow" aria-label="Data processing stages">
+          <div><span>Collected</span><strong>40,000</strong><p>individual sign samples</p></div>
+          <div aria-hidden="true">→</div>
+          <div><span>Augmented</span><strong>50,000</strong><p>training samples</p></div>
+          <div aria-hidden="true">→</div>
+          <div><span>Extracted</span><strong>80,000</strong><p>landmark records</p></div>
+        </div>
+        <p class="evidence-note"><strong>A note on the numbers.</strong> Public summaries have sometimes shortened these stages to “50K+ signs” and “80K+ processed samples.” Here, I separate the units used in our pipeline: 40,000 individual sign samples, 50,000 after augmentation, and 80,000 extracted landmark records.</p>
+      </section>
+
+      <section class="content-section" aria-labelledby="community-heading">
+        <div class="section-intro section-intro-split">
+          <div>
+            <p class="eyebrow">Community collection</p>
+            <h2 id="community-heading">Built with people, not around them.</h2>
+          </div>
+          <p>Deaf participants reached out to contribute, and community partners shaped what was collected. Requests for medical phrases helped make clinical communication an explicit priority.</p>
+        </div>
+        <ul class="partner-list">
+          <li><strong>Aaramoun Orphanage Center</strong><span>Data collection and community engagement.</span></li>
+          <li><strong>Sin El Fil Church</strong><span>Collection sessions with deaf community members.</span></li>
+          <li><strong>SignWithNaila</strong><span>Sign-language education and community guidance.</span></li>
+          <li><strong>Rafik Hariri University</strong><span>Campus booth space, academic support, and project supervision.</span></li>
         </ul>
       </section>
 
-      <section class="content-section" id="demo" aria-labelledby="demo-heading">
-        <h2 id="demo-heading">Full project demo</h2>
-        <p>The complete recording is 2 minutes 30 seconds. It is presented without trimming so the project can be evaluated in context.</p>
-        <video class="project-video" controls preload="metadata">
-          <source src="https://pub-f6654749f9534ed48b99cc5f4b614b9b.r2.dev/WhatsApp%20Video%202025-11-29%20at%2012.43.10%20PM.mp4" type="video/mp4" />
-          Your browser does not support embedded video.
-        </video>
+      <section class="content-section" aria-labelledby="engineering-heading">
+        <div class="section-intro">
+          <p class="eyebrow">Engineering approach</p>
+          <h2 id="engineering-heading">Live input, specialized models, accessible output.</h2>
+        </div>
+        <div class="system-flow" aria-label="How OmniSign works">
+          <div><span>01</span><strong>Capture</strong><p>Live camera input records the signer’s movement.</p></div>
+          <div><span>02</span><strong>Represent</strong><p>Computer vision extracts spatial and temporal landmarks.</p></div>
+          <div><span>03</span><strong>Recognize</strong><p>Specialized models handle letters, vocabulary, and continuous sequences.</p></div>
+          <div><span>04</span><strong>Route</strong><p>The multimodel layer chooses a suitable recognition path.</p></div>
+          <div><span>05</span><strong>Translate</strong><p>The application presents the result as text and speech.</p></div>
+        </div>
+        <div class="prose technical-notes">
+          <p>The public collaborator case study reports a 98% internal evaluation result under controlled conditions. It also describes sub-100 ms recognition as a target and an LSTM-based sequential model. These figures are useful engineering context, not universal performance guarantees: lighting, camera angle, signer, vocabulary, and signing speed all affect results.</p>
+          <p>The product direction also included an interactive learning experience, screen-reader and high-contrast support, haptic feedback, and on-device inference where possible. Edge fallback and privacy-preserving future training were roadmap directions rather than claims of universal offline operation.</p>
+        </div>
       </section>
 
-      <section class="content-section" aria-labelledby="recognition-heading">
-        <h2 id="recognition-heading">Recognition and credit</h2>
-        <div class="prose"><p>The team received First Prize in the Public Choice category at the 2025 National FYP Demo Day, held at LAU on May 26, 2025. This was a team award.</p></div>
-        <ul class="credit-list">
-          <li>Nour El Hariri</li>
-          <li>Layth Ayache</li>
-          <li>Tayseer Laz</li>
-          <li>Abou Baker Hussien Al Khatib</li>
-          <li>Supervised by Dr. Oussama Mustapha</li>
+      <section class="content-section" aria-labelledby="timeline-heading">
+        <div class="section-intro">
+          <p class="eyebrow">Development</p>
+          <h2 id="timeline-heading">From final-year project to an ongoing platform.</h2>
+        </div>
+        <ol class="timeline omnisign-timeline">
+          <li><time>Early 2025</time><div><h3>Project foundation</h3><p>The RHU team defined the accessibility problem and began the final-year project.</p></div></li>
+          <li><time>Mid 2025</time><div><h3>Community data collection</h3><p>Collection expanded through Lebanese communities, schools, family volunteers, NGOs, and public booths.</p></div></li>
+          <li><time>Late 2025</time><div><h3>Integrated recognition</h3><p>The team connected the cleaned data, sequential recognition models, and application experience.</p></div></li>
+          <li><time>Next phase</time><div><h3>Broader vocabulary and research</h3><p>The public roadmap prioritizes clinical vocabulary, wider testing, and research into transformer-based approaches.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="content-section" aria-labelledby="team-heading">
+        <div class="section-intro section-intro-split">
+          <div>
+            <p class="eyebrow">The people behind OmniSign</p>
+            <h2 id="team-heading">One product, distinct responsibilities.</h2>
+          </div>
+          <p>The team brought together AI, product direction, application development, research, and community work.</p>
+        </div>
+        <ul class="team-grid">
+          <li>
+            <img src="/images/omnisign/layth-ayache.jpeg" width="200" height="200" loading="lazy" alt="Layth Ayache" />
+            <div><span class="team-phase">Project team</span><h3>Layth Ayache</h3><p class="team-role">AI &amp; ML Lead</p><p>Computer vision, the complete data pipeline, training and evaluation, multimodel orchestration, application integration, outreach, and event planning.</p></div>
+          </li>
+          <li>
+            <img src="/images/omnisign/tayseer-laz.webp" width="585" height="900" loading="lazy" alt="Tayseer Laz" />
+            <div><span class="team-phase">Project team</span><h3>Tayseer Laz</h3><p class="team-role">Co-founder · Product, Web &amp; PR</p><p>Product direction, accessible experience design, website development, mobile integration support, community communications, collection, and events.</p></div>
+          </li>
+          <li>
+            <img src="/images/omnisign/abubaker.webp" width="900" height="894" loading="lazy" alt="Abou Baker Hussien Al Khatib" />
+            <div><span class="team-phase">Project team</span><h3>Abou Baker Hussien Al Khatib</h3><p class="team-role">Application Developer</p><p>Flutter mobile application, web application development, and data collection at campus and community booths.</p></div>
+          </li>
+          <li>
+            <img src="/images/omnisign/noor-el-hariri.webp" width="675" height="900" loading="lazy" alt="Nour El Hariri" />
+            <div><span class="team-phase">Project team</span><h3>Nour El Hariri</h3><p class="team-role">Project Coordinator</p><p>Flutter application work, academic documentation, project reporting, and research coordination.</p></div>
+          </li>
+          <li>
+            <img src="/images/omnisign/rami-kronbi.webp" width="672" height="900" loading="lazy" alt="Rami Kronbi" />
+            <div><span class="team-phase">Project team</span><h3>Rami Kronbi</h3><p class="team-role">Computer Vision Engineer</p><p>Computer-vision pipeline development, technical leadership, and additional data collection.</p></div>
+          </li>
+          <li>
+            <img src="/images/omnisign/oussama-mustapha.webp" width="350" height="435" loading="lazy" alt="Dr. Oussama Mustapha" />
+            <div><span class="team-phase">Supervisor</span><h3>Dr. Oussama Mustapha</h3><p class="team-role">Research Advisor</p><p>Academic guidance, research methodology, and project oversight at Rafik Hariri University.</p></div>
+          </li>
         </ul>
       </section>
 
-      <section class="content-section" aria-labelledby="limits-heading">
-        <h2 id="limits-heading">Current limits</h2>
-        <p>OmniSign is presented as a research and engineering prototype, not a universal interpreter or a claim that Lebanese Sign Language has been fully standardized. Recognition quality depends on the signer, capture conditions, vocabulary, and model path.</p>
+      <section class="content-section" aria-labelledby="questions-heading">
+        <div class="section-intro">
+          <p class="eyebrow">Project notes</p>
+          <h2 id="questions-heading">Useful context</h2>
+        </div>
+        <div class="project-faq">
+          <details><summary>Is OmniSign a universal sign-language translator?</summary><p>No. It supports defined Lebanese and American Sign Language recognition paths and a bounded vocabulary. Sign languages are not universal, and Lebanese usage varies by region and teaching context.</p></details>
+          <details><summary>Who was the product designed for?</summary><p>The intended users include deaf and hard-of-hearing people, families, educators, and healthcare workers—especially when an interpreter is not readily available.</p></details>
+          <details><summary>Does the reported accuracy apply everywhere?</summary><p>No. The 98% figure comes from an internal controlled evaluation reported in the collaborator case study. Real-world results vary with capture conditions, signer variation, signing speed, and vocabulary.</p></details>
+          <details><summary>Is the project finished?</summary><p>The award-winning FYP established the working system. The published product direction continues toward more clinical vocabulary, broader validation, and newer sequence-model research.</p></details>
+        </div>
       </section>
 
-      <footer class="page-footer"><a href="/projects/">All projects</a><a href="https://tayseerlaz.com/work/omnisign/">Collaborator case study</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>
+      <section class="content-section limits-section" aria-labelledby="limits-heading">
+        <h2 id="limits-heading">What this case study does not claim</h2>
+        <p>OmniSign is presented as an accessibility research and engineering platform, not a replacement for human interpreters or proof that Lebanese Sign Language has been standardized. The award was earned by the team, and performance numbers remain bounded by their evaluation conditions.</p>
+      </section>
+
+      <footer class="page-footer">
+        <a href="/projects/">All projects</a>
+        <a href="https://tayseerlaz.com/work/omnisign/">Tayseer’s case study</a>
+        <a href="mailto:laythayache5@gmail.com">Email</a>
+      </footer>
     </main>
   </body>
 </html>
