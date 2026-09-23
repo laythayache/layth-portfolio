@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="A fact-checked account of PrivacyGuard: local computer-vision detection and configurable video masking, with explicit performance, privacy, and deployment limits." />
+    <meta property="og:title" content="Building PrivacyGuard: Local Computer Vision for Video Masking — Layth Ayache" />
+    <meta property="og:description" content="What PrivacyGuard does, how the pipeline works, what the historical benchmark can support, and where masking stops short of anonymity or legal compliance." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://laythayache.com/writing/building-privacyguard-local-video-masking/" />
+    <link rel="canonical" href="https://laythayache.com/writing/building-privacyguard-local-video-masking/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <title>Building PrivacyGuard: Local Video Masking | Layth Ayache</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": "https://laythayache.com/writing/building-privacyguard-local-video-masking/#article",
+        "url": "https://laythayache.com/writing/building-privacyguard-local-video-masking/",
+        "headline": "Building PrivacyGuard: Local Computer Vision for Video Masking",
+        "description": "A fact-checked account of PrivacyGuard's local detection and masking pipeline, benchmark boundary, privacy limits, and deployment context.",
+        "datePublished": "2026-03-13",
+        "dateModified": "2026-09-23",
+        "author": { "@id": "https://laythayache.com/#person" },
+        "about": { "@id": "https://laythayache.com/projects/privacy-guard/#project" },
+        "mainEntityOfPage": "https://laythayache.com/writing/building-privacyguard-local-video-masking/",
+        "citation": [
+          "https://github.com/laythayache/PrivacyGuard",
+          "https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/data-sharing/anonymisation/how-do-we-ensure-anonymisation-is-effective/"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <nav class="page-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/projects/">Projects</a><a href="/writing/">Writing</a><a href="/about/">About</a></nav>
+
+      <article>
+        <header class="page-header">
+          <p class="eyebrow">PrivacyGuard field note · Originally published March 13, 2026 · Fact-checked September 23, 2026</p>
+          <h1>Building PrivacyGuard: Local Computer Vision for Video Masking</h1>
+          <p class="page-lede">PrivacyGuard is a public Python pipeline for detecting selected regions and applying configurable masking to images and video. This is what the implementation supports, what the evidence does not support, and what changes when a computer-vision component is used inside a real system.</p>
+        </header>
+
+        <section class="content-section" aria-labelledby="problem-heading">
+          <h2 id="problem-heading">The problem was not simply detecting an object</h2>
+          <p>Video systems can capture faces, people, license plates, documents, and other identifying context. Sending every raw frame to a cloud inference service may be unnecessary or unsuitable for some deployments. I wanted a component that could run near the source, use a compatible local model, and mask selected detected regions before downstream use.</p>
+          <p>Local processing changes where inference happens. It does not make the complete system private by definition. Raw frames still enter device memory, detections can fail, other identifiers can remain, and the surrounding application may still store or transmit data. That boundary is central to how PrivacyGuard should be described.</p>
+        </section>
+
+        <section class="content-section" aria-labelledby="built-heading">
+          <h2 id="built-heading">What I built</h2>
+          <p>I built PrivacyGuard independently as one component inside a larger CCTV system for a freelance client. It has been used with real footage, but the client, recordings, private infrastructure, and operational details remain confidential.</p>
+          <p>The public repository is the inspectable component, not the client system. It covers image files, recorded video, camera and stream inputs, a Python API, a command-line interface, and optional helpers for batch processing, operation logging, runtime monitoring, and fixed-region masking.</p>
+          <ul>
+            <li><strong>Detection:</strong> run a compatible ONNX object-detection model and decode supported output formats.</li>
+            <li><strong>Selection:</strong> filter detections using configured labels, target classes, confidence, and overlap thresholds.</li>
+            <li><strong>Masking:</strong> apply Gaussian blur, pixelation, or solid fill to detected regions.</li>
+            <li><strong>Integration:</strong> return processed frames or write image and video outputs for a surrounding application.</li>
+          </ul>
+          <p>Faces, people, or license plates are not capabilities created by the masking code alone. The selected model must actually support the intended classes, and its label mapping must match the application configuration.</p>
+        </section>
+
+        <section class="content-section" aria-labelledby="pipeline-heading">
+          <h2 id="pipeline-heading">The pipeline is deliberately separable</h2>
+          <p>The core flow is straightforward:</p>
+          <ol>
+            <li>Read a frame from an image, video file, camera, or stream.</li>
+            <li>Prepare the frame for the configured ONNX model.</li>
+            <li>Run inference and convert supported model output into detections.</li>
+            <li>Apply confidence filtering and class-aware overlap suppression.</li>
+            <li>Mask the selected regions using the configured method.</li>
+            <li>Return, display, or write the processed frame.</li>
+          </ol>
+          <p>Detection and masking are separate because they answer different questions. Detection asks where a configured model believes a target exists. Masking decides how to modify that region. Keeping them separate makes it possible to inspect detections, choose different treatments by class, add padding, or integrate the component into a larger workflow.</p>
+        </section>
+
+        <section class="content-section" aria-labelledby="methods-heading">
+          <h2 id="methods-heading">Masking methods are operational choices, not privacy levels</h2>
+          <p>PrivacyGuard exposes three treatments:</p>
+          <ul>
+            <li><strong>Gaussian blur</strong> reduces visible detail while retaining some scene context.</li>
+            <li><strong>Pixelation</strong> replaces a region with a coarse block representation.</li>
+            <li><strong>Solid fill</strong> covers the selected region completely.</li>
+          </ul>
+          <p>None of these methods repairs a missed detection. Blur and pixelation are not encryption, and even a solid region does not remove identifiers elsewhere in a frame, its metadata, its audio, or related records. The right configuration depends on the threat model and must be evaluated against representative footage.</p>
+        </section>
+
+        <section class="content-section" aria-labelledby="benchmark-heading">
+          <h2 id="benchmark-heading">What the 25–30 FPS result means</h2>
+          <p>A historical controlled internal run reached approximately 25–30 FPS. That is the narrowest supportable wording.</p>
+          <p>The retained repository and project history do not preserve a signed-off benchmark record containing the exact hardware, model artifact and hash, ONNX Runtime provider, source footage, warm-up, measured frame count, masking configuration, output encoding, and pipeline stages included in timing. The result therefore should not be attributed to Raspberry Pi 4, a $35 computer, every YOLOv8-nano model, or an arbitrary deployment.</p>
+          <p>Performance varies with hardware, runtime provider, model architecture and input size, source resolution and codec, number and size of detected regions, masking method, display, and output encoding. A useful benchmark must freeze those variables and report latency distribution and dropped frames—not only one FPS number.</p>
+          <p>Throughput also says nothing about detection quality. A fast pipeline that misses small, distant, occluded, or out-of-distribution targets is not successful merely because it processes frames quickly.</p>
+        </section>
+
+        <section class="content-section" aria-labelledby="privacy-heading">
+          <h2 id="privacy-heading">A technical control is not a legal conclusion</h2>
+          <p>Running detection locally can reduce reliance on a cloud inference API and can limit which visual information is released downstream. Those are useful engineering properties. They do not establish that output is anonymous or that a deployment complies with GDPR, CCPA, or another legal framework.</p>
+          <p>Legal and operational outcomes depend on the complete processing system: purpose, lawful basis, notices, access controls, storage, retention, deletion, security, contracts, human review, incident handling, and the possibility of identification from remaining context. Operation logs show that software events were recorded; they do not prove that every sensitive region was detected or that a legal obligation was satisfied.</p>
+          <p>The practical rule is simple: describe the technical behavior precisely, evaluate identifiability and detection failures in context, and obtain qualified advice for the actual deployment.</p>
+        </section>
+
+        <section class="content-section" aria-labelledby="limits-heading">
+          <h2 id="limits-heading">Current publication boundary</h2>
+          <ul>
+            <li>The public code is an independent component released under the MIT License.</li>
+            <li>It has been used with real footage as part of a larger confidential CCTV project.</li>
+            <li>The public repository is not the complete client system and does not expose client data or infrastructure.</li>
+            <li>Experimental regional text, document, and plate modules require compatible models and deployment-specific validation.</li>
+            <li>The project is not presented as automatic legal compliance, guaranteed anonymity, or a universal performance benchmark.</li>
+          </ul>
+        </section>
+
+        <section class="content-section" aria-labelledby="lesson-heading">
+          <h2 id="lesson-heading">The engineering lesson</h2>
+          <p>The difficult part of privacy-oriented computer vision is not adding blur to a rectangle. It is defining what must be detected, measuring false negatives under realistic conditions, choosing what happens when confidence is low, controlling the data around the model, and preserving enough evidence to explain what was actually tested.</p>
+          <p>PrivacyGuard demonstrates the component-level engineering: ONNX inference, configurable detection and masking, stream and file workflows, and integration helpers. The larger responsibility is knowing where that component ends.</p>
+        </section>
+
+        <section class="content-section" aria-labelledby="sources-heading">
+          <h2 id="sources-heading">Code and references</h2>
+          <ul>
+            <li><a href="https://github.com/laythayache/PrivacyGuard">PrivacyGuard public repository</a></li>
+            <li><a href="https://github.com/laythayache/PrivacyGuard/blob/main/BENCHMARKS.md">Benchmark reporting guidance</a></li>
+            <li><a href="https://github.com/laythayache/PrivacyGuard/blob/main/PERFORMANCE_TUNING.md">Performance boundary and reproducible measurement template</a></li>
+            <li><a href="https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/data-sharing/anonymisation/how-do-we-ensure-anonymisation-is-effective/">ICO guidance on evaluating whether anonymisation is effective</a></li>
+          </ul>
+          <p>The <a href="/projects/privacy-guard/">canonical PrivacyGuard case study</a> summarizes the project, deployment context, public evidence, and current limitations.</p>
+        </section>
+
+        <div class="page-actions"><a href="/projects/privacy-guard/">Read the PrivacyGuard case study</a><a href="https://github.com/laythayache/PrivacyGuard">Inspect the public code</a></div>
+      </article>
+
+      <footer class="page-footer"><a href="/writing/">All writing</a><a href="/projects/privacy-guard/">PrivacyGuard</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>
+    </main>
+  </body>
+</html>

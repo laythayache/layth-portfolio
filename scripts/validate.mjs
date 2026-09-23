@@ -14,6 +14,7 @@ const expectedFiles = [
   'writing/index.html',
   'writing/whatsapp-coexistence/index.html',
   'writing/designing-ai-for-unstable-networks/index.html',
+  'writing/building-privacyguard-local-video-masking/index.html',
   'llms.txt',
   'profile.json',
   'sitemap.xml',

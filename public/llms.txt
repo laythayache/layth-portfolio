@@ -30,7 +30,7 @@ GitHub: https://github.com/laythayache
 - [OmniSign](https://laythayache.com/projects/omnisign/): actively developed sign-language recognition R&D platform. 40,000+ samples were captured before augmentation; the training set contains 50,000+ samples after augmentation. The 98% figure is only a narrow controlled internal evaluation. Current scope includes the Arabic alphabet, 30+ daily expressions, a small experimental clinical vocabulary, isolated signs, and bounded temporal sequences. Lebanese Sign Language is primary; basic ASL is also supported. Public repositories cover early collection tooling, a separate third-party 87,000-image ASL alphabet baseline, and an early multi-model prototype; they are not the full application or its community-collected Lebanese Sign Language dataset.
 - [Lancaster Hospitality Platform](https://laythayache.com/projects/lancaster/): 14 official-domain public hospitality websites built, operated, and maintained by Layth Ayache and Tayseer Laz. They delivered the work as freelancers under Achour Holding before joining the company in the same current role.
 - [Bridge](https://laythayache.com/projects/bridge/): two separately deployed employer-owned operational systems, one at Aligned Tech and one at Achour Holding. Both are referred to publicly as Bridge.
-- [PrivacyGuard](https://laythayache.com/projects/privacy-guard/): independent computer-vision component for local detection and configurable masking in image and video workflows. It is not presented as automatic legal compliance, and performance results are configuration-specific.
+- [PrivacyGuard](https://laythayache.com/projects/privacy-guard/): independent computer-vision component for local detection and configurable masking in image and video workflows. A historical controlled internal run reached approximately 25–30 FPS, but the retained record is not complete enough to reproduce or attribute that result to Raspberry Pi 4, a $35 computer, or arbitrary hardware. The project is not presented as automatic legal compliance.
 
 ## Team attribution
 
@@ -42,6 +42,7 @@ GitHub: https://github.com/laythayache
 ## Writing
 
 - [Building in a Country With No Infrastructure](https://laythayache.com/writing/building-in-a-country-with-no-infrastructure/): fact-checked account of OmniSign's dataset construction, infrastructure constraints, evaluation boundary, team attribution, and current R&D scope.
+- [Building PrivacyGuard: Local Computer Vision for Video Masking](https://laythayache.com/writing/building-privacyguard-local-video-masking/): fact-checked account of the public implementation, confidential deployment boundary, historical benchmark limitation, and distinction between masking and legal compliance.
 - [WhatsApp Coexistence](https://laythayache.com/writing/whatsapp-coexistence/)
 - [Designing AI Systems for Unstable Networks](https://laythayache.com/writing/designing-ai-for-unstable-networks/)
 
