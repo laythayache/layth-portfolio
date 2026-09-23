@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="description" content="OmniSign case study: an actively developed sign-language recognition R&amp;D platform spanning community data collection, computer vision, bounded sequence models, and application integration." />
-    <meta property="og:title" content="OmniSign — Layth Ayache" />
+    <meta property="og:title" content="OmniSign — Lebanese Sign Language AI R&amp;D | Layth Ayache" />
     <meta property="og:description" content="How the OmniSign team built a Lebanese Sign Language recognition R&amp;D platform from data collection through application integration." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://laythayache.com/projects/omnisign/" />
     <link rel="canonical" href="https://laythayache.com/projects/omnisign/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/src/styles.css" />
-    <title>OmniSign — Layth Ayache</title>
+    <title>OmniSign — Lebanese Sign Language AI R&amp;D | Layth Ayache</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -25,8 +25,7 @@
           { "@id": "https://laythayache.com/#person" },
           { "@type": "Person", "name": "Tayseer Laz" },
           { "@type": "Person", "name": "Abou Baker Hussien Al Khatib" },
-          { "@type": "Person", "name": "Nour El Hariri" },
-          { "@type": "Person", "name": "Rami Kronbi" }
+          { "@type": "Person", "name": "Nour El Hariri" }
         ],
         "keywords": ["Lebanese Sign Language", "Sign-language recognition", "Computer vision", "LSTM", "Accessibility AI", "Applied machine learning"]
       }
@@ -172,6 +171,21 @@
         </ul>
       </section>
 
+      <section class="content-section" aria-labelledby="artifacts-heading">
+        <div class="section-intro section-intro-split">
+          <div>
+            <p class="eyebrow">Public engineering record</p>
+            <h2 id="artifacts-heading">Three artifacts, each with a different scope.</h2>
+          </div>
+          <p>The main OmniSign application and its community-collected Lebanese Sign Language dataset are not published as open source. These repositories preserve narrower parts of the early engineering work.</p>
+        </div>
+        <ul class="fact-grid">
+          <li><strong><a href="https://github.com/laythayache/dataset-collector">Dataset collection prototype</a></strong><span>Early camera, landmark-extraction, and augmentation tooling. The repository does not contain participant data or the full dataset.</span></li>
+          <li><strong><a href="https://github.com/laythayache/Training-the-ASL-dataset">ASL alphabet baseline</a></strong><span>A separate experiment using the public 87,000-image ASL Alphabet dataset. It is not OmniSign's Lebanese Sign Language dataset.</span></li>
+          <li><strong><a href="https://github.com/laythayache/BE">Multi-model prototype</a></strong><span>An early integration of a small bounded-sequence model with an isolated ASL alphabet classifier, not unrestricted continuous translation.</span></li>
+        </ul>
+      </section>
+
       <section class="content-section" aria-labelledby="engineering-heading">
         <div class="section-intro">
           <p class="eyebrow">Engineering approach</p>
@@ -236,7 +250,7 @@
             <a class="team-photo-link" href="https://ramikronbi.com/" target="_blank" rel="noopener noreferrer" aria-label="Visit Rami Kronbi’s website (opens in a new tab)">
               <img src="/images/omnisign/rami-kronbi.webp" width="672" height="900" loading="lazy" alt="Rami Kronbi" />
             </a>
-            <div><span class="team-phase">Project team</span><h3>Rami Kronbi</h3><p class="team-role">Computer Vision Engineer</p><p>Computer-vision pipeline development, technical leadership, and additional data collection.</p></div>
+            <div><span class="team-phase">Later contributor</span><h3>Rami Kronbi</h3><p class="team-role">Computer Vision Engineer</p><p>Computer-vision pipeline development and additional data collection.</p></div>
           </li>
           <li>
             <img src="/images/omnisign/oussama-mustapha.webp" width="350" height="435" loading="lazy" alt="Dr. Oussama Mustapha" />
