@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="How infrastructure constraints and missing Lebanese Sign Language data shaped OmniSign, from community collection to bounded recognition models and application integration." />
+    <meta property="og:title" content="Building OmniSign Under Infrastructure Constraints — Layth Ayache" />
+    <meta property="og:description" content="A fact-checked account of the data, engineering boundaries, team, and lessons behind OmniSign." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://laythayache.com/writing/building-in-a-country-with-no-infrastructure/" />
+    <link rel="canonical" href="https://laythayache.com/writing/building-in-a-country-with-no-infrastructure/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <title>Building OmniSign Under Infrastructure Constraints | Layth Ayache</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": "https://laythayache.com/writing/building-in-a-country-with-no-infrastructure/#article",
+        "url": "https://laythayache.com/writing/building-in-a-country-with-no-infrastructure/",
+        "headline": "Building in a Country With No Infrastructure",
+        "alternativeHeadline": "How infrastructure constraints and missing Lebanese Sign Language data shaped OmniSign",
+        "description": "A fact-checked account of the data, engineering boundaries, team, and lessons behind OmniSign.",
+        "datePublished": "2026-02-15",
+        "dateModified": "2026-09-23",
+        "author": { "@id": "https://laythayache.com/#person" },
+        "about": { "@id": "https://laythayache.com/projects/omnisign/#project" },
+        "mainEntityOfPage": "https://laythayache.com/writing/building-in-a-country-with-no-infrastructure/",
+        "citation": [
+          "https://www.rhu.edu.lb/media-room/news/rhu-team-wins-public-choice-award-at-national-fyp-demo-day-2025",
+          "https://laythayache.com/projects/omnisign/"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <nav class="page-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/projects/">Projects</a><a href="/writing/">Writing</a><a href="/about/">About</a></nav>
+
+      <article>
+        <header class="page-header">
+          <p class="eyebrow">OmniSign field note · Fact-checked September 23, 2026</p>
+          <h1>Building in a Country With No Infrastructure</h1>
+          <p class="page-lede">OmniSign started with a model idea and became a data, community, and systems problem. This is the corrected account of what we built, what the evidence supports, and what remains research.</p>
+        </header>
+
+        <section class="content-section" aria-labelledby="definition-heading">
+          <h2 id="definition-heading">The first problem was definition, not accuracy</h2>
+          <div class="prose">
+            <p>We began by looking for data suitable for Lebanese Sign Language recognition. We could not find a machine-readable corpus that matched our scope, and the language itself varied across regions and teaching traditions. During collection, we encountered variation associated with 21 schools or teaching traditions. Those were sources of signing variation, not 21 formal school partnerships.</p>
+            <p>That changed the engineering sequence. Before model selection, we needed collection workflows, labels, vocabulary boundaries, and community guidance. The dataset was not an input to the project; building it was part of the project.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="data-heading">
+          <h2 id="data-heading">The verified data boundary</h2>
+          <ul class="fact-grid">
+            <li><strong>40,000+ captured samples</strong><span>Community-collected sign samples before augmentation.</span></li>
+            <li><strong>50,000+ training samples</strong><span>The post-augmentation training set, not an additional raw dataset.</span></li>
+            <li><strong>Arabic alphabet and 30+ expressions</strong><span>The bounded vocabulary used in the current recognition scope.</span></li>
+            <li><strong>Experimental clinical vocabulary</strong><span>A small set exists; broader medical and clinical coverage remains planned work.</span></li>
+          </ul>
+          <div class="prose">
+            <p>A separate public repository contains an 87,000-image third-party American Sign Language alphabet dataset used for an early baseline. That dataset is not the community-collected Lebanese Sign Language dataset and is separate from OmniSign's reported figures.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="constraints-heading">
+          <h2 id="constraints-heading">Infrastructure became an engineering variable</h2>
+          <div class="prose">
+            <p>Lebanon's electricity, connectivity, and institutional constraints meant that collection and development could not assume a clean lab environment. These conditions made local processing, recoverable workflows, and low-latency interaction important design directions.</p>
+            <p>Early public prototypes run webcam inference locally. That is evidence of a local prototype path, not proof of a universal on-device deployment, a production latency benchmark, federated learning, or a completed privacy architecture for the full platform.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="system-heading">
+          <h2 id="system-heading">What the system demonstrates</h2>
+          <ul class="fact-grid">
+            <li><strong>Landmark extraction</strong><span>MediaPipe converts camera input into spatial and temporal features.</span></li>
+            <li><strong>Specialized recognition paths</strong><span>Models handle isolated signs, vocabulary, and bounded temporal sequences.</span></li>
+            <li><strong>Multimodel integration</strong><span>An application layer routes recognition paths and presents text and speech output.</span></li>
+            <li><strong>Active R&amp;D</strong><span>OmniSign does not claim unrestricted continuous translation or general real-world accuracy.</span></li>
+          </ul>
+        </section>
+
+        <section class="content-section" aria-labelledby="evaluation-heading">
+          <h2 id="evaluation-heading">A result needs its boundary</h2>
+          <div class="prose">
+            <p>OmniSign reached 98% in a narrow controlled internal evaluation. The historical repositories do not retain a signed-off report defining a reproducible evaluation split, so the number should remain stated at that level and no broader.</p>
+            <p>Real-world results vary with lighting, camera quality, signer variation, signing speed, and vocabulary. The 98% result is not unrestricted translation accuracy, a production service-level measure, or proof of performance for unfamiliar users and environments.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="team-heading">
+          <h2 id="team-heading">The team and the public record</h2>
+          <div class="prose">
+            <p>The original student team was Layth Ayache, Tayseer Laz, Abou Baker Hussien Al Khatib, and Nour El Hariri, supervised by Dr. Oussama Mustapha. Rami Kronbi contributed later to computer-vision work and additional data collection.</p>
+            <p>The original team received the First Prize — Public Choice Award at Lebanon's National Final Year Project Demo Day 2025. <a href="https://www.rhu.edu.lb/media-room/news/rhu-team-wins-public-choice-award-at-national-fyp-demo-day-2025">Rafik Hariri University's announcement</a> is the external source for the award and original team attribution.</p>
+          </div>
+        </section>
+
+        <section class="content-section" aria-labelledby="artifacts-heading">
+          <h2 id="artifacts-heading">Public artifacts and current scope</h2>
+          <div class="prose">
+            <p>The main application and community-collected Lebanese Sign Language dataset are not published as open source. The public repositories preserve three narrower engineering artifacts:</p>
+            <ul>
+              <li><a href="https://github.com/laythayache/dataset-collector">an early dataset-collection and augmentation prototype</a>;</li>
+              <li><a href="https://github.com/laythayache/Training-the-ASL-dataset">the separate third-party ASL alphabet baseline</a>; and</li>
+              <li><a href="https://github.com/laythayache/BE">an early multi-model recognition prototype</a>.</li>
+            </ul>
+            <p>The <a href="/projects/omnisign/">canonical OmniSign case study</a> defines the current project scope, metrics, limitations, and contributor attribution.</p>
+          </div>
+          <div class="page-actions"><a href="/projects/omnisign/">Read the OmniSign case study</a><a href="/writing/designing-ai-for-unstable-networks/">Related: unstable-network design</a></div>
+        </section>
+      </article>
+
+      <footer class="page-footer"><a href="/writing/">All writing</a><a href="/projects/omnisign/">OmniSign</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>
+    </main>
+  </body>
+</html>

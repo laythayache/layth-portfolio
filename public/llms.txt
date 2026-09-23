@@ -41,6 +41,7 @@ GitHub: https://github.com/laythayache
 
 ## Writing
 
+- [Building in a Country With No Infrastructure](https://laythayache.com/writing/building-in-a-country-with-no-infrastructure/): fact-checked account of OmniSign's dataset construction, infrastructure constraints, evaluation boundary, team attribution, and current R&D scope.
 - [WhatsApp Coexistence](https://laythayache.com/writing/whatsapp-coexistence/)
 - [Designing AI Systems for Unstable Networks](https://laythayache.com/writing/designing-ai-for-unstable-networks/)
 
