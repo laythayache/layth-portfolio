@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="PrivacyGuard case study: local video detection and masking with OpenCV, ONNX Runtime, and configurable privacy treatments." />
+    <meta name="description" content="PrivacyGuard case study: Layth Ayache’s public local computer-vision pipeline for ONNX detection normalization, bounded image masking, and video processing." />
     <meta property="og:title" content="PrivacyGuard — Applied Computer Vision — Layth Ayache" />
-    <meta property="og:description" content="Local detection and configurable masking for sensitive regions in image and video workflows, with explicit performance and privacy limits." />
+    <meta property="og:description" content="A code-verifiable walkthrough of detection normalization, coordinate handling, region masking, and live-stream tradeoffs in PrivacyGuard." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://laythayache.com/projects/privacy-guard/" />
     <link rel="canonical" href="https://laythayache.com/projects/privacy-guard/" />
@@ -20,7 +20,7 @@
         "@id": "https://laythayache.com/projects/privacy-guard/#project",
         "url": "https://laythayache.com/projects/privacy-guard/",
         "name": "PrivacyGuard",
-        "description": "A local computer-vision pipeline for detection and configurable masking in image and video workflows.",
+        "description": "A public local computer-vision pipeline that normalizes compatible ONNX detections and applies configurable masking to bounded regions in images and video.",
         "author": { "@id": "https://laythayache.com/#person" },
         "codeRepository": "https://github.com/laythayache/PrivacyGuard",
         "programmingLanguage": "Python",
@@ -34,73 +34,77 @@
       <header class="page-header">
         <p class="eyebrow">Applied computer vision · Local processing · Public code</p>
         <h1>PrivacyGuard</h1>
-        <p class="page-lede">A Python pipeline for detecting and masking selected sensitive regions in images, recorded video, and live streams before downstream use.</p>
+        <p class="page-lede">A public Python implementation that turns compatible ONNX model output into bounded image regions, applies an explicit masking policy, and carries the transformed frames through image, recorded-video, or best-effort live-stream paths.</p>
         <div class="page-actions"><a href="https://github.com/laythayache/PrivacyGuard">View the repository</a><a href="#technical-implementation">Technical implementation</a><a href="/writing/building-privacyguard-local-video-masking/">Read the fact-checked field note</a></div>
       </header>
 
       <section class="content-section" id="technical-implementation" aria-labelledby="built-heading">
         <h2 id="built-heading">Technical implementation</h2>
-        <p class="technical-lede">PrivacyGuard is a public Python implementation built around OpenCV, ONNX Runtime, and compatible detection models. It separates detection from transformation: a detector proposes labeled regions, policy selects which detections qualify, an anonymizer modifies only those regions, and the surrounding pipeline decides whether the result is returned, written, streamed, profiled, or audited. That separation makes the masking behavior inspectable without pretending that detection is infallible.</p>
+        <p class="technical-lede">PrivacyGuard separates three questions that are often blurred together: what the model reported, which reported classes should be acted on, and how the chosen pixels should be transformed. The public <a href="https://github.com/laythayache/PrivacyGuard/blob/main/src/privacyguard/core.py">orchestrator</a>, <a href="https://github.com/laythayache/PrivacyGuard/blob/main/src/privacyguard/detector.py">detector</a>, and <a href="https://github.com/laythayache/PrivacyGuard/blob/main/src/privacyguard/anonymizer.py">anonymizer</a> make those boundaries inspectable.</p>
 
-        <div class="technical-block">
-          <h3>Frame-processing flow</h3>
-          <ol class="architecture-flow" aria-label="PrivacyGuard frame processing flow">
-            <li><span>01 · Input</span><strong>Normalize the media source</strong><p>An image, recorded video, camera, or network stream is converted into frames with validated dimensions and processing configuration.</p></li>
-            <li><span>02 · Detection</span><strong>Produce typed candidate regions</strong><p>A selected local detector or ensemble returns bounding regions, class labels, and confidence values; optional regional detectors can add document, text, or plate candidates.</p></li>
-            <li><span>03 · Policy</span><strong>Filter what should be transformed</strong><p>Target classes, label mapping, confidence thresholds, and custom regions decide which candidates enter the masking stage.</p></li>
-            <li><span>04 · Transformation</span><strong>Modify only the selected regions</strong><p>The anonymizer applies Gaussian blur, pixelation, or solid occlusion using validated parameters while leaving the remainder of the frame unchanged.</p></li>
-            <li><span>05 · Output</span><strong>Return or encode the processed frame</strong><p>Image, batch, video, live-stream, API, and command-line paths reuse the same core detection-and-mask contract.</p></li>
-            <li><span>06 · Observation</span><strong>Measure and record processing behavior</strong><p>Optional profiling, monitoring, audit records, metadata stripping, and status markings can be attached without changing the detector interface.</p></li>
-          </ol>
-        </div>
+        <section class="technical-block" aria-labelledby="frame-trace-heading">
+          <h3 id="frame-trace-heading">One frame through the actual pipeline</h3>
+          <div class="prose">
+            <ol>
+              <li><strong>Copy the caller’s frame.</strong> The high-level frame API works on a copy, so masking does not silently mutate the array supplied by the calling application.</li>
+              <li><strong>Preserve the source geometry separately.</strong> The detector records the original width and height, resizes the BGR frame to the configured model dimensions, converts it to RGB, normalizes bytes to floating-point values, changes HWC layout to CHW, and adds the batch dimension expected by ONNX Runtime.</li>
+              <li><strong>Execute the selected local runtime provider.</strong> The model session receives the normalized tensor. Provider selection prefers an available accelerator and falls back to CPU; that choice affects performance, not the downstream detection contract.</li>
+              <li><strong>Decode one of the supported output layouts.</strong> YOLOv8-style center coordinates and class-score arrays, and the older six-value box format, are converted into the same immutable detection record: corners, confidence, class identifier, and optional label.</li>
+              <li><strong>Map coordinates back to the source frame.</strong> Horizontal and vertical scale factors are applied independently, coordinates are clipped to frame bounds, and low-confidence candidates are removed.</li>
+              <li><strong>Suppress duplicates within each class.</strong> Non-maximum suppression runs per class. An overlapping plate and face therefore do not eliminate one another merely because their boxes intersect.</li>
+              <li><strong>Apply deployment policy.</strong> The orchestrator can restrict masking to configured class identifiers. Model recognition and the decision to modify a region remain separate operations.</li>
+              <li><strong>Transform a bounded region.</strong> Optional padding is applied and clipped again. Empty boxes are skipped; valid regions receive the configured Gaussian blur, downsample-and-upsample pixelation, solid fill, or a class-specific override.</li>
+              <li><strong>Return or encode the result.</strong> A post-processing hook and monitor can observe the result. Image and video paths write it to a destination, while cleanup for recorded video is protected by a finalization block that releases both reader and writer.</li>
+            </ol>
+          </div>
+        </section>
 
-        <div class="technical-block">
-          <h3>System invariants</h3>
-          <ul class="engineering-invariants">
-            <li><strong>No detection means no guaranteed mask</strong><p>The transformation stage cannot hide a face, person, plate, document, or text region that the selected detector failed to identify.</p></li>
-            <li><strong>Policy is separate from model output</strong><p>A detected class is not automatically modified; configured targets and thresholds determine whether masking is applied.</p></li>
-            <li><strong>Masking is not encryption</strong><p>Blur and pixelation alter visible pixels, while solid masking occludes a region; none of these operations proves that the source or other metadata cannot be recovered elsewhere.</p></li>
-            <li><strong>Local is the default processing boundary</strong><p>The core pipeline can run without sending frames to a cloud inference API, although the caller remains responsible for the rest of the media workflow.</p></li>
-            <li><strong>Parameters are validated before processing</strong><p>Thresholds, kernel sizes, colors, and numeric ranges are checked so invalid configuration fails early instead of producing undefined transformations.</p></li>
-            <li><strong>End-of-stream state is cleared</strong><p>The stream path releases its capture and removes stale cached frames so consumers do not mistake the last frame for continuing live input.</p></li>
-          </ul>
-        </div>
-
-        <div class="technical-block">
-          <h3>Key engineering decisions and tradeoffs</h3>
+        <section class="technical-block" aria-labelledby="normalization-heading">
+          <h3 id="normalization-heading">Hard problem: normalize model output without moving the mask</h3>
+          <div class="prose">
+            <p>A detector integration can appear correct while placing masks on the wrong pixels. Models disagree on tensor layout, box representation, labels, and coordinate space. PrivacyGuard normalizes its two supported output layouts before the policy or masking stages see them, then converts center-based boxes to corners, rescales to the original frame, clips to valid bounds, and performs per-class suppression.</p>
+            <p>The per-class rule matters. If suppression were applied across all labels, a high-confidence face box could remove an overlapping plate box even though both regions should remain eligible for masking. The <a href="https://github.com/laythayache/PrivacyGuard/blob/main/tests/test_detector.py">detector tests</a> use synthetic model arrays to verify confidence filtering, coordinate rescaling, empty output, both supported layouts, and retention of overlapping detections from different classes.</p>
+            <p>The design also has a visible tradeoff: preprocessing uses direct resize rather than letterboxing. Independent horizontal and vertical scales map boxes back to the correct source coordinates, but a non-square source can be geometrically distorted during inference. Whether that reduces recall is model- and footage-dependent and must be evaluated; coordinate correctness alone does not prove detection quality.</p>
+          </div>
           <dl class="decision-ledger">
-            <div><dt>Define a detector contract instead of coupling the pipeline to one model</dt><dd><strong>Why:</strong> lets the same masking and streaming logic work with different compatible detectors and label mappings. <strong>Tradeoff:</strong> detector outputs must be normalized consistently, and quality varies by model.</dd></div>
-            <div><dt>Keep masking strategy independent from detection</dt><dd><strong>Why:</strong> downstream requirements may call for blur, pixelation, or full occlusion using the same detections. <strong>Tradeoff:</strong> callers must choose a treatment whose reversibility and visual utility match the risk.</dd></div>
-            <div><dt>Run inference locally</dt><dd><strong>Why:</strong> avoids making cloud upload a prerequisite and can reduce network exposure and latency. <strong>Tradeoff:</strong> throughput and model choice depend on local hardware, runtime, resolution, and workload.</dd></div>
-            <div><dt>Support optional ensembles and regional detectors</dt><dd><strong>Why:</strong> a general object detector does not cover every plate, document, text, or script-specific case. <strong>Tradeoff:</strong> additional detectors increase compute cost and can introduce overlapping or conflicting regions.</dd></div>
-            <div><dt>Separate pixel masking from metadata removal</dt><dd><strong>Why:</strong> changing visible regions does not remove file metadata or other non-pixel information. <strong>Tradeoff:</strong> a complete media-handling workflow must compose both operations deliberately.</dd></div>
-            <div><dt>Expose profiling instead of claiming universal speed</dt><dd><strong>Why:</strong> real performance depends on the detector, input size, stream, hardware, and masking configuration. <strong>Tradeoff:</strong> every deployment needs its own reproducible benchmark.</dd></div>
+            <div><dt>Normalize before policy</dt><dd>Every supported detector path must produce the same bounded detection record. This keeps class filtering and masking independent of a model’s native output layout.</dd></div>
+            <div><dt>Clip at both model and masking boundaries</dt><dd>Post-processing constrains boxes to the frame, and the anonymizer constrains padded regions again. Invalid or zero-area regions are skipped instead of being passed to OpenCV.</dd></div>
+            <div><dt>Do not infer safety from a box</dt><dd>A well-formed coordinate proves only that the pipeline can transform that region. It says nothing about regions the model missed or classified incorrectly.</dd></div>
           </dl>
-        </div>
+        </section>
 
-        <div class="technical-block">
-          <h3>Verification and known failure modes</h3>
-          <ul class="verification-list">
-            <li><strong>Detection and core tests</strong><p>Public tests exercise detector output, target selection, orchestration, anonymization methods, and the core media-processing contract.</p></li>
-            <li><strong>Stream lifecycle tests</strong><p>End-of-file, capture release, cached-frame cleanup, and background-reader behavior are verified so stale data is not presented as a live frame.</p></li>
-            <li><strong>Regional-path tests</strong><p>Arabic and multiscript utilities, regional detector behavior, and related quality fixes are tested separately from the general object path.</p></li>
-            <li><strong>Operational hooks</strong><p>Batch processing, profiling, monitoring, audit logging, custom regions, and metadata handling are optional components around the core pipeline.</p></li>
-            <li><strong>Known limit</strong><p>Occlusion, motion blur, small regions, difficult angles, domain shift, incorrect labels, and unsupported objects can produce missed or incorrect masks.</p></li>
-            <li><strong>Benchmark boundary</strong><p>A historical controlled run reached approximately 25–30 FPS, but the retained record does not define enough of the configuration to reproduce it or generalize it to specific hardware.</p></li>
-          </ul>
-        </div>
+        <section class="technical-block" aria-labelledby="masking-heading">
+          <h3 id="masking-heading">Masking semantics and their limits</h3>
+          <div class="prose">
+            <p>The anonymizer operates only on detected and policy-approved regions. Gaussian blur changes local frequency detail, pixelation reduces and re-expands the region, and solid fill replaces its visible pixels. Per-class overrides allow, for example, a solid treatment for one class and blur for another. The <a href="https://github.com/laythayache/PrivacyGuard/blob/main/tests/test_anonymizer.py">anonymizer tests</a> verify region modification, padding, per-class selection, zero-size handling, shape preservation, and an unchanged result when there are no detections.</p>
+            <p>None of those transformations protects an original stored elsewhere. Blur and pixelation are not encryption, and even solid fill applies only to the pixels in the produced frame. Metadata removal is a separate utility rather than an automatic step in the core frame path. Operational logging is likewise a local software record, not tamper-evident proof that every required region was masked.</p>
+          </div>
+        </section>
 
-        <p class="technical-boundary">PrivacyGuard is an independently built masking component with public code and tests. It is not presented as automatic legal compliance, a guarantee that every sensitive region is detected, or proof that a processed file is safe for every downstream use.</p>
+        <section class="technical-block" aria-labelledby="stream-heading">
+          <h3 id="stream-heading">Live streams choose freshness over completeness</h3>
+          <div class="prose">
+            <p>The <a href="https://github.com/laythayache/PrivacyGuard/blob/main/src/privacyguard/stream.py">stream reader</a> captures frames on a background thread and exposes a lock-protected copy of the most recent frame. It deliberately does not build a queue. When capture runs faster than detection and masking, newer frames overwrite older ones instead of building latency and unbounded memory pressure.</p>
+            <p>That is a low-latency policy, not backpressure. Because reading does not consume or sequence a frame, scheduling can make processing skip intermediate frames or observe the same latest frame more than once. The component does not implement reconnect behavior for an interrupted network stream. A consuming application that needs complete archival processing should use the sequential recorded-video path or add its own bounded queue, drop accounting, retry policy, and health state.</p>
+            <p>The built-in frame timing covers detection and anonymization. It does not by itself constitute an end-to-end benchmark of decoding, capture, display, post-processing hooks, encoding, storage, or network transport.</p>
+          </div>
+        </section>
+
+        <section class="technical-block" aria-labelledby="verification-heading">
+          <h3 id="verification-heading">What the public evidence verifies</h3>
+          <div class="prose">
+            <p>The public test suite checks tensor shape and scaling, both detector output formats, confidence and class behavior, source-frame immutability, ROI transformation, target filtering, metric propagation through the file path, regional helpers, monitoring, batch operations, and fixed-region masking. The <a href="https://github.com/laythayache/PrivacyGuard/blob/main/tests/test_core.py">orchestrator tests</a> mock inference so pipeline behavior can be tested without bundling a model.</p>
+            <p>That test strategy verifies software contracts; it does not establish face or plate recall on representative footage. The repository ships neither a fixed evaluation dataset nor a validated model artifact for every advertised class. Regional and ensemble modules should therefore be read as experimental extension points, not as published accuracy results.</p>
+            <p>No reproducible public FPS benchmark is claimed. The repository’s <a href="https://github.com/laythayache/PrivacyGuard/blob/main/BENCHMARKS.md">benchmark record</a> notes that a historical internal run was described as approximately 25–30 FPS, but the model hash, device, runtime provider, source footage, warm-up, timing boundary, and run distribution were not retained. The number is not evidence for the current code or any named hardware.</p>
+          </div>
+        </section>
+
+        <aside class="technical-boundary" aria-label="PrivacyGuard evidence boundary"><strong>Evidence boundary.</strong> PrivacyGuard is an independently built masking component with public source and tests. It can keep model inference local when the surrounding application is configured that way. It is not automatic legal compliance, a guarantee that every sensitive region is detected, proof that masking is irreversible, or evidence that a complete media system is secure.</aside>
       </section>
 
       <section class="content-section" aria-labelledby="deployment-heading">
         <h2 id="deployment-heading">Deployment context</h2>
-        <p>I built PrivacyGuard independently as one component inside a larger CCTV system for a freelance client. It has been used with real footage, but the client, system, recordings, and operational details are confidential and are not reproduced here.</p>
-      </section>
-
-      <section class="content-section" aria-labelledby="limits-heading">
-        <h2 id="limits-heading">What the claim does—and does not—mean</h2>
-        <p>Masking quality depends on detection quality. Missed or heavily occluded regions cannot be masked, blur is not encryption, and this project is not presented as automatic legal compliance. A historical controlled internal run reached approximately 25–30 FPS, but the retained project record does not define enough of the configuration to reproduce or generalize it. The result is not attributed to Raspberry Pi 4, a $35 computer, or arbitrary hardware.</p>
+        <p>I built PrivacyGuard independently and used it as one component inside a larger CCTV system for a freelance client. The client, footage, wider system, and operational details are confidential and are not reproduced here.</p>
       </section>
 
       <footer class="page-footer"><a href="/projects/">All projects</a><a href="https://github.com/laythayache/PrivacyGuard">Code</a><a href="mailto:laythayache5@gmail.com">Email</a></footer>

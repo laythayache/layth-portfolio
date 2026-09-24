@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="Hader case study: Layth Ayache’s work on a commercially deployed, multi-tenant conversational AI platform spanning WhatsApp, human handoff, operations, and voice." />
+    <meta name="description" content="Hader engineering case study: how Layth Ayache implemented tenant-safe event processing, human handoff controls, and an idempotent voice integration for a commercially deployed conversational AI platform." />
     <meta property="og:title" content="Hader — Conversational and Voice AI Systems — Layth Ayache" />
-    <meta property="og:description" content="A commercially deployed business communications platform combining conversational AI, WhatsApp workflows, human handoff, orders, bookings, and voice." />
+    <meta property="og:description" content="An engineering deep dive into tenant attribution, durable webhook processing, human handoff races, and voice lifecycle integration in Hader." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://laythayache.com/projects/hader/" />
     <link rel="canonical" href="https://laythayache.com/projects/hader/" />
@@ -20,7 +20,7 @@
         "@id": "https://laythayache.com/projects/hader/#project",
         "url": "https://laythayache.com/projects/hader/",
         "name": "Hader",
-        "description": "A commercially deployed, multi-tenant business communications platform spanning conversational AI, WhatsApp automation, human handoff, customer operations, and voice calling.",
+        "description": "A commercially deployed, multi-tenant business communications platform. This case study covers Layth Ayache's work on tenant-safe event processing, human handoff controls, and voice integration.",
         "author": { "@id": "https://laythayache.com/#person" },
         "about": {
           "@type": "SoftwareApplication",
@@ -40,7 +40,7 @@
         <header class="page-header">
           <p class="eyebrow">Conversational AI · WhatsApp · Voice · Production</p>
           <h1>Hader</h1>
-          <p class="page-lede">A commercially deployed, multi-tenant business communications platform that connects conversational AI with WhatsApp operations, structured customer workflows, explicit human handoff, and voice calling.</p>
+          <p class="page-lede">A commercially deployed, multi-tenant communications platform where the difficult work is not producing text. It is attributing asynchronous events to the correct organization, preventing automation from speaking over a person, and turning conversations and calls into recoverable business operations.</p>
           <div class="page-actions"><a href="https://hader.ai/">Visit Hader</a><a href="#technical-implementation">Technical implementation</a><a href="/writing/whatsapp-coexistence/">Read the Coexistence note</a></div>
         </header>
 
@@ -55,8 +55,9 @@
         <section class="content-section" aria-labelledby="ownership-heading">
           <h2 id="ownership-heading">My role and ownership</h2>
           <div class="prose">
-            <p>I worked with Tayseer Laz and the <a href="https://www.aligned-tech.com/">Aligned Tech</a> team on Hader, providing technical leadership and end-to-end AI-systems engineering. My work covered architecture and implementation across voice, orders and bookings, payment-link workflows, Alinia integration, contact synchronization, WhatsApp Coexistence, consent and provenance, automated tests, and production hardening.</p>
-            <p>I also documented the system and completed a formal handover when I left Aligned Tech. The implementation remains employer-owned, so this case study explains responsibilities and system behavior without publishing private source code, client records, credentials, or infrastructure.</p>
+            <p>Hader was a team system built with Tayseer Laz and the engineering team at <a href="https://www.aligned-tech.com/">Aligned Tech</a>; I was not its sole architect. My strongest individual ownership was at its integration boundaries.</p>
+            <p>I implemented the multi-tenant voice integration from Hader’s side, including line-to-organization resolution, tenant-specific call configuration, call and transcript persistence, order and booking submission, payment-link handoff, retry safety, abandoned-call cleanup, tests, and production hardening. I also implemented the later WhatsApp Coexistence work around webhook durability and attribution, versioned consent, handset-reply capture, and suppression of conflicting automated replies.</p>
+            <p>I contributed contact synchronization, provenance, Alinia federation, deployment fixes, system documentation, and the final engineering handover. The product and source remain employer-owned; this page describes publishable mechanisms without exposing code, client records, prompts, credentials, or infrastructure.</p>
           </div>
         </section>
 
@@ -74,70 +75,78 @@
 
         <section class="content-section" id="technical-implementation" aria-labelledby="technical-heading">
           <h2 id="technical-heading">Technical implementation</h2>
-          <p class="technical-lede">Hader is an event-driven, multi-tenant operating system for business conversations. The central design problem is not generating a reply; it is preserving tenant ownership, conversation state, human control, and the integrity of downstream business actions while messages and calls arrive through different channels.</p>
+          <p class="technical-lede">The useful unit of analysis is one inbound event. Before Hader can generate anything, it has to establish who owns the event, whether it has already been processed, whether automation is still allowed to act, and whether any proposed business operation can be committed safely.</p>
 
-          <div class="technical-block">
-            <h3>Architecture and request flow</h3>
-            <ol class="architecture-flow" aria-label="Hader request and data flow">
-              <li><span>01 · Ingress</span><strong>Validate and attribute the event</strong><p>A channel webhook, connector event, or voice bridge request is authenticated and resolved to the organization and channel that own it.</p></li>
-              <li><span>02 · Persistence</span><strong>Record state before automation</strong><p>Contacts, threads, messages, delivery state, and relevant unhandled fields are persisted so a failed AI or downstream call does not erase the source event.</p></li>
-              <li><span>03 · Policy gate</span><strong>Decide whether automation may act</strong><p>Organization features, consent, channel configuration, bot state, human-pause state, and conversation context are evaluated before a reply path is opened.</p></li>
-              <li><span>04 · Decision</span><strong>Ground the response and proposed action</strong><p>Approved business information and structured records provide context. Orders, bookings, payment links, contact changes, and escalation are treated as typed operations rather than unbounded model text.</p></li>
-              <li><span>05 · Delivery</span><strong>Send through the owning channel</strong><p>The appropriate adapter delivers the response or action, records provenance and status, and moves retryable or scheduled work to background processing.</p></li>
-              <li><span>06 · Human and operations</span><strong>Keep one operational history</strong><p>Staff work from the same durable thread, can pause or resume automation explicitly, and can inspect operational and audit state without a parallel conversation history.</p></li>
-            </ol>
-          </div>
+          <section class="technical-block" aria-labelledby="execution-trace-heading">
+            <h3 id="execution-trace-heading">Execution trace: from webhook to an operational result</h3>
+            <div class="prose">
+              <ol>
+                <li><strong>Authenticate the original request.</strong> The channel signature is checked against the raw request bytes. Re-serializing the payload before verification would change the bytes and make the check unreliable.</li>
+                <li><strong>Resolve ownership from channel evidence.</strong> The callback address is treated as routing context, not sufficient proof of tenant ownership. Phone and channel metadata are matched to the organization that actually owns the connection.</li>
+                <li><strong>Make receipt durable.</strong> Recognized messages are deduplicated using provider identity, direction, and organization scope. Unrecognized subscribed event types are parked before the endpoint acknowledges them, preserving a recoverable source event.</li>
+                <li><strong>Create or recover conversation state.</strong> The contact, thread, message, delivery state, and source channel are reconciled inside tenant scope. A uniqueness race during thread creation is handled by recovering the row created by the competing request.</li>
+                <li><strong>Evaluate suppression gates.</strong> Hader checks deployment and feature state, opt-out and block state, channel state, message age, explicit staff takeover, and whether a handset reply has already answered this particular customer message.</li>
+                <li><strong>Build a grounded decision outside the database transaction.</strong> The model receives approved tenant data, while long-running inference is kept outside the short database transaction. Deterministic validators inspect the response and any proposed action.</li>
+                <li><strong>Commit business state before claiming success.</strong> Orders and bookings must exist as structured records before the customer is told they were created. Server-side state, rather than a model-emitted total or marker, remains authoritative.</li>
+                <li><strong>Deliver and reconcile asynchronously.</strong> Delivery status, retryable work, notifications, and downstream events continue through background processing. The persisted inbound message remains available even when inference or delivery fails later.</li>
+              </ol>
+            </div>
+          </section>
 
-          <div class="technical-block">
-            <h3>System invariants</h3>
-            <ul class="engineering-invariants">
-              <li><strong>Tenant ownership is resolved first</strong><p>Business configuration and records are organization-scoped, with tenant-isolation and row-level-access checks covering the persistence boundary.</p></li>
-              <li><strong>Human control overrides automation</strong><p>A paused or handed-off thread cannot receive an automated reply until a defined resume path permits it.</p></li>
-              <li><strong>Business actions are validated</strong><p>Model output cannot directly become an order, booking, payment request, or contact mutation without passing the relevant domain rules.</p></li>
-              <li><strong>Imported context keeps provenance</strong><p>Contact synchronization, captured history, and mirrored records retain source information so operators can distinguish imported data from native Hader activity.</p></li>
-              <li><strong>Consent gates historical capture</strong><p>Connecting a channel does not silently authorize every historical-data operation; the relevant capture path is explicitly gated.</p></li>
-              <li><strong>Voice remains a channel adapter</strong><p>Telephony resolves organization context and invokes Hader operations; it does not create a second source of truth for orders, bookings, or customer history.</p></li>
-            </ul>
-          </div>
-
-          <div class="technical-block">
-            <h3>Key engineering decisions and tradeoffs</h3>
+          <section class="technical-block" aria-labelledby="attribution-heading">
+            <h3 id="attribution-heading">Hard problem: a callback URL is not tenant identity</h3>
+            <div class="prose">
+              <p>Embedded channel onboarding introduced an attribution problem that does not appear in a single-tenant webhook. A newly connected number can begin delivering through an application-level callback before its tenant-specific callback is the effective route. That means the organization named in the URL and the organization that owns the phone channel can legitimately differ.</p>
+              <p>My first implementation parked unhandled event fields, but review exposed two failure modes: the write was started without being awaited, and the callback-addressed tenant was being treated as the owner. A successful HTTP response could therefore precede durable storage, while a valid event could be credited to the wrong organization.</p>
+              <p>I changed the boundary in two ways. First, the system records both the callback context and the independently resolved channel owner rather than collapsing them into one identity. Second, parking is awaited before acknowledgment; if persistence fails, the endpoint returns a retryable failure instead of a success that would make the event unrecoverable. Ordinary message traffic bypasses this landing path and retains its normal deduplication flow.</p>
+              <p>This is intentionally a <em>capture first, interpret later</em> design. It adds storage and replay work, but it converts unknown event shapes from silent data loss into observable backlog. It also avoids guessing when an account-level payload lacks enough phone-level metadata to attribute safely.</p>
+            </div>
             <dl class="decision-ledger">
-              <div><dt>Persist the inbound event before generating a reply</dt><dd><strong>Why:</strong> preserves a recoverable conversation record when model, channel, or downstream services fail. <strong>Tradeoff:</strong> adds database work to the latency-sensitive path.</dd></div>
-              <div><dt>Move retryable and scheduled work out of the request path</dt><dd><strong>Why:</strong> webhook delivery, broadcasts, reminders, exports, consistency checks, and cleanup have different timing and retry requirements. <strong>Tradeoff:</strong> introduces eventual consistency and requires idempotent workers and operational visibility.</dd></div>
-              <div><dt>Represent handoff as durable state, not prompt wording</dt><dd><strong>Why:</strong> a system rule can suppress automation reliably across workers and channels. <strong>Tradeoff:</strong> pause expiry, manual resume, and stale-state recovery become explicit lifecycle problems.</dd></div>
-              <div><dt>Keep telephony behind a separate bridge</dt><dd><strong>Why:</strong> isolates call transport and real-time audio concerns from the core business model. <strong>Tradeoff:</strong> creates a distributed failure boundary that needs call lifecycle reconciliation and reaping.</dd></div>
-              <div><dt>Federate Alinia instead of sharing its database</dt><dd><strong>Why:</strong> preserves product ownership and access boundaries while enabling approved identity and listing flows. <strong>Tradeoff:</strong> mirrored data is eventually consistent and needs provisioning, reset, and deprovision paths.</dd></div>
-              <div><dt>Support WhatsApp Coexistence instead of replacing the handset workflow</dt><dd><strong>Why:</strong> lets staff retain the familiar business-phone workflow. <strong>Tradeoff:</strong> handset replies, platform replies, history capture, and attribution must be reconciled explicitly.</dd></div>
+              <div><dt>Alternative rejected: trust the tenant in the callback path</dt><dd>It is simpler, but onboarding can route a valid event through a callback belonging to a different organization. Transport routing and data ownership are separate facts.</dd></div>
+              <div><dt>Alternative rejected: acknowledge, then store in the background</dt><dd>It reduces webhook latency, but a process or database failure after the response loses events the provider may never resend. Durability belongs before acknowledgment for non-repeatable payloads.</dd></div>
+              <div><dt>Accepted tradeoff: preserve unresolved events</dt><dd>Some events cannot be attributed from the metadata available. Hader retains them without assigning them speculatively; the implementation does not claim a complete consumer for every parked event type.</dd></div>
             </dl>
-          </div>
+          </section>
 
-          <div class="technical-block">
-            <h3>Failure handling and verification</h3>
-            <ul class="verification-list">
-              <li><strong>Boundary tests</strong><p>Tenant-isolation, row-level-access drift, webhook signatures, multi-number routing, and provenance-access tests exercise the highest-risk ownership boundaries.</p></li>
-              <li><strong>Conversation safety tests</strong><p>Handoff detection, bot suppression, Coexistence capture, contact-sync planning, order confirmation, booking text, and voice-order matching are tested as domain behavior.</p></li>
-              <li><strong>Operational reconciliation</strong><p>Inbox-consistency work, stale-pause cleanup, call reaping, delivery retries, health probes, and data migrations address failures that only appear across time or services.</p></li>
-              <li><strong>Deployment discipline</strong><p>CI checks, production health verification, documented rollout policy, and a formal handover reduce dependence on one engineer’s local knowledge.</p></li>
-              <li><strong>Known limit</strong><p>The page does not claim a universal latency, accuracy, uptime, compliance certification, or autonomous-resolution rate; those require separately defined production evidence.</p></li>
-              <li><strong>My implementation scope</strong><p>My repository history covers Coexistence and consent, durable webhook attribution, contact-sync provenance, voice operations, Alinia federation, tests, production fixes, documentation, and handover.</p></li>
-            </ul>
-          </div>
+          <section class="technical-block" aria-labelledby="human-race-heading">
+            <h3 id="human-race-heading">Hard problem: a person can answer while the model is still generating</h3>
+            <div class="prose">
+              <p>Portal handoff is straightforward to model as durable conversation state: taking over a thread pauses automation until an explicit resume action. WhatsApp Coexistence creates a different race. A business owner can reply from the handset without creating a portal user action, including during the several seconds in which an automated draft is being generated.</p>
+              <p>Treating that handset reply as an assignment would be semantically false because no Hader user took ownership. Muting the thread forever would also be wrong because a later customer message may need automation again. I introduced a separate, forward-only handset-reply timestamp and compare it with the timestamp of the inbound customer message being considered. An older redelivery cannot move that state backward, and a new customer message is not suppressed by an unrelated historic reply.</p>
+              <p>The echo is also persisted as an operator-originated message so the inbox and reporting do not claim it as bot work. For the narrower in-flight race, the echo invalidates the active generation token; the sender checks that token again after generation and discards a superseded draft. Durable conversation state remains the long-lived guard, while fast invalidation narrows the window in which concurrent work can become stale.</p>
+              <p>This mechanism does not turn delivery into an exactly-once system. Provider retries are expected, event ordering is imperfect, and active-draft cancellation depends on a coordination layer. The design contains those conditions with forward-only state, message deduplication, and a final supersession check rather than assuming events arrive once and in order.</p>
+            </div>
+          </section>
 
-          <p class="technical-boundary">The implementation remains employer-owned. The architecture is described at the level needed to evaluate engineering judgment without publishing source code, tenant identities or data, prompts, credentials, infrastructure, or protected operating metrics.</p>
-        </section>
+          <section class="technical-block" aria-labelledby="voice-boundary-heading">
+            <h3 id="voice-boundary-heading">Voice is a distributed integration, not a second product database</h3>
+            <div class="prose">
+              <p>The real-time call service is kept outside Hader’s core request process because audio transport and conversational latency have a different failure profile from business records. The boundary is narrow: the dialed line resolves to one organization; Hader returns bounded, tenant-specific configuration and structured order or booking fields; the call service reports lifecycle events and invokes typed business operations.</p>
+              <p>The write contract tolerates retries and reordering. Call start is idempotent, transcript turns are unique within a call sequence, call end is write-once, and retrying an order for the same call returns the existing order instead of creating a second one. A worker closes calls that never receive a terminal event. These rules let the call transport retry without duplicating the customer’s operational record.</p>
+              <p>Orders, bookings, payment requests, and customer history still belong to Hader. The voice service does not receive a parallel source of truth or direct database ownership. This capability is deployed and used by active clients, but client identities, call volumes, and operating metrics are not published.</p>
+            </div>
+          </section>
 
-        <section class="content-section" aria-labelledby="voice-heading">
-          <h2 id="voice-heading">Voice as a Hader capability</h2>
-          <div class="prose">
-            <p>Voice AI is implemented inside Hader rather than presented as a separate product. The capability connects live telephone calls with Hader’s conversation, order, booking, payment, transfer, and call-record workflows.</p>
-            <p>The voice capability is deployed and in active client use. It remains a supporting capability within the broader Hader platform rather than a standalone product.</p>
-          </div>
+          <section class="technical-block" aria-labelledby="verification-heading">
+            <h3 id="verification-heading">What the evidence supports</h3>
+            <div class="prose">
+              <p><strong>Repository history.</strong> My commits implement the voice gateway and multi-tenant phone configuration, order and booking submission, payment-link handoff, caller continuity, call cleanup, and targeted hardening. Later commits implement durable webhook parking, correction of tenant attribution, versioned consent gates, handset-reply capture, and automated-reply suppression.</p>
+              <p><strong>Automated verification.</strong> The repository includes tests for voice authentication and organization scoping, phone-integration isolation, retry-safe call and order behavior, webhook signatures, tenant isolation, row-level policy drift, consent decisions, and related domain validators. Database uniqueness constraints provide the final deduplication boundary where concurrent requests can outrun application checks.</p>
+              <p><strong>Operational verification.</strong> Voice changes were deployed and exercised in active use. The repository also documents deployment health checks, migrations, rollback behavior, and a formal handover. Those artifacts support implementation and operational ownership; they do not establish a public uptime, latency, model-accuracy, or autonomous-resolution metric.</p>
+            </div>
+          </section>
+
+          <aside class="technical-boundary" aria-label="Known limitations and publication boundary">
+            <strong>Known limits.</strong> The wider Hader product is commercially deployed, while the repository’s handover documentation identifies Coexistence as a newer, less-proven subsystem. Its consent and event-control logic is implemented and tested at code level, but this page does not present it as independently proven at production scale. No universal accuracy, latency, uptime, compliance, or automation-rate claim is made. The implementation remains employer-owned, and private code, tenant identities and data, prompts, credentials, infrastructure, and protected metrics are intentionally omitted.
+          </aside>
         </section>
 
         <section class="content-section" aria-labelledby="status-heading">
-          <h2 id="status-heading">Status and publication boundary</h2>
-          <p>Hader is commercially deployed and used by active client organizations. Client identities and operating metrics remain confidential under NDA. This page therefore describes only the public product, my substantiated responsibilities, and approved capability areas; it does not expose private conversations, dashboards, customer data, source code, credentials, or production infrastructure.</p>
+          <h2 id="status-heading">Status and capability boundary</h2>
+          <div class="prose">
+            <p>Voice AI is implemented inside Hader and connects live telephone calls with its conversation, order, booking, payment, transfer, and call-record workflows. It is deployed in active client use as a supporting Hader capability, not as a standalone product.</p>
+            <p>Hader is commercially deployed and used by active, paying client organizations. Client identities, counts, and operating metrics remain confidential under NDA.</p>
+          </div>
         </section>
       </article>
 

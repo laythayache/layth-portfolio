@@ -4,6 +4,7 @@
   "primaryTitle": "Senior AI Engineer",
   "secondaryTitle": "AI Systems Engineer",
   "location": "Beirut, Lebanon",
+  "lastVerified": "2026-09-24",
   "positioning": "An AI engineer who turns data and models into usable systems and owns the engineering around them.",
   "currentRole": {
     "organization": "Achour Holding",
@@ -20,19 +21,57 @@
     "End-to-end AI systems engineering and integration",
     "Applied computer vision and data engineering",
     "Conversational AI, WhatsApp automation, and human handoff",
-    "Voice AI and telephony integration",
+    "Voice AI and telephony integration as a supporting capability",
     "Data pipelines and operational automation",
     "AI integration with organizational software and workflows",
     "Internal tools and workflow platforms",
     "Technical leadership across AI, backend systems, applications, and deployment"
   ],
   "projects": [
-    { "name": "Hader", "status": "production", "url": "https://laythayache.com/projects/hader/" },
-    { "name": "Alinia", "status": "production", "url": "https://laythayache.com/projects/alinia/" },
-    { "name": "OmniSign", "status": "active R&D", "url": "https://laythayache.com/projects/omnisign/" },
-    { "name": "Lancaster Hospitality Platform", "status": "14 public sites; ongoing operations", "url": "https://laythayache.com/projects/lancaster/" },
-    { "name": "Bridge", "status": "two deployed implementations", "url": "https://laythayache.com/projects/bridge/" },
-    { "name": "PrivacyGuard", "status": "independent applied computer-vision project", "url": "https://laythayache.com/projects/privacy-guard/" }
+    {
+      "name": "Hader",
+      "status": "commercial production; active paying clients",
+      "url": "https://laythayache.com/projects/hader/",
+      "officialUrl": "https://hader.ai/",
+      "summary": "Multi-tenant conversational AI with WhatsApp operations, explicit human handoff, and voice as an integrated capability rather than a separate product.",
+      "attribution": "Team delivery with Tayseer Laz and Aligned Tech; Layth's evidenced work includes tenant-safe event processing, WhatsApp Coexistence controls, Hader's voice integration, production hardening, documentation, and handover. The newer Coexistence subsystem is implemented and tested but not claimed as independently proven at production scale."
+    },
+    {
+      "name": "Alinia",
+      "status": "live production",
+      "url": "https://laythayache.com/projects/alinia/",
+      "officialUrl": "https://www.aliniarealestate.com/",
+      "summary": "Multilingual property discovery where approximate retrieval is checked against approved operational listing records, with agency workflows and staff handoff around it.",
+      "attribution": "Team delivery with Tayseer Laz and Aligned Tech; Layth's evidenced contribution spans the application, backend, AI and search behavior, access boundaries, workflows, Hader integration, deployment, and production fixes."
+    },
+    {
+      "name": "OmniSign",
+      "status": "active R&D",
+      "url": "https://laythayache.com/projects/omnisign/",
+      "summary": "Lebanese Sign Language recognition across isolated signs and bounded temporal sequences, built with community-collected data; it is not unrestricted continuous translation.",
+      "attribution": "Team project; Layth led collection strategy, processing, augmentation, landmark extraction, training and evaluation, combined-model integration, and connection of inference to the application."
+    },
+    {
+      "name": "Lancaster Hospitality Platform",
+      "status": "14 official-domain public sites; ongoing operations",
+      "url": "https://laythayache.com/projects/lancaster/",
+      "summary": "Independent property websites sharing an engineering foundation while preserving each hotel's public identity, workflows, and release boundary.",
+      "attribution": "Built, deployed, operated, and maintained by Layth Ayache and Tayseer Laz."
+    },
+    {
+      "name": "Bridge",
+      "status": "two separate deployed employer-owned systems",
+      "url": "https://laythayache.com/projects/bridge/",
+      "summary": "Independent systems for Achour Holding and Aligned Tech that turn upstream operational records into scoped, traceable views; they do not share a database or deployment.",
+      "attribution": "Layth architected and implemented Bridge at Achour Holding end to end; it is adopted by the development department and subsidiaries. Bridge at Aligned Tech was shared work with Tayseer Laz and the internal team and is the company's main CEO operations dashboard."
+    },
+    {
+      "name": "PrivacyGuard",
+      "status": "public code; independent computer-vision component",
+      "url": "https://laythayache.com/projects/privacy-guard/",
+      "summary": "Local normalization of compatible ONNX detections and configurable masking of bounded regions in images and video; no universal performance, anonymity, or legal-compliance claim is made.",
+      "attribution": "Independently built by Layth Ayache; public source and tests verify the component boundary."
+    }
   ],
   "contact": {
     "email": "laythayache5@gmail.com",

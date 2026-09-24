@@ -354,56 +354,152 @@ a:focus-visible {
 }
 
 .technical-block {
-  margin-top: 42px;
+  margin-top: 46px;
+}
+
+#technical-implementation > .technical-block + .technical-block {
+  margin-top: 52px;
+  padding-top: 44px;
+  border-top: 1px solid #e1e4e6;
 }
 
 .technical-block > h3 {
-  margin: 0 0 16px;
+  max-width: 800px;
+  margin: 0 0 18px;
   color: #171a1d;
-  font-size: 21px;
-  line-height: 1.35;
-  letter-spacing: -0.01em;
+  font-size: clamp(21px, 2.6vw, 24px);
+  line-height: 1.3;
+  letter-spacing: -0.018em;
 }
 
 .technical-block > p {
   max-width: 780px;
   color: #3d4348;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.65;
 }
 
-.architecture-flow,
-.engineering-invariants,
-.verification-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
-  padding: 0;
-  margin: 20px 0 0;
+.technical-block > .prose {
+  max-width: 780px;
+}
+
+.technical-block .prose p + p {
+  margin-top: 18px;
+}
+
+.technical-block .prose > ol {
+  max-width: 800px;
+  padding-left: 46px;
+  margin: 24px 0 0;
   border-top: 1px solid #cfd4d8;
-  border-left: 1px solid #cfd4d8;
+  list-style-type: decimal-leading-zero;
+}
+
+.technical-block .prose > ol li {
+  max-width: none;
+  padding: 18px 0 20px 8px;
+  border-bottom: 1px solid #dfe3e5;
+}
+
+.technical-block .prose > ol li::marker {
+  color: #697178;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.technical-block .prose > ol strong {
+  color: #171a1d;
+}
+
+.technical-block code {
+  padding: 0.12em 0.34em;
+  border: 1px solid #dfe3e5;
+  border-radius: 3px;
+  background: #f5f6f7;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.88em;
+  overflow-wrap: anywhere;
+}
+
+.technical-block pre {
+  max-width: 100%;
+  padding: 18px 20px;
+  overflow-x: auto;
+  border: 1px solid #d9dde0;
+  background: #f7f8f8;
+  line-height: 1.6;
+}
+
+.technical-block pre code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow-wrap: normal;
+}
+
+.architecture-flow {
+  display: block;
+  padding: 0;
+  margin: 22px 0 0;
+  border-top: 1px solid #cfd4d8;
   list-style: none;
 }
 
-.architecture-flow li,
-.engineering-invariants li,
-.verification-list li {
-  min-height: 170px;
-  padding: 21px;
-  border-right: 1px solid #cfd4d8;
-  border-bottom: 1px solid #cfd4d8;
+.architecture-flow li {
+  display: grid;
+  grid-template-columns: minmax(88px, 112px) minmax(180px, 0.72fr) minmax(0, 1.28fr);
+  gap: 22px;
+  align-items: start;
+  min-height: 0;
+  padding: 20px 0;
+  border-bottom: 1px solid #dfe3e5;
 }
 
 .architecture-flow span {
   display: block;
-  margin-bottom: 24px;
+  margin: 2px 0 0;
   color: #596168;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 12px;
+  line-height: 1.45;
   letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.architecture-flow strong,
+.architecture-flow strong {
+  display: block;
+  margin: 0;
+  color: #171a1d;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.architecture-flow p {
+  margin: 0;
+  color: #50575d;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.engineering-invariants,
+.verification-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 36px;
+  padding: 0;
+  margin: 22px 0 0;
+  border-top: 1px solid #cfd4d8;
+  list-style: none;
+}
+
+.engineering-invariants li,
+.verification-list li {
+  min-height: 0;
+  padding: 20px 0 22px;
+  border-bottom: 1px solid #dfe3e5;
+}
+
 .engineering-invariants strong,
 .verification-list strong {
   display: block;
@@ -413,29 +509,29 @@ a:focus-visible {
   line-height: 1.35;
 }
 
-.architecture-flow p,
 .engineering-invariants p,
 .verification-list p {
   margin: 0;
   color: #50575d;
   font-size: 15px;
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
 .decision-ledger {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin: 20px 0 0;
+  margin: 24px 0 0;
+  border-top: 1px solid #cfd4d8;
 }
 
 .decision-ledger > div {
-  padding: 22px;
-  border: 1px solid #d3d8dc;
+  display: grid;
+  grid-template-columns: minmax(210px, 0.72fr) minmax(0, 1.28fr);
+  gap: 30px;
+  padding: 20px 0 22px;
+  border-bottom: 1px solid #dfe3e5;
 }
 
 .decision-ledger dt {
-  margin-bottom: 10px;
+  margin: 0;
   color: #171a1d;
   font-size: 17px;
   font-weight: 700;
@@ -445,8 +541,8 @@ a:focus-visible {
 .decision-ledger dd {
   margin: 0;
   color: #50575d;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.65;
 }
 
 .decision-ledger dd strong {
@@ -454,14 +550,32 @@ a:focus-visible {
 }
 
 .technical-boundary {
+  display: block;
   max-width: 800px !important;
-  margin-top: 38px;
-  padding: 20px 22px;
+  margin-top: 44px;
+  padding: 22px 24px;
   border-left: 3px solid #171a1d;
   background: #f5f6f7;
   color: #3d4348 !important;
   font-size: 16px !important;
   line-height: 1.65 !important;
+}
+
+.technical-boundary strong:first-child {
+  color: #171a1d;
+}
+
+.omnisign-page #technical-implementation > .technical-block + .technical-block {
+  border-top-color: #d6e0e2;
+}
+
+.omnisign-page #technical-implementation .architecture-flow span {
+  color: var(--omni-teal);
+}
+
+.omnisign-page #technical-implementation .technical-boundary {
+  border-left-color: var(--omni-warm);
+  background: var(--omni-teal-soft);
 }
 
 .project-list a,
@@ -1065,10 +1179,23 @@ a:focus-visible {
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
-  .architecture-flow,
   .engineering-invariants,
   .verification-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .architecture-flow li {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 8px 22px;
+  }
+
+  .architecture-flow p {
+    grid-column: 2;
+  }
+
+  .decision-ledger > div {
+    grid-template-columns: minmax(180px, 0.72fr) minmax(0, 1.28fr);
+    gap: 24px;
   }
 
   .omnisign-metrics,
@@ -1229,11 +1356,36 @@ a:focus-visible {
   .fact-grid,
   .project-list,
   .writing-list,
-  .architecture-flow,
   .engineering-invariants,
-  .verification-list,
-  .decision-ledger {
+  .verification-list {
     grid-template-columns: 1fr;
+  }
+
+  .architecture-flow li {
+    grid-template-columns: 1fr;
+    gap: 7px;
+    padding: 18px 0 20px;
+  }
+
+  .architecture-flow span {
+    margin-bottom: 3px;
+  }
+
+  .decision-ledger > div {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .technical-block .prose > ol {
+    padding-left: 34px;
+  }
+
+  .technical-block .prose > ol li {
+    padding-left: 4px;
+  }
+
+  .technical-boundary {
+    padding: 18px 20px;
   }
 
   .compact-list {
