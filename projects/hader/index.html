@@ -41,7 +41,7 @@
           <p class="eyebrow">Conversational AI · WhatsApp · Voice · Production</p>
           <h1>Hader</h1>
           <p class="page-lede">A commercially deployed, multi-tenant business communications platform that connects conversational AI with WhatsApp operations, structured customer workflows, explicit human handoff, and voice calling.</p>
-          <div class="page-actions"><a href="https://hader.ai/">Visit Hader</a><a href="/writing/whatsapp-coexistence/">Read the Coexistence note</a></div>
+          <div class="page-actions"><a href="https://hader.ai/">Visit Hader</a><a href="#technical-implementation">Technical implementation</a><a href="/writing/whatsapp-coexistence/">Read the Coexistence note</a></div>
         </header>
 
         <section class="content-section" aria-labelledby="problem-heading">
@@ -70,6 +70,22 @@
             <li><strong>Contact synchronization</strong><span>Consistent contact identity across messaging, phones, and connected organizational systems.</span></li>
             <li><strong>Consent and provenance</strong><span>Operational boundaries around imported information, system actions, and the origin of customer data.</span></li>
           </ul>
+        </section>
+
+        <section class="content-section" id="technical-implementation" aria-labelledby="technical-heading">
+          <h2 id="technical-heading">Technical implementation</h2>
+          <div class="prose">
+            <p>Hader separates the interactive application, service APIs, background processing, shared domain definitions, and persistent organization-scoped records. This keeps inbound channel traffic and longer-running operational work from depending on one synchronous request path.</p>
+          </div>
+          <ul class="fact-grid">
+            <li><strong>Organization boundaries</strong><span>Authentication, configuration, conversations, catalog activity, orders, bookings, and integrations remain scoped to the relevant organization.</span></li>
+            <li><strong>Conversation lifecycle</strong><span>Inbound events are normalized into durable thread and message state before automation or staff actions change the conversation.</span></li>
+            <li><strong>Automation and handoff</strong><span>Explicit pause and intervention states prevent automated replies while a person controls the thread and define when automation may resume.</span></li>
+            <li><strong>Structured operations</strong><span>Conversation decisions connect to validated order, booking, payment-link, contact, and follow-up workflows instead of remaining free-form text.</span></li>
+            <li><strong>Voice integration</strong><span>The telephony bridge resolves the correct organization context, manages the call lifecycle, and routes supported business actions back into Hader.</span></li>
+            <li><strong>Operational safeguards</strong><span>Feature gates, consent and provenance controls, automated tests, data migrations, health checks, deployment workflows, and handover documentation support production operation.</span></li>
+          </ul>
+          <p>The implementation details remain employer-owned. This section explains the system boundaries and engineering decisions without exposing code, tenant data, prompts, credentials, or infrastructure.</p>
         </section>
 
         <section class="content-section" aria-labelledby="voice-heading">

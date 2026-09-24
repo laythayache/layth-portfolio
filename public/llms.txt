@@ -25,6 +25,8 @@ GitHub: https://github.com/laythayache
 
 ## Authoritative project pages
 
+Each linked case study contains an explicit technical implementation or technical delivery section grounded in repository and deployment evidence.
+
 - [Hader](https://laythayache.com/projects/hader/): commercially deployed, multi-tenant conversational AI platform used by active client organizations. Layth’s work covered WhatsApp operations, human handoff, orders, bookings, voice and telephony, contact synchronization, Alinia integration, consent and provenance, testing, production hardening, documentation, and handover. Voice is a deployed Hader capability in active client use, not a separate product. Client identities and operating metrics remain confidential under NDA.
 - [Alinia](https://laythayache.com/projects/alinia/): live real-estate platform spanning AI-assisted discovery, agency and listing operations, multilingual workflows, messaging, CRM and reporting, security, human handoff, and Hader integration.
 - [OmniSign](https://laythayache.com/projects/omnisign/): actively developed sign-language recognition R&D platform. 40,000+ samples were captured before augmentation; the training set contains 50,000+ samples after augmentation. The 98% figure is only a narrow controlled internal evaluation. Current scope includes the Arabic alphabet, 30+ daily expressions, a small experimental clinical vocabulary, isolated signs, and bounded temporal sequences. Lebanese Sign Language is primary; basic ASL is also supported. Public repositories cover early collection tooling, a separate third-party 87,000-image ASL alphabet baseline, and an early multi-model prototype; they are not the full application or its community-collected Lebanese Sign Language dataset.

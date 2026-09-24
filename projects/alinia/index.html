@@ -35,7 +35,7 @@
           <p class="eyebrow">Real-estate AI · Multilingual workflows · Production</p>
           <h1>Alinia</h1>
           <p class="page-lede">A live real-estate platform that connects AI-assisted property discovery with listings, agencies, messaging, customer operations, and human handoff.</p>
-          <div class="page-actions"><a href="https://www.aliniarealestate.com/">Visit Alinia</a><a href="/projects/hader/">See the Hader integration context</a></div>
+          <div class="page-actions"><a href="https://www.aliniarealestate.com/">Visit Alinia</a><a href="#technical-implementation">Technical implementation</a><a href="/projects/hader/">See the Hader integration context</a></div>
         </header>
 
         <section class="content-section" aria-labelledby="problem-heading">
@@ -49,7 +49,7 @@
         <section class="content-section" aria-labelledby="ownership-heading">
           <h2 id="ownership-heading">My contribution</h2>
           <div class="prose">
-            <p>I worked with Tayseer Laz and the Aligned Tech team across the system’s architecture and delivery. My contribution spanned AI services, backend and application workflows, agency and listing operations, authentication and access boundaries, CRM and reporting features, performance work, deployment, and integration with Hader.</p>
+            <p>I worked with Tayseer Laz and the <a href="https://www.aligned-tech.com/">Aligned Tech</a> team across the system’s architecture and delivery. My contribution spanned AI services, backend and application workflows, agency and listing operations, authentication and access boundaries, CRM and reporting features, performance work, deployment, and integration with Hader.</p>
             <p>The work also connected web discovery with WhatsApp and managed human handoff, allowing customer conversations to move into operational workflows instead of remaining isolated chat sessions.</p>
           </div>
         </section>
@@ -64,6 +64,22 @@
             <li><strong>Reporting and CRM</strong><span>Operational visibility into inquiries and business activity without treating AI as a disconnected layer.</span></li>
             <li><strong>Hader integration</strong><span>Federated customer and messaging workflows between the real-estate platform and the communications system.</span></li>
           </ul>
+        </section>
+
+        <section class="content-section" id="technical-implementation" aria-labelledby="technical-heading">
+          <h2 id="technical-heading">Technical implementation</h2>
+          <div class="prose">
+            <p>Alinia separates its public discovery experience, application services, AI services, and messaging work while keeping listings and organizational permissions as the authoritative operating context.</p>
+          </div>
+          <ul class="fact-grid">
+            <li><strong>Grounded property discovery</strong><span>AI-assisted requests are converted into structured search criteria and applied to listing data rather than allowing a model to invent available properties.</span></li>
+            <li><strong>Listing lifecycle</strong><span>Creation, review, approval, publication, reassignment, sale, rental, and archive states feed both the public experience and internal operations.</span></li>
+            <li><strong>Role and agency boundaries</strong><span>Public users, agents, agency administrators, and platform administrators operate through distinct authentication and authorization paths.</span></li>
+            <li><strong>Messaging and CRM</strong><span>Web inquiries, customer records, assignments, broadcasts, WhatsApp activity, and staff takeover connect discovery to follow-up work.</span></li>
+            <li><strong>Hader federation</strong><span>Controlled approval, identity federation, provisioning, and queued listing synchronization connect Alinia to Hader without merging the two products.</span></li>
+            <li><strong>Performance and delivery</strong><span>Paginated and parallelized listing reads, cache invalidation on state changes, automated tests, deployment workflows, and production fixes support the live application.</span></li>
+          </ul>
+          <p>This is a systems-level explanation of employer-owned work. It omits private code, listing and customer data, administrative screens, secrets, and infrastructure.</p>
         </section>
 
         <section class="content-section" aria-labelledby="status-heading">

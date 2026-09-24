@@ -35,12 +35,12 @@
         <p class="eyebrow">Applied computer vision · Local processing · Public code</p>
         <h1>PrivacyGuard</h1>
         <p class="page-lede">A Python pipeline for detecting and masking selected sensitive regions in images, recorded video, and live streams before downstream use.</p>
-        <div class="page-actions"><a href="https://github.com/laythayache/PrivacyGuard">View the repository</a><a href="/writing/building-privacyguard-local-video-masking/">Read the fact-checked field note</a></div>
+        <div class="page-actions"><a href="https://github.com/laythayache/PrivacyGuard">View the repository</a><a href="#technical-implementation">Technical implementation</a><a href="/writing/building-privacyguard-local-video-masking/">Read the fact-checked field note</a></div>
       </header>
 
-      <section class="content-section" aria-labelledby="built-heading">
-        <h2 id="built-heading">What I built</h2>
-        <p>PrivacyGuard combines object detection with configurable Gaussian blur, pixelation, and solid masking. The public repository covers image, video, camera, stream, API, and command-line workflows using Python, OpenCV, ONNX Runtime, and compatible detection models.</p>
+      <section class="content-section" id="technical-implementation" aria-labelledby="built-heading">
+        <h2 id="built-heading">Technical implementation</h2>
+        <p>PrivacyGuard combines object detection with configurable Gaussian blur, pixelation, and solid masking. For each image or video frame, the selected detector returns labeled regions; configuration determines which classes and confidence levels qualify; the chosen masking operation is applied before the processed frame is written or returned. The public repository covers image, video, camera, stream, API, and command-line workflows using Python, OpenCV, ONNX Runtime, and compatible detection models.</p>
         <ul class="fact-grid">
           <li><strong>Local processing</strong><span>Frames can be processed without sending the visual data to a cloud inference API.</span></li>
           <li><strong>Multiple masking modes</strong><span>Blur, pixelation, or complete solid occlusion depending on the downstream need.</span></li>
