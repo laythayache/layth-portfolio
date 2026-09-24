@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="Hader case study: Layth Ayache’s work on a production conversational AI platform for WhatsApp automation, human handoff, customer operations, and voice calling." />
+    <meta name="description" content="Hader case study: Layth Ayache’s work on a commercially deployed, multi-tenant conversational AI platform spanning WhatsApp, human handoff, operations, and voice." />
     <meta property="og:title" content="Hader — Conversational and Voice AI Systems — Layth Ayache" />
-    <meta property="og:description" content="A production business communications platform combining conversational AI, WhatsApp workflows, human handoff, orders, bookings, and voice." />
+    <meta property="og:description" content="A commercially deployed business communications platform combining conversational AI, WhatsApp workflows, human handoff, orders, bookings, and voice." />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://laythayache.com/projects/hader/" />
     <link rel="canonical" href="https://laythayache.com/projects/hader/" />
@@ -20,8 +20,14 @@
         "@id": "https://laythayache.com/projects/hader/#project",
         "url": "https://laythayache.com/projects/hader/",
         "name": "Hader",
-        "description": "A production multi-tenant business communications platform spanning conversational AI, WhatsApp automation, human handoff, customer operations, and voice calling.",
+        "description": "A commercially deployed, multi-tenant business communications platform spanning conversational AI, WhatsApp automation, human handoff, customer operations, and voice calling.",
         "author": { "@id": "https://laythayache.com/#person" },
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "Hader",
+          "url": "https://hader.ai/",
+          "applicationCategory": "BusinessApplication"
+        },
         "keywords": ["Conversational AI", "WhatsApp automation", "Human handoff", "Voice AI", "Telephony integration", "Workflow automation"]
       }
     </script>
@@ -34,7 +40,7 @@
         <header class="page-header">
           <p class="eyebrow">Conversational AI · WhatsApp · Voice · Production</p>
           <h1>Hader</h1>
-          <p class="page-lede">A live, multi-tenant business communications platform that connects conversational AI with WhatsApp operations, structured customer workflows, explicit human handoff, and voice calling.</p>
+          <p class="page-lede">A commercially deployed, multi-tenant business communications platform that connects conversational AI with WhatsApp operations, structured customer workflows, explicit human handoff, and voice calling.</p>
           <div class="page-actions"><a href="https://hader.ai/">Visit Hader</a><a href="/writing/whatsapp-coexistence/">Read the Coexistence note</a></div>
         </header>
 
@@ -49,7 +55,7 @@
         <section class="content-section" aria-labelledby="ownership-heading">
           <h2 id="ownership-heading">My role and ownership</h2>
           <div class="prose">
-            <p>I worked with Tayseer Laz and the Aligned Tech team on Hader, providing technical leadership and end-to-end AI-systems engineering. My work covered architecture and implementation across voice, orders and bookings, payment-link workflows, Alinia integration, contact synchronization, WhatsApp Coexistence, consent and provenance, automated tests, and production hardening.</p>
+            <p>I worked with Tayseer Laz and the <a href="https://www.aligned-tech.com/">Aligned Tech</a> team on Hader, providing technical leadership and end-to-end AI-systems engineering. My work covered architecture and implementation across voice, orders and bookings, payment-link workflows, Alinia integration, contact synchronization, WhatsApp Coexistence, consent and provenance, automated tests, and production hardening.</p>
             <p>I also documented the system and completed a formal handover when I left Aligned Tech. The implementation remains employer-owned, so this case study explains responsibilities and system behavior without publishing private source code, client records, credentials, or infrastructure.</p>
           </div>
         </section>
@@ -70,13 +76,13 @@
           <h2 id="voice-heading">Voice as a Hader capability</h2>
           <div class="prose">
             <p>Voice AI is implemented inside Hader rather than presented as a separate product. The capability connects live telephone calls with Hader’s conversation, order, booking, payment, transfer, and call-record workflows.</p>
-            <p>It is used by active clients, including Aseer Time in Kuwait. This is deployed functionality, while voice remains a supporting capability within the broader Hader platform.</p>
+            <p>The voice capability is deployed and in active client use. It remains a supporting capability within the broader Hader platform rather than a standalone product.</p>
           </div>
         </section>
 
         <section class="content-section" aria-labelledby="status-heading">
           <h2 id="status-heading">Status and publication boundary</h2>
-          <p>Hader is in production with active clients. This page names the public product and approved capability areas; it does not expose tenant identities beyond the approved example, private conversations, dashboards, customer data, source code, credentials, or production infrastructure.</p>
+          <p>Hader is commercially deployed and used by active client organizations. Client identities and operating metrics remain confidential under NDA. This page therefore describes only the public product, my substantiated responsibilities, and approved capability areas; it does not expose private conversations, dashboards, customer data, source code, credentials, or production infrastructure.</p>
         </section>
       </article>
 
