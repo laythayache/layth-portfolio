@@ -346,6 +346,124 @@ a:focus-visible {
   line-height: 1.55;
 }
 
+.technical-lede {
+  max-width: 780px;
+  color: #30353a;
+  font-size: 19px;
+  line-height: 1.65;
+}
+
+.technical-block {
+  margin-top: 42px;
+}
+
+.technical-block > h3 {
+  margin: 0 0 16px;
+  color: #171a1d;
+  font-size: 21px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.technical-block > p {
+  max-width: 780px;
+  color: #3d4348;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.architecture-flow,
+.engineering-invariants,
+.verification-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  padding: 0;
+  margin: 20px 0 0;
+  border-top: 1px solid #cfd4d8;
+  border-left: 1px solid #cfd4d8;
+  list-style: none;
+}
+
+.architecture-flow li,
+.engineering-invariants li,
+.verification-list li {
+  min-height: 170px;
+  padding: 21px;
+  border-right: 1px solid #cfd4d8;
+  border-bottom: 1px solid #cfd4d8;
+}
+
+.architecture-flow span {
+  display: block;
+  margin-bottom: 24px;
+  color: #596168;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.architecture-flow strong,
+.engineering-invariants strong,
+.verification-list strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #171a1d;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.architecture-flow p,
+.engineering-invariants p,
+.verification-list p {
+  margin: 0;
+  color: #50575d;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.decision-ledger {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0 0;
+}
+
+.decision-ledger > div {
+  padding: 22px;
+  border: 1px solid #d3d8dc;
+}
+
+.decision-ledger dt {
+  margin-bottom: 10px;
+  color: #171a1d;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.decision-ledger dd {
+  margin: 0;
+  color: #50575d;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.decision-ledger dd strong {
+  color: #30353a;
+}
+
+.technical-boundary {
+  max-width: 800px !important;
+  margin-top: 38px;
+  padding: 20px 22px;
+  border-left: 3px solid #171a1d;
+  background: #f5f6f7;
+  color: #3d4348 !important;
+  font-size: 16px !important;
+  line-height: 1.65 !important;
+}
+
 .project-list a,
 .writing-list a {
   font-size: 19px;
@@ -947,6 +1065,12 @@ a:focus-visible {
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
+  .architecture-flow,
+  .engineering-invariants,
+  .verification-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .omnisign-metrics,
   .role-ledger,
   .partner-list,
@@ -1104,7 +1228,11 @@ a:focus-visible {
 
   .fact-grid,
   .project-list,
-  .writing-list {
+  .writing-list,
+  .architecture-flow,
+  .engineering-invariants,
+  .verification-list,
+  .decision-ledger {
     grid-template-columns: 1fr;
   }
 

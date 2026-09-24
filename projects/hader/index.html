@@ -74,18 +74,57 @@
 
         <section class="content-section" id="technical-implementation" aria-labelledby="technical-heading">
           <h2 id="technical-heading">Technical implementation</h2>
-          <div class="prose">
-            <p>Hader separates the interactive application, service APIs, background processing, shared domain definitions, and persistent organization-scoped records. This keeps inbound channel traffic and longer-running operational work from depending on one synchronous request path.</p>
+          <p class="technical-lede">Hader is an event-driven, multi-tenant operating system for business conversations. The central design problem is not generating a reply; it is preserving tenant ownership, conversation state, human control, and the integrity of downstream business actions while messages and calls arrive through different channels.</p>
+
+          <div class="technical-block">
+            <h3>Architecture and request flow</h3>
+            <ol class="architecture-flow" aria-label="Hader request and data flow">
+              <li><span>01 · Ingress</span><strong>Validate and attribute the event</strong><p>A channel webhook, connector event, or voice bridge request is authenticated and resolved to the organization and channel that own it.</p></li>
+              <li><span>02 · Persistence</span><strong>Record state before automation</strong><p>Contacts, threads, messages, delivery state, and relevant unhandled fields are persisted so a failed AI or downstream call does not erase the source event.</p></li>
+              <li><span>03 · Policy gate</span><strong>Decide whether automation may act</strong><p>Organization features, consent, channel configuration, bot state, human-pause state, and conversation context are evaluated before a reply path is opened.</p></li>
+              <li><span>04 · Decision</span><strong>Ground the response and proposed action</strong><p>Approved business information and structured records provide context. Orders, bookings, payment links, contact changes, and escalation are treated as typed operations rather than unbounded model text.</p></li>
+              <li><span>05 · Delivery</span><strong>Send through the owning channel</strong><p>The appropriate adapter delivers the response or action, records provenance and status, and moves retryable or scheduled work to background processing.</p></li>
+              <li><span>06 · Human and operations</span><strong>Keep one operational history</strong><p>Staff work from the same durable thread, can pause or resume automation explicitly, and can inspect operational and audit state without a parallel conversation history.</p></li>
+            </ol>
           </div>
-          <ul class="fact-grid">
-            <li><strong>Organization boundaries</strong><span>Authentication, configuration, conversations, catalog activity, orders, bookings, and integrations remain scoped to the relevant organization.</span></li>
-            <li><strong>Conversation lifecycle</strong><span>Inbound events are normalized into durable thread and message state before automation or staff actions change the conversation.</span></li>
-            <li><strong>Automation and handoff</strong><span>Explicit pause and intervention states prevent automated replies while a person controls the thread and define when automation may resume.</span></li>
-            <li><strong>Structured operations</strong><span>Conversation decisions connect to validated order, booking, payment-link, contact, and follow-up workflows instead of remaining free-form text.</span></li>
-            <li><strong>Voice integration</strong><span>The telephony bridge resolves the correct organization context, manages the call lifecycle, and routes supported business actions back into Hader.</span></li>
-            <li><strong>Operational safeguards</strong><span>Feature gates, consent and provenance controls, automated tests, data migrations, health checks, deployment workflows, and handover documentation support production operation.</span></li>
-          </ul>
-          <p>The implementation details remain employer-owned. This section explains the system boundaries and engineering decisions without exposing code, tenant data, prompts, credentials, or infrastructure.</p>
+
+          <div class="technical-block">
+            <h3>System invariants</h3>
+            <ul class="engineering-invariants">
+              <li><strong>Tenant ownership is resolved first</strong><p>Business configuration and records are organization-scoped, with tenant-isolation and row-level-access checks covering the persistence boundary.</p></li>
+              <li><strong>Human control overrides automation</strong><p>A paused or handed-off thread cannot receive an automated reply until a defined resume path permits it.</p></li>
+              <li><strong>Business actions are validated</strong><p>Model output cannot directly become an order, booking, payment request, or contact mutation without passing the relevant domain rules.</p></li>
+              <li><strong>Imported context keeps provenance</strong><p>Contact synchronization, captured history, and mirrored records retain source information so operators can distinguish imported data from native Hader activity.</p></li>
+              <li><strong>Consent gates historical capture</strong><p>Connecting a channel does not silently authorize every historical-data operation; the relevant capture path is explicitly gated.</p></li>
+              <li><strong>Voice remains a channel adapter</strong><p>Telephony resolves organization context and invokes Hader operations; it does not create a second source of truth for orders, bookings, or customer history.</p></li>
+            </ul>
+          </div>
+
+          <div class="technical-block">
+            <h3>Key engineering decisions and tradeoffs</h3>
+            <dl class="decision-ledger">
+              <div><dt>Persist the inbound event before generating a reply</dt><dd><strong>Why:</strong> preserves a recoverable conversation record when model, channel, or downstream services fail. <strong>Tradeoff:</strong> adds database work to the latency-sensitive path.</dd></div>
+              <div><dt>Move retryable and scheduled work out of the request path</dt><dd><strong>Why:</strong> webhook delivery, broadcasts, reminders, exports, consistency checks, and cleanup have different timing and retry requirements. <strong>Tradeoff:</strong> introduces eventual consistency and requires idempotent workers and operational visibility.</dd></div>
+              <div><dt>Represent handoff as durable state, not prompt wording</dt><dd><strong>Why:</strong> a system rule can suppress automation reliably across workers and channels. <strong>Tradeoff:</strong> pause expiry, manual resume, and stale-state recovery become explicit lifecycle problems.</dd></div>
+              <div><dt>Keep telephony behind a separate bridge</dt><dd><strong>Why:</strong> isolates call transport and real-time audio concerns from the core business model. <strong>Tradeoff:</strong> creates a distributed failure boundary that needs call lifecycle reconciliation and reaping.</dd></div>
+              <div><dt>Federate Alinia instead of sharing its database</dt><dd><strong>Why:</strong> preserves product ownership and access boundaries while enabling approved identity and listing flows. <strong>Tradeoff:</strong> mirrored data is eventually consistent and needs provisioning, reset, and deprovision paths.</dd></div>
+              <div><dt>Support WhatsApp Coexistence instead of replacing the handset workflow</dt><dd><strong>Why:</strong> lets staff retain the familiar business-phone workflow. <strong>Tradeoff:</strong> handset replies, platform replies, history capture, and attribution must be reconciled explicitly.</dd></div>
+            </dl>
+          </div>
+
+          <div class="technical-block">
+            <h3>Failure handling and verification</h3>
+            <ul class="verification-list">
+              <li><strong>Boundary tests</strong><p>Tenant-isolation, row-level-access drift, webhook signatures, multi-number routing, and provenance-access tests exercise the highest-risk ownership boundaries.</p></li>
+              <li><strong>Conversation safety tests</strong><p>Handoff detection, bot suppression, Coexistence capture, contact-sync planning, order confirmation, booking text, and voice-order matching are tested as domain behavior.</p></li>
+              <li><strong>Operational reconciliation</strong><p>Inbox-consistency work, stale-pause cleanup, call reaping, delivery retries, health probes, and data migrations address failures that only appear across time or services.</p></li>
+              <li><strong>Deployment discipline</strong><p>CI checks, production health verification, documented rollout policy, and a formal handover reduce dependence on one engineer’s local knowledge.</p></li>
+              <li><strong>Known limit</strong><p>The page does not claim a universal latency, accuracy, uptime, compliance certification, or autonomous-resolution rate; those require separately defined production evidence.</p></li>
+              <li><strong>My implementation scope</strong><p>My repository history covers Coexistence and consent, durable webhook attribution, contact-sync provenance, voice operations, Alinia federation, tests, production fixes, documentation, and handover.</p></li>
+            </ul>
+          </div>
+
+          <p class="technical-boundary">The implementation remains employer-owned. The architecture is described at the level needed to evaluate engineering judgment without publishing source code, tenant identities or data, prompts, credentials, infrastructure, or protected operating metrics.</p>
         </section>
 
         <section class="content-section" aria-labelledby="voice-heading">

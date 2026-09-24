@@ -190,19 +190,59 @@
       <section class="content-section" id="technical-implementation" aria-labelledby="engineering-heading">
         <div class="section-intro">
           <p class="eyebrow">Technical implementation</p>
-          <h2 id="engineering-heading">Technical implementation: live input, specialized models, accessible output.</h2>
+          <h2 id="engineering-heading">From community recordings to bounded live recognition.</h2>
         </div>
-        <div class="system-flow" aria-label="How OmniSign works">
-          <div><span>01</span><strong>Capture</strong><p>Live camera input records the signer’s movement.</p></div>
-          <div><span>02</span><strong>Represent</strong><p>Computer vision extracts spatial and temporal landmarks.</p></div>
-          <div><span>03</span><strong>Recognize</strong><p>Specialized models handle letters, vocabulary, and bounded sequences.</p></div>
-          <div><span>04</span><strong>Route</strong><p>The multimodel layer chooses a suitable recognition path.</p></div>
-          <div><span>05</span><strong>Translate</strong><p>The application presents the result as text and speech.</p></div>
+        <p class="technical-lede">OmniSign is a data-system and model-orchestration problem before it is a camera demo. The engineering path begins with community-contributed examples, preserves the difference between captured and augmented data, converts motion into trainable temporal representations, and routes bounded inputs to specialized recognition paths.</p>
+
+        <div class="technical-block">
+          <h3>Data and inference flow</h3>
+          <ol class="architecture-flow" aria-label="OmniSign data and inference flow">
+            <li><span>01 · Capture</span><strong>Collect labeled sign examples</strong><p>Collection tools record examples and metadata across volunteers, environments, and Lebanese teaching traditions rather than relying on one signer or one classroom.</p></li>
+            <li><span>02 · Quality control</span><strong>Review labels and usable sequences</strong><p>Incorrect labels, incomplete captures, inconsistent framing, and unusable motion sequences must be corrected or removed before training.</p></li>
+            <li><span>03 · Expansion</span><strong>Augment without redefining the raw count</strong><p>Transformations expand the training material from the captured corpus while the public record keeps 40,000+ captured samples distinct from 50,000+ post-augmentation training samples.</p></li>
+            <li><span>04 · Representation</span><strong>Extract spatial and temporal landmarks</strong><p>MediaPipe landmark features reduce each frame or sequence to a structured representation suitable for isolated and temporal models.</p></li>
+            <li><span>05 · Recognition</span><strong>Use specialized bounded models</strong><p>Separate paths handle supported letters, expressions, and bounded temporal sequences; an LSTM is used where motion over time is part of the class.</p></li>
+            <li><span>06 · Orchestration</span><strong>Route and present the result</strong><p>The multimodel layer selects an eligible recognition path and returns output to the application as text and speech within the supported vocabulary.</p></li>
+          </ol>
         </div>
-        <div class="prose technical-notes">
-          <p>We used MediaPipe to extract landmark features and trained an LSTM network for recognition within bounded temporal sequences. A narrow controlled internal evaluation reached 98%; that result does not represent unrestricted translation or general real-world accuracy. Results still change with lighting, camera quality, the signer, signing speed, and vocabulary.</p>
-          <p>The application supports live camera input with text and speech output inside the current R&amp;D scope. Broader vocabularies, unconstrained signing, and performance across unfamiliar users and environments remain active research problems.</p>
+
+        <div class="technical-block">
+          <h3>System invariants</h3>
+          <ul class="engineering-invariants">
+            <li><strong>Captured and augmented data are different facts</strong><p>The 40,000+ figure describes samples collected before augmentation; the 50,000+ figure describes the expanded training set.</p></li>
+            <li><strong>Variation is not standardization</strong><p>The 21-school figure represents teaching traditions observed as sign variation; it does not claim twenty-one partner schools or one standardized Lebanese lexicon.</p></li>
+            <li><strong>Vocabulary bounds the claim</strong><p>The current scope covers the Arabic alphabet, more than thirty daily expressions, a small experimental clinical vocabulary, isolated signs, and bounded sequences.</p></li>
+            <li><strong>Live input is not continuous translation</strong><p>A camera can run in real time while the recognizer still operates only on supported classes and bounded temporal windows.</p></li>
+            <li><strong>Evaluation context travels with the number</strong><p>The 98% result is retained only as a narrow controlled internal evaluation, not as accuracy across unfamiliar signers, environments, or unrestricted signing.</p></li>
+            <li><strong>The tool does not replace an interpreter</strong><p>OmniSign explores assistive recognition within a defined vocabulary; it is not presented as a substitute for human sign-language interpretation.</p></li>
+          </ul>
         </div>
+
+        <div class="technical-block">
+          <h3>Key engineering decisions and tradeoffs</h3>
+          <dl class="decision-ledger">
+            <div><dt>Build a community collection pipeline instead of training only on public ASL data</dt><dd><strong>Why:</strong> the target problem includes Lebanese signs and local variation not represented by a generic American alphabet dataset. <strong>Tradeoff:</strong> collection, labeling, governance, and quality control become core engineering work.</dd></div>
+            <div><dt>Use landmarks as the primary learned representation</dt><dd><strong>Why:</strong> reduces dependence on raw backgrounds and lowers the dimensionality of spatial and temporal input. <strong>Tradeoff:</strong> landmark quality becomes an upstream failure point, and appearance cues not encoded in landmarks may be lost.</dd></div>
+            <div><dt>Use specialist models and routing instead of one universal classifier</dt><dd><strong>Why:</strong> letters, isolated expressions, and temporal sequences have different input and modeling requirements. <strong>Tradeoff:</strong> routing errors and inconsistent confidence behavior must be managed across models.</dd></div>
+            <div><dt>Use an LSTM for bounded temporal sequences</dt><dd><strong>Why:</strong> sequence order and movement carry information that a single-frame classifier cannot represent. <strong>Tradeoff:</strong> window definition, signing speed, padding, and sequence segmentation affect results.</dd></div>
+            <div><dt>Keep the third-party ASL baseline separate</dt><dd><strong>Why:</strong> it is useful for early alphabet experiments but is not evidence about the community-collected Lebanese dataset or the complete application. <strong>Tradeoff:</strong> public repositories describe only slices of the overall system.</dd></div>
+            <div><dt>Expose uncertainty instead of claiming unrestricted translation</dt><dd><strong>Why:</strong> signer variation, lighting, occlusion, camera quality, speed, and out-of-vocabulary signs materially change behavior. <strong>Tradeoff:</strong> the product scope is narrower but technically honest.</dd></div>
+          </dl>
+        </div>
+
+        <div class="technical-block">
+          <h3>Evaluation and failure analysis</h3>
+          <ul class="verification-list">
+            <li><strong>Controlled evaluation only</strong><p>The retained 98% result applies to a bounded internal evaluation. The exact split is not published because the surviving record is not complete enough to support a reproducible benchmark claim.</p></li>
+            <li><strong>Input failures</strong><p>Poor lighting, low camera quality, occlusion, incomplete hand or body landmarks, and framing errors can prevent a usable representation before classification begins.</p></li>
+            <li><strong>Distribution failures</strong><p>Unfamiliar signers, dialect or teaching variation, signing speed, and examples outside the trained vocabulary can reduce confidence or produce the wrong supported class.</p></li>
+            <li><strong>Sequence failures</strong><p>Incorrect temporal boundaries can mix adjacent movement, truncate a sign, or supply insufficient context to the sequence model.</p></li>
+            <li><strong>Current R&amp;D boundary</strong><p>Broader vocabularies, continuous signing, transformer-based research, unfamiliar-user evaluation, and a larger clinical vocabulary remain active or future work.</p></li>
+            <li><strong>My implementation scope</strong><p>I led collection strategy, processing, cleaning, augmentation, landmark extraction, training and evaluation, multimodel orchestration, product integration, and technical work connected to community outreach.</p></li>
+          </ul>
+        </div>
+
+        <p class="technical-boundary">The public repositories document an early collection tool, a separate third-party ASL baseline, and an early multimodel prototype. They are not the complete current application or its full community-collected Lebanese Sign Language dataset.</p>
       </section>
 
       <section class="content-section" aria-labelledby="timeline-heading">

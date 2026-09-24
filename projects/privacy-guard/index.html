@@ -40,13 +40,57 @@
 
       <section class="content-section" id="technical-implementation" aria-labelledby="built-heading">
         <h2 id="built-heading">Technical implementation</h2>
-        <p>PrivacyGuard combines object detection with configurable Gaussian blur, pixelation, and solid masking. For each image or video frame, the selected detector returns labeled regions; configuration determines which classes and confidence levels qualify; the chosen masking operation is applied before the processed frame is written or returned. The public repository covers image, video, camera, stream, API, and command-line workflows using Python, OpenCV, ONNX Runtime, and compatible detection models.</p>
-        <ul class="fact-grid">
-          <li><strong>Local processing</strong><span>Frames can be processed without sending the visual data to a cloud inference API.</span></li>
-          <li><strong>Multiple masking modes</strong><span>Blur, pixelation, or complete solid occlusion depending on the downstream need.</span></li>
-          <li><strong>Configurable targets</strong><span>Faces, people, and license plates when supported by the selected model and label mapping.</span></li>
-          <li><strong>Inspectible implementation</strong><span>Public code, examples, tests, and documentation under an MIT license.</span></li>
-        </ul>
+        <p class="technical-lede">PrivacyGuard is a public Python implementation built around OpenCV, ONNX Runtime, and compatible detection models. It separates detection from transformation: a detector proposes labeled regions, policy selects which detections qualify, an anonymizer modifies only those regions, and the surrounding pipeline decides whether the result is returned, written, streamed, profiled, or audited. That separation makes the masking behavior inspectable without pretending that detection is infallible.</p>
+
+        <div class="technical-block">
+          <h3>Frame-processing flow</h3>
+          <ol class="architecture-flow" aria-label="PrivacyGuard frame processing flow">
+            <li><span>01 · Input</span><strong>Normalize the media source</strong><p>An image, recorded video, camera, or network stream is converted into frames with validated dimensions and processing configuration.</p></li>
+            <li><span>02 · Detection</span><strong>Produce typed candidate regions</strong><p>A selected local detector or ensemble returns bounding regions, class labels, and confidence values; optional regional detectors can add document, text, or plate candidates.</p></li>
+            <li><span>03 · Policy</span><strong>Filter what should be transformed</strong><p>Target classes, label mapping, confidence thresholds, and custom regions decide which candidates enter the masking stage.</p></li>
+            <li><span>04 · Transformation</span><strong>Modify only the selected regions</strong><p>The anonymizer applies Gaussian blur, pixelation, or solid occlusion using validated parameters while leaving the remainder of the frame unchanged.</p></li>
+            <li><span>05 · Output</span><strong>Return or encode the processed frame</strong><p>Image, batch, video, live-stream, API, and command-line paths reuse the same core detection-and-mask contract.</p></li>
+            <li><span>06 · Observation</span><strong>Measure and record processing behavior</strong><p>Optional profiling, monitoring, audit records, metadata stripping, and status markings can be attached without changing the detector interface.</p></li>
+          </ol>
+        </div>
+
+        <div class="technical-block">
+          <h3>System invariants</h3>
+          <ul class="engineering-invariants">
+            <li><strong>No detection means no guaranteed mask</strong><p>The transformation stage cannot hide a face, person, plate, document, or text region that the selected detector failed to identify.</p></li>
+            <li><strong>Policy is separate from model output</strong><p>A detected class is not automatically modified; configured targets and thresholds determine whether masking is applied.</p></li>
+            <li><strong>Masking is not encryption</strong><p>Blur and pixelation alter visible pixels, while solid masking occludes a region; none of these operations proves that the source or other metadata cannot be recovered elsewhere.</p></li>
+            <li><strong>Local is the default processing boundary</strong><p>The core pipeline can run without sending frames to a cloud inference API, although the caller remains responsible for the rest of the media workflow.</p></li>
+            <li><strong>Parameters are validated before processing</strong><p>Thresholds, kernel sizes, colors, and numeric ranges are checked so invalid configuration fails early instead of producing undefined transformations.</p></li>
+            <li><strong>End-of-stream state is cleared</strong><p>The stream path releases its capture and removes stale cached frames so consumers do not mistake the last frame for continuing live input.</p></li>
+          </ul>
+        </div>
+
+        <div class="technical-block">
+          <h3>Key engineering decisions and tradeoffs</h3>
+          <dl class="decision-ledger">
+            <div><dt>Define a detector contract instead of coupling the pipeline to one model</dt><dd><strong>Why:</strong> lets the same masking and streaming logic work with different compatible detectors and label mappings. <strong>Tradeoff:</strong> detector outputs must be normalized consistently, and quality varies by model.</dd></div>
+            <div><dt>Keep masking strategy independent from detection</dt><dd><strong>Why:</strong> downstream requirements may call for blur, pixelation, or full occlusion using the same detections. <strong>Tradeoff:</strong> callers must choose a treatment whose reversibility and visual utility match the risk.</dd></div>
+            <div><dt>Run inference locally</dt><dd><strong>Why:</strong> avoids making cloud upload a prerequisite and can reduce network exposure and latency. <strong>Tradeoff:</strong> throughput and model choice depend on local hardware, runtime, resolution, and workload.</dd></div>
+            <div><dt>Support optional ensembles and regional detectors</dt><dd><strong>Why:</strong> a general object detector does not cover every plate, document, text, or script-specific case. <strong>Tradeoff:</strong> additional detectors increase compute cost and can introduce overlapping or conflicting regions.</dd></div>
+            <div><dt>Separate pixel masking from metadata removal</dt><dd><strong>Why:</strong> changing visible regions does not remove file metadata or other non-pixel information. <strong>Tradeoff:</strong> a complete media-handling workflow must compose both operations deliberately.</dd></div>
+            <div><dt>Expose profiling instead of claiming universal speed</dt><dd><strong>Why:</strong> real performance depends on the detector, input size, stream, hardware, and masking configuration. <strong>Tradeoff:</strong> every deployment needs its own reproducible benchmark.</dd></div>
+          </dl>
+        </div>
+
+        <div class="technical-block">
+          <h3>Verification and known failure modes</h3>
+          <ul class="verification-list">
+            <li><strong>Detection and core tests</strong><p>Public tests exercise detector output, target selection, orchestration, anonymization methods, and the core media-processing contract.</p></li>
+            <li><strong>Stream lifecycle tests</strong><p>End-of-file, capture release, cached-frame cleanup, and background-reader behavior are verified so stale data is not presented as a live frame.</p></li>
+            <li><strong>Regional-path tests</strong><p>Arabic and multiscript utilities, regional detector behavior, and related quality fixes are tested separately from the general object path.</p></li>
+            <li><strong>Operational hooks</strong><p>Batch processing, profiling, monitoring, audit logging, custom regions, and metadata handling are optional components around the core pipeline.</p></li>
+            <li><strong>Known limit</strong><p>Occlusion, motion blur, small regions, difficult angles, domain shift, incorrect labels, and unsupported objects can produce missed or incorrect masks.</p></li>
+            <li><strong>Benchmark boundary</strong><p>A historical controlled run reached approximately 25–30 FPS, but the retained record does not define enough of the configuration to reproduce it or generalize it to specific hardware.</p></li>
+          </ul>
+        </div>
+
+        <p class="technical-boundary">PrivacyGuard is an independently built masking component with public code and tests. It is not presented as automatic legal compliance, a guarantee that every sensitive region is detected, or proof that a processed file is safe for every downstream use.</p>
       </section>
 
       <section class="content-section" aria-labelledby="deployment-heading">

@@ -63,18 +63,57 @@
 
         <section class="content-section" id="technical-implementation" aria-labelledby="technical-heading">
           <h2 id="technical-heading">Technical delivery across the fleet</h2>
-          <div class="prose">
-            <p>The platform uses a shared engineering foundation with property-specific configuration and content. Shared fixes can move across the fleet, while each hotel keeps its own domain, identity, languages, guest information, inquiry destinations, and operational boundaries.</p>
+          <p class="technical-lede">The engineering problem is fleet consistency without flattening fourteen hotels into one generic website. The platform reuses public behavior and operating patterns while keeping each property’s domain, identity, languages, content, guest destinations, and administrative boundary independently controllable.</p>
+
+          <div class="technical-block">
+            <h3>Public request and operating flow</h3>
+            <ol class="architecture-flow" aria-label="Lancaster fleet architecture flow">
+              <li><span>01 · Property boundary</span><strong>Resolve the official domain</strong><p>The request enters a property-specific deployment whose configuration determines identity, routes, locales, contact destinations, and enabled features.</p></li>
+              <li><span>02 · Content assembly</span><strong>Combine shared patterns with local content</strong><p>Reusable page and content structures render the selected property’s rooms, dining, offers, facilities, events, and destination information.</p></li>
+              <li><span>03 · Discovery output</span><strong>Emit crawlable public pages</strong><p>Canonical URLs, property-specific metadata, structured information, localized routes, sitemaps, and pre-rendered entry points describe the correct hotel.</p></li>
+              <li><span>04 · Guest action</span><strong>Route the user to the owning property</strong><p>Booking, inquiry, newsletter, loyalty, careers, and contact flows validate input and deliver it to the destination configured for that site.</p></li>
+              <li><span>05 · AI assistance</span><strong>Constrain answers to property context</strong><p>The concierge receives the relevant property’s approved information through a controlled interface rather than unrestricted access to another hotel’s content.</p></li>
+              <li><span>06 · Fleet operations</span><strong>Validate and release independently</strong><p>Shared changes are mapped to site variants, tested, deployed per property, and checked through public, form, email, and health verification.</p></li>
+            </ol>
           </div>
-          <ul class="fact-grid">
-            <li><strong>Reusable foundation</strong><span>Common navigation, room and dining patterns, offers, forms, discovery metadata, and operational behavior are maintained as reusable building blocks.</span></li>
-            <li><strong>Property variants</strong><span>Per-site configuration controls branding, routes, languages, content, contact paths, and enabled functionality without treating every hotel as identical.</span></li>
-            <li><strong>Independent deployments</strong><span>Each official domain is deployed and checked separately so one property can launch or change without requiring every site to move at once.</span></li>
-            <li><strong>Search-ready output</strong><span>Canonical URLs, structured information, sitemaps, crawl controls, localized metadata, and pre-rendered public entry points support discovery.</span></li>
-            <li><strong>Guest workflows</strong><span>Booking paths, inquiries, careers, and email delivery are validated against the relevant property’s public destinations.</span></li>
-            <li><strong>Fleet operations</strong><span>Health checks, automated audits, rollout verification, retry handling, and property-by-property review support ongoing maintenance.</span></li>
-          </ul>
-          <p>The technical pattern is public at a systems level; the CMS, implementation stack, administrative interfaces, private data model, and infrastructure remain intentionally undisclosed.</p>
+
+          <div class="technical-block">
+            <h3>Fleet invariants</h3>
+            <ul class="engineering-invariants">
+              <li><strong>Property isolation</strong><p>A hotel’s content, administrative access, inquiry routing, and operating configuration must not grant unrestricted access to another property.</p></li>
+              <li><strong>Domain identity is authoritative</strong><p>Canonical URLs, metadata, structured information, and public content must describe the property represented by the current official domain.</p></li>
+              <li><strong>Shared does not mean identical</strong><p>A fleet-level improvement cannot erase property-specific languages, sections, destinations, visual rules, or operating requirements.</p></li>
+              <li><strong>Guest actions have explicit destinations</strong><p>Forms and booking paths must fail visibly or route to a verified property destination rather than silently accepting an undeliverable request.</p></li>
+              <li><strong>AI context is property-scoped</strong><p>The concierge is a bounded information interface, not a route to administrative data or cross-property operational records.</p></li>
+              <li><strong>Launch status is evidence-based</strong><p>The public portfolio counts only official-domain production sites; staged variants remain excluded until they launch.</p></li>
+            </ul>
+          </div>
+
+          <div class="technical-block">
+            <h3>Key engineering decisions and tradeoffs</h3>
+            <dl class="decision-ledger">
+              <div><dt>Reuse a shared foundation but deploy properties independently</dt><dd><strong>Why:</strong> common behavior can improve across the fleet while each hotel retains release control and a smaller blast radius. <strong>Tradeoff:</strong> repositories and deployments can drift unless shared changes are mapped and audited deliberately.</dd></div>
+              <div><dt>Express differences through property configuration and variants</dt><dd><strong>Why:</strong> prevents every property difference from becoming an unrelated implementation. <strong>Tradeoff:</strong> configuration itself becomes a product surface that needs validation and documentation.</dd></div>
+              <div><dt>Pre-render important public entry points</dt><dd><strong>Why:</strong> hotel identity, offers, rooms, dining, and destination information remain accessible to users and simpler crawlers without waiting for client-side execution. <strong>Tradeoff:</strong> builds must regenerate the correct localized and canonical output after content or route changes.</dd></div>
+              <div><dt>Keep administration and public delivery separated</dt><dd><strong>Why:</strong> public pages can be optimized for discovery and guests without exposing editorial controls or privileged data. <strong>Tradeoff:</strong> content publishing requires an explicit delivery and cache-refresh path.</dd></div>
+              <div><dt>Use a controlled AI interface instead of embedding unrestricted system access</dt><dd><strong>Why:</strong> keeps guest answers within approved property information and isolates model/provider changes. <strong>Tradeoff:</strong> retrieval quality, stale content, and unavailable AI must be handled without breaking the core site.</dd></div>
+              <div><dt>Verify external guest workflows, not only page rendering</dt><dd><strong>Why:</strong> a visually correct contact or career page is still broken if delivery, validation, or property routing fails. <strong>Tradeoff:</strong> release verification must include services outside the browser bundle.</dd></div>
+            </dl>
+          </div>
+
+          <div class="technical-block">
+            <h3>Fleet reliability and operational ownership</h3>
+            <ul class="verification-list">
+              <li><strong>Per-property build controls</strong><p>Site-specific build variables and documented variants define which content, routes, locales, and behavior belong to each deployment.</p></li>
+              <li><strong>Discovery verification</strong><p>Generated sitemaps, canonical metadata, structured information, localized output, and pre-render checks are reviewed per official domain.</p></li>
+              <li><strong>Guest-workflow verification</strong><p>Contact and career submission, email delivery, booking destinations, mobile layouts, and empty-link safeguards have dedicated checks or rollout procedures.</p></li>
+              <li><strong>Operational checks</strong><p>Public HTTPS responses, application health endpoints, retry behavior, automated audits, and property-by-property rollout verification support maintenance.</p></li>
+              <li><strong>Shared ownership</strong><p>I owned much of the platform, backend and data work, AI integration, deployment, rollout, discovery, analytics, and reliability; Tayseer Laz established much of the initial visual and frontend foundation and contributed across fleet refinements.</p></li>
+              <li><strong>Known limit</strong><p>Fourteen live domains prove delivery and ongoing operation; they do not by themselves prove a conversion lift, ranking improvement, uptime percentage, or business outcome.</p></li>
+            </ul>
+          </div>
+
+          <p class="technical-boundary">This case study deliberately exposes the architecture and operating decisions without naming the CMS or implementation stack, reproducing administrative screens, describing the private data model, or publishing infrastructure and credentials.</p>
         </section>
 
         <section class="content-section" aria-labelledby="ownership-heading">

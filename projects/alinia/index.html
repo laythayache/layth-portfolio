@@ -68,18 +68,57 @@
 
         <section class="content-section" id="technical-implementation" aria-labelledby="technical-heading">
           <h2 id="technical-heading">Technical implementation</h2>
-          <div class="prose">
-            <p>Alinia separates its public discovery experience, application services, AI services, and messaging work while keeping listings and organizational permissions as the authoritative operating context.</p>
+          <p class="technical-lede">Alinia separates the public marketplace, transactional application services, AI retrieval services, and messaging operations. The architecture keeps structured listings and authorization rules authoritative while allowing AI to improve how a user expresses, narrows, and continues a property search.</p>
+
+          <div class="technical-block">
+            <h3>Architecture and discovery flow</h3>
+            <ol class="architecture-flow" aria-label="Alinia property discovery and operations flow">
+              <li><span>01 · Request</span><strong>Capture intent and language</strong><p>A public search or conversation enters with free-form criteria, locale, and session context; authentication is added only where the workflow requires it.</p></li>
+              <li><span>02 · Query planning</span><strong>Normalize before retrieval</strong><p>Language, location, property type, transaction type, budget, and other supported filters are converted into a structured search plan.</p></li>
+              <li><span>03 · Retrieval</span><strong>Search authoritative listing data</strong><p>Deterministic filters, text retrieval, semantic retrieval, and reranking can contribute candidates, but returned properties must resolve to stored listing records.</p></li>
+              <li><span>04 · Experience</span><strong>Return inspectable properties</strong><p>The application renders listing attributes, media, agency context, and actions; a model may explain or refine results but does not create inventory.</p></li>
+              <li><span>05 · Operations</span><strong>Move inquiry into accountable work</strong><p>Customer records, assignments, messaging, staff takeover, CRM activity, and reporting connect discovery to a person or agency workflow.</p></li>
+              <li><span>06 · Federation</span><strong>Synchronize approved context to Hader</strong><p>Approved identity and listing changes cross a controlled federation boundary through provisioning and queued synchronization rather than a shared database.</p></li>
+            </ol>
           </div>
-          <ul class="fact-grid">
-            <li><strong>Grounded property discovery</strong><span>AI-assisted requests are converted into structured search criteria and applied to listing data rather than allowing a model to invent available properties.</span></li>
-            <li><strong>Listing lifecycle</strong><span>Creation, review, approval, publication, reassignment, sale, rental, and archive states feed both the public experience and internal operations.</span></li>
-            <li><strong>Role and agency boundaries</strong><span>Public users, agents, agency administrators, and platform administrators operate through distinct authentication and authorization paths.</span></li>
-            <li><strong>Messaging and CRM</strong><span>Web inquiries, customer records, assignments, broadcasts, WhatsApp activity, and staff takeover connect discovery to follow-up work.</span></li>
-            <li><strong>Hader federation</strong><span>Controlled approval, identity federation, provisioning, and queued listing synchronization connect Alinia to Hader without merging the two products.</span></li>
-            <li><strong>Performance and delivery</strong><span>Paginated and parallelized listing reads, cache invalidation on state changes, automated tests, deployment workflows, and production fixes support the live application.</span></li>
-          </ul>
-          <p>This is a systems-level explanation of employer-owned work. It omits private code, listing and customer data, administrative screens, secrets, and infrastructure.</p>
+
+          <div class="technical-block">
+            <h3>System invariants</h3>
+            <ul class="engineering-invariants">
+              <li><strong>Listings remain the source of truth</strong><p>An AI response can rank, summarize, or clarify stored properties; it cannot make an unavailable property real.</p></li>
+              <li><strong>Lifecycle state controls visibility</strong><p>Review, approval, publication, reassignment, sale, rental, archive, and deletion behavior determine where a listing may appear.</p></li>
+              <li><strong>Access follows organizational scope</strong><p>Public users, agents, agency administrators, and platform administrators have distinct authentication and authorization paths.</p></li>
+              <li><strong>Human takeover is explicit</strong><p>Messaging can move from automated assistance to a managed staff workflow without losing the originating customer and listing context.</p></li>
+              <li><strong>Public cache follows listing mutations</strong><p>Changes that affect public availability must invalidate or refresh cached discovery data rather than wait for an unrelated expiry.</p></li>
+              <li><strong>Federated mirrors are not editable inventory</strong><p>Hader receives approved listing context through the integration boundary; the originating Alinia records remain authoritative.</p></li>
+            </ul>
+          </div>
+
+          <div class="technical-block">
+            <h3>Key engineering decisions and tradeoffs</h3>
+            <dl class="decision-ledger">
+              <div><dt>Combine deterministic filters with semantic retrieval</dt><dd><strong>Why:</strong> explicit budget, location, and property constraints need predictable filtering, while natural-language requests benefit from broader recall. <strong>Tradeoff:</strong> the ranking pipeline is more complex than either SQL filtering or embeddings alone.</dd></div>
+              <div><dt>Short-circuit the model when parsing is already confident</dt><dd><strong>Why:</strong> avoids unnecessary model latency and cost for requests that can be converted safely with deterministic extraction. <strong>Tradeoff:</strong> confidence rules need maintenance as vocabulary and markets evolve.</dd></div>
+              <div><dt>Keep AI services separate from transactional services</dt><dd><strong>Why:</strong> retrieval, reranking, language handling, and model providers can evolve without placing core listing writes inside the inference process. <strong>Tradeoff:</strong> adds a service boundary, deployment coordination, and fallback behavior.</dd></div>
+              <div><dt>Cache public listing reads and invalidate on state change</dt><dd><strong>Why:</strong> reduces repeated aggregation and media work on high-read discovery routes. <strong>Tradeoff:</strong> every mutation path that changes visibility must participate in invalidation.</dd></div>
+              <div><dt>Federate identity instead of duplicating passwords</dt><dd><strong>Why:</strong> lets an approved Alinia identity enter Hader without a second credential lifecycle. <strong>Tradeoff:</strong> key rotation, token validation, deprovisioning, and cross-product failure handling become explicit responsibilities.</dd></div>
+              <div><dt>Mirror listings through an outbox-style boundary</dt><dd><strong>Why:</strong> decouples a listing transaction from Hader availability and preserves a retryable record of the intended change. <strong>Tradeoff:</strong> the mirror is eventually consistent and needs reset and reconciliation paths.</dd></div>
+            </dl>
+          </div>
+
+          <div class="technical-block">
+            <h3>Failure handling and verification</h3>
+            <ul class="verification-list">
+              <li><strong>Authorization and invitation checks</strong><p>Authentication reality audits, invitation simulations, agency feature enforcement, and role-specific routes test how access changes across user types.</p></li>
+              <li><strong>Search grounding</strong><p>Normalization, location resolution, filter parsing, hybrid retrieval, reranking, and stored-listing resolution keep the discovery path attached to actual inventory.</p></li>
+              <li><strong>Operational consistency</strong><p>Soft deletion, identity merge, state-aware cache invalidation, webhook queues, and scheduled housekeeping address changes that span multiple records or services.</p></li>
+              <li><strong>Integration recovery</strong><p>Federation capability checks, approval and provisioning flows, queued synchronization, reset, and deprovision behavior give the Hader boundary defined recovery paths.</p></li>
+              <li><strong>Production performance work</strong><p>Pagination, parallelized reads, reduced duplicate listing fetches, and targeted cache busting came from observed production behavior rather than synthetic speed claims.</p></li>
+              <li><strong>My implementation scope</strong><p>My Git history spans the public and backend applications, AI services, search, agency and CRM workflows, authorization, Hader federation, performance fixes, deployment, and documentation.</p></li>
+            </ul>
+          </div>
+
+          <p class="technical-boundary">This is a systems-level explanation of employer-owned work. It intentionally omits source code, model prompts and provider configuration, listing and customer data, private administrative screens, credentials, and infrastructure.</p>
         </section>
 
         <section class="content-section" aria-labelledby="status-heading">

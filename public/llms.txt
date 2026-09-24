@@ -34,6 +34,15 @@ Each linked case study contains an explicit technical implementation or technica
 - [Bridge](https://laythayache.com/projects/bridge/): two separately deployed employer-owned operational systems, one at Aligned Tech and one at Achour Holding. Both are referred to publicly as Bridge.
 - [PrivacyGuard](https://laythayache.com/projects/privacy-guard/): independent computer-vision component for local detection and configurable masking in image and video workflows. A historical controlled internal run reached approximately 25–30 FPS, but the retained record is not complete enough to reproduce or attribute that result to Raspberry Pi 4, a $35 computer, or arbitrary hardware. The project is not presented as automatic legal compliance.
 
+## Technical architecture coverage
+
+- Hader: event attribution, durable conversation state, tenant and consent gates, grounded decisions, typed business actions, channel delivery, human handoff, background work, federation, and operational reconciliation.
+- Alinia: structured query planning, deterministic and semantic property retrieval, authoritative listing lifecycles, agency-scoped access, messaging and CRM operations, public-cache invalidation, and federated Hader synchronization.
+- Bridge: integration adapters, provenance-preserving normalization, scoped read models, explainable progress, bounded AI access, synchronization failure handling, and two intentionally separate employer implementations.
+- Lancaster Hospitality Platform: property-specific deployments on a shared engineering foundation, localized and crawlable public output, property-routed guest workflows, bounded concierge context, independent releases, and fleet verification. The private stack and CMS are not disclosed.
+- OmniSign: community collection, quality control, augmentation with separate raw and training counts, landmark representation, specialist isolated and temporal models, multimodel routing, bounded evaluation, and explicit failure conditions.
+- PrivacyGuard: pluggable local detection, policy-based target selection, configurable region transformation, shared image/video/stream paths, optional operational hooks, input validation, and explicit masking and benchmark limitations.
+
 ## Team attribution
 
 - Hader and Alinia were developed with Tayseer Laz and the [Aligned Tech](https://www.aligned-tech.com/) team.
