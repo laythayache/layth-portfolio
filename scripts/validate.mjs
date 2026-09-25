@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import crypto from 'node:crypto';
 import path from 'node:path';
 
 const root = 'out';
@@ -83,6 +84,14 @@ for (const expectedFile of expectedFiles) {
   if (!fs.existsSync(filePath)) fail(`Missing build output: ${filePath}`);
 }
 
+const stylesheet = fs.readFileSync(path.join(root, 'styles.css'));
+const stylesheetVersion = crypto.createHash('sha256').update(stylesheet).digest('hex').slice(0, 12);
+const expectedStylesheetHref = `/styles.css?v=${stylesheetVersion}`;
+const propertyImageRule = stylesheet.toString('utf8').match(/\.property-grid img\s*\{([^}]*)\}/)?.[1] ?? '';
+if (!/\bheight:\s*auto\s*;/i.test(propertyImageRule)) {
+  fail('styles.css: property gallery images must override their intrinsic height with height: auto');
+}
+
 const allFiles = walk(root);
 const htmlFiles = allFiles.filter((filePath) => filePath.endsWith('.html'));
 const notFoundFile = path.join(root, '404.html');
@@ -102,6 +111,9 @@ for (const htmlFile of htmlFiles) {
   if (!getMeta(html, 'name', 'viewport')) fail(`${file}: missing viewport metadata`);
   if (!getMeta(html, 'name', 'description')) fail(`${file}: missing meta description`);
   if ((html.match(/<h1\b/gi) ?? []).length !== 1) fail(`${file}: expected exactly one h1`);
+  if (getLink(html, 'stylesheet') !== expectedStylesheetHref) {
+    fail(`${file}: stylesheet must use the current content version ${expectedStylesheetHref}`);
+  }
 
   for (const timeTag of html.matchAll(/<time\b[^>]*>/gi)) {
     if (!getAttribute(timeTag[0], 'datetime')) fail(`${file}: every time element needs a machine-readable datetime`);
