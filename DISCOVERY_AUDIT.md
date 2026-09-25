@@ -6,16 +6,14 @@ Scope: discovery, indexing, entity consistency, answerability, public evidence, 
 
 ## Executive status
 
-The site has a strong crawlable foundation: static HTML, one canonical URL per public page, a current sitemap, public robots access, descriptive headings, visible authorship and attribution, JSON-LD, direct-answer copy, `llms.txt`, and a machine-readable profile. The deployed site now also has a real noindex 404, a writing feed, self-contained authorship data, and the intended legacy redirects; the repository has stronger regression checks.
+The site has a strong crawlable foundation: static HTML, one canonical URL per public page, a current sitemap, public robots access, descriptive headings, visible authorship and attribution, JSON-LD, direct-answer copy, `llms.txt`, and a machine-readable profile. The deployed site now also has a real noindex 404, a writing feed, self-contained authorship data, the intended legacy redirects, and edge-level canonical-host redirects; the repository has stronger regression checks.
 
 The largest remaining risks are outside the page templates:
 
-1. `www.laythayache.com` returns Cloudflare `522` instead of redirecting to the canonical apex domain.
-2. `https://layth-portfolio.pages.dev/` serves the same site with `200`. Its apex canonical limits duplication, but Cloudflare's generated hostname should redirect to the custom domain.
-3. A search-backed spot check surfaced older copies of portfolio pages, including superseded role wording and older project claims. Confirm the actual Google and Bing index state in their webmaster tools rather than treating that spot check as a complete index report.
-4. GitHub and the live Medium profile/articles matched the canonical site in a 2026-09-25 browser recheck, although search results still contain older cached copies of both. LinkedIn's current page requires sign-in, while a search copy crawled two weeks before this audit still shows the old Aligned Tech position and unsupported PrivacyGuard claims. Hashnode and DEV also expose outdated employment wording and unsupported PrivacyGuard framing; treat Bayt and Crunchbase as conditional cleanup only when they are controlled or correctable.
-5. A `google-site-verification` TXT value exists in public DNS. That proves only that a verification token is published; it does not prove that the current owner account has Search Console access or that the property is presently verified. Search Console and Bing Webmaster Tools reports were not accessible in this repository audit.
-6. The current wildcard robots policy allows both search/retrieval crawlers and model-development crawlers. That is a policy choice, not an SEO requirement, and should remain unchanged until the owner decides whether training access is acceptable.
+1. A search-backed spot check surfaced older copies of portfolio pages, including superseded role wording and older project claims. Confirm the actual Google and Bing index state in their webmaster tools rather than treating that spot check as a complete index report.
+2. GitHub and the live Medium profile/articles matched the canonical site in a 2026-09-25 browser recheck, although search results still contain older cached copies of both. LinkedIn's current page requires sign-in, while a search copy crawled two weeks before this audit still shows the old Aligned Tech position and unsupported PrivacyGuard claims. Hashnode and DEV also expose outdated employment wording and unsupported PrivacyGuard framing; treat Bayt and Crunchbase as conditional cleanup only when they are controlled or correctable.
+3. A `google-site-verification` TXT value exists in public DNS. That proves only that a verification token is published; it does not prove that the current owner account has Search Console access or that the property is presently verified. Search Console and Bing Webmaster Tools reports were not accessible in this repository audit.
+4. The current wildcard robots policy allows both search/retrieval crawlers and model-development crawlers. That is a policy choice, not an SEO requirement, and should remain unchanged until the owner decides whether training access is acceptable.
 
 ## Changes made in this audit
 
@@ -35,7 +33,9 @@ The largest remaining risks are outside the page templates:
 | --- | --- | --- |
 | Public routes | All 14 canonical URLs returned `200` during the live check. | Live evidence |
 | Unknown routes | An invented URL initially returned the homepage with `200`. After the audited build reached production, the same class of test returned the custom noindex page with HTTP `404`. | Live defect resolved and rechecked on 2026-09-25 |
-| Canonical host | HTTP apex redirects to HTTPS apex. `www` returns `522`. The `layth-portfolio.pages.dev` deployment remains directly accessible with an apex-domain canonical. | Apex healthy; both alternate hosts require Cloudflare redirects |
+| Canonical host | HTTP apex, `www`, `layth-portfolio.pages.dev`, and a sampled deployment subdomain each return `301` to the HTTPS apex while preserving the tested path and query string. | Live defect resolved and rechecked on 2026-09-25 |
+| Cloudflare control plane | The zone and Pages custom domain are active; the authoritative nameservers are Cloudflare; the apex and `www` records are proxied; the edge certificate is active; SSL mode is Full; and the enabled Bulk Redirect rule contains the intended two entries with path and query preservation. | Read-only Cloudflare API and public DNS evidence, rechecked on 2026-09-25 |
+| Cloudflare deployment | The production Pages deployment for repository commit `8cd01b9` completed successfully from `main`, and the custom domain is attached to that deployment. | Cloudflare API evidence, rechecked on 2026-09-25 |
 | Crawl access | Googlebot, Bingbot, OAI-SearchBot, and GPTBot user agents received `200` on a representative case study. | Eligibility only; not proof of indexing or citation |
 | Google ownership | A Google site-verification TXT record is present in DNS. | Verification token present; account access and current property status unknown |
 | Index freshness | A search-backed spot check surfaced stale versions of `/about/`, `/projects/omnisign/`, and retired project URLs. | Inspect in Search Console and Bing Webmaster Tools after deployment; do not infer complete index state from the sample |
@@ -124,12 +124,10 @@ For every product and prompt, record the date, product/surface, language, accoun
 
 ### Remaining high-priority external actions
 
-The audited build is now live: the custom noindex 404, feed, and representative legacy redirects were rechecked successfully on 2026-09-25. No additional deployment action is requested for those items.
+The audited build is live, and the custom noindex 404, feed, legacy redirects, canonical-host redirects, DNS, Pages deployment, and edge certificate were rechecked successfully on 2026-09-25. The previous `www` `522` and directly accessible `pages.dev` duplicate are resolved. No additional Cloudflare or deployment action is requested now.
 
-1. Fix the live `www` error at Cloudflare's edge. Create a `301` Bulk Redirect or equivalent Single Redirect from `https://www.laythayache.com` to `https://laythayache.com`, with subpath and query-string preservation, and keep the `www` DNS record proxied. Do **not** attach `www` to the Pages project merely to perform this redirect; attaching it is necessary only if `www` should serve the site rather than redirect.
-2. Follow Cloudflare's Pages procedure for the generated hostname: create a `301` Bulk Redirect from `https://layth-portfolio.pages.dev` to `https://laythayache.com`, preserving query strings and path suffixes and enabling subpath matching. Cloudflare's guide also enables subdomain matching; omit that option only if preview-deployment subdomains must remain directly accessible.
-3. Check Search Console property access, sitemap status, Page Indexing, and a small representative set in URL Inspection as described above. Submit only what is absent, failing, or materially changed.
-4. GitHub and Medium already pass the live consistency recheck. Sign in to LinkedIn and correct the old employer/positioning and unsupported PrivacyGuard post if the recent indexed copy still reflects the account. Correct or remove the stale Hashnode profile and DEV PrivacyGuard article if those surfaces are controlled and meant to remain public.
+1. Check Search Console property access, sitemap status, Page Indexing, and a small representative set in URL Inspection as described above. Submit only what is absent, failing, or materially changed.
+2. GitHub and Medium already pass the live consistency recheck. Sign in to LinkedIn and correct the old employer/positioning and unsupported PrivacyGuard post if the recent indexed copy still reflects the account. Correct or remove the stale Hashnode profile and DEV PrivacyGuard article if those surfaces are controlled and meant to remain public.
 
 ### Resolved owner-confirmed boundaries
 
@@ -140,9 +138,10 @@ The audited build is now live: the custom noindex 404, feed, and representative 
 ### Optional decisions and measurement
 
 1. Decide whether model-development crawlers should remain allowed. This is a content-use policy choice, not a requirement for SEO, search retrieval, or launch.
-2. Add or import Bing Webmaster Tools if it is not already configured. General referral/conversion analytics are optional and should be added only if that measurement is wanted and implemented with an appropriate privacy policy.
-3. Run a real-browser Core Web Vitals lab trace when the necessary browser tooling is available. The current static delivery checks do not show a release blocker, but they are not field or lab CWV evidence.
-4. Run the controlled answer-engine prompt set after the corrected site has been indexed. Do not interpret crawler access as citation evidence.
+2. Cloudflare currently reports SSL mode `Full`. This encrypts the connection to the origin but does not validate the origin certificate; Cloudflare recommends `Full (strict)` whenever the origin supports it. Treat a tested move to `Full (strict)` as optional security hardening, not an SEO or indexing blocker.
+3. Add or import Bing Webmaster Tools if it is not already configured. General referral/conversion analytics are optional and should be added only if that measurement is wanted and implemented with an appropriate privacy policy.
+4. Run a real-browser Core Web Vitals lab trace when the necessary browser tooling is available. The current static delivery checks do not show a release blocker, but they are not field or lab CWV evidence.
+5. Run the controlled answer-engine prompt set after the corrected site has been indexed. Do not interpret crawler access as citation evidence.
 
 ### Not required now
 
