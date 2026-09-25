@@ -1148,7 +1148,8 @@ a:focus-visible {
   border-top: 1px solid #e2e4e6;
 }
 
-.timeline time {
+.timeline time,
+.timeline-marker {
   color: #596168;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 13px;

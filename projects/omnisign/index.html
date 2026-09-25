@@ -10,6 +10,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://laythayache.com/projects/omnisign/" />
     <link rel="canonical" href="https://laythayache.com/projects/omnisign/" />
+    <link rel="author" href="https://laythayache.com/about/" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/src/styles.css" />
     <title>OmniSign — Lebanese Sign Language AI R&amp;D | Layth Ayache</title>
@@ -22,7 +23,7 @@
         "name": "OmniSign",
         "description": "An actively developed sign-language recognition research and engineering platform focused on Lebanese Sign Language and basic American Sign Language.",
         "member": [
-          { "@id": "https://laythayache.com/#person" },
+          { "@type": "Person", "@id": "https://laythayache.com/#person", "name": "Layth Ayache", "url": "https://laythayache.com/about/" },
           { "@type": "Person", "name": "Tayseer Laz" },
           { "@type": "Person", "name": "Abou Baker Hussien Al Khatib" },
           { "@type": "Person", "name": "Nour El Hariri" }
@@ -146,7 +147,7 @@
           </div>
           <p>We entered this project assuming data existed. It didn’t. We assumed sign language was universal. It wasn’t. Beqaa differed from the South, the South differed from Beirut, and we documented variation associated with 21 teaching traditions observed during collection. That figure describes variation, not formal school partnerships or standardized coverage.</p>
         </div>
-        <div class="data-flow" aria-label="Data processing stages">
+        <div class="data-flow" role="group" aria-label="Data processing stages">
           <div><span>Captured</span><strong>40,000+</strong><p>sign samples before augmentation</p></div>
           <div aria-hidden="true">→</div>
           <div><span>Training set</span><strong>50,000+</strong><p>samples after augmentation</p></div>
@@ -261,10 +262,10 @@
           <h2 id="timeline-heading">From final-year project to an ongoing platform.</h2>
         </div>
         <ol class="timeline omnisign-timeline">
-          <li><time>Early 2025</time><div><h3>Started as our FYP</h3><p>The original student team—Layth Ayache, Tayseer Laz, Abou Baker Hussien Al Khatib, and Nour El Hariri—chose to define its own challenge with academic supervision from Dr. Oussama Mustapha.</p></div></li>
-          <li><time>Ongoing</time><div><h3>Active R&amp;D</h3><p>OmniSign remains actively developed as a self-funded, community-supported research and engineering platform.</p></div></li>
-          <li><time>Next</time><div><h3>Broader clinical vocabulary</h3><p>A small experimental set exists; broader medical and clinical coverage remains planned.</p></div></li>
-          <li><time>Future direction</time><div><h3>Scalable sequence modelling</h3><p>Transformer-based approaches remain a future research direction rather than demonstrated current functionality.</p></div></li>
+          <li><time datetime="2025">Early 2025</time><div><h3>Started as our FYP</h3><p>The original student team—Layth Ayache, Tayseer Laz, Abou Baker Hussien Al Khatib, and Nour El Hariri—chose to define its own challenge with academic supervision from Dr. Oussama Mustapha.</p></div></li>
+          <li><span class="timeline-marker">Ongoing</span><div><h3>Active R&amp;D</h3><p>OmniSign remains actively developed as a self-funded, community-supported research and engineering platform.</p></div></li>
+          <li><span class="timeline-marker">Next</span><div><h3>Broader clinical vocabulary</h3><p>A small experimental set exists; broader medical and clinical coverage remains planned.</p></div></li>
+          <li><span class="timeline-marker">Future direction</span><div><h3>Scalable sequence modelling</h3><p>Transformer-based approaches remain a future research direction rather than demonstrated current functionality.</p></div></li>
         </ol>
       </section>
 
