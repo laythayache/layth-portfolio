@@ -130,7 +130,17 @@ for (const htmlFile of htmlFiles) {
   }
 
   for (const match of html.matchAll(/<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)) {
-    JSON.parse(match[1]);
+    const schema = JSON.parse(match[1]);
+    if (schema['@type'] === 'ProfilePage') {
+      const modified = schema.dateModified;
+      if (
+        typeof modified !== 'string' ||
+        !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(modified) ||
+        Number.isNaN(Date.parse(modified))
+      ) {
+        fail(`${file}: ProfilePage dateModified must be an ISO 8601 datetime with a timezone`);
+      }
+    }
     schemaCount += 1;
   }
 
