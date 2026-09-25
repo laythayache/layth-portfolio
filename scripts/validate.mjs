@@ -235,7 +235,14 @@ for (const line of redirectLines) {
     if (!fileForPathname(destinationUrl.pathname)) fail(`_redirects: ${destination} does not resolve to build output`);
   }
 }
-for (const requiredRedirect of ['/projects/lancaster-websites', '/blog/real-time-privacy-pipeline-on-raspberry-pi']) {
+for (const requiredRedirect of [
+  '/projects/lancaster-websites',
+  '/blog/real-time-privacy-pipeline-on-raspberry-pi',
+  '/now',
+  '/now/',
+  '/beyond-tech',
+  '/beyond-tech/',
+]) {
   if (!redirectSources.has(requiredRedirect)) fail(`_redirects: missing legacy route ${requiredRedirect}`);
 }
 
