@@ -142,6 +142,14 @@ for (const htmlFile of htmlFiles) {
           fail(`${file}: ProfilePage ${field} must be an ISO 8601 datetime with a timezone`);
         }
       }
+      if (schema.mainEntity?.homeLocation?.name !== 'Beirut, Lebanon') {
+        fail(`${file}: ProfilePage person must use the verified Beirut, Lebanon location`);
+      }
+      for (const topic of ['AI systems engineering', 'Applied computer vision', 'Data engineering', 'Conversational AI']) {
+        if (!schema.mainEntity?.knowsAbout?.includes(topic)) {
+          fail(`${file}: ProfilePage person is missing verified knowsAbout topic ${topic}`);
+        }
+      }
     }
     schemaCount += 1;
   }
