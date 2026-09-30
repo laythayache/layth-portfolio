@@ -52,6 +52,7 @@ Each linked case study contains an explicit technical implementation or technica
 
 ## Writing
 
+- [When AI Agents Act: Designing Boundaries for Autonomous Systems](https://laythayache.com/writing/when-ai-agents-act/): evidence-backed analysis of what late-September 2026 agent incidents, product launches, governance actions, and infrastructure disclosures imply for scoped authority, durable action records, safe stopping conditions, human handoff, and provider dependency. Confirmed facts, company claims, confidential-document reporting, and engineering analysis are explicitly separated.
 - [Building in a Country With No Infrastructure](https://laythayache.com/writing/building-in-a-country-with-no-infrastructure/): fact-checked account of OmniSign's dataset construction, infrastructure constraints, evaluation boundary, team attribution, and current R&D scope.
 - [Building PrivacyGuard: Local Computer Vision for Video Masking](https://laythayache.com/writing/building-privacyguard-local-video-masking/): fact-checked account of the public implementation, confidential deployment boundary, historical benchmark limitation, and distinction between masking and legal compliance.
 - [WhatsApp Coexistence](https://laythayache.com/writing/whatsapp-coexistence/)

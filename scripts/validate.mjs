@@ -4,6 +4,7 @@ import path from 'node:path';
 
 const root = 'out';
 const origin = 'https://laythayache.com';
+const agentBoundariesArticle = `${origin}/writing/when-ai-agents-act/`;
 const expectedFiles = [
   '404.html',
   '_headers',
@@ -204,6 +205,15 @@ for (const htmlFile of htmlFiles) {
   }
 }
 
+if (!canonicalToFile.has(agentBoundariesArticle)) {
+  fail(`Missing canonical writing page: ${agentBoundariesArticle}`);
+}
+
+const writingIndex = fs.readFileSync(path.join(root, 'writing', 'index.html'), 'utf8');
+if (!writingIndex.includes('href="/writing/when-ai-agents-act/"')) {
+  fail('writing/index.html: missing link to the autonomous-agent boundaries article');
+}
+
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 const uniqueSitemapUrls = new Set(sitemapUrls);
@@ -231,7 +241,10 @@ if (profile.name !== 'Layth Ayache' || profile.canonical !== `${origin}/`) fail(
 const feed = fs.readFileSync(path.join(root, 'feed.xml'), 'utf8');
 if (!feed.includes(`<atom:link href="${origin}/feed.xml" rel="self" type="application/rss+xml" />`)) fail('feed.xml: missing canonical self link');
 const feedItems = [...feed.matchAll(/<item>([\s\S]*?)<\/item>/g)].map((match) => match[1]);
-if (feedItems.length !== 4) fail(`feed.xml: expected 4 items, received ${feedItems.length}`);
+if (feedItems.length !== 5) fail(`feed.xml: expected 5 items, received ${feedItems.length}`);
+if (!feedItems.some((item) => item.includes(`<link>${agentBoundariesArticle}</link>`))) {
+  fail('feed.xml: missing autonomous-agent boundaries article');
+}
 let previousPublication = Infinity;
 for (const item of feedItems) {
   const link = item.match(/<link>([^<]+)<\/link>/)?.[1];
