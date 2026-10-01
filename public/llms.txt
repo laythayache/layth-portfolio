@@ -6,6 +6,11 @@ Canonical website: https://laythayache.com/
 Contact: mailto:laythayache5@gmail.com
 LinkedIn: https://www.linkedin.com/in/laythayache
 GitHub: https://github.com/laythayache
+Medium: https://medium.com/@laythayache5
+DEV: https://dev.to/laythayache
+Hashnode: https://privacyguard.hashnode.dev/
+Crunchbase: https://www.crunchbase.com/person/layth-ayache
+Bayt: https://people.bayt.com/layth-ayache-87620812/
 
 ## Current role
 

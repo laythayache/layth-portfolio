@@ -3,7 +3,7 @@
   "primaryTitle": "Senior AI Engineer",
   "secondaryTitle": "AI Systems Engineer",
   "location": "Beirut, Lebanon",
-  "lastVerified": "2026-09-24",
+  "lastVerified": "2026-10-01",
   "positioning": "An AI engineer who turns data and models into usable systems and owns the engineering around them.",
   "currentRole": {
     "organization": "Achour Holding",
@@ -75,7 +75,12 @@
   "contact": {
     "email": "laythayache5@gmail.com",
     "linkedin": "https://www.linkedin.com/in/laythayache",
-    "github": "https://github.com/laythayache"
+    "github": "https://github.com/laythayache",
+    "medium": "https://medium.com/@laythayache5",
+    "dev": "https://dev.to/laythayache",
+    "hashnode": "https://privacyguard.hashnode.dev/",
+    "crunchbase": "https://www.crunchbase.com/person/layth-ayache",
+    "bayt": "https://people.bayt.com/layth-ayache-87620812/"
   },
   "canonical": "https://laythayache.com/"
 }
