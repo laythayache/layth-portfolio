@@ -7,15 +7,18 @@ Contact: mailto:laythayache5@gmail.com
 LinkedIn: https://www.linkedin.com/in/laythayache
 GitHub: https://github.com/laythayache
 Medium: https://medium.com/@laythayache5
-DEV: https://dev.to/laythayache
-Hashnode: https://privacyguard.hashnode.dev/
 Crunchbase: https://www.crunchbase.com/person/layth-ayache
-Bayt: https://people.bayt.com/layth-ayache-87620812/
 
 ## Current role
 
 - Senior AI Systems & Web Engineer | Technical Lead at Achour Holding, September 2026–present.
 - Open to selected senior roles, consulting engagements, technical partnerships, and remote international work.
+
+## Education and public teaching
+
+- Bachelor of Engineering in Computer and Communications Engineering, Rafik Hariri University, 2021-2025.
+- One of seven instructors for the eight-week Makers AI Summer Camp in July-August 2023. [Makerspace Solutions' organizer recap](https://www.linkedin.com/posts/makersaisummercamp-engineeringeducation-beiruttech-ugcPost-7280306889127591937-P2JK/) credits the instructor team but does not attribute individual workshop modules.
+- Led a practical Deep Learning for Computer Vision workshop at Rafik Hariri University using OpenCV demonstrations. [RHU report](https://www.rhu.edu.lb/media-room/news/a-deep-learning-workshop-at-rhu-explores-the-power-of-ai-vision)
 
 ## Core capabilities
 

@@ -10,6 +10,8 @@ const expectedFiles = [
   '_headers',
   '_redirects',
   'feed.xml',
+  'favicon.ico',
+  'favicon.png',
   'favicon.svg',
   'llms.txt',
   'profile.json',
@@ -88,6 +90,11 @@ for (const expectedFile of expectedFiles) {
 const stylesheet = fs.readFileSync(path.join(root, 'styles.css'));
 const stylesheetVersion = crypto.createHash('sha256').update(stylesheet).digest('hex').slice(0, 12);
 const expectedStylesheetHref = `/styles.css?v=${stylesheetVersion}`;
+const expectedFaviconLinks = [
+  { href: '/favicon.svg', type: 'image/svg+xml' },
+  { href: '/favicon.png', type: 'image/png', sizes: '64x64' },
+  { href: '/favicon.ico', type: 'image/x-icon', sizes: 'any' },
+];
 const propertyImageRule = stylesheet.toString('utf8').match(/\.property-grid img\s*\{([^}]*)\}/)?.[1] ?? '';
 if (!/\bheight:\s*auto\s*;/i.test(propertyImageRule)) {
   fail('styles.css: property gallery images must override their intrinsic height with height: auto');
@@ -114,6 +121,19 @@ for (const htmlFile of htmlFiles) {
   if ((html.match(/<h1\b/gi) ?? []).length !== 1) fail(`${file}: expected exactly one h1`);
   if (getLink(html, 'stylesheet') !== expectedStylesheetHref) {
     fail(`${file}: stylesheet must use the current content version ${expectedStylesheetHref}`);
+  }
+
+  const linkTags = [...html.matchAll(/<link\b[^>]*>/gi)].map((match) => match[0]);
+  for (const expected of expectedFaviconLinks) {
+    const tag = linkTags.find((candidate) => {
+      const relValues = (getAttribute(candidate, 'rel') ?? '').toLowerCase().split(/\s+/);
+      return relValues.includes('icon') && getAttribute(candidate, 'href') === expected.href;
+    });
+    if (!tag) fail(`${file}: missing favicon declaration for ${expected.href}`);
+    if (getAttribute(tag, 'type') !== expected.type) fail(`${file}: ${expected.href} must use type ${expected.type}`);
+    if (expected.sizes && getAttribute(tag, 'sizes') !== expected.sizes) {
+      fail(`${file}: ${expected.href} must use sizes ${expected.sizes}`);
+    }
   }
 
   for (const timeTag of html.matchAll(/<time\b[^>]*>/gi)) {
@@ -233,6 +253,22 @@ for (const match of sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)) {
 const robots = fs.readFileSync(path.join(root, 'robots.txt'), 'utf8');
 if (!/^User-agent:\s*\*/im.test(robots) || !/^Allow:\s*\/$/im.test(robots)) fail('robots.txt: expected public crawl policy');
 if (!/^Sitemap:\s*https:\/\/laythayache\.com\/sitemap\.xml$/im.test(robots)) fail('robots.txt: missing canonical sitemap declaration');
+
+const faviconSvg = fs.readFileSync(path.join(root, 'favicon.svg'), 'utf8');
+if (!/viewBox="0 0 64 64"/.test(faviconSvg)) fail('favicon.svg: expected the existing 64x64 design viewBox');
+
+const faviconPng = fs.readFileSync(path.join(root, 'favicon.png'));
+if (!faviconPng.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) {
+  fail('favicon.png: invalid PNG signature');
+}
+if (faviconPng.readUInt32BE(16) < 48 || faviconPng.readUInt32BE(20) < 48) {
+  fail('favicon.png: dimensions must be at least 48x48');
+}
+
+const faviconIco = fs.readFileSync(path.join(root, 'favicon.ico'));
+if (faviconIco.length < 22 || faviconIco.readUInt16LE(0) !== 0 || faviconIco.readUInt16LE(2) !== 1) {
+  fail('favicon.ico: invalid ICO header');
+}
 
 const profile = JSON.parse(fs.readFileSync(path.join(root, 'profile.json'), 'utf8'));
 if ('$schema' in profile) fail('profile.json: instance data must not claim to be a JSON Schema');

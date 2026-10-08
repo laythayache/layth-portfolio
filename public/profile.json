@@ -3,7 +3,7 @@
   "primaryTitle": "Senior AI Engineer",
   "secondaryTitle": "AI Systems Engineer",
   "location": "Beirut, Lebanon",
-  "lastVerified": "2026-10-01",
+  "lastVerified": "2026-10-08",
   "positioning": "An AI engineer who turns data and models into usable systems and owns the engineering around them.",
   "currentRole": {
     "organization": "Achour Holding",
@@ -25,6 +25,15 @@
     "AI integration with organizational software and workflows",
     "Internal tools and workflow platforms",
     "Technical leadership across AI, backend systems, applications, and deployment"
+  ],
+  "teaching": [
+    {
+      "program": "Makers AI Summer Camp",
+      "role": "One of seven instructors",
+      "dates": "July-August 2023",
+      "evidenceUrl": "https://www.linkedin.com/posts/makersaisummercamp-engineeringeducation-beiruttech-ugcPost-7280306889127591937-P2JK/",
+      "evidenceBoundary": "The organizer's recap credits the instructor team but does not attribute individual workshop modules."
+    }
   ],
   "projects": [
     {
@@ -77,10 +86,7 @@
     "linkedin": "https://www.linkedin.com/in/laythayache",
     "github": "https://github.com/laythayache",
     "medium": "https://medium.com/@laythayache5",
-    "dev": "https://dev.to/laythayache",
-    "hashnode": "https://privacyguard.hashnode.dev/",
-    "crunchbase": "https://www.crunchbase.com/person/layth-ayache",
-    "bayt": "https://people.bayt.com/layth-ayache-87620812/"
+    "crunchbase": "https://www.crunchbase.com/person/layth-ayache"
   },
   "canonical": "https://laythayache.com/"
 }
